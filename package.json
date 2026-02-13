@@ -1,0 +1,25 @@
+{
+  "name": "the-everything-timeline",
+  "version": "1.0.0",
+  "description": "An interactive timeline from the Big Bang to modern day",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arthur-fox/the-everything-timeline.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arthur-fox/the-everything-timeline/issues"
+  },
+  "homepage": "https://github.com/arthur-fox/the-everything-timeline#readme",
+  "devDependencies": {
+    "vite": "^7.3.1"
+  }
+}

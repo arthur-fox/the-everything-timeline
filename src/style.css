@@ -1,0 +1,317 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0F172A;
+  --bg-surface: #1E293B;
+  --bg-elevated: #334155;
+  --text: #F1F5F9;
+  --text-muted: #94A3B8;
+  --accent: #818CF8;
+  --accent-glow: rgba(129, 140, 248, 0.3);
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* --- Header --- */
+#header {
+  text-align: center;
+  padding: 20px 20px 8px;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 1) 0%, rgba(15, 23, 42, 0) 100%);
+  position: relative;
+  z-index: 10;
+}
+
+#header h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #818CF8, #C084FC, #F472B6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+#header .subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+/* --- Controls --- */
+#controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 20px 12px;
+  overflow-x: auto;
+  z-index: 10;
+}
+
+.zoom-controls {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.zoom-controls button {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--bg-elevated);
+  background: var(--bg-surface);
+  color: var(--text);
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zoom-controls button:hover {
+  background: var(--bg-elevated);
+  border-color: var(--accent);
+}
+
+#era-nav {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+#era-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.era-btn {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border: 1px solid var(--bg-elevated);
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.era-btn:hover {
+  background: var(--era-color, var(--accent));
+  color: white;
+  border-color: var(--era-color, var(--accent));
+}
+
+/* --- Timeline container --- */
+#timeline-container {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
+#timeline-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- Tooltip --- */
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--bg-elevated);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 100;
+  max-width: 240px;
+}
+
+.tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Event detail panel --- */
+.event-detail {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px 28px;
+  max-width: 480px;
+  width: calc(100% - 40px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  animation: slideUp 0.3s ease;
+}
+
+.event-detail.hidden {
+  display: none;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.event-detail h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.3rem;
+  margin-bottom: 4px;
+}
+
+.event-detail #detail-date {
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.event-detail #detail-description {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+#detail-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.4rem;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+#detail-close:hover {
+  background: var(--bg-elevated);
+  color: var(--text);
+}
+
+/* --- Minimap --- */
+#minimap {
+  position: relative;
+  height: 40px;
+  background: var(--bg-surface);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+}
+
+#minimap-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#minimap-viewport {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: var(--accent-glow);
+  border-left: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+  pointer-events: none;
+  transition: left 0.1s ease, width 0.1s ease;
+}
+
+/* --- Responsive --- */
+@media (max-width: 640px) {
+  #header h1 {
+    font-size: 1.4rem;
+  }
+
+  #header {
+    padding: 12px 12px 4px;
+  }
+
+  #controls {
+    padding: 4px 12px 8px;
+  }
+
+  .era-btn {
+    font-size: 0.65rem;
+    padding: 4px 8px;
+  }
+
+  .event-detail {
+    bottom: 60px;
+    padding: 16px 20px;
+  }
+}
+
+/* --- Starfield background --- */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 80% 50%, rgba(255,255,255,0.15), transparent),
+    radial-gradient(1.5px 1.5px at 10% 80%, rgba(255,255,255,0.25), transparent),
+    radial-gradient(1px 1px at 70% 90%, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1.5px 1.5px at 50% 10%, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.15), transparent),
+    radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1.5px 1.5px at 85% 15%, rgba(255,255,255,0.25), transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+}
