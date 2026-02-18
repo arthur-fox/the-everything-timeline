@@ -1,4 +1,5 @@
 import { civilisations, regions } from './civilisations.js';
+import { currentTheme } from './theme.js';
 
 // --- Linear scale for civilisations view ---
 const CIV_MIN_YEAR = -3600;
@@ -91,6 +92,7 @@ function roundRect(ctx, x, y, w, h, r) {
 
 // --- Drawing ---
 export function drawCivilisationsView(ctx, w, h, viewStart, viewEnd, scrollY, hoveredCiv, formatYearShort) {
+  const theme = currentTheme();
   ctx.clearRect(0, 0, w, h);
 
   // Time axis at top
@@ -107,7 +109,7 @@ export function drawCivilisationsView(ctx, w, h, viewStart, viewEnd, scrollY, ho
 
     // Region header
     if (y + REGION_HEADER_HEIGHT > 0 && y < h) {
-      ctx.fillStyle = region.color + '20';
+      ctx.fillStyle = region.color + theme.regionHeaderBg;
       ctx.fillRect(0, y, w, REGION_HEADER_HEIGHT);
 
       ctx.fillStyle = region.color;
@@ -135,12 +137,12 @@ export function drawCivilisationsView(ctx, w, h, viewStart, viewEnd, scrollY, ho
         const barW = Math.max(4, bar.xEnd - bar.xStart);
 
         // Main bar
-        ctx.fillStyle = isHovered ? region.color + 'DD' : region.color + '77';
+        ctx.fillStyle = isHovered ? region.color + theme.barHover : region.color + theme.barNormal;
         roundRect(ctx, bar.xStart, barY, barW, BAR_HEIGHT, 4);
         ctx.fill();
 
         // Border
-        ctx.strokeStyle = isHovered ? region.color : region.color + 'AA';
+        ctx.strokeStyle = isHovered ? region.color : region.color + theme.barBorderNormal;
         ctx.lineWidth = isHovered ? 2 : 1;
         roundRect(ctx, bar.xStart, barY, barW, BAR_HEIGHT, 4);
         ctx.stroke();
@@ -152,13 +154,13 @@ export function drawCivilisationsView(ctx, w, h, viewStart, viewEnd, scrollY, ho
           const clampedX1 = Math.max(bar.xStart + 1, px1);
           const clampedX2 = Math.min(bar.xStart + barW - 1, px2);
           if (clampedX2 > clampedX1) {
-            ctx.fillStyle = region.color + 'BB';
+            ctx.fillStyle = region.color + theme.barPeriod;
             roundRect(ctx, clampedX1, barY + 2, clampedX2 - clampedX1, BAR_HEIGHT - 4, 2);
             ctx.fill();
 
             // Period label if wide enough
             if (clampedX2 - clampedX1 > 80) {
-              ctx.fillStyle = '#F1F5F9AA';
+              ctx.fillStyle = theme.periodLabelColor;
               ctx.font = '400 9px Inter, sans-serif';
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
@@ -175,7 +177,7 @@ export function drawCivilisationsView(ctx, w, h, viewStart, viewEnd, scrollY, ho
         });
 
         if (barW > 50) {
-          ctx.fillStyle = '#F1F5F9';
+          ctx.fillStyle = theme.text;
           ctx.font = '500 11px Inter, sans-serif';
           ctx.textAlign = 'left';
           ctx.textBaseline = 'middle';
@@ -199,7 +201,7 @@ export function drawCivilisationsView(ctx, w, h, viewStart, viewEnd, scrollY, ho
   }
 
   // Clip time axis area (draw over any bars that scrolled up)
-  ctx.fillStyle = '#0F172A';
+  ctx.fillStyle = theme.clipBg;
   ctx.fillRect(0, 0, w, TIME_AXIS_HEIGHT);
   drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort);
 
@@ -207,14 +209,15 @@ export function drawCivilisationsView(ctx, w, h, viewStart, viewEnd, scrollY, ho
 }
 
 function drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort) {
+  const theme = currentTheme();
   const axisY = TIME_AXIS_HEIGHT - 1;
 
   // Background
-  ctx.fillStyle = '#0F172AF0';
+  ctx.fillStyle = theme.clipBgAlpha;
   ctx.fillRect(0, 0, w, TIME_AXIS_HEIGHT);
 
   // Axis line
-  ctx.strokeStyle = '#334155';
+  ctx.strokeStyle = theme.axis;
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(0, axisY);
@@ -236,7 +239,7 @@ function drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort) {
   for (let year = firstTick; year <= viewEnd; year += tickInterval) {
     const x = yearToX(year, viewStart, viewEnd, w);
 
-    ctx.strokeStyle = '#475569';
+    ctx.strokeStyle = theme.axisLight;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(x, axisY - 5);
@@ -244,14 +247,14 @@ function drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort) {
     ctx.stroke();
 
     // Vertical grid line (subtle)
-    ctx.strokeStyle = '#1E293B';
+    ctx.strokeStyle = theme.gridLine;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(x, axisY);
     ctx.lineTo(x, 2000); // extends down
     ctx.stroke();
 
-    ctx.fillStyle = '#94A3B8';
+    ctx.fillStyle = theme.textMuted;
     ctx.font = '400 10px Inter, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'bottom';
@@ -271,6 +274,7 @@ export function getCivAtPos(hitAreas, mx, my) {
 
 // --- Minimap ---
 export function drawCivilisationsMinimap(mmCtx, mmW, mmH, viewStart, viewEnd) {
+  const theme = currentTheme();
   mmCtx.clearRect(0, 0, mmW, mmH);
 
   const totalYearRange = CIV_MAX_YEAR - CIV_MIN_YEAR;
@@ -284,14 +288,14 @@ export function drawCivilisationsMinimap(mmCtx, mmW, mmH, viewStart, viewEnd) {
     if (civs.length === 0) continue;
 
     // Region background
-    mmCtx.fillStyle = region.color + '20';
+    mmCtx.fillStyle = region.color + theme.regionHeaderBg;
     mmCtx.fillRect(0, regionY, mmW, regionHeight);
 
     // Civilisation bars
     for (const civ of civs) {
       const x1 = ((civ.start - CIV_MIN_YEAR) / totalYearRange) * mmW;
       const x2 = ((civ.end - CIV_MIN_YEAR) / totalYearRange) * mmW;
-      mmCtx.fillStyle = region.color + '80';
+      mmCtx.fillStyle = region.color + theme.minimapBar;
       mmCtx.fillRect(x1, regionY + 1, Math.max(1, x2 - x1), regionHeight - 2);
     }
 

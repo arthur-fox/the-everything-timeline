@@ -6,6 +6,7 @@ import {
   getCivDefaults,
   minimapClickToYear,
 } from './civilisations-view.js';
+import { currentTheme, initTheme, toggleTheme } from './theme.js';
 
 // ============================================================
 // Logarithmic scale mapping (cosmic timeline)
@@ -154,6 +155,7 @@ function xToLog(x) {
 function drawCosmicTimeline() {
   const w = parseFloat(canvas.style.width);
   const h = parseFloat(canvas.style.height);
+  const theme = currentTheme();
   ctx.clearRect(0, 0, w, h);
 
   // Era backgrounds
@@ -164,13 +166,13 @@ function drawCosmicTimeline() {
     const x2 = Math.min(w, logToX(eraLogEnd));
     if (x2 < 0 || x1 > w) continue;
 
-    ctx.fillStyle = era.color + '18';
+    ctx.fillStyle = era.color + theme.eraBgAlpha;
     ctx.fillRect(x1, 0, x2 - x1, h);
 
     const midX = (x1 + x2) / 2;
     if (x2 - x1 > 60) {
       ctx.save();
-      ctx.fillStyle = era.color + '60';
+      ctx.fillStyle = era.color + theme.eraLabelAlpha;
       ctx.font = '600 11px Inter, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -181,7 +183,7 @@ function drawCosmicTimeline() {
 
   // Timeline axis
   const axisY = h * 0.55;
-  ctx.strokeStyle = '#334155';
+  ctx.strokeStyle = theme.axis;
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(0, axisY);
@@ -223,7 +225,7 @@ function drawCosmicTimeline() {
     const isSelected = selectedEvent === evt;
 
     // Connector
-    ctx.strokeStyle = '#475569';
+    ctx.strokeStyle = theme.axisLight;
     ctx.lineWidth = 1;
     ctx.setLineDash([3, 3]);
     ctx.beginPath();
@@ -240,7 +242,7 @@ function drawCosmicTimeline() {
     ctx.arc(x, y, eventRadius + (isHovered || isSelected ? 4 : 0), 0, Math.PI * 2);
     ctx.fillStyle = isHovered || isSelected ? baseColor : baseColor + 'CC';
     ctx.fill();
-    ctx.strokeStyle = '#fff';
+    ctx.strokeStyle = theme.eventStroke;
     ctx.lineWidth = 2;
     ctx.stroke();
 
@@ -259,7 +261,8 @@ function drawCosmicTimeline() {
 }
 
 function drawTicks(w, h, axisY) {
-  ctx.fillStyle = '#94A3B8';
+  const theme = currentTheme();
+  ctx.fillStyle = theme.textMuted;
   ctx.font = '400 10px Inter, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
@@ -270,14 +273,14 @@ function drawTicks(w, h, axisY) {
     const x = logToX(logVal);
     const year = logToYear(logVal);
 
-    ctx.strokeStyle = '#334155';
+    ctx.strokeStyle = theme.axis;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(x, axisY - 6);
     ctx.lineTo(x, axisY + 6);
     ctx.stroke();
 
-    ctx.fillStyle = '#94A3B8';
+    ctx.fillStyle = theme.textMuted;
     ctx.fillText(formatYearShort(year), x, axisY + 12);
   }
 }
@@ -285,6 +288,7 @@ function drawTicks(w, h, axisY) {
 function drawCosmicMinimap() {
   const mmW = parseFloat(minimapCanvas.style.width);
   const mmH = parseFloat(minimapCanvas.style.height);
+  const theme = currentTheme();
   minimapCtx.clearRect(0, 0, mmW, mmH);
 
   for (const era of eras) {
@@ -292,13 +296,13 @@ function drawCosmicMinimap() {
     const eraLogEnd = yearToLog(era.end);
     const x1 = ((eraLogStart - LOG_MIN) / LOG_RANGE) * mmW;
     const x2 = ((eraLogEnd - LOG_MIN) / LOG_RANGE) * mmW;
-    minimapCtx.fillStyle = era.color + '40';
+    minimapCtx.fillStyle = era.color + theme.eraMinimapAlpha;
     minimapCtx.fillRect(x1, 0, x2 - x1, mmH);
   }
 
   for (const evt of eventPositions) {
     const x = ((evt.logPos - LOG_MIN) / LOG_RANGE) * mmW;
-    minimapCtx.fillStyle = '#94A3B8';
+    minimapCtx.fillStyle = theme.textMuted;
     minimapCtx.beginPath();
     minimapCtx.arc(x, mmH / 2, 2, 0, Math.PI * 2);
     minimapCtx.fill();
@@ -758,6 +762,18 @@ document.getElementById('minimap').addEventListener('click', (e) => {
     civTargetEnd = clickYear + range / 2;
   }
   if (!animationId) animateZoom();
+});
+
+// ============================================================
+// Theme toggle
+// ============================================================
+initTheme();
+const themeToggleBtn = document.getElementById('theme-toggle');
+themeToggleBtn.textContent = currentTheme().name === 'dark' ? '🌙' : '☀️';
+themeToggleBtn.addEventListener('click', () => {
+  const name = toggleTheme();
+  themeToggleBtn.textContent = name === 'dark' ? '🌙' : '☀️';
+  draw();
 });
 
 // ============================================================

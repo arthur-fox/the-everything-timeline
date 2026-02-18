@@ -6,7 +6,9 @@
   box-sizing: border-box;
 }
 
-:root {
+/* --- Theme: Dark (default) --- */
+:root,
+[data-theme="dark"] {
   --bg: #0F172A;
   --bg-surface: #1E293B;
   --bg-elevated: #334155;
@@ -14,6 +16,29 @@
   --text-muted: #94A3B8;
   --accent: #818CF8;
   --accent-glow: rgba(129, 140, 248, 0.3);
+  --header-grad-start: rgba(15, 23, 42, 1);
+  --header-grad-end: rgba(15, 23, 42, 0);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --shadow-heavy: rgba(0, 0, 0, 0.5);
+  --shadow-tooltip: rgba(0, 0, 0, 0.4);
+  --minimap-border: rgba(255, 255, 255, 0.06);
+}
+
+/* --- Theme: Light --- */
+[data-theme="light"] {
+  --bg: #F8FAFC;
+  --bg-surface: #E2E8F0;
+  --bg-elevated: #CBD5E1;
+  --text: #0F172A;
+  --text-muted: #475569;
+  --accent: #6366F1;
+  --accent-glow: rgba(99, 102, 241, 0.2);
+  --header-grad-start: rgba(248, 250, 252, 1);
+  --header-grad-end: rgba(248, 250, 252, 0);
+  --border-subtle: rgba(0, 0, 0, 0.1);
+  --shadow-heavy: rgba(0, 0, 0, 0.15);
+  --shadow-tooltip: rgba(0, 0, 0, 0.12);
+  --minimap-border: rgba(0, 0, 0, 0.08);
 }
 
 html, body {
@@ -34,7 +59,7 @@ html, body {
 #header {
   text-align: center;
   padding: 20px 20px 8px;
-  background: linear-gradient(180deg, rgba(15, 23, 42, 1) 0%, rgba(15, 23, 42, 0) 100%);
+  background: linear-gradient(180deg, var(--header-grad-start) 0%, var(--header-grad-end) 100%);
   position: relative;
   z-index: 10;
 }
@@ -158,6 +183,28 @@ html, body {
   border-color: var(--era-color, var(--accent));
 }
 
+/* --- Theme toggle --- */
+#theme-toggle {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--bg-elevated);
+  background: var(--bg-surface);
+  color: var(--text);
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+#theme-toggle:hover {
+  background: var(--bg-elevated);
+  border-color: var(--accent);
+}
+
 /* --- Timeline container --- */
 #timeline-container {
   flex: 1;
@@ -182,8 +229,8 @@ html, body {
   border-radius: 8px;
   font-size: 0.8rem;
   line-height: 1.4;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px var(--shadow-tooltip);
+  border: 1px solid var(--border-subtle);
   opacity: 0;
   transform: translateY(4px);
   transition: opacity 0.15s ease, transform 0.15s ease;
@@ -203,12 +250,12 @@ html, body {
   left: 50%;
   transform: translateX(-50%);
   background: var(--bg-surface);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-subtle);
   border-radius: 16px;
   padding: 24px 28px;
   max-width: 480px;
   width: calc(100% - 40px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 60px var(--shadow-heavy);
   z-index: 200;
   animation: slideUp 0.3s ease;
 }
@@ -275,7 +322,7 @@ html, body {
   position: relative;
   height: 40px;
   background: var(--bg-surface);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--minimap-border);
   cursor: pointer;
 }
 
@@ -347,4 +394,18 @@ body::before {
 #app {
   position: relative;
   z-index: 1;
+}
+
+/* Hide starfield in light mode */
+[data-theme="light"] body::before,
+[data-theme="light"]::before {
+  display: none;
+}
+
+/* Light mode title gradient - darker for contrast */
+[data-theme="light"] #header h1 {
+  background: linear-gradient(135deg, #4F46E5, #7C3AED, #DB2777);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
