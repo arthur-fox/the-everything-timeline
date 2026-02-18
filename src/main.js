@@ -80,6 +80,9 @@ let hoveredCiv = null;
 let selectedCiv = null;
 let civHitAreas = [];
 
+// Responsive scale factor (1 on desktop, smaller on mobile)
+let uiScale = 1;
+
 // Shared interaction state
 let isDragging = false;
 let dragStartX = 0;
@@ -112,6 +115,7 @@ const eventPositions = events.map(e => ({
 function resize() {
   const dpr = window.devicePixelRatio || 1;
   const rect = container.getBoundingClientRect();
+  uiScale = Math.max(0.55, Math.min(1, rect.width / 700));
   canvas.width = rect.width * dpr;
   canvas.height = rect.height * dpr;
   canvas.style.width = rect.width + 'px';
@@ -156,50 +160,23 @@ function drawCosmicTimeline() {
   const w = parseFloat(canvas.style.width);
   const h = parseFloat(canvas.style.height);
   const theme = currentTheme();
+  const s = uiScale;
   ctx.clearRect(0, 0, w, h);
 
-  // Era backgrounds
-  for (const era of eras) {
-    const eraLogStart = yearToLog(era.start);
-    const eraLogEnd = yearToLog(era.end);
-    const x1 = Math.max(0, logToX(eraLogStart));
-    const x2 = Math.min(w, logToX(eraLogEnd));
-    if (x2 < 0 || x1 > w) continue;
+  // Scaled constants
+  const eventRadius = Math.round(18 * s);
+  const baseOffset = Math.round(40 * s);
+  const hoverGrow = Math.round(4 * s);
+  const connectorDash = Math.round(3 * s);
+  const eraFontSize = Math.round(11 * s);
+  const iconFontSize = Math.max(10, Math.round(14 * s));
 
-    ctx.fillStyle = era.color + theme.eraBgAlpha;
-    ctx.fillRect(x1, 0, x2 - x1, h);
-
-    const midX = (x1 + x2) / 2;
-    if (x2 - x1 > 60) {
-      ctx.save();
-      ctx.fillStyle = era.color + theme.eraLabelAlpha;
-      ctx.font = '600 11px Inter, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(era.name, midX, 8);
-      ctx.restore();
-    }
-  }
-
-  // Timeline axis
-  const axisY = h * 0.55;
-  ctx.strokeStyle = theme.axis;
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(0, axisY);
-  ctx.lineTo(w, axisY);
-  ctx.stroke();
-
-  drawTicks(w, h, axisY);
-
-  // Events
-  const eventRadius = 18;
+  // --- Collision resolution FIRST (needed to compute dynamic axis position) ---
   const visibleEvents = eventPositions.filter(e => {
     const x = logToX(e.logPos);
     return x > -50 && x < w + 50;
   });
 
-  // Collision resolution
   const placed = [];
   for (const evt of visibleEvents) {
     const x = logToX(evt.logPos);
@@ -218,16 +195,67 @@ function drawCosmicTimeline() {
     placed.push({ x, row, evt });
   }
 
+  const maxRow = placed.reduce((m, p) => Math.max(m, p.row), 0);
+
+  // --- Dynamic axis positioning ---
+  // Space needed below axis: tick marks + labels + bottom margin
+  const tickLabelOffset = Math.round(12 * s);
+  const tickFontHeight = Math.round(10 * s);
+  const bottomPad = tickLabelOffset + tickFontHeight + Math.round(10 * s);
+
+  // Space needed above axis: all stacked event rows + top margin for era labels
+  const topPad = eventRadius + hoverGrow + Math.round(24 * s); // margin above topmost bubble
+  const eventsAboveAxis = baseOffset + maxRow * (eventRadius * 2.5) + eventRadius + hoverGrow;
+
+  // Place axis: as low as possible (for breathing room) but ensure everything fits
+  const maxAxisY = h - bottomPad;                      // tick labels must fit below
+  const idealAxisY = topPad + eventsAboveAxis;          // events must fit above
+  const axisY = Math.min(maxAxisY, Math.max(idealAxisY, h * 0.5)); // at least halfway down
+
+  // Era backgrounds
+  for (const era of eras) {
+    const eraLogStart = yearToLog(era.start);
+    const eraLogEnd = yearToLog(era.end);
+    const x1 = Math.max(0, logToX(eraLogStart));
+    const x2 = Math.min(w, logToX(eraLogEnd));
+    if (x2 < 0 || x1 > w) continue;
+
+    ctx.fillStyle = era.color + theme.eraBgAlpha;
+    ctx.fillRect(x1, 0, x2 - x1, h);
+
+    const midX = (x1 + x2) / 2;
+    if (x2 - x1 > 60 * s) {
+      ctx.save();
+      ctx.fillStyle = era.color + theme.eraLabelAlpha;
+      ctx.font = `600 ${eraFontSize}px Inter, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText(era.name, midX, Math.round(8 * s));
+      ctx.restore();
+    }
+  }
+
+  // Timeline axis
+  ctx.strokeStyle = theme.axis;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0, axisY);
+  ctx.lineTo(w, axisY);
+  ctx.stroke();
+
+  drawTicks(w, h, axisY);
+
+  // --- Draw events ---
   for (const { x, row, evt } of placed) {
     const yOffset = row * (eventRadius * 2.5);
-    const y = axisY - 40 - yOffset;
+    const y = axisY - baseOffset - yOffset;
     const isHovered = hoveredEvent === evt;
     const isSelected = selectedEvent === evt;
 
     // Connector
     ctx.strokeStyle = theme.axisLight;
     ctx.lineWidth = 1;
-    ctx.setLineDash([3, 3]);
+    ctx.setLineDash([connectorDash, connectorDash]);
     ctx.beginPath();
     ctx.moveTo(x, axisY);
     ctx.lineTo(x, y + eventRadius);
@@ -239,7 +267,7 @@ function drawCosmicTimeline() {
     const baseColor = era ? era.color : '#6366F1';
 
     ctx.beginPath();
-    ctx.arc(x, y, eventRadius + (isHovered || isSelected ? 4 : 0), 0, Math.PI * 2);
+    ctx.arc(x, y, eventRadius + (isHovered || isSelected ? hoverGrow : 0), 0, Math.PI * 2);
     ctx.fillStyle = isHovered || isSelected ? baseColor : baseColor + 'CC';
     ctx.fill();
     ctx.strokeStyle = theme.eventStroke;
@@ -247,14 +275,14 @@ function drawCosmicTimeline() {
     ctx.stroke();
 
     // Icon
-    ctx.font = '14px serif';
+    ctx.font = `${iconFontSize}px serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(evt.icon, x, y);
 
     evt._hitX = x;
     evt._hitY = y;
-    evt._hitR = eventRadius + 4;
+    evt._hitR = eventRadius + hoverGrow;
   }
 
   drawCosmicMinimap();
@@ -262,12 +290,17 @@ function drawCosmicTimeline() {
 
 function drawTicks(w, h, axisY) {
   const theme = currentTheme();
+  const s = uiScale;
+  const tickFontSize = Math.round(10 * s);
+  const tickHalf = Math.round(6 * s);
+  const tickLabelOffset = Math.round(12 * s);
+
   ctx.fillStyle = theme.textMuted;
-  ctx.font = '400 10px Inter, sans-serif';
+  ctx.font = `400 ${tickFontSize}px Inter, sans-serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
 
-  const numTicks = Math.floor(w / 120);
+  const numTicks = Math.floor(w / (120 * s));
   for (let i = 0; i <= numTicks; i++) {
     const logVal = viewStart + (i / numTicks) * (viewEnd - viewStart);
     const x = logToX(logVal);
@@ -276,12 +309,12 @@ function drawTicks(w, h, axisY) {
     ctx.strokeStyle = theme.axis;
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(x, axisY - 6);
-    ctx.lineTo(x, axisY + 6);
+    ctx.moveTo(x, axisY - tickHalf);
+    ctx.lineTo(x, axisY + tickHalf);
     ctx.stroke();
 
     ctx.fillStyle = theme.textMuted;
-    ctx.fillText(formatYearShort(year), x, axisY + 12);
+    ctx.fillText(formatYearShort(year), x, axisY + tickLabelOffset);
   }
 }
 
@@ -304,7 +337,7 @@ function drawCosmicMinimap() {
     const x = ((evt.logPos - LOG_MIN) / LOG_RANGE) * mmW;
     minimapCtx.fillStyle = theme.textMuted;
     minimapCtx.beginPath();
-    minimapCtx.arc(x, mmH / 2, 2, 0, Math.PI * 2);
+    minimapCtx.arc(x, mmH / 2, Math.max(1.5, 2 * uiScale), 0, Math.PI * 2);
     minimapCtx.fill();
   }
 
@@ -325,7 +358,7 @@ function drawCivView() {
     ctx, w, h,
     civViewStart, civViewEnd,
     civScrollY, hoveredCiv,
-    formatYearShort
+    formatYearShort, uiScale
   );
 
   civHitAreas = result.hitAreas;
@@ -334,7 +367,7 @@ function drawCivView() {
   // Minimap
   const mmW = parseFloat(minimapCanvas.style.width);
   const mmH = parseFloat(minimapCanvas.style.height);
-  const vp = drawCivilisationsMinimap(minimapCtx, mmW, mmH, civViewStart, civViewEnd);
+  const vp = drawCivilisationsMinimap(minimapCtx, mmW, mmH, civViewStart, civViewEnd, uiScale);
   minimapViewport.style.left = vp.vpLeft + 'px';
   minimapViewport.style.width = Math.max(4, vp.vpWidth) + 'px';
 }
@@ -411,8 +444,8 @@ window.addEventListener('mousemove', (e) => {
       canvas.style.cursor = evt ? 'pointer' : 'grab';
       if (evt) {
         tooltip.innerHTML = `<strong>${evt.title}</strong><br>${formatYear(evt.year)}`;
-        tooltip.style.left = (evt._hitX + 20) + 'px';
-        tooltip.style.top = (evt._hitY - 10) + 'px';
+        tooltip.style.left = (evt._hitX + Math.round(20 * uiScale)) + 'px';
+        tooltip.style.top = (evt._hitY - Math.round(10 * uiScale)) + 'px';
         tooltip.classList.add('visible');
       } else {
         tooltip.classList.remove('visible');

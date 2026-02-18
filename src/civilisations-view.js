@@ -91,60 +91,75 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 // --- Drawing ---
-export function drawCivilisationsView(ctx, w, h, viewStart, viewEnd, scrollY, hoveredCiv, formatYearShort) {
+export function drawCivilisationsView(ctx, w, h, viewStart, viewEnd, scrollY, hoveredCiv, formatYearShort, scale) {
   const theme = currentTheme();
+  const s = scale || 1;
   ctx.clearRect(0, 0, w, h);
 
+  // Scaled layout constants
+  const timeAxisH = Math.round(TIME_AXIS_HEIGHT * s);
+  const regionHeaderH = Math.round(REGION_HEADER_HEIGHT * s);
+  const barH = Math.round(BAR_HEIGHT * s);
+  const barGap = Math.round(BAR_GAP * s);
+  const barRowH = barH + barGap;
+  const regionPadBottom = Math.round(REGION_PADDING_BOTTOM * s);
+  const regionIndent = Math.round(12 * s);
+  const barLabelIndent = Math.round(6 * s);
+  const barRadius = Math.round(4 * s);
+  const headerFontSize = Math.round(11 * s);
+  const barLabelFontSize = Math.round(11 * s);
+  const periodLabelFontSize = Math.round(9 * s);
+
   // Time axis at top
-  drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort);
+  drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort, s, timeAxisH);
 
   // Layout and draw civilisations
   const layout = layoutCivilisations(viewStart, viewEnd, w);
 
-  let y = TIME_AXIS_HEIGHT - scrollY;
+  let y = timeAxisH - scrollY;
   const hitAreas = [];
 
   for (const group of layout) {
     const { region, rows } = group;
 
     // Region header
-    if (y + REGION_HEADER_HEIGHT > 0 && y < h) {
+    if (y + regionHeaderH > 0 && y < h) {
       ctx.fillStyle = region.color + theme.regionHeaderBg;
-      ctx.fillRect(0, y, w, REGION_HEADER_HEIGHT);
+      ctx.fillRect(0, y, w, regionHeaderH);
 
       ctx.fillStyle = region.color;
-      ctx.font = '600 11px Inter, sans-serif';
+      ctx.font = `600 ${headerFontSize}px Inter, sans-serif`;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
-      ctx.fillText(region.name.toUpperCase(), 12, y + REGION_HEADER_HEIGHT / 2);
+      ctx.fillText(region.name.toUpperCase(), regionIndent, y + regionHeaderH / 2);
 
       // Region colour indicator
       ctx.fillStyle = region.color;
-      roundRect(ctx, 3, y + 8, 4, REGION_HEADER_HEIGHT - 16, 2);
+      roundRect(ctx, Math.round(3 * s), y + Math.round(8 * s), Math.round(4 * s), regionHeaderH - Math.round(16 * s), 2);
       ctx.fill();
     }
-    y += REGION_HEADER_HEIGHT;
+    y += regionHeaderH;
 
     // Bars
     for (let rowIdx = 0; rowIdx < rows.length; rowIdx++) {
       for (const bar of rows[rowIdx]) {
-        const barY = y + rowIdx * BAR_ROW_HEIGHT;
+        const barY = y + rowIdx * barRowH;
 
         // Skip if off-screen vertically
-        if (barY + BAR_HEIGHT < TIME_AXIS_HEIGHT || barY > h) continue;
+        if (barY + barH < timeAxisH || barY > h) continue;
 
         const isHovered = hoveredCiv === bar.civ;
         const barW = Math.max(4, bar.xEnd - bar.xStart);
 
         // Main bar
         ctx.fillStyle = isHovered ? region.color + theme.barHover : region.color + theme.barNormal;
-        roundRect(ctx, bar.xStart, barY, barW, BAR_HEIGHT, 4);
+        roundRect(ctx, bar.xStart, barY, barW, barH, barRadius);
         ctx.fill();
 
         // Border
         ctx.strokeStyle = isHovered ? region.color : region.color + theme.barBorderNormal;
         ctx.lineWidth = isHovered ? 2 : 1;
-        roundRect(ctx, bar.xStart, barY, barW, BAR_HEIGHT, 4);
+        roundRect(ctx, bar.xStart, barY, barW, barH, barRadius);
         ctx.stroke();
 
         // Sub-periods (darker segments)
@@ -155,35 +170,29 @@ export function drawCivilisationsView(ctx, w, h, viewStart, viewEnd, scrollY, ho
           const clampedX2 = Math.min(bar.xStart + barW - 1, px2);
           if (clampedX2 > clampedX1) {
             ctx.fillStyle = region.color + theme.barPeriod;
-            roundRect(ctx, clampedX1, barY + 2, clampedX2 - clampedX1, BAR_HEIGHT - 4, 2);
+            roundRect(ctx, clampedX1, barY + 2, clampedX2 - clampedX1, barH - 4, 2);
             ctx.fill();
 
             // Period label if wide enough
-            if (clampedX2 - clampedX1 > 80) {
+            if (clampedX2 - clampedX1 > 80 * s) {
               ctx.fillStyle = theme.periodLabelColor;
-              ctx.font = '400 9px Inter, sans-serif';
+              ctx.font = `400 ${periodLabelFontSize}px Inter, sans-serif`;
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
-              ctx.fillText(period.name, (clampedX1 + clampedX2) / 2, barY + BAR_HEIGHT / 2, clampedX2 - clampedX1 - 8);
+              ctx.fillText(period.name, (clampedX1 + clampedX2) / 2, barY + barH / 2, clampedX2 - clampedX1 - 8);
             }
           }
         }
 
-        // Label (if bar is wide enough and no sub-period labels shown)
-        const hasVisiblePeriodLabels = bar.civ.periods.some(p => {
-          const px1 = yearToX(p.start, viewStart, viewEnd, w);
-          const px2 = yearToX(p.end, viewStart, viewEnd, w);
-          return px2 - px1 > 80;
-        });
-
-        if (barW > 50) {
+        // Label (if bar is wide enough)
+        if (barW > 50 * s) {
           ctx.fillStyle = theme.text;
-          ctx.font = '500 11px Inter, sans-serif';
+          ctx.font = `500 ${barLabelFontSize}px Inter, sans-serif`;
           ctx.textAlign = 'left';
           ctx.textBaseline = 'middle';
           const label = bar.civ.icon + ' ' + bar.civ.name;
-          const labelX = Math.max(bar.xStart + 6, 6);
-          ctx.fillText(label, labelX, barY + BAR_HEIGHT / 2, barW - 12);
+          const labelX = Math.max(bar.xStart + barLabelIndent, barLabelIndent);
+          ctx.fillText(label, labelX, barY + barH / 2, barW - barLabelIndent * 2);
         }
 
         // Store hit area
@@ -192,29 +201,34 @@ export function drawCivilisationsView(ctx, w, h, viewStart, viewEnd, scrollY, ho
           x: bar.xStart,
           y: barY,
           w: barW,
-          h: BAR_HEIGHT,
+          h: barH,
         });
       }
     }
 
-    y += rows.length * BAR_ROW_HEIGHT + REGION_PADDING_BOTTOM;
+    y += rows.length * barRowH + regionPadBottom;
   }
 
   // Clip time axis area (draw over any bars that scrolled up)
   ctx.fillStyle = theme.clipBg;
-  ctx.fillRect(0, 0, w, TIME_AXIS_HEIGHT);
-  drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort);
+  ctx.fillRect(0, 0, w, timeAxisH);
+  drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort, s, timeAxisH);
 
   return { hitAreas, totalHeight: y + scrollY };
 }
 
-function drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort) {
+function drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort, scale, timeAxisH) {
   const theme = currentTheme();
-  const axisY = TIME_AXIS_HEIGHT - 1;
+  const s = scale || 1;
+  const axisH = timeAxisH || Math.round(TIME_AXIS_HEIGHT * s);
+  const axisY = axisH - 1;
+  const tickFontSize = Math.round(10 * s);
+  const tickHalf = Math.round(5 * s);
+  const tickLabelOffset = Math.round(6 * s);
 
   // Background
   ctx.fillStyle = theme.clipBgAlpha;
-  ctx.fillRect(0, 0, w, TIME_AXIS_HEIGHT);
+  ctx.fillRect(0, 0, w, axisH);
 
   // Axis line
   ctx.strokeStyle = theme.axis;
@@ -242,7 +256,7 @@ function drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort) {
     ctx.strokeStyle = theme.axisLight;
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(x, axisY - 5);
+    ctx.moveTo(x, axisY - tickHalf);
     ctx.lineTo(x, axisY);
     ctx.stroke();
 
@@ -255,10 +269,10 @@ function drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort) {
     ctx.stroke();
 
     ctx.fillStyle = theme.textMuted;
-    ctx.font = '400 10px Inter, sans-serif';
+    ctx.font = `400 ${tickFontSize}px Inter, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'bottom';
-    ctx.fillText(formatYearShort(year), x, axisY - 6);
+    ctx.fillText(formatYearShort(year), x, axisY - tickLabelOffset);
   }
 }
 
@@ -273,7 +287,7 @@ export function getCivAtPos(hitAreas, mx, my) {
 }
 
 // --- Minimap ---
-export function drawCivilisationsMinimap(mmCtx, mmW, mmH, viewStart, viewEnd) {
+export function drawCivilisationsMinimap(mmCtx, mmW, mmH, viewStart, viewEnd, scale) {
   const theme = currentTheme();
   mmCtx.clearRect(0, 0, mmW, mmH);
 
