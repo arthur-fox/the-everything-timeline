@@ -68,6 +68,39 @@ html, body {
   z-index: 10;
 }
 
+/* --- View toggle --- */
+.view-toggle {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+  background: var(--bg-elevated);
+  border-radius: 10px;
+  padding: 3px;
+}
+
+.view-btn {
+  padding: 6px 14px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.view-btn:hover {
+  color: var(--text);
+}
+
+.view-btn.active {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 2px 8px rgba(129, 140, 248, 0.3);
+}
+
 .zoom-controls {
   display: flex;
   gap: 4px;
