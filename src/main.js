@@ -30,6 +30,11 @@ const LOG_MIN = yearToLog(MIN_YEAR);
 const LOG_MAX = yearToLog(MAX_YEAR);
 const LOG_RANGE = LOG_MAX - LOG_MIN;
 
+// Padded range so edge events aren't clipped by their circle radius on initial load
+const VIEW_PAD = LOG_RANGE * 0.03;
+const LOG_MIN_PADDED = LOG_MIN - VIEW_PAD;
+const LOG_MAX_PADDED = LOG_MAX + VIEW_PAD;
+
 // ============================================================
 // Date formatting
 // ============================================================
@@ -61,8 +66,8 @@ function formatYearShort(year) {
 let currentView = 'cosmic'; // 'cosmic' | 'civilisations'
 
 // Cosmic view state
-let viewStart = LOG_MIN;
-let viewEnd = LOG_MAX;
+let viewStart = LOG_MIN_PADDED;
+let viewEnd = LOG_MAX_PADDED;
 let targetViewStart = viewStart;
 let targetViewEnd = viewEnd;
 let hoveredEvent = null;
@@ -171,47 +176,6 @@ function drawCosmicTimeline() {
   const eraFontSize = Math.round(11 * s);
   const iconFontSize = Math.max(10, Math.round(14 * s));
 
-  // --- Collision resolution FIRST (needed to compute dynamic axis position) ---
-  const visibleEvents = eventPositions.filter(e => {
-    const x = logToX(e.logPos);
-    return x > -50 && x < w + 50;
-  });
-
-  const placed = [];
-  for (const evt of visibleEvents) {
-    const x = logToX(evt.logPos);
-    let row = 0;
-    let collides = true;
-    while (collides) {
-      collides = false;
-      for (const p of placed) {
-        if (Math.abs(p.x - x) < eventRadius * 2.2 && p.row === row) {
-          collides = true;
-          row++;
-          break;
-        }
-      }
-    }
-    placed.push({ x, row, evt });
-  }
-
-  const maxRow = placed.reduce((m, p) => Math.max(m, p.row), 0);
-
-  // --- Dynamic axis positioning ---
-  // Space needed below axis: tick marks + labels + bottom margin
-  const tickLabelOffset = Math.round(12 * s);
-  const tickFontHeight = Math.round(10 * s);
-  const bottomPad = tickLabelOffset + tickFontHeight + Math.round(10 * s);
-
-  // Space needed above axis: all stacked event rows + top margin for era labels
-  const topPad = eventRadius + hoverGrow + Math.round(24 * s); // margin above topmost bubble
-  const eventsAboveAxis = baseOffset + maxRow * (eventRadius * 2.5) + eventRadius + hoverGrow;
-
-  // Place axis: as low as possible (for breathing room) but ensure everything fits
-  const maxAxisY = h - bottomPad;                      // tick labels must fit below
-  const idealAxisY = topPad + eventsAboveAxis;          // events must fit above
-  const axisY = Math.min(maxAxisY, Math.max(idealAxisY, h * 0.5)); // at least halfway down
-
   // Era backgrounds
   for (const era of eras) {
     const eraLogStart = yearToLog(era.start);
@@ -235,7 +199,8 @@ function drawCosmicTimeline() {
     }
   }
 
-  // Timeline axis
+  // Timeline axis — positioned in the lower quarter for breathing room
+  const axisY = h * 0.75;
   ctx.strokeStyle = theme.axis;
   ctx.lineWidth = 2;
   ctx.beginPath();
@@ -245,7 +210,31 @@ function drawCosmicTimeline() {
 
   drawTicks(w, h, axisY);
 
-  // --- Draw events ---
+  // Events
+  const visibleEvents = eventPositions.filter(e => {
+    const x = logToX(e.logPos);
+    return x > -50 && x < w + 50;
+  });
+
+  // Collision resolution
+  const placed = [];
+  for (const evt of visibleEvents) {
+    const x = logToX(evt.logPos);
+    let row = 0;
+    let collides = true;
+    while (collides) {
+      collides = false;
+      for (const p of placed) {
+        if (Math.abs(p.x - x) < eventRadius * 2.2 && p.row === row) {
+          collides = true;
+          row++;
+          break;
+        }
+      }
+    }
+    placed.push({ x, row, evt });
+  }
+
   for (const { x, row, evt } of placed) {
     const yOffset = row * (eventRadius * 2.5);
     const y = axisY - baseOffset - yOffset;
@@ -746,8 +735,8 @@ document.getElementById('zoom-out').addEventListener('click', () => {
 
 document.getElementById('zoom-fit').addEventListener('click', () => {
   if (currentView === 'cosmic') {
-    targetViewStart = LOG_MIN;
-    targetViewEnd = LOG_MAX;
+    targetViewStart = LOG_MIN_PADDED;
+    targetViewEnd = LOG_MAX_PADDED;
   } else {
     civTargetStart = civDefaults.startYear;
     civTargetEnd = civDefaults.endYear;
