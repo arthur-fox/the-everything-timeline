@@ -1,10 +1,4 @@
-import { civilisations, regions } from './civilisations.js';
 import { currentTheme } from './theme.js';
-
-// --- Linear scale for civilisations view ---
-const CIV_MIN_YEAR = -3600;
-const CIV_MAX_YEAR = 2050;
-const CIV_YEAR_RANGE = CIV_MAX_YEAR - CIV_MIN_YEAR;
 
 // Layout constants
 const TIME_AXIS_HEIGHT = 40;
@@ -14,16 +8,14 @@ const BAR_GAP = 4;
 const BAR_ROW_HEIGHT = BAR_HEIGHT + BAR_GAP;
 const REGION_PADDING_BOTTOM = 12;
 
-// --- State (managed by main.js, passed in) ---
-// civViewStartYear, civViewEndYear, civScrollY are in main.js
-
-export function getCivDefaults() {
+// --- Defaults factory (replaces hardcoded constants) ---
+export function getSwimLaneDefaults(minYear, maxYear) {
   return {
-    startYear: CIV_MIN_YEAR,
-    endYear: CIV_MAX_YEAR,
-    minYear: CIV_MIN_YEAR,
-    maxYear: CIV_MAX_YEAR,
-    yearRange: CIV_YEAR_RANGE,
+    startYear: minYear,
+    endYear: maxYear,
+    minYear,
+    maxYear,
+    yearRange: maxYear - minYear,
   };
 }
 
@@ -36,18 +28,18 @@ function xToYear(x, viewStart, viewEnd, w) {
   return viewStart + (x / w) * (viewEnd - viewStart);
 }
 
-// --- Layout ---
-function layoutCivilisations(viewStart, viewEnd, w) {
+// --- Layout (generic — accepts items + categories) ---
+function layoutSwimLanes(viewStart, viewEnd, w, items, categories) {
   const regionGroups = [];
 
-  for (const region of regions) {
-    const civs = civilisations.filter(c => c.region === region.id);
-    if (civs.length === 0) continue;
+  for (const category of categories) {
+    const catItems = items.filter(c => c.region === category.id);
+    if (catItems.length === 0) continue;
 
     const rows = [];
-    for (const civ of civs) {
-      const xStart = yearToX(civ.start, viewStart, viewEnd, w);
-      const xEnd = yearToX(civ.end, viewStart, viewEnd, w);
+    for (const item of catItems) {
+      const xStart = yearToX(item.start, viewStart, viewEnd, w);
+      const xEnd = yearToX(item.end, viewStart, viewEnd, w);
 
       // Skip if entirely off-screen
       if (xEnd < -100 || xStart > w + 100) continue;
@@ -60,7 +52,7 @@ function layoutCivilisations(viewStart, viewEnd, w) {
           xStart < bar.xEnd + 6 && xEnd > bar.xStart - 6
         );
         if (!overlaps) {
-          rows[rowIndex].push({ civ, xStart, xEnd });
+          rows[rowIndex].push({ item, xStart, xEnd });
           placed = true;
         } else {
           rowIndex++;
@@ -68,7 +60,7 @@ function layoutCivilisations(viewStart, viewEnd, w) {
       }
     }
 
-    regionGroups.push({ region, rows });
+    regionGroups.push({ category, rows });
   }
 
   return regionGroups;
@@ -90,8 +82,8 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-// --- Drawing ---
-export function drawCivilisationsView(ctx, w, h, viewStart, viewEnd, scrollY, hoveredCiv, formatYearShort, scale) {
+// --- Drawing (generic) ---
+export function drawSwimLaneView(ctx, w, h, viewStart, viewEnd, scrollY, hoveredItem, formatYearShort, scale, items, categories) {
   const theme = currentTheme();
   const s = scale || 1;
   ctx.clearRect(0, 0, w, h);
@@ -113,28 +105,28 @@ export function drawCivilisationsView(ctx, w, h, viewStart, viewEnd, scrollY, ho
   // Time axis at top
   drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort, s, timeAxisH);
 
-  // Layout and draw civilisations
-  const layout = layoutCivilisations(viewStart, viewEnd, w);
+  // Layout and draw items
+  const layout = layoutSwimLanes(viewStart, viewEnd, w, items, categories);
 
   let y = timeAxisH - scrollY;
   const hitAreas = [];
 
   for (const group of layout) {
-    const { region, rows } = group;
+    const { category, rows } = group;
 
-    // Region header
+    // Category header
     if (y + regionHeaderH > 0 && y < h) {
-      ctx.fillStyle = region.color + theme.regionHeaderBg;
+      ctx.fillStyle = category.color + theme.regionHeaderBg;
       ctx.fillRect(0, y, w, regionHeaderH);
 
-      ctx.fillStyle = region.color;
+      ctx.fillStyle = category.color;
       ctx.font = `600 ${headerFontSize}px Inter, sans-serif`;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
-      ctx.fillText(region.name.toUpperCase(), regionIndent, y + regionHeaderH / 2);
+      ctx.fillText(category.name.toUpperCase(), regionIndent, y + regionHeaderH / 2);
 
-      // Region colour indicator
-      ctx.fillStyle = region.color;
+      // Category colour indicator
+      ctx.fillStyle = category.color;
       roundRect(ctx, Math.round(3 * s), y + Math.round(8 * s), Math.round(4 * s), regionHeaderH - Math.round(16 * s), 2);
       ctx.fill();
     }
@@ -148,28 +140,28 @@ export function drawCivilisationsView(ctx, w, h, viewStart, viewEnd, scrollY, ho
         // Skip if off-screen vertically
         if (barY + barH < timeAxisH || barY > h) continue;
 
-        const isHovered = hoveredCiv === bar.civ;
+        const isHovered = hoveredItem === bar.item;
         const barW = Math.max(4, bar.xEnd - bar.xStart);
 
         // Main bar
-        ctx.fillStyle = isHovered ? region.color + theme.barHover : region.color + theme.barNormal;
+        ctx.fillStyle = isHovered ? category.color + theme.barHover : category.color + theme.barNormal;
         roundRect(ctx, bar.xStart, barY, barW, barH, barRadius);
         ctx.fill();
 
         // Border
-        ctx.strokeStyle = isHovered ? region.color : region.color + theme.barBorderNormal;
+        ctx.strokeStyle = isHovered ? category.color : category.color + theme.barBorderNormal;
         ctx.lineWidth = isHovered ? 2 : 1;
         roundRect(ctx, bar.xStart, barY, barW, barH, barRadius);
         ctx.stroke();
 
         // Sub-periods (darker segments)
-        for (const period of bar.civ.periods) {
+        for (const period of bar.item.periods) {
           const px1 = yearToX(period.start, viewStart, viewEnd, w);
           const px2 = yearToX(period.end, viewStart, viewEnd, w);
           const clampedX1 = Math.max(bar.xStart + 1, px1);
           const clampedX2 = Math.min(bar.xStart + barW - 1, px2);
           if (clampedX2 > clampedX1) {
-            ctx.fillStyle = region.color + theme.barPeriod;
+            ctx.fillStyle = category.color + theme.barPeriod;
             roundRect(ctx, clampedX1, barY + 2, clampedX2 - clampedX1, barH - 4, 2);
             ctx.fill();
 
@@ -190,14 +182,14 @@ export function drawCivilisationsView(ctx, w, h, viewStart, viewEnd, scrollY, ho
           ctx.font = `500 ${barLabelFontSize}px Inter, sans-serif`;
           ctx.textAlign = 'left';
           ctx.textBaseline = 'middle';
-          const label = bar.civ.icon + ' ' + bar.civ.name;
+          const label = bar.item.icon + ' ' + bar.item.name;
           const labelX = Math.max(bar.xStart + barLabelIndent, barLabelIndent);
           ctx.fillText(label, labelX, barY + barH / 2, barW - barLabelIndent * 2);
         }
 
         // Store hit area
         hitAreas.push({
-          civ: bar.civ,
+          item: bar.item,
           x: bar.xStart,
           y: barY,
           w: barW,
@@ -276,40 +268,41 @@ function drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort, scale, timeAx
   }
 }
 
-// --- Hit testing ---
-export function getCivAtPos(hitAreas, mx, my) {
+// --- Hit testing (generic) ---
+export function getItemAtPos(hitAreas, mx, my) {
   for (const area of hitAreas) {
     if (mx >= area.x && mx <= area.x + area.w && my >= area.y && my <= area.y + area.h) {
-      return area.civ;
+      return area.item;
     }
   }
   return null;
 }
 
-// --- Minimap ---
-export function drawCivilisationsMinimap(mmCtx, mmW, mmH, viewStart, viewEnd, scale) {
+// --- Minimap (generic) ---
+export function drawSwimLaneMinimap(mmCtx, mmW, mmH, viewStart, viewEnd, scale, items, categories, minYear, maxYear) {
   const theme = currentTheme();
   mmCtx.clearRect(0, 0, mmW, mmH);
 
-  const totalYearRange = CIV_MAX_YEAR - CIV_MIN_YEAR;
+  const totalYearRange = maxYear - minYear;
 
-  // Draw region-coloured segments for each civilisation
+  // Draw category-coloured segments for each item
   let regionY = 0;
-  const regionHeight = mmH / regions.filter(r => civilisations.some(c => c.region === r.id)).length;
+  const activeCategories = categories.filter(cat => items.some(it => it.region === cat.id));
+  const regionHeight = mmH / activeCategories.length;
 
-  for (const region of regions) {
-    const civs = civilisations.filter(c => c.region === region.id);
-    if (civs.length === 0) continue;
+  for (const category of categories) {
+    const catItems = items.filter(it => it.region === category.id);
+    if (catItems.length === 0) continue;
 
-    // Region background
-    mmCtx.fillStyle = region.color + theme.regionHeaderBg;
+    // Category background
+    mmCtx.fillStyle = category.color + theme.regionHeaderBg;
     mmCtx.fillRect(0, regionY, mmW, regionHeight);
 
-    // Civilisation bars
-    for (const civ of civs) {
-      const x1 = ((civ.start - CIV_MIN_YEAR) / totalYearRange) * mmW;
-      const x2 = ((civ.end - CIV_MIN_YEAR) / totalYearRange) * mmW;
-      mmCtx.fillStyle = region.color + theme.minimapBar;
+    // Item bars
+    for (const item of catItems) {
+      const x1 = ((item.start - minYear) / totalYearRange) * mmW;
+      const x2 = ((item.end - minYear) / totalYearRange) * mmW;
+      mmCtx.fillStyle = category.color + theme.minimapBar;
       mmCtx.fillRect(x1, regionY + 1, Math.max(1, x2 - x1), regionHeight - 2);
     }
 
@@ -318,13 +311,13 @@ export function drawCivilisationsMinimap(mmCtx, mmW, mmH, viewStart, viewEnd, sc
 
   // Viewport indicator handled by main.js via the DOM element
   return {
-    vpLeft: ((viewStart - CIV_MIN_YEAR) / totalYearRange) * mmW,
+    vpLeft: ((viewStart - minYear) / totalYearRange) * mmW,
     vpWidth: ((viewEnd - viewStart) / totalYearRange) * mmW,
   };
 }
 
-export function minimapClickToYear(mx, mmW) {
-  return CIV_MIN_YEAR + (mx / mmW) * CIV_YEAR_RANGE;
+export function minimapClickToYear(mx, mmW, minYear, maxYear) {
+  return minYear + (mx / mmW) * (maxYear - minYear);
 }
 
 export { xToYear };

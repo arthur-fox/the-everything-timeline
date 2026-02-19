@@ -1,11 +1,14 @@
 import { events, eras } from './events.js';
 import {
-  drawCivilisationsView,
-  drawCivilisationsMinimap,
-  getCivAtPos,
-  getCivDefaults,
+  drawSwimLaneView,
+  drawSwimLaneMinimap,
+  getItemAtPos,
+  getSwimLaneDefaults,
   minimapClickToYear,
-} from './civilisations-view.js';
+} from './swim-lane-view.js';
+import { civilisations, regions } from './civilisations.js';
+import { technologies, technologyCategories } from './technology.js';
+import { sciences, scienceCategories } from './science.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
 
 // ============================================================
@@ -63,7 +66,7 @@ function formatYearShort(year) {
 // ============================================================
 // Shared state
 // ============================================================
-let currentView = 'cosmic'; // 'cosmic' | 'civilisations'
+let currentView = 'cosmic'; // 'cosmic' | 'civilisations' | 'technology' | 'science'
 
 // Cosmic view state
 let viewStart = LOG_MIN_PADDED;
@@ -73,17 +76,40 @@ let targetViewEnd = viewEnd;
 let hoveredEvent = null;
 let selectedEvent = null;
 
-// Civilisations view state
-const civDefaults = getCivDefaults();
-let civViewStart = civDefaults.startYear;
-let civViewEnd = civDefaults.endYear;
-let civTargetStart = civViewStart;
-let civTargetEnd = civViewEnd;
-let civScrollY = 0;
-let civMaxScrollY = 0;
-let hoveredCiv = null;
-let selectedCiv = null;
-let civHitAreas = [];
+// ============================================================
+// Swim-lane state (generic for all swim-lane views)
+// ============================================================
+function createSwimLaneState(items, categories, minYear, maxYear) {
+  const defaults = getSwimLaneDefaults(minYear, maxYear);
+  return {
+    items,
+    categories,
+    defaults,
+    viewStart: defaults.startYear,
+    viewEnd: defaults.endYear,
+    targetStart: defaults.startYear,
+    targetEnd: defaults.endYear,
+    scrollY: 0,
+    maxScrollY: 0,
+    hoveredItem: null,
+    selectedItem: null,
+    hitAreas: [],
+  };
+}
+
+const swimStates = {
+  civilisations: createSwimLaneState(civilisations, regions, -3600, 2050),
+  technology: createSwimLaneState(technologies, technologyCategories, -3500, 2050),
+  science: createSwimLaneState(sciences, scienceCategories, -3100, 2050),
+};
+
+function currentSwimState() {
+  return swimStates[currentView];
+}
+
+function isSwimLaneView() {
+  return currentView !== 'cosmic';
+}
 
 // Responsive scale factor (1 on desktop, smaller on mobile)
 let uiScale = 1;
@@ -144,7 +170,7 @@ function draw() {
   if (currentView === 'cosmic') {
     drawCosmicTimeline();
   } else {
-    drawCivView();
+    drawSwimView();
   }
 }
 
@@ -337,26 +363,33 @@ function drawCosmicMinimap() {
 }
 
 // ============================================================
-// Civilisations view drawing
+// Swim-lane view drawing (generic for civs, tech, science)
 // ============================================================
-function drawCivView() {
+function drawSwimView() {
   const w = parseFloat(canvas.style.width);
   const h = parseFloat(canvas.style.height);
+  const state = currentSwimState();
 
-  const result = drawCivilisationsView(
+  const result = drawSwimLaneView(
     ctx, w, h,
-    civViewStart, civViewEnd,
-    civScrollY, hoveredCiv,
-    formatYearShort, uiScale
+    state.viewStart, state.viewEnd,
+    state.scrollY, state.hoveredItem,
+    formatYearShort, uiScale,
+    state.items, state.categories
   );
 
-  civHitAreas = result.hitAreas;
-  civMaxScrollY = Math.max(0, result.totalHeight - h + 40);
+  state.hitAreas = result.hitAreas;
+  state.maxScrollY = Math.max(0, result.totalHeight - h + 40);
 
   // Minimap
   const mmW = parseFloat(minimapCanvas.style.width);
   const mmH = parseFloat(minimapCanvas.style.height);
-  const vp = drawCivilisationsMinimap(minimapCtx, mmW, mmH, civViewStart, civViewEnd, uiScale);
+  const vp = drawSwimLaneMinimap(
+    minimapCtx, mmW, mmH,
+    state.viewStart, state.viewEnd, uiScale,
+    state.items, state.categories,
+    state.defaults.minYear, state.defaults.maxYear
+  );
   minimapViewport.style.left = vp.vpLeft + 'px';
   minimapViewport.style.width = Math.max(4, vp.vpWidth) + 'px';
 }
@@ -386,8 +419,9 @@ canvas.addEventListener('mousedown', (e) => {
   if (currentView === 'cosmic') {
     dragStartViewStart = viewStart;
   } else {
-    dragStartViewStart = civViewStart;
-    dragStartScrollY = civScrollY;
+    const state = currentSwimState();
+    dragStartViewStart = state.viewStart;
+    dragStartScrollY = state.scrollY;
   }
 });
 
@@ -405,16 +439,17 @@ window.addEventListener('mousemove', (e) => {
       targetViewStart = viewStart;
       targetViewEnd = viewEnd;
     } else {
-      const range = civTargetEnd - civTargetStart;
+      const state = currentSwimState();
+      const range = state.targetEnd - state.targetStart;
       const yearDx = (dx / w) * range;
-      civViewStart = dragStartViewStart - yearDx;
-      civViewEnd = civViewStart + range;
-      civTargetStart = civViewStart;
-      civTargetEnd = civViewEnd;
+      state.viewStart = dragStartViewStart - yearDx;
+      state.viewEnd = state.viewStart + range;
+      state.targetStart = state.viewStart;
+      state.targetEnd = state.viewEnd;
 
       // Vertical scroll with drag
       const dy = e.clientY - dragStartY;
-      civScrollY = Math.max(0, Math.min(civMaxScrollY, dragStartScrollY - dy));
+      state.scrollY = Math.max(0, Math.min(state.maxScrollY, dragStartScrollY - dy));
     }
 
     draw();
@@ -442,13 +477,14 @@ window.addEventListener('mousemove', (e) => {
       draw();
     }
   } else {
-    const civ = getCivAtPos(civHitAreas, mx, my);
-    if (civ !== hoveredCiv) {
-      hoveredCiv = civ;
-      canvas.style.cursor = civ ? 'pointer' : 'grab';
-      if (civ) {
+    const state = currentSwimState();
+    const item = getItemAtPos(state.hitAreas, mx, my);
+    if (item !== state.hoveredItem) {
+      state.hoveredItem = item;
+      canvas.style.cursor = item ? 'pointer' : 'grab';
+      if (item) {
         const tooltipX = Math.min(mx + 20, parseFloat(canvas.style.width) - 260);
-        tooltip.innerHTML = `<strong>${civ.icon} ${civ.name}</strong><br>${formatYear(civ.start)} — ${formatYear(civ.end)}`;
+        tooltip.innerHTML = `<strong>${item.icon} ${item.name}</strong><br>${formatYear(item.start)} — ${formatYear(item.end)}`;
         tooltip.style.left = tooltipX + 'px';
         tooltip.style.top = (my - 10) + 'px';
         tooltip.classList.add('visible');
@@ -465,7 +501,8 @@ window.addEventListener('mouseup', () => {
   if (currentView === 'cosmic') {
     canvas.style.cursor = hoveredEvent ? 'pointer' : 'grab';
   } else {
-    canvas.style.cursor = hoveredCiv ? 'pointer' : 'grab';
+    const state = currentSwimState();
+    canvas.style.cursor = state.hoveredItem ? 'pointer' : 'grab';
   }
 });
 
@@ -482,12 +519,13 @@ canvas.addEventListener('click', (e) => {
       draw();
     }
   } else {
-    const civ = getCivAtPos(civHitAreas, mx, my);
-    if (civ) {
-      selectedCiv = civ;
-      const duration = Math.abs(civ.end - civ.start);
-      const dateStr = formatYear(civ.start) + ' — ' + formatYear(civ.end) + '  (' + duration.toLocaleString() + ' years)';
-      showDetail(civ.icon + ' ' + civ.name, dateStr, civ.description);
+    const state = currentSwimState();
+    const item = getItemAtPos(state.hitAreas, mx, my);
+    if (item) {
+      state.selectedItem = item;
+      const duration = Math.abs(item.end - item.start);
+      const dateStr = formatYear(item.start) + ' — ' + formatYear(item.end) + '  (' + duration.toLocaleString() + ' years)';
+      showDetail(item.icon + ' ' + item.name, dateStr, item.description);
       draw();
     }
   }
@@ -512,14 +550,14 @@ canvas.addEventListener('wheel', (e) => {
     targetViewEnd = mouseLog + clampedRange * (1 - mouseRatio);
     if (!animationId) animateZoom();
   } else {
-    // Zoom time axis towards cursor
-    const mouseYear = civViewStart + (mx / w) * (civViewEnd - civViewStart);
+    const state = currentSwimState();
+    const mouseYear = state.viewStart + (mx / w) * (state.viewEnd - state.viewStart);
     const zoomFactor = e.deltaY > 0 ? 1.12 : 0.89;
-    const range = (civViewEnd - civViewStart) * zoomFactor;
-    const clampedRange = Math.min(civDefaults.yearRange * 1.2, Math.max(20, range));
+    const range = (state.viewEnd - state.viewStart) * zoomFactor;
+    const clampedRange = Math.min(state.defaults.yearRange * 1.2, Math.max(20, range));
     const mouseRatio = mx / w;
-    civTargetStart = mouseYear - clampedRange * mouseRatio;
-    civTargetEnd = mouseYear + clampedRange * (1 - mouseRatio);
+    state.targetStart = mouseYear - clampedRange * mouseRatio;
+    state.targetEnd = mouseYear + clampedRange * (1 - mouseRatio);
     if (!animationId) animateZoom();
   }
 }, { passive: false });
@@ -545,12 +583,13 @@ function animateZoom() {
       animationId = null;
     }
   } else {
-    civViewStart += (civTargetStart - civViewStart) * lerp;
-    civViewEnd += (civTargetEnd - civViewEnd) * lerp;
-    const done = Math.abs(civViewStart - civTargetStart) < 0.5 && Math.abs(civViewEnd - civTargetEnd) < 0.5;
+    const state = currentSwimState();
+    state.viewStart += (state.targetStart - state.viewStart) * lerp;
+    state.viewEnd += (state.targetEnd - state.viewEnd) * lerp;
+    const done = Math.abs(state.viewStart - state.targetStart) < 0.5 && Math.abs(state.viewEnd - state.targetEnd) < 0.5;
     if (done) {
-      civViewStart = civTargetStart;
-      civViewEnd = civTargetEnd;
+      state.viewStart = state.targetStart;
+      state.viewEnd = state.targetEnd;
     }
     draw();
     if (!done) {
@@ -577,8 +616,9 @@ canvas.addEventListener('touchstart', (e) => {
     if (currentView === 'cosmic') {
       dragStartViewStart = viewStart;
     } else {
-      dragStartViewStart = civViewStart;
-      dragStartScrollY = civScrollY;
+      const state = currentSwimState();
+      dragStartViewStart = state.viewStart;
+      dragStartScrollY = state.scrollY;
     }
   } else if (e.touches.length === 2) {
     isDragging = false;
@@ -588,8 +628,9 @@ canvas.addEventListener('touchstart', (e) => {
       touchStartViewStart = viewStart;
       touchStartViewEnd = viewEnd;
     } else {
-      touchStartViewStart = civViewStart;
-      touchStartViewEnd = civViewEnd;
+      const state = currentSwimState();
+      touchStartViewStart = state.viewStart;
+      touchStartViewEnd = state.viewEnd;
     }
   }
 }, { passive: true });
@@ -610,15 +651,16 @@ canvas.addEventListener('touchmove', (e) => {
       targetViewStart = viewStart;
       targetViewEnd = viewEnd;
     } else {
-      const range = civTargetEnd - civTargetStart;
+      const state = currentSwimState();
+      const range = state.targetEnd - state.targetStart;
       const yearDx = (dx / w) * range;
-      civViewStart = dragStartViewStart - yearDx;
-      civViewEnd = civViewStart + range;
-      civTargetStart = civViewStart;
-      civTargetEnd = civViewEnd;
+      state.viewStart = dragStartViewStart - yearDx;
+      state.viewEnd = state.viewStart + range;
+      state.targetStart = state.viewStart;
+      state.targetEnd = state.viewEnd;
 
       const dy = e.touches[0].clientY - dragStartY;
-      civScrollY = Math.max(0, Math.min(civMaxScrollY, dragStartScrollY - dy));
+      state.scrollY = Math.max(0, Math.min(state.maxScrollY, dragStartScrollY - dy));
     }
     draw();
   } else if (e.touches.length === 2) {
@@ -638,14 +680,15 @@ canvas.addEventListener('touchmove', (e) => {
       targetViewStart = viewStart;
       targetViewEnd = viewEnd;
     } else {
+      const state = currentSwimState();
       const mouseYear = touchStartViewStart + (mid / w) * (touchStartViewEnd - touchStartViewStart);
       const origRange = touchStartViewEnd - touchStartViewStart;
-      const newRange = Math.min(civDefaults.yearRange * 1.2, Math.max(20, origRange * scale));
+      const newRange = Math.min(state.defaults.yearRange * 1.2, Math.max(20, origRange * scale));
       const mouseRatio = mid / w;
-      civViewStart = mouseYear - newRange * mouseRatio;
-      civViewEnd = mouseYear + newRange * (1 - mouseRatio);
-      civTargetStart = civViewStart;
-      civTargetEnd = civViewEnd;
+      state.viewStart = mouseYear - newRange * mouseRatio;
+      state.viewEnd = mouseYear + newRange * (1 - mouseRatio);
+      state.targetStart = state.viewStart;
+      state.targetEnd = state.viewEnd;
     }
     draw();
   }
@@ -668,7 +711,10 @@ function showDetail(title, date, description) {
 document.getElementById('detail-close').addEventListener('click', () => {
   document.getElementById('event-detail').classList.add('hidden');
   selectedEvent = null;
-  selectedCiv = null;
+  // Clear selected item in all swim-lane states
+  for (const key of Object.keys(swimStates)) {
+    swimStates[key].selectedItem = null;
+  }
   draw();
 });
 
@@ -677,26 +723,35 @@ document.getElementById('detail-close').addEventListener('click', () => {
 // ============================================================
 const viewCosmicBtn = document.getElementById('view-cosmic');
 const viewCivsBtn = document.getElementById('view-civs');
+const viewTechBtn = document.getElementById('view-tech');
+const viewScienceBtn = document.getElementById('view-science');
 
 function switchView(view) {
   currentView = view;
   viewCosmicBtn.classList.toggle('active', view === 'cosmic');
   viewCivsBtn.classList.toggle('active', view === 'civilisations');
+  viewTechBtn.classList.toggle('active', view === 'technology');
+  viewScienceBtn.classList.toggle('active', view === 'science');
   eraNav.style.display = view === 'cosmic' ? 'flex' : 'none';
 
   // Close detail panel on switch
   document.getElementById('event-detail').classList.add('hidden');
   tooltip.classList.remove('visible');
   hoveredEvent = null;
-  hoveredCiv = null;
   selectedEvent = null;
-  selectedCiv = null;
+  // Clear hovered/selected in all swim-lane states
+  for (const key of Object.keys(swimStates)) {
+    swimStates[key].hoveredItem = null;
+    swimStates[key].selectedItem = null;
+  }
 
   draw();
 }
 
 viewCosmicBtn.addEventListener('click', () => switchView('cosmic'));
 viewCivsBtn.addEventListener('click', () => switchView('civilisations'));
+viewTechBtn.addEventListener('click', () => switchView('technology'));
+viewScienceBtn.addEventListener('click', () => switchView('science'));
 
 // ============================================================
 // Zoom controls
@@ -708,10 +763,11 @@ document.getElementById('zoom-in').addEventListener('click', () => {
     targetViewStart = mid - range / 2;
     targetViewEnd = mid + range / 2;
   } else {
-    const mid = (civViewStart + civViewEnd) / 2;
-    const range = (civViewEnd - civViewStart) * 0.5;
-    civTargetStart = mid - range / 2;
-    civTargetEnd = mid + range / 2;
+    const state = currentSwimState();
+    const mid = (state.viewStart + state.viewEnd) / 2;
+    const range = (state.viewEnd - state.viewStart) * 0.5;
+    state.targetStart = mid - range / 2;
+    state.targetEnd = mid + range / 2;
   }
   if (!animationId) animateZoom();
 });
@@ -724,11 +780,12 @@ document.getElementById('zoom-out').addEventListener('click', () => {
     targetViewStart = mid - clampedRange / 2;
     targetViewEnd = mid + clampedRange / 2;
   } else {
-    const mid = (civViewStart + civViewEnd) / 2;
-    const range = (civViewEnd - civViewStart) * 2;
-    const clampedRange = Math.min(civDefaults.yearRange * 1.2, range);
-    civTargetStart = mid - clampedRange / 2;
-    civTargetEnd = mid + clampedRange / 2;
+    const state = currentSwimState();
+    const mid = (state.viewStart + state.viewEnd) / 2;
+    const range = (state.viewEnd - state.viewStart) * 2;
+    const clampedRange = Math.min(state.defaults.yearRange * 1.2, range);
+    state.targetStart = mid - clampedRange / 2;
+    state.targetEnd = mid + clampedRange / 2;
   }
   if (!animationId) animateZoom();
 });
@@ -738,9 +795,10 @@ document.getElementById('zoom-fit').addEventListener('click', () => {
     targetViewStart = LOG_MIN_PADDED;
     targetViewEnd = LOG_MAX_PADDED;
   } else {
-    civTargetStart = civDefaults.startYear;
-    civTargetEnd = civDefaults.endYear;
-    civScrollY = 0;
+    const state = currentSwimState();
+    state.targetStart = state.defaults.startYear;
+    state.targetEnd = state.defaults.endYear;
+    state.scrollY = 0;
   }
   if (!animationId) animateZoom();
 });
@@ -778,10 +836,11 @@ document.getElementById('minimap').addEventListener('click', (e) => {
     targetViewStart = clickLog - range / 2;
     targetViewEnd = clickLog + range / 2;
   } else {
-    const clickYear = minimapClickToYear(mx, mmW);
-    const range = civViewEnd - civViewStart;
-    civTargetStart = clickYear - range / 2;
-    civTargetEnd = clickYear + range / 2;
+    const state = currentSwimState();
+    const clickYear = minimapClickToYear(mx, mmW, state.defaults.minYear, state.defaults.maxYear);
+    const range = state.viewEnd - state.viewStart;
+    state.targetStart = clickYear - range / 2;
+    state.targetEnd = clickYear + range / 2;
   }
   if (!animationId) animateZoom();
 });
