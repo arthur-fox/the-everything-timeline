@@ -154,7 +154,11 @@ export function drawSwimLaneView(ctx, w, h, viewStart, viewEnd, scrollY, hovered
         roundRect(ctx, bar.xStart, barY, barW, barH, barRadius);
         ctx.stroke();
 
-        // Sub-periods (darker segments)
+        // Whether this bar has visible periods
+        const hasPeriods = bar.item.periods.length > 0;
+
+        // Sub-periods (darker segments) — draw segments first, then labels
+        let lastPeriodLabelRight = -Infinity;
         for (const period of bar.item.periods) {
           const px1 = yearToX(period.start, viewStart, viewEnd, w);
           const px2 = yearToX(period.end, viewStart, viewEnd, w);
@@ -165,18 +169,25 @@ export function drawSwimLaneView(ctx, w, h, viewStart, viewEnd, scrollY, hovered
             roundRect(ctx, clampedX1, barY + 2, clampedX2 - clampedX1, barH - 4, 2);
             ctx.fill();
 
-            // Period label if wide enough
-            if (clampedX2 - clampedX1 > 80 * s) {
+            // Period label in lower portion — skip if overlaps previous label
+            if (clampedX2 - clampedX1 > 50 * s) {
               ctx.fillStyle = theme.periodLabelColor;
               ctx.font = `400 ${periodLabelFontSize}px Inter, sans-serif`;
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
-              ctx.fillText(period.name, (clampedX1 + clampedX2) / 2, barY + barH / 2, clampedX2 - clampedX1 - 8);
+              const periodLabel = period.name;
+              const labelWidth = ctx.measureText(periodLabel).width;
+              const labelCenterX = (clampedX1 + clampedX2) / 2;
+              const labelLeft = labelCenterX - labelWidth / 2;
+              if (labelLeft > lastPeriodLabelRight + 4 * s) {
+                ctx.fillText(periodLabel, labelCenterX, barY + barH * 0.72, clampedX2 - clampedX1 - 8);
+                lastPeriodLabelRight = labelCenterX + labelWidth / 2;
+              }
             }
           }
         }
 
-        // Label (if bar is wide enough)
+        // Bar name label — top portion if periods exist, centred if not
         if (barW > 50 * s) {
           ctx.fillStyle = theme.text;
           ctx.font = `500 ${barLabelFontSize}px Inter, sans-serif`;
@@ -184,7 +195,8 @@ export function drawSwimLaneView(ctx, w, h, viewStart, viewEnd, scrollY, hovered
           ctx.textBaseline = 'middle';
           const label = bar.item.icon + ' ' + bar.item.name;
           const labelX = Math.max(bar.xStart + barLabelIndent, barLabelIndent);
-          ctx.fillText(label, labelX, barY + barH / 2, barW - barLabelIndent * 2);
+          const labelY = hasPeriods ? barY + barH * 0.35 : barY + barH / 2;
+          ctx.fillText(label, labelX, labelY, barW - barLabelIndent * 2);
         }
 
         // Store hit area
