@@ -9,6 +9,7 @@ import {
 import { civilisations, regions } from './civilisations.js';
 import { technologies, technologyCategories } from './technology.js';
 import { sciences, scienceCategories } from './science.js';
+import { cosmicHistoryItems, cosmicHistoryCategories, COSMIC_LOG_MIN, COSMIC_LOG_MAX } from './cosmic-history.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
 
 // ============================================================
@@ -98,6 +99,7 @@ function createSwimLaneState(items, categories, minYear, maxYear) {
 }
 
 const swimStates = {
+  'cosmic-history': createSwimLaneState(cosmicHistoryItems, cosmicHistoryCategories, COSMIC_LOG_MIN, COSMIC_LOG_MAX),
   civilisations: createSwimLaneState(civilisations, regions, -3600, 2050),
   technology: createSwimLaneState(technologies, technologyCategories, -3500, 2050),
   science: createSwimLaneState(sciences, scienceCategories, -3100, 2050),
@@ -370,11 +372,17 @@ function drawSwimView() {
   const h = parseFloat(canvas.style.height);
   const state = currentSwimState();
 
+  // For cosmic-history the view coordinates are log-space values, not years.
+  // Wrap formatYearShort so tick labels convert log → year first.
+  const formatFn = currentView === 'cosmic-history'
+    ? (logVal) => formatYearShort(logToYear(logVal))
+    : formatYearShort;
+
   const result = drawSwimLaneView(
     ctx, w, h,
     state.viewStart, state.viewEnd,
     state.scrollY, state.hoveredItem,
-    formatYearShort, uiScale,
+    formatFn, uiScale,
     state.items, state.categories
   );
 
@@ -484,7 +492,9 @@ window.addEventListener('mousemove', (e) => {
       canvas.style.cursor = item ? 'pointer' : 'grab';
       if (item) {
         const tooltipX = Math.min(mx + 20, parseFloat(canvas.style.width) - 260);
-        tooltip.innerHTML = `<strong>${item.icon} ${item.name}</strong><br>${formatYear(item.start)} — ${formatYear(item.end)}`;
+        const itemStart = item.startYear !== undefined ? item.startYear : item.start;
+        const itemEnd = item.endYear !== undefined ? item.endYear : item.end;
+        tooltip.innerHTML = `<strong>${item.icon} ${item.name}</strong><br>${formatYear(itemStart)} — ${formatYear(itemEnd)}`;
         tooltip.style.left = tooltipX + 'px';
         tooltip.style.top = (my - 10) + 'px';
         tooltip.classList.add('visible');
@@ -523,8 +533,14 @@ canvas.addEventListener('click', (e) => {
     const item = getItemAtPos(state.hitAreas, mx, my);
     if (item) {
       state.selectedItem = item;
-      const duration = Math.abs(item.end - item.start);
-      const dateStr = formatYear(item.start) + ' — ' + formatYear(item.end) + '  (' + duration.toLocaleString() + ' years)';
+      const itemStart = item.startYear !== undefined ? item.startYear : item.start;
+      const itemEnd = item.endYear !== undefined ? item.endYear : item.end;
+      const duration = Math.abs(itemEnd - itemStart);
+      let durationStr;
+      if (duration >= 1_000_000_000) durationStr = (duration / 1_000_000_000).toFixed(1) + ' billion years';
+      else if (duration >= 1_000_000) durationStr = Math.round(duration / 1_000_000).toLocaleString() + ' million years';
+      else durationStr = duration.toLocaleString() + ' years';
+      const dateStr = formatYear(itemStart) + ' — ' + formatYear(itemEnd) + '  (' + durationStr + ')';
       showDetail(item.icon + ' ' + item.name, dateStr, item.description);
       draw();
     }
@@ -554,7 +570,8 @@ canvas.addEventListener('wheel', (e) => {
     const mouseYear = state.viewStart + (mx / w) * (state.viewEnd - state.viewStart);
     const zoomFactor = e.deltaY > 0 ? 1.12 : 0.89;
     const range = (state.viewEnd - state.viewStart) * zoomFactor;
-    const clampedRange = Math.min(state.defaults.yearRange * 1.2, Math.max(20, range));
+    const minRange = currentView === 'cosmic-history' ? state.defaults.yearRange * 0.0001 : 20;
+    const clampedRange = Math.min(state.defaults.yearRange * 1.2, Math.max(minRange, range));
     const mouseRatio = mx / w;
     state.targetStart = mouseYear - clampedRange * mouseRatio;
     state.targetEnd = mouseYear + clampedRange * (1 - mouseRatio);
@@ -586,7 +603,9 @@ function animateZoom() {
     const state = currentSwimState();
     state.viewStart += (state.targetStart - state.viewStart) * lerp;
     state.viewEnd += (state.targetEnd - state.viewEnd) * lerp;
-    const done = Math.abs(state.viewStart - state.targetStart) < 0.5 && Math.abs(state.viewEnd - state.targetEnd) < 0.5;
+    // Use tighter threshold for log-space views (cosmic-history range is ~10, not ~5000)
+    const epsilon = currentView === 'cosmic-history' ? 0.0001 : 0.5;
+    const done = Math.abs(state.viewStart - state.targetStart) < epsilon && Math.abs(state.viewEnd - state.targetEnd) < epsilon;
     if (done) {
       state.viewStart = state.targetStart;
       state.viewEnd = state.targetEnd;
@@ -683,7 +702,8 @@ canvas.addEventListener('touchmove', (e) => {
       const state = currentSwimState();
       const mouseYear = touchStartViewStart + (mid / w) * (touchStartViewEnd - touchStartViewStart);
       const origRange = touchStartViewEnd - touchStartViewStart;
-      const newRange = Math.min(state.defaults.yearRange * 1.2, Math.max(20, origRange * scale));
+      const touchMinRange = currentView === 'cosmic-history' ? state.defaults.yearRange * 0.0001 : 20;
+      const newRange = Math.min(state.defaults.yearRange * 1.2, Math.max(touchMinRange, origRange * scale));
       const mouseRatio = mid / w;
       state.viewStart = mouseYear - newRange * mouseRatio;
       state.viewEnd = mouseYear + newRange * (1 - mouseRatio);
