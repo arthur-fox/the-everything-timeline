@@ -93,37 +93,40 @@ html, body {
   z-index: 10;
 }
 
-/* --- View toggle --- */
-.view-toggle {
-  display: flex;
-  gap: 2px;
+/* --- View select dropdown --- */
+.view-select {
   flex-shrink: 0;
-  background: var(--bg-elevated);
-  border-radius: 10px;
-  padding: 3px;
-}
-
-.view-btn {
-  padding: 6px 14px;
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  border-radius: 8px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.view-btn:hover {
+  padding: 6px 28px 6px 12px;
+  border: 1px solid var(--bg-elevated);
+  background: var(--bg-surface);
   color: var(--text);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' stroke='%2394A3B8' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
 }
 
-.view-btn.active {
-  background: var(--accent);
-  color: white;
-  box-shadow: 0 2px 8px rgba(129, 140, 248, 0.3);
+.view-select:hover {
+  border-color: var(--accent);
+  background-color: var(--bg-elevated);
+}
+
+.view-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.view-select option {
+  background: var(--bg-surface);
+  color: var(--text);
 }
 
 .zoom-controls {
@@ -360,9 +363,9 @@ html, body {
     justify-content: center;
   }
 
-  .view-btn {
-    padding: 5px 10px;
+  .view-select {
     font-size: 0.7rem;
+    padding: 5px 24px 5px 8px;
   }
 
   .zoom-controls button,

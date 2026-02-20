@@ -721,17 +721,11 @@ document.getElementById('detail-close').addEventListener('click', () => {
 // ============================================================
 // View toggle
 // ============================================================
-const viewCosmicBtn = document.getElementById('view-cosmic');
-const viewCivsBtn = document.getElementById('view-civs');
-const viewTechBtn = document.getElementById('view-tech');
-const viewScienceBtn = document.getElementById('view-science');
+const viewSelect = document.getElementById('view-select');
 
 function switchView(view) {
   currentView = view;
-  viewCosmicBtn.classList.toggle('active', view === 'cosmic');
-  viewCivsBtn.classList.toggle('active', view === 'civilisations');
-  viewTechBtn.classList.toggle('active', view === 'technology');
-  viewScienceBtn.classList.toggle('active', view === 'science');
+  viewSelect.value = view;
   eraNav.style.display = view === 'cosmic' ? 'flex' : 'none';
 
   // Close detail panel on switch
@@ -748,10 +742,7 @@ function switchView(view) {
   draw();
 }
 
-viewCosmicBtn.addEventListener('click', () => switchView('cosmic'));
-viewCivsBtn.addEventListener('click', () => switchView('civilisations'));
-viewTechBtn.addEventListener('click', () => switchView('technology'));
-viewScienceBtn.addEventListener('click', () => switchView('science'));
+viewSelect.addEventListener('change', (e) => switchView(e.target.value));
 
 // ============================================================
 // Zoom controls
