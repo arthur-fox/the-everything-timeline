@@ -46,10 +46,24 @@ export const cosmicHistoryItems = [
     [{ name: 'Inflation', start: -13_800_000_000, end: -13_790_000_000 }]
   ),
   cosmicItem(
+    'recombination-cmb', 'Recombination & the CMB',
+    -13_799_620_000, -13_799_600_000,
+    'cosmic-structure', '🌡️',
+    'Around 380,000 years after the Big Bang, the universe cools enough for electrons to bind to nuclei, forming the first atoms. Light streams freely for the first time — the origin of the Cosmic Microwave Background, the oldest observable signal in the cosmos.',
+    []
+  ),
+  cosmicItem(
     'cosmic-dark-ages', 'Cosmic Dark Ages',
     -13_700_000_000, -13_500_000_000,
     'cosmic-structure', '🌑',
     'After the initial fireball cools, the universe enters a period of total darkness. No stars or galaxies exist yet — only a vast expanse of neutral hydrogen and helium gas.',
+    []
+  ),
+  cosmicItem(
+    'reionization', 'Cosmic Reionization',
+    -13_500_000_000, -12_700_000_000,
+    'cosmic-structure', '✨',
+    'The first stars and galaxies emit enough ultraviolet radiation to re-ionize the neutral hydrogen permeating the universe, ending the Cosmic Dark Ages and making the universe transparent.',
     []
   ),
   cosmicItem(
@@ -76,6 +90,13 @@ export const cosmicHistoryItems = [
     'Gravity sculpts matter into a vast cosmic web of galaxy clusters, filaments, and enormous voids. The observable universe organises into structures spanning hundreds of millions of light-years.',
     []
   ),
+  cosmicItem(
+    'galaxy-clusters', 'Galaxy Clusters & Superclusters',
+    -10_000_000_000, 2025,
+    'cosmic-structure', '🔭',
+    'Gravity draws galaxies into bound clusters and superclusters — the largest gravitationally bound structures in the universe, connected by filaments of dark matter and gas into the cosmic web.',
+    []
+  ),
 
   // =========================================================
   // STARS & ELEMENTS
@@ -85,6 +106,13 @@ export const cosmicHistoryItems = [
     -13_600_000_000, -12_000_000_000,
     'stars-elements', '⭐',
     'The very first generation of stars ignite from pure hydrogen and helium. Massive and short-lived, these titans forge the first heavy elements in their cores and seed them into space through violent supernovae.',
+    []
+  ),
+  cosmicItem(
+    'molecular-clouds', 'Molecular Clouds & Star Nurseries',
+    -13_000_000_000, 2025,
+    'stars-elements', '☁️',
+    'Giant molecular clouds of gas and dust serve as stellar nurseries, collapsing under gravity to birth new generations of stars and planetary systems throughout cosmic history.',
     []
   ),
   cosmicItem(
@@ -102,6 +130,20 @@ export const cosmicHistoryItems = [
     -13_500_000_000, 2025,
     'stars-elements', '💫',
     'When massive stars exhaust their fuel, they explode as supernovae — among the most energetic events in the universe. The crushed cores left behind become neutron stars or black holes.',
+    []
+  ),
+  cosmicItem(
+    'white-dwarfs', 'White Dwarfs & Planetary Nebulae',
+    -12_000_000_000, 2025,
+    'stars-elements', '💎',
+    'When low-mass stars exhaust their fuel, they shed their outer layers as glowing planetary nebulae and leave behind dense white dwarf remnants, enriching space with carbon and nitrogen.',
+    []
+  ),
+  cosmicItem(
+    'neutron-star-mergers', 'Neutron Star Mergers',
+    -12_000_000_000, 2025,
+    'stars-elements', '🌟',
+    'When neutron stars spiral together and collide, the extreme conditions forge the heaviest elements — gold, platinum, and uranium — through rapid neutron capture. Confirmed by LIGO gravitational wave detection in 2017.',
     []
   ),
   cosmicItem(
@@ -144,10 +186,10 @@ export const cosmicHistoryItems = [
     []
   ),
   cosmicItem(
-    'late-heavy-bombardment', 'Late Heavy Bombardment',
-    -4_100_000_000, -3_800_000_000,
-    'solar-system', '☄️',
-    'A period of intense asteroid and comet impacts pummels the inner solar system, leaving heavily cratered surfaces on the Moon, Mercury, and Mars, and possibly delivering water to Earth.',
+    'water-delivery', 'Water Delivery to Earth',
+    -4_400_000_000, -3_800_000_000,
+    'solar-system', '💧',
+    'Comets and water-rich asteroids bombard the young Earth, delivering the water that fills its oceans and creates the conditions necessary for life to emerge.',
     []
   ),
   cosmicItem(
@@ -155,6 +197,27 @@ export const cosmicHistoryItems = [
     -4_500_000_000, -4_000_000_000,
     'solar-system', '🪨',
     'Millions of rocky fragments between Mars and Jupiter fail to coalesce into a planet due to Jupiter\'s immense gravity, forming a stable belt of asteroids.',
+    []
+  ),
+  cosmicItem(
+    'planetary-migration', 'Planetary Migration (Nice Model)',
+    -4_100_000_000, -3_800_000_000,
+    'solar-system', '🔀',
+    'The giant planets migrate from their original orbits to their current positions, scattering debris throughout the solar system and likely triggering the Late Heavy Bombardment.',
+    []
+  ),
+  cosmicItem(
+    'late-heavy-bombardment', 'Late Heavy Bombardment',
+    -4_100_000_000, -3_800_000_000,
+    'solar-system', '☄️',
+    'A period of intense asteroid and comet impacts pummels the inner solar system, leaving heavily cratered surfaces on the Moon, Mercury, and Mars, and possibly delivering water to Earth.',
+    []
+  ),
+  cosmicItem(
+    'kuiper-oort', 'Kuiper Belt & Oort Cloud',
+    -4_500_000_000, 2025,
+    'solar-system', '🧊',
+    'The frozen outer reaches of the solar system — a belt of icy bodies beyond Neptune and a vast spherical cloud of comets surrounding the Sun, the ultimate source of long-period comets.',
     []
   ),
 
@@ -176,6 +239,20 @@ export const cosmicHistoryItems = [
     []
   ),
   cosmicItem(
+    'magnetic-field', 'Earth\'s Magnetic Field',
+    -3_500_000_000, 2025,
+    'earth', '🧲',
+    'Earth\'s iron core generates a powerful magnetic field — the geodynamo — that deflects the solar wind and protects the atmosphere from being stripped away, making life on the surface possible.',
+    []
+  ),
+  cosmicItem(
+    'plate-tectonics', 'Plate Tectonics Begin',
+    -3_000_000_000, 2025,
+    'earth', '🌋',
+    'Earth\'s outer shell fractures into moving tectonic plates that recycle carbon, build mountains, trigger volcanism, and regulate the climate over billions of years — a fundamental driver of Earth\'s habitability.',
+    []
+  ),
+  cosmicItem(
     'great-oxygenation', 'Great Oxygenation Event',
     -2_400_000_000, -2_000_000_000,
     'earth', '🫧',
@@ -194,10 +271,24 @@ export const cosmicHistoryItems = [
     ]
   ),
   cosmicItem(
+    'boring-billion', 'The Boring Billion',
+    -1_800_000_000, -800_000_000,
+    'earth', '⏳',
+    'A billion-year period of relative geological and evolutionary stability — oxygen levels plateau, the atmosphere settles, and complex life develops slowly before the dramatic upheavals of the Neoproterozoic.',
+    []
+  ),
+  cosmicItem(
     'snowball-earth', 'Snowball Earth',
     -720_000_000, -635_000_000,
     'earth', '❄️',
     'Earth freezes almost entirely, with ice sheets extending to the equator. When volcanic CO2 eventually thaws the planet, the dramatic environmental upheaval may have triggered the evolution of complex animal life.',
+    []
+  ),
+  cosmicItem(
+    'pangaea', 'Formation of Pangaea',
+    -335_000_000, -175_000_000,
+    'earth', '🗺️',
+    'Earth\'s continents drift together to form the supercontinent Pangaea, profoundly influencing climate, ocean currents, and the evolution of life before rifting apart into today\'s continents.',
     []
   ),
   cosmicItem(
@@ -230,6 +321,20 @@ export const cosmicHistoryItems = [
     []
   ),
   cosmicItem(
+    'multicellular-life', 'Multicellular Life',
+    -1_500_000_000, 2025,
+    'life', '🧫',
+    'Cells begin cooperating as multicellular organisms — one of life\'s most important transitions, bridging the gap between single-celled eukaryotes and the complex animals of the Cambrian.',
+    []
+  ),
+  cosmicItem(
+    'ediacaran-fauna', 'Ediacaran Fauna',
+    -635_000_000, -541_000_000,
+    'life', '🪸',
+    'The first large, complex organisms appear in the oceans — bizarre soft-bodied creatures unlike anything alive today, representing life\'s first experiment with large body plans.',
+    []
+  ),
+  cosmicItem(
     'cambrian-explosion', 'Cambrian Explosion',
     -541_000_000, -485_000_000,
     'life', '🐚',
@@ -247,6 +352,23 @@ export const cosmicHistoryItems = [
     ]
   ),
   cosmicItem(
+    'vertebrates-land', 'First Vertebrates on Land',
+    -375_000_000, -300_000_000,
+    'life', '🐸',
+    'Fish with sturdy fins begin venturing onto land during the Devonian period. Creatures like Tiktaalik bridge the gap between fish and four-legged animals in one of evolution\'s most iconic transitions.',
+    []
+  ),
+  cosmicItem(
+    'insects-flight', 'Insects & Flight',
+    -400_000_000, 2025,
+    'life', '🦟',
+    'Insects become the first animals to evolve flight and are by far the most species-rich animal group on Earth. During the Carboniferous, high oxygen levels produce giant dragonflies with 70cm wingspans.',
+    [
+      { name: 'Early Insects', start: -400_000_000, end: -300_000_000 },
+      { name: 'Giant Insects', start: -300_000_000, end: -252_000_000 },
+    ]
+  ),
+  cosmicItem(
     'age-of-dinosaurs', 'Age of Dinosaurs',
     -230_000_000, -66_000_000,
     'life', '🦕',
@@ -258,6 +380,13 @@ export const cosmicHistoryItems = [
     ]
   ),
   cosmicItem(
+    'flowering-plants', 'Flowering Plants (Angiosperms)',
+    -140_000_000, 2025,
+    'life', '🌸',
+    'Angiosperms appear and begin a dramatic takeover of terrestrial ecosystems, co-evolving with insect pollinators. Today, flowering plants make up roughly 90% of all plant species.',
+    []
+  ),
+  cosmicItem(
     'rise-of-mammals', 'Rise of Mammals',
     -66_000_000, 2025,
     'life', '🐾',
@@ -265,6 +394,16 @@ export const cosmicHistoryItems = [
     [
       { name: 'Early Diversification', start: -66_000_000, end: -23_000_000 },
       { name: 'Modern Mammals', start: -23_000_000, end: 2025 },
+    ]
+  ),
+  cosmicItem(
+    'great-apes-hominins', 'Great Apes & Hominins',
+    -7_000_000, -300_000,
+    'life', '🦍',
+    'The human lineage diverges from other great apes. Over millions of years, hominins evolve bipedalism, larger brains, and tool use — from Australopithecus through Homo erectus to the threshold of Homo sapiens.',
+    [
+      { name: 'Early Hominins', start: -7_000_000, end: -2_500_000 },
+      { name: 'Homo genus', start: -2_500_000, end: -300_000 },
     ]
   ),
   cosmicItem(
@@ -282,10 +421,31 @@ export const cosmicHistoryItems = [
   // EXTINCTION EVENTS
   // =========================================================
   cosmicItem(
+    'great-oxygenation-extinction', 'Great Oxygenation Extinction',
+    -2_400_000_000, -2_000_000_000,
+    'extinctions', '🫧',
+    'Often called the first mass extinction — the rise of free oxygen is catastrophically toxic to the anaerobic organisms that dominate Earth, wiping out vast numbers of microbial species in the most dramatic atmospheric transformation in Earth\'s history.',
+    []
+  ),
+  cosmicItem(
+    'ordovician-extinction', 'End-Ordovician Extinction',
+    -445_000_000, -443_000_000,
+    'extinctions', '❄️',
+    'A severe glaciation causes dramatic sea-level drops, wiping out roughly 85% of marine species — one of the Big Five mass extinctions. The cause was a sudden and severe ice age that froze much of the planet.',
+    []
+  ),
+  cosmicItem(
     'late-devonian', 'Late Devonian Extinction',
     -375_000_000, -360_000_000,
     'extinctions', '💀',
     'A prolonged extinction event wipes out roughly 75% of species, devastating marine life. The cause remains debated — ocean anoxia, climate change, and asteroid impacts have all been proposed.',
+    []
+  ),
+  cosmicItem(
+    'capitanian-extinction', 'Capitanian Extinction',
+    -262_000_000, -260_000_000,
+    'extinctions', '🌋',
+    'A significant extinction event linked to the Emeishan Traps volcanism in what is now southern China, wiping out many tropical marine species and foreshadowing the Great Dying.',
     []
   ),
   cosmicItem(
@@ -308,6 +468,16 @@ export const cosmicHistoryItems = [
     'extinctions', '☄️',
     'A 10km-wide asteroid strikes the Yucatan Peninsula, triggering global firestorms, impact winter, and acid rain. The non-avian dinosaurs are wiped out, opening the door for mammals.',
     []
+  ),
+  cosmicItem(
+    'holocene-extinction', 'Holocene Extinction (Ongoing)',
+    -50_000, 2025,
+    'extinctions', '🦤',
+    'The ongoing human-caused mass extinction. From Pleistocene megafauna to the dodo and beyond, human activity has driven thousands of species to extinction and threatens millions more — currently estimated at 1,000 times the background extinction rate.',
+    [
+      { name: 'Megafauna Loss', start: -50_000, end: -10_000 },
+      { name: 'Modern Crisis', start: 1500, end: 2025 },
+    ]
   ),
 ];
 

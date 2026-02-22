@@ -23,6 +23,13 @@ export const events = [
     icon: '💥',
   },
   {
+    year: -13_799_620_000,
+    title: 'The First Atoms Form',
+    description: 'Around 380,000 years after the Big Bang, the universe cools enough for electrons to bind to nuclei, forming the first atoms. Light streams freely for the first time — the origin of the Cosmic Microwave Background.',
+    era: 'Cosmic',
+    icon: '⚛️',
+  },
+  {
     year: -13_600_000_000,
     title: 'First Stars Ignite',
     description: 'The first generation of stars form from clouds of hydrogen and helium, lighting up the dark universe for the first time and beginning to forge heavier elements.',
@@ -35,6 +42,13 @@ export const events = [
     description: 'Our home galaxy begins to take shape as smaller proto-galaxies merge together, eventually forming the familiar spiral structure we know today.',
     era: 'Cosmic',
     icon: '🌌',
+  },
+  {
+    year: -10_000_000_000,
+    title: 'The Cosmic Web Takes Shape',
+    description: 'Dark matter and gravity sculpt the universe into a vast cosmic web of galaxy clusters, filaments, and enormous voids spanning hundreds of millions of light-years.',
+    era: 'Cosmic',
+    icon: '🕸️',
   },
   {
     year: -4_600_000_000,
@@ -65,11 +79,32 @@ export const events = [
     icon: '🫧',
   },
   {
+    year: -2_100_000_000,
+    title: 'First Complex Cells',
+    description: 'Eukaryotic cells with a true nucleus emerge, probably through one cell engulfing another in a process called endosymbiosis. This leap in cellular complexity paves the way for all multicellular life.',
+    era: 'Early Life',
+    icon: '🔬',
+  },
+  {
+    year: -635_000_000,
+    title: 'Ediacaran Fauna Appear',
+    description: 'The first large, complex organisms appear in the oceans — bizarre soft-bodied creatures unlike anything alive today, representing life\'s first experiment with large body plans.',
+    era: 'Early Life',
+    icon: '🪸',
+  },
+  {
     year: -540_000_000,
     title: 'Cambrian Explosion',
     description: 'An extraordinary burst of evolution produces most major animal groups in a geologically short period. Complex eyes, shells, and predators appear for the first time.',
     era: 'Early Life',
     icon: '🐚',
+  },
+  {
+    year: -470_000_000,
+    title: 'Plants Colonise the Land',
+    description: 'The first plants move from water to land, beginning the transformation of barren rock into green landscapes. Soils form, the atmosphere stabilises, and terrestrial food chains become possible.',
+    era: 'Early Life',
+    icon: '🌿',
   },
   {
     year: -252_000_000,
@@ -86,11 +121,25 @@ export const events = [
     icon: '🦕',
   },
   {
+    year: -200_000_000,
+    title: 'Pangaea Begins to Break Apart',
+    description: 'The supercontinent Pangaea begins rifting into separate landmasses that will eventually become today\'s continents, reshaping ocean currents, climate, and the evolution of isolated species.',
+    era: 'Age of Dinosaurs',
+    icon: '🗺️',
+  },
+  {
     year: -150_000_000,
     title: 'Jurassic Peak',
     description: 'Dinosaurs reach their zenith of diversity. Giant sauropods roam the land, pterosaurs fill the skies, and the first birds begin to evolve from theropod dinosaurs.',
     era: 'Age of Dinosaurs',
     icon: '🦖',
+  },
+  {
+    year: -130_000_000,
+    title: 'First Flowering Plants',
+    description: 'Angiosperms appear and begin a takeover that will transform terrestrial ecosystems. Their co-evolution with insect pollinators creates the explosive diversity of both groups.',
+    era: 'Age of Dinosaurs',
+    icon: '🌸',
   },
   {
     year: -66_000_000,
@@ -114,11 +163,32 @@ export const events = [
     icon: '🧬',
   },
   {
+    year: -2_500_000,
+    title: 'First Stone Tools',
+    description: 'Homo habilis begins deliberately knapping stone tools in East Africa, marking the dawn of technology and a cognitive leap that separates the hominin lineage from other apes.',
+    era: 'Age of Mammals',
+    icon: '🪨',
+  },
+  {
+    year: -800_000,
+    title: 'Mastery of Fire',
+    description: 'Homo erectus gains control of fire, enabling cooking, warmth, protection from predators, and social gathering — arguably the most transformative technology before agriculture.',
+    era: 'Age of Mammals',
+    icon: '🔥',
+  },
+  {
     year: -300_000,
     title: 'Homo Sapiens Emerge',
     description: 'Anatomically modern humans first appear in Africa. With larger brains and sophisticated tool use, they will eventually spread across the entire globe.',
     era: 'Human Prehistory',
     icon: '🧑',
+  },
+  {
+    year: -100_000,
+    title: 'Humans Leave Africa',
+    description: 'Anatomically modern humans begin migrating out of Africa, eventually reaching every continent and adapting to environments from Arctic tundra to tropical rainforests.',
+    era: 'Human Prehistory',
+    icon: '🌍',
   },
   {
     year: -70_000,
@@ -135,6 +205,13 @@ export const events = [
     icon: '🎨',
   },
   {
+    year: -30_000,
+    title: 'Extinction of Neanderthals',
+    description: 'The last Neanderthals disappear from Europe, leaving Homo sapiens as the sole surviving human species. Their DNA lives on in modern non-African populations.',
+    era: 'Human Prehistory',
+    icon: '💀',
+  },
+  {
     year: -12_000,
     title: 'Agricultural Revolution',
     description: 'Humans begin farming crops and domesticating animals in the Fertile Crescent, transitioning from nomadic hunter-gatherers to settled communities.',
@@ -142,11 +219,25 @@ export const events = [
     icon: '🌾',
   },
   {
+    year: -8_000,
+    title: 'First Cities Emerge',
+    description: 'Settlements like Çatalhöyük and Jericho grow into some of the world\'s first proto-urban centres, concentrating thousands of people and laying the groundwork for civilisation.',
+    era: 'Human Prehistory',
+    icon: '🏘️',
+  },
+  {
     year: -5_500,
     title: 'Invention of the Wheel',
     description: 'The wheel is invented in Mesopotamia, initially used for pottery before being adapted for transport. It becomes one of the most transformative mechanical innovations in human history.',
     era: 'Human Prehistory',
-    icon: '☸️',
+    icon: '⚙️',
+  },
+  {
+    year: -3_500,
+    title: 'Bronze Age Begins',
+    description: 'The alloying of copper and tin produces bronze, a metal hard enough for effective weapons and tools. The Bronze Age transforms warfare, trade, and social hierarchies across Eurasia.',
+    era: 'Human Prehistory',
+    icon: '🔱',
   },
   {
     year: -3_300,
@@ -163,6 +254,13 @@ export const events = [
     icon: '🏛️',
   },
   {
+    year: -2_600,
+    title: 'Indus Valley Civilisation Flourishes',
+    description: 'One of the world\'s earliest urban civilisations thrives along the Indus River with advanced drainage systems, standardised weights, and planned cities like Mohenjo-daro and Harappa.',
+    era: 'Ancient Civilisations',
+    icon: '🏙️',
+  },
+  {
     year: -2_560,
     title: 'Great Pyramid of Giza Built',
     description: 'The Great Pyramid is completed for Pharaoh Khufu — a marvel of ancient engineering that remains one of the Seven Wonders of the Ancient World.',
@@ -175,6 +273,13 @@ export const events = [
     description: 'One of the earliest written legal codes is established in Babylon, laying foundational principles of justice and governance.',
     era: 'Ancient Civilisations',
     icon: '⚖️',
+  },
+  {
+    year: -1_500,
+    title: 'Vedas Composed — Hinduism Emerges',
+    description: 'The Rigveda and other sacred texts are composed in ancient India, establishing the foundations of Hinduism — the world\'s oldest major religion still widely practised today.',
+    era: 'Ancient Civilisations',
+    icon: '🕉️',
   },
   {
     year: -1_200,
@@ -191,6 +296,13 @@ export const events = [
     icon: '💭',
   },
   {
+    year: -563,
+    title: 'Birth of the Buddha',
+    description: 'Siddhartha Gautama is born in present-day Nepal. His teachings on suffering, impermanence, and the path to enlightenment will found one of the world\'s great religions.',
+    era: 'Ancient Civilisations',
+    icon: '☸️',
+  },
+  {
     year: -508,
     title: 'Athenian Democracy Founded',
     description: 'Athens establishes a radical new form of government where citizens directly participate in political decisions — the birthplace of democracy.',
@@ -198,11 +310,25 @@ export const events = [
     icon: '🗳️',
   },
   {
+    year: -334,
+    title: 'Alexander the Great\'s Conquests',
+    description: 'Alexander of Macedon begins a campaign that will conquer from Greece to India in just thirteen years, spreading Greek culture across the ancient world and creating the Hellenistic Age.',
+    era: 'Ancient Civilisations',
+    icon: '⚔️',
+  },
+  {
     year: -300,
     title: 'Euclid\'s Elements',
     description: 'The Greek mathematician Euclid compiles his Elements, a systematic treatise on geometry and number theory that becomes the most influential mathematics textbook in history.',
     era: 'Ancient Civilisations',
     icon: '📐',
+  },
+  {
+    year: -268,
+    title: 'Ashoka Embraces Non-Violence',
+    description: 'After the devastating Kalinga War, the Maurya Emperor Ashoka converts to Buddhism and promotes non-violence and tolerance across the Indian subcontinent through his famous rock edicts.',
+    era: 'Ancient Civilisations',
+    icon: '☮️',
   },
   {
     year: -250,
@@ -233,11 +359,25 @@ export const events = [
     icon: '🏛️',
   },
   {
+    year: -4,
+    title: 'Birth of Jesus of Nazareth',
+    description: 'Jesus is born in Roman-occupied Judea. His life and teachings will become the foundation of Christianity, eventually the world\'s largest religion, reshaping history and culture across the globe.',
+    era: 'Ancient Civilisations',
+    icon: '✝️',
+  },
+  {
     year: 105,
     title: 'Paper Invented in China',
     description: 'Cai Lun of the Han Dynasty refines the papermaking process using bark, hemp, and rags, creating an affordable writing material that revolutionises communication and record-keeping worldwide.',
     era: 'Ancient Civilisations',
     icon: '📄',
+  },
+  {
+    year: 200,
+    title: 'Silk Road Trade Peaks',
+    description: 'Overland trade routes connecting China to Rome reach their height, exchanging not just silk, spices, and gold, but ideas, religions, and technologies across an entire continent.',
+    era: 'Ancient Civilisations',
+    icon: '🐪',
   },
   {
     year: 330,
@@ -259,6 +399,13 @@ export const events = [
     description: 'The Prophet Muhammad\'s migration to Medina marks the start of the Islamic calendar. Islam will rapidly expand to create a vast civilisation spanning three continents.',
     era: 'Medieval',
     icon: '☪️',
+  },
+  {
+    year: 750,
+    title: 'Islamic Golden Age Begins',
+    description: 'Under the Abbasid Caliphate, Baghdad becomes the intellectual capital of the world. Scholars preserve Greek knowledge and pioneer algebra, optics, medicine, and astronomy.',
+    era: 'Medieval',
+    icon: '📚',
   },
   {
     year: 800,
@@ -289,11 +436,25 @@ export const events = [
     icon: '🏰',
   },
   {
+    year: 1096,
+    title: 'The First Crusade',
+    description: 'European armies march to the Holy Land in the first of many Crusades, igniting centuries of conflict that reshape relations between Christianity and Islam and transform trade across the Mediterranean.',
+    era: 'Medieval',
+    icon: '⚔️',
+  },
+  {
     year: 1100,
     title: 'Magnetic Compass in Navigation',
     description: 'The magnetic compass comes into widespread use for maritime navigation, first in China and soon across the Islamic world and Europe, enabling the great age of oceanic exploration.',
     era: 'Medieval',
     icon: '🧭',
+  },
+  {
+    year: 1206,
+    title: 'Delhi Sultanate Founded',
+    description: 'Islamic rule is established in northern India, beginning centuries of cultural exchange and the creation of Indo-Islamic art, architecture, and governance.',
+    era: 'Medieval',
+    icon: '🕌',
   },
   {
     year: 1215,
@@ -310,11 +471,25 @@ export const events = [
     icon: '🏇',
   },
   {
+    year: 1325,
+    title: 'Mansa Musa\'s Pilgrimage to Mecca',
+    description: 'The ruler of the Mali Empire makes his legendary hajj, distributing so much gold along the way that he destabilises economies. His journey puts West Africa on European maps.',
+    era: 'Medieval',
+    icon: '👑',
+  },
+  {
     year: 1347,
     title: 'The Black Death',
     description: 'The bubonic plague sweeps across Europe, killing roughly a third of the population and fundamentally altering European society, economy, and culture.',
     era: 'Medieval',
     icon: '🐀',
+  },
+  {
+    year: 1405,
+    title: 'Zheng He\'s Treasure Voyages',
+    description: 'Chinese Admiral Zheng He leads massive fleets across the Indian Ocean to Southeast Asia, India, Arabia, and East Africa, demonstrating Ming China\'s naval power decades before European exploration.',
+    era: 'Medieval',
+    icon: '🚢',
   },
   {
     year: 1440,
@@ -338,6 +513,13 @@ export const events = [
     icon: '⛵',
   },
   {
+    year: 1498,
+    title: 'Vasco da Gama Reaches India',
+    description: 'The Portuguese navigator rounds Africa and reaches Calicut, opening a direct sea route between Europe and Asia that transforms global trade and begins the European colonial era in Asia.',
+    era: 'Early Modern',
+    icon: '🗺️',
+  },
+  {
     year: 1501,
     title: 'Transatlantic Slave Trade Begins',
     description: 'The first enslaved Africans are transported across the Atlantic to the Americas. Over the next 350 years, an estimated 12.5 million people will be forcibly transported in one of history\'s greatest atrocities.',
@@ -352,6 +534,13 @@ export const events = [
     icon: '📜',
   },
   {
+    year: 1519,
+    title: 'Magellan\'s Expedition Circumnavigates the Globe',
+    description: 'Ferdinand Magellan\'s expedition departs Spain and completes the first circumnavigation of the Earth, proving the planet\'s oceans are connected and revealing the true scale of the globe.',
+    era: 'Early Modern',
+    icon: '🌐',
+  },
+  {
     year: 1543,
     title: 'Copernicus\' Heliocentric Model',
     description: 'Nicolaus Copernicus publishes De revolutionibus, proposing that the Earth and planets orbit the Sun rather than the other way around, fundamentally challenging humanity\'s view of its place in the cosmos.',
@@ -359,11 +548,25 @@ export const events = [
     icon: '🌍',
   },
   {
+    year: 1600,
+    title: 'East India Company Founded',
+    description: 'The English East India Company receives its royal charter, beginning a new era of corporate colonialism that will eventually control much of India and reshape global trade for centuries.',
+    era: 'Early Modern',
+    icon: '🏴',
+  },
+  {
     year: 1610,
     title: 'Galileo\'s Telescope Observations',
     description: 'Galileo Galilei turns his improved telescope to the night sky, discovering Jupiter\'s moons, lunar craters, and the phases of Venus — providing powerful evidence for the heliocentric model.',
     era: 'Early Modern',
     icon: '🔭',
+  },
+  {
+    year: 1648,
+    title: 'Peace of Westphalia',
+    description: 'The treaties ending the Thirty Years\' War establish the principle of state sovereignty and religious coexistence, laying the foundation for the modern international system of nation-states.',
+    era: 'Early Modern',
+    icon: '🕊️',
   },
   {
     year: 1665,
@@ -422,6 +625,13 @@ export const events = [
     icon: '💉',
   },
   {
+    year: 1804,
+    title: 'Haiti Declares Independence',
+    description: 'Enslaved people in Saint-Domingue overthrow French colonial rule in the only successful large-scale slave revolt in history, establishing the first free Black republic in the Western Hemisphere.',
+    era: 'Modern',
+    icon: '✊',
+  },
+  {
     year: 1807,
     title: 'Britain Abolishes the Slave Trade',
     description: 'The British Parliament passes the Abolition of the Slave Trade Act, beginning the long process of ending slavery across the British Empire.',
@@ -455,6 +665,13 @@ export const events = [
     description: 'The 13th Amendment abolishes slavery throughout the United States following the bloodiest conflict in American history.',
     era: 'Modern',
     icon: '🕊️',
+  },
+  {
+    year: 1868,
+    title: 'Meiji Restoration in Japan',
+    description: 'Japan ends centuries of feudal isolation and embarks on a dramatic programme of modernisation and industrialisation, transforming from a feudal society into a world power in barely a generation.',
+    era: 'Modern',
+    icon: '🏯',
   },
   {
     year: 1869,
@@ -549,6 +766,13 @@ export const events = [
   },
   {
     year: 1947,
+    title: 'Indian Independence & Partition',
+    description: 'India gains independence from British rule through largely non-violent resistance led by Gandhi and Nehru, but the subcontinent is also painfully partitioned into India and Pakistan.',
+    era: 'Modern',
+    icon: '🇮🇳',
+  },
+  {
+    year: 1947,
     title: 'The Transistor Invented',
     description: 'John Bardeen, Walter Brattain, and William Shockley invent the transistor at Bell Labs, a tiny semiconductor switch that becomes the building block of all modern electronics.',
     era: 'Modern',
@@ -560,6 +784,13 @@ export const events = [
     description: 'The United Nations adopts the Universal Declaration of Human Rights, establishing for the first time a common standard of fundamental rights and freedoms for all people.',
     era: 'Modern',
     icon: '📜',
+  },
+  {
+    year: 1949,
+    title: 'People\'s Republic of China Founded',
+    description: 'Mao Zedong proclaims the People\'s Republic of China after decades of civil war, establishing a communist government over the world\'s most populous nation and reshaping the global balance of power.',
+    era: 'Modern',
+    icon: '🇨🇳',
   },
   {
     year: 1953,
@@ -581,6 +812,13 @@ export const events = [
     description: 'The Soviet Union launches Sputnik, the first artificial satellite, into orbit around the Earth, igniting the Space Race and marking humanity\'s first step into the cosmos.',
     era: 'Modern',
     icon: '🛰️',
+  },
+  {
+    year: 1960,
+    title: 'Year of Africa — Decolonisation Wave',
+    description: 'Seventeen African nations gain independence in a single year, marking the dramatic acceleration of decolonisation across the continent and reshaping the global political order.',
+    era: 'Modern',
+    icon: '🌍',
   },
   {
     year: 1969,
@@ -630,6 +868,13 @@ export const events = [
     description: 'The Soviet Union formally dissolves into fifteen independent republics, ending the Cold War superpower rivalry and reshaping the geopolitical order of the world.',
     era: 'Modern',
     icon: '🏳️',
+  },
+  {
+    year: 1994,
+    title: 'End of Apartheid — Mandela Elected',
+    description: 'Nelson Mandela is elected President of South Africa in the country\'s first fully democratic election, ending decades of institutionalised racial segregation.',
+    era: 'Modern',
+    icon: '✊',
   },
   {
     year: 1997,
