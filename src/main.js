@@ -837,23 +837,56 @@ function switchView(view) {
   draw();
 }
 
-// Track whether "Countries..." was already selected when the dropdown opens,
-// so we can re-open the picker even when the change event doesn't fire.
-let _countriesWasSelected = false;
+// ── View select ──────────────────────────────────────────────
+// We need to handle two cases cleanly:
+//   A) User picks "Countries..." when a different view is active → open picker
+//   B) User picks "Countries..." when a country is already active (select
+//      already shows "Countries...") → no 'change' fires, must detect re-click
+//
+// We also need the document-level click handler that closes the picker on
+// outside clicks to NOT fire for the very same click that opens it.
+// We use a flag `_suppressNextDocClick` set during mousedown, cleared after
+// the event cycle, to swallow that one document click.
+
+let _prevSelectValue = viewSelect.value; // track what was selected before
+let _suppressNextDocClick = false;
+
 viewSelect.addEventListener('mousedown', () => {
-  _countriesWasSelected = viewSelect.value === 'countries';
-});
-viewSelect.addEventListener('change', (e) => {
-  _countriesWasSelected = false; // reset so click handler doesn't misfire
-  // Always close the picker when the user picks any view from the select
-  if (!countryPicker.classList.contains('hidden')) {
-    closeCountryPicker();
+  _prevSelectValue = viewSelect.value;
+  // If picker is about to be opened by this interaction, suppress the
+  // document click that would immediately close it again.
+  if (_prevSelectValue === 'countries' || true) {
+    // Suppress unconditionally — we only open the picker from 'change' or
+    // re-click logic below, so suppressing one doc-click is always safe.
+    _suppressNextDocClick = true;
+    setTimeout(() => { _suppressNextDocClick = false; }, 300);
   }
-  switchView(e.target.value);
 });
-viewSelect.addEventListener('click', () => {
-  if (_countriesWasSelected && viewSelect.value === 'countries') {
+
+viewSelect.addEventListener('change', (e) => {
+  const newVal = e.target.value;
+  if (newVal === 'countries') {
+    // Close any currently-open picker first, then re-open it fresh
+    closeCountryPicker();
     openCountryPicker();
+  } else {
+    // Switching to a real view — close picker if open, then switch
+    closeCountryPicker();
+    switchView(newVal);
+  }
+  _prevSelectValue = newVal;
+});
+
+// Handle the re-click case: user picks "Countries..." when it's already
+// the selected value, so no 'change' fires. We detect this by comparing
+// the value on mousedown (_prevSelectValue) with the value on click.
+viewSelect.addEventListener('click', () => {
+  if (_prevSelectValue === 'countries' && viewSelect.value === 'countries') {
+    // Re-click on Countries... — toggle picker
+    if (countryPicker.classList.contains('hidden')) {
+      openCountryPicker();
+    }
+    // (if already open, leave it open — user just clicked the select again)
   }
 });
 
@@ -1041,14 +1074,14 @@ countryPickerClose.addEventListener('click', () => {
 });
 
 document.addEventListener('click', (e) => {
+  // Ignore the click that just opened the picker (would close it immediately)
+  if (_suppressNextDocClick) return;
+
   if (!countryPicker.classList.contains('hidden') &&
-      !countryPicker.contains(e.target)) {
+      !countryPicker.contains(e.target) &&
+      e.target !== viewSelect) {
     closeCountryPicker();
-    // Only reset the select if the user didn't click on it
-    // (if they did, change/click handlers will take care of the correct state)
-    if (e.target !== viewSelect) {
-      resetSelectAfterPickerClose();
-    }
+    resetSelectAfterPickerClose();
   }
 });
 
