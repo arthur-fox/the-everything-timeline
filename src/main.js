@@ -845,6 +845,10 @@ viewSelect.addEventListener('mousedown', () => {
 });
 viewSelect.addEventListener('change', (e) => {
   _countriesWasSelected = false; // reset so click handler doesn't misfire
+  // Always close the picker when the user picks any view from the select
+  if (!countryPicker.classList.contains('hidden')) {
+    closeCountryPicker();
+  }
   switchView(e.target.value);
 });
 viewSelect.addEventListener('click', () => {
@@ -1038,10 +1042,13 @@ countryPickerClose.addEventListener('click', () => {
 
 document.addEventListener('click', (e) => {
   if (!countryPicker.classList.contains('hidden') &&
-      !countryPicker.contains(e.target) &&
-      e.target !== viewSelect) {
+      !countryPicker.contains(e.target)) {
     closeCountryPicker();
-    resetSelectAfterPickerClose();
+    // Only reset the select if the user didn't click on it
+    // (if they did, change/click handlers will take care of the correct state)
+    if (e.target !== viewSelect) {
+      resetSelectAfterPickerClose();
+    }
   }
 });
 
