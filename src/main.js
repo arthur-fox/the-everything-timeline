@@ -9,6 +9,7 @@ import {
 import { civilisations, regions } from './civilisations.js';
 import { technologies, technologyCategories } from './technology.js';
 import { sciences, scienceCategories } from './science.js';
+import { religionItems, religionCategories } from './religion.js';
 import { cosmicHistoryItems, cosmicHistoryCategories, COSMIC_LOG_MIN, COSMIC_LOG_MAX } from './cosmic-history.js';
 import { ukItems, ukCategories } from './countries/uk.js';
 import { franceItems, franceCategories } from './countries/france.js';
@@ -119,6 +120,7 @@ const swimStates = {
   civilisations: createSwimLaneState(civilisations, regions, -3600, 2050),
   technology: createSwimLaneState(technologies, technologyCategories, -3500, 2050),
   science: createSwimLaneState(sciences, scienceCategories, -3100, 2050),
+  religion: createSwimLaneState(religionItems, religionCategories, -3500, 2025),
 };
 
 // Lazy-initialise country swim states on first access
@@ -771,11 +773,19 @@ document.getElementById('detail-close').addEventListener('click', () => {
 // ============================================================
 const viewSelect = document.getElementById('view-select');
 
+// Set the select to the correct option after picker closes.
+// When a country is active, currentView is e.g. 'us' which has no <option>,
+// so we map it back to the 'countries' sentinel option.
+function resetSelectAfterPickerClose() {
+  const isCountry = COUNTRY_REGISTRY.some(c => c.id === currentView);
+  viewSelect.value = isCountry ? 'countries' : currentView;
+}
+
 function switchView(view) {
   // 'countries' is a sentinel — open the picker rather than switch view
   if (view === 'countries') {
     openCountryPicker();
-    viewSelect.value = currentView; // reset select to the actual active view
+    resetSelectAfterPickerClose(); // keep select on 'countries' (or current non-country view)
     return;
   }
 
@@ -797,7 +807,18 @@ function switchView(view) {
   draw();
 }
 
+// Track whether "Countries..." was already selected when the dropdown opens,
+// so we can re-open the picker even when the change event doesn't fire.
+let _countriesWasSelected = false;
+viewSelect.addEventListener('mousedown', () => {
+  _countriesWasSelected = viewSelect.value === 'countries';
+});
 viewSelect.addEventListener('change', (e) => switchView(e.target.value));
+viewSelect.addEventListener('click', () => {
+  if (_countriesWasSelected && viewSelect.value === 'countries') {
+    openCountryPicker();
+  }
+});
 
 // ============================================================
 // Zoom controls
@@ -979,7 +1000,7 @@ countrySearch.addEventListener('input', (e) => filterCountryList(e.target.value)
 
 countryPickerClose.addEventListener('click', () => {
   closeCountryPicker();
-  viewSelect.value = currentView;
+  resetSelectAfterPickerClose();
 });
 
 document.addEventListener('click', (e) => {
@@ -987,14 +1008,14 @@ document.addEventListener('click', (e) => {
       !countryPicker.contains(e.target) &&
       e.target !== viewSelect) {
     closeCountryPicker();
-    viewSelect.value = currentView;
+    resetSelectAfterPickerClose();
   }
 });
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && !countryPicker.classList.contains('hidden')) {
     closeCountryPicker();
-    viewSelect.value = currentView;
+    resetSelectAfterPickerClose();
   }
 });
 
