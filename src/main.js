@@ -10,7 +10,23 @@ import { civilisations, regions } from './civilisations.js';
 import { technologies, technologyCategories } from './technology.js';
 import { sciences, scienceCategories } from './science.js';
 import { cosmicHistoryItems, cosmicHistoryCategories, COSMIC_LOG_MIN, COSMIC_LOG_MAX } from './cosmic-history.js';
+import { ukItems, ukCategories } from './countries/uk.js';
+import { franceItems, franceCategories } from './countries/france.js';
+import { chinaItems, chinaCategories } from './countries/china.js';
+import { usItems, usCategories } from './countries/us.js';
+import { indiaItems, indiaCategories } from './countries/india.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
+
+// ============================================================
+// Country registry — add new countries here to scale to 190+
+// ============================================================
+const COUNTRY_REGISTRY = [
+  { id: 'uk',     name: 'United Kingdom', flag: '🇬🇧', minYear: -55,   maxYear: 2025, load: () => ({ items: ukItems,     categories: ukCategories }) },
+  { id: 'france', name: 'France',         flag: '🇫🇷', minYear: -51,   maxYear: 2025, load: () => ({ items: franceItems, categories: franceCategories }) },
+  { id: 'china',  name: 'China',          flag: '🇨🇳', minYear: -2100, maxYear: 2025, load: () => ({ items: chinaItems,  categories: chinaCategories }) },
+  { id: 'us',     name: 'United States',  flag: '🇺🇸', minYear: 1607,  maxYear: 2025, load: () => ({ items: usItems,     categories: usCategories }) },
+  { id: 'india',  name: 'India',          flag: '🇮🇳', minYear: -2600, maxYear: 2025, load: () => ({ items: indiaItems,  categories: indiaCategories }) },
+];
 
 // ============================================================
 // Logarithmic scale mapping (cosmic timeline)
@@ -105,7 +121,19 @@ const swimStates = {
   science: createSwimLaneState(sciences, scienceCategories, -3100, 2050),
 };
 
+// Lazy-initialise country swim states on first access
+function getOrCreateCountryState(countryId) {
+  if (swimStates[countryId]) return swimStates[countryId];
+  const entry = COUNTRY_REGISTRY.find(c => c.id === countryId);
+  if (!entry) return null;
+  const { items, categories } = entry.load();
+  swimStates[countryId] = createSwimLaneState(items, categories, entry.minYear, entry.maxYear);
+  return swimStates[countryId];
+}
+
 function currentSwimState() {
+  const isCountry = COUNTRY_REGISTRY.some(c => c.id === currentView);
+  if (isCountry) return getOrCreateCountryState(currentView);
   return swimStates[currentView];
 }
 
@@ -744,6 +772,13 @@ document.getElementById('detail-close').addEventListener('click', () => {
 const viewSelect = document.getElementById('view-select');
 
 function switchView(view) {
+  // 'countries' is a sentinel — open the picker rather than switch view
+  if (view === 'countries') {
+    openCountryPicker();
+    viewSelect.value = currentView; // reset select to the actual active view
+    return;
+  }
+
   currentView = view;
   viewSelect.value = view;
   eraNav.style.display = view === 'cosmic' ? 'flex' : 'none';
@@ -855,6 +890,110 @@ document.getElementById('minimap').addEventListener('click', (e) => {
   }
   if (!animationId) animateZoom();
 });
+
+// ============================================================
+// Country picker
+// ============================================================
+const countryPicker = document.getElementById('country-picker');
+const countrySearch = document.getElementById('country-search');
+const countryList = document.getElementById('country-list');
+const countryPickerClose = document.getElementById('country-picker-close');
+
+function buildCountryList() {
+  countryList.innerHTML = '';
+  for (const country of COUNTRY_REGISTRY) {
+    const li = document.createElement('li');
+    li.dataset.id = country.id;
+    li.setAttribute('role', 'option');
+    li.textContent = country.flag + '\u00A0' + country.name;
+    li.addEventListener('click', () => selectCountry(country.id));
+    countryList.appendChild(li);
+  }
+}
+
+function openCountryPicker() {
+  countryPicker.classList.remove('hidden');
+  countrySearch.value = '';
+  filterCountryList('');
+  updateCountryActiveState();
+  requestAnimationFrame(() => countrySearch.focus());
+}
+
+function closeCountryPicker() {
+  countryPicker.classList.add('hidden');
+  countrySearch.value = '';
+}
+
+function selectCountry(countryId) {
+  closeCountryPicker();
+  getOrCreateCountryState(countryId);
+  currentView = countryId;
+  // Keep the select showing "Countries..." as a hint that a country is active
+  viewSelect.value = 'countries';
+  eraNav.style.display = 'none';
+  document.getElementById('event-detail').classList.add('hidden');
+  tooltip.classList.remove('visible');
+  hoveredEvent = null;
+  selectedEvent = null;
+  for (const key of Object.keys(swimStates)) {
+    if (swimStates[key]) {
+      swimStates[key].hoveredItem = null;
+      swimStates[key].selectedItem = null;
+    }
+  }
+  draw();
+}
+
+function filterCountryList(query) {
+  const q = query.trim().toLowerCase();
+  let visibleCount = 0;
+  const existingEmpty = countryList.querySelector('.country-list-empty');
+  if (existingEmpty) existingEmpty.remove();
+
+  for (const li of countryList.querySelectorAll('li[data-id]')) {
+    const matches = q.length === 0 || li.textContent.toLowerCase().includes(q);
+    li.dataset.hidden = matches ? 'false' : 'true';
+    if (matches) visibleCount++;
+  }
+
+  if (visibleCount === 0) {
+    const empty = document.createElement('li');
+    empty.className = 'country-list-empty';
+    empty.textContent = 'No countries found';
+    countryList.appendChild(empty);
+  }
+}
+
+function updateCountryActiveState() {
+  for (const li of countryList.querySelectorAll('li[data-id]')) {
+    li.classList.toggle('country-active', li.dataset.id === currentView);
+  }
+}
+
+countrySearch.addEventListener('input', (e) => filterCountryList(e.target.value));
+
+countryPickerClose.addEventListener('click', () => {
+  closeCountryPicker();
+  viewSelect.value = currentView;
+});
+
+document.addEventListener('click', (e) => {
+  if (!countryPicker.classList.contains('hidden') &&
+      !countryPicker.contains(e.target) &&
+      e.target !== viewSelect) {
+    closeCountryPicker();
+    viewSelect.value = currentView;
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !countryPicker.classList.contains('hidden')) {
+    closeCountryPicker();
+    viewSelect.value = currentView;
+  }
+});
+
+buildCountryList();
 
 // ============================================================
 // Theme toggle
