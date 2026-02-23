@@ -25,14 +25,6 @@
         <option value="science">Science</option>
         <option value="countries">Countries...</option>
       </select>
-      <div id="country-picker" class="country-picker hidden">
-        <div class="country-picker-header">
-          <input id="country-search" class="country-search" type="search"
-                 placeholder="Search countries..." autocomplete="off" spellcheck="false" />
-          <button id="country-picker-close" class="country-picker-close" aria-label="Close">&times;</button>
-        </div>
-        <ul id="country-list" class="country-list"></ul>
-      </div>
       <div class="zoom-controls">
         <button id="zoom-in" title="Zoom In">+</button>
         <button id="zoom-out" title="Zoom Out">&minus;</button>
@@ -40,6 +32,15 @@
       </div>
       <div id="era-nav"></div>
       <button id="theme-toggle" title="Toggle light/dark mode">🌙</button>
+    </div>
+
+    <div id="country-picker" class="country-picker hidden">
+      <div class="country-picker-header">
+        <input id="country-search" class="country-search" type="search"
+               placeholder="Search countries..." autocomplete="off" spellcheck="false" />
+        <button id="country-picker-close" class="country-picker-close" aria-label="Close">&times;</button>
+      </div>
+      <ul id="country-list" class="country-list"></ul>
     </div>
 
     <div id="timeline-container">

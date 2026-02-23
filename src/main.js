@@ -912,6 +912,11 @@ function buildCountryList() {
 }
 
 function openCountryPicker() {
+  // Position the picker just below the controls bar (fixed to viewport)
+  const controlsEl = document.getElementById('controls');
+  const rect = controlsEl.getBoundingClientRect();
+  countryPicker.style.top = (rect.bottom + 4) + 'px';
+  countryPicker.style.left = Math.max(8, rect.left + 20) + 'px';
   countryPicker.classList.remove('hidden');
   countrySearch.value = '';
   filterCountryList('');

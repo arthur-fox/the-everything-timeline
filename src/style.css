@@ -91,7 +91,6 @@ html, body {
   padding: 8px 20px 12px;
   overflow-x: auto;
   z-index: 10;
-  position: relative; /* needed for country picker absolute positioning */
 }
 
 /* --- View select dropdown --- */
@@ -420,8 +419,8 @@ html, body {
    ============================================================ */
 
 .country-picker {
-  position: absolute;
-  top: calc(100% - 4px);
+  position: fixed;
+  top: 120px;   /* fallback — overridden by JS via openCountryPicker() */
   left: 20px;
   z-index: 500;
   width: 280px;
@@ -551,7 +550,7 @@ html, body {
 
 @media (max-width: 640px) {
   .country-picker {
-    left: 8px;
+    left: 8px !important;
     right: 8px;
     width: auto;
   }
