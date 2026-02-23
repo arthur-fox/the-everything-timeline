@@ -1,0 +1,113 @@
+export const iranCategories = [
+  { id: 'ancient',    name: 'Ancient Persia',           color: '#F59E0B' },
+  { id: 'classical',  name: 'Parthian & Sassanid',      color: '#EAB308' },
+  { id: 'islamic',    name: 'Islamic Dynasties',        color: '#6366F1' },
+  { id: 'modern',     name: 'Modern Iran',              color: '#3B82F6' },
+  { id: 'conflicts',  name: 'Major Conflicts',          color: '#EF4444' },
+];
+
+export const iranItems = [
+  {
+    id: 'achaemenid-empire',
+    name: 'Achaemenid Persian Empire',
+    start: -550, end: -330,
+    region: 'ancient',
+    icon: '👑',
+    description: "Cyrus the Great founded the Achaemenid Empire in 550 BCE — the first true world empire. At its height under Darius I and Xerxes, it stretched from the Aegean to the Indus, encompassing around 44% of the world's population. Cyrus issued the first known human rights charter, allowing subject peoples to practice their own religions. The Persian Wars against Greece (490, 480 BCE) famously failed to conquer Athens. Alexander the Great's conquests ended the Achaemenid dynasty in 330 BCE.",
+    periods: [
+      { name: 'Cyrus & Cambyses', start: -550, end: -522 },
+      { name: 'Darius & Xerxes', start: -522, end: -424 },
+      { name: 'Late Achaemenid', start: -424, end: -330 },
+    ],
+  },
+  {
+    id: 'seleucid-parthian',
+    name: 'Seleucid & Parthian Persia',
+    start: -312, end: 224,
+    region: 'classical',
+    icon: '🏹',
+    description: "After Alexander's death, his general Seleucus founded the Seleucid Empire across the Persian lands. The Parthians (Arsacid dynasty) overthrew Seleucid control and revived Iranian culture, creating a state that blocked Roman expansion eastward for centuries. Crassus's defeat at Carrhae (53 BCE) destroyed a Roman army of 40,000. Parthian armies used devastating horse archers and the 'Parthian shot' tactics against Rome.",
+    periods: [
+      { name: 'Seleucid Persia', start: -312, end: -238 },
+      { name: 'Parthian Empire', start: -238, end: 224 },
+    ],
+  },
+  {
+    id: 'sassanid-empire',
+    name: 'Sassanid Empire',
+    start: 224, end: 651,
+    region: 'classical',
+    icon: '🔥',
+    description: "The Sassanid Empire (224–651 CE) was the last great pre-Islamic Persian empire and Rome/Byzantium's principal rival for 400 years. Zoroastrianism was the state religion; Persian literature, art, and philosophy flourished. The empire reached its greatest extent under Khosrow II (590–628), briefly conquering Egypt and threatening Constantinople. Exhausted by decades of war with Byzantium, the Sassanids collapsed before the Arab Muslim conquest within a generation.",
+    periods: [
+      { name: 'Early Sassanid', start: 224, end: 400 },
+      { name: 'Height', start: 400, end: 590 },
+      { name: 'Khosrow II & Collapse', start: 590, end: 651 },
+    ],
+  },
+  {
+    id: 'umayyad-abbasid',
+    name: 'Islamic Conquest & Abbasid Golden Age',
+    start: 637, end: 1220,
+    region: 'islamic',
+    icon: '🕌',
+    description: "Arab Muslim forces defeated the Sassanids at Qadisiyyah (637) and Al-Nahavand (642), bringing Islam to Iran. Persia didn't simply disappear — Persian culture absorbed Islam and transformed it. The Abbasid Caliphate (750–1258), based in Baghdad, was heavily shaped by Persian administrators and scholars. The Islamic Golden Age saw Persian scientists, mathematicians, and poets (al-Biruni, Avicenna/Ibn Sina, Ferdowsi) reshape world civilisation.",
+    periods: [
+      { name: 'Arab Conquest', start: 637, end: 750 },
+      { name: 'Abbasid Golden Age', start: 750, end: 1000 },
+      { name: 'Persian Dynasties (Buyid, Ghaznavid)', start: 945, end: 1220 },
+    ],
+  },
+  {
+    id: 'mongol-timurid',
+    name: 'Mongol & Timurid Period',
+    start: 1220, end: 1501,
+    region: 'islamic',
+    icon: '🏇',
+    description: "Genghis Khan's Mongol invasion (1220) devastated Iran, destroying cities like Nishapur, Merv, and Samarkand. The Ilkhanate Mongols converted to Islam and became patrons of Persian culture. Timur (Tamerlane) swept through Iran in the 1380s–1390s, leaving towers of skulls. The Timurid successor states at Samarkand and Herat became brilliant centres of Persian literature and miniature painting before Safavid unification.",
+    periods: [
+      { name: 'Mongol Destruction', start: 1220, end: 1260 },
+      { name: 'Ilkhanate', start: 1256, end: 1335 },
+      { name: 'Timurid', start: 1370, end: 1501 },
+    ],
+  },
+  {
+    id: 'safavid-empire',
+    name: 'Safavid Empire',
+    start: 1501, end: 1736,
+    region: 'islamic',
+    icon: '🌹',
+    description: "Shah Ismail I founded the Safavid dynasty in 1501 and made Twelver Shia Islam Iran's state religion — creating the distinctive Shia Persian identity that persists today and the enduring Sunni-Shia geopolitical fault line across the Middle East. Isfahan under Shah Abbas the Great (1588–1629) became one of the world's most beautiful cities, its central square an architectural masterpiece. The Safavids clashed constantly with the Ottoman Sunni empire to the west.",
+    periods: [
+      { name: 'Foundation & Early Safavid', start: 1501, end: 1588 },
+      { name: 'Shah Abbas Golden Age', start: 1588, end: 1629 },
+      { name: 'Decline & Collapse', start: 1629, end: 1736 },
+    ],
+  },
+  {
+    id: 'qajar-pahlavi',
+    name: 'Qajar & Pahlavi Dynasty',
+    start: 1796, end: 1979,
+    region: 'modern',
+    icon: '🛢️',
+    description: "The Qajar dynasty (1796–1925) ruled a weakened Iran pressured by Russian and British imperialism. The Constitutional Revolution (1905–1911) established a parliament. Reza Shah Pahlavi seized power (1921) and modernised Iran along secular lines. His son Mohammad Reza Shah was overthrown in the CIA-backed 1953 coup after nationalising oil. The Shah's White Revolution modernised but repressed; growing opposition culminated in the 1979 Islamic Revolution.",
+    periods: [
+      { name: 'Qajar Dynasty', start: 1796, end: 1925 },
+      { name: 'Reza Shah', start: 1925, end: 1941 },
+      { name: 'Mohammad Reza Shah', start: 1941, end: 1979 },
+    ],
+  },
+  {
+    id: 'islamic-republic',
+    name: 'Islamic Republic of Iran',
+    start: 1979, end: 2025,
+    region: 'modern',
+    icon: '🇮🇷',
+    description: "Ayatollah Khomeini's Islamic Revolution (1979) established a theocratic republic. The Iran-Iraq War (1980–1988) killed hundreds of thousands. Iran's nuclear programme has led to international sanctions. The Green Movement (2009) and Mahsa Amini protests (2022) showed persistent popular demand for reform against clerical rule. Iran remains a major regional power, supporting Hezbollah and Hamas while developing ballistic missiles and nuclear technology.",
+    periods: [
+      { name: 'Khomeini Era & Iran-Iraq War', start: 1979, end: 1989 },
+      { name: 'Reform & Reaction', start: 1989, end: 2013 },
+      { name: 'Rouhani to Raisi', start: 2013, end: 2025 },
+    ],
+  },
+];

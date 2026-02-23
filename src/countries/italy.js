@@ -1,0 +1,101 @@
+export const italyCategories = [
+  { id: 'ancient',    name: 'Ancient Rome',             color: '#EAB308' },
+  { id: 'medieval',   name: 'Medieval & City-States',   color: '#78716C' },
+  { id: 'renaissance',name: 'Renaissance & Early Modern',color: '#10B981' },
+  { id: 'risorgimento',name: 'Unification & Modern',    color: '#6366F1' },
+  { id: 'conflicts',  name: 'Major Conflicts',           color: '#EF4444' },
+];
+
+export const italyItems = [
+  {
+    id: 'rome-republic',
+    name: 'Roman Republic',
+    start: -753, end: -27,
+    region: 'ancient',
+    icon: '🏛️',
+    description: "Rome grew from a small Latin city-state to master of the Mediterranean world. The Republic's institutions — Senate, consuls, tribunes — became the template for republican governance. Rome defeated Carthage in the Punic Wars, conquered Greece, and absorbed much of Europe, North Africa, and the Middle East. Social conflict between patricians and plebeians, and between Rome and its Italian allies, drove political reforms. Julius Caesar's crossing of the Rubicon (49 BCE) and subsequent assassination (44 BCE) ended the Republic.",
+    periods: [
+      { name: 'Monarchy & Early Republic', start: -753, end: -509 },
+      { name: 'Republican Expansion', start: -509, end: -146 },
+      { name: 'Late Republic & Civil Wars', start: -146, end: -27 },
+    ],
+  },
+  {
+    id: 'roman-empire',
+    name: 'Roman Empire',
+    start: -27, end: 476,
+    region: 'ancient',
+    icon: '🦅',
+    description: "Augustus inaugurated the Roman Empire (27 BCE), a period of relative peace (Pax Romana) lasting two centuries. At its height under Trajan (117 CE), Rome ruled from Britain to Mesopotamia, from the Rhine to the Sahara — around 70 million people. Successive crises — economic, military, political — weakened the Empire. Diocletian split it; Constantine moved the capital to Constantinople; successive waves of barbarian invasions shattered the Western Empire in 476 CE.",
+    periods: [
+      { name: 'Julio-Claudian & Pax Romana', start: -27, end: 180 },
+      { name: 'Crisis of the Third Century', start: 235, end: 284 },
+      { name: 'Late Empire', start: 284, end: 476 },
+    ],
+  },
+  {
+    id: 'medieval-italy',
+    name: 'Medieval Italy',
+    start: 476, end: 1300,
+    region: 'medieval',
+    icon: '⛪',
+    description: "After Rome's fall, Italy fragmented among Ostrogoths, Byzantines, Lombards, and Franks. The Papacy emerged as a major political power, at times challenging emperors in the Investiture Controversy. Northern Italian city-states — Venice, Genoa, Florence, Milan — grew rich on trade. The Pope vs. Emperor conflict split Italians into Guelph and Ghibelline factions throughout the medieval period.",
+    periods: [
+      { name: 'Barbarian Kingdoms', start: 476, end: 774 },
+      { name: 'Frankish Italy', start: 774, end: 962 },
+      { name: 'City-State Rise', start: 962, end: 1300 },
+    ],
+  },
+  {
+    id: 'renaissance',
+    name: 'Renaissance',
+    start: 1300, end: 1600,
+    region: 'renaissance',
+    icon: '🎨',
+    description: "The Italian Renaissance ('rebirth') was one of history's great cultural flowerings — a rediscovery of classical learning that transformed art, literature, philosophy, and science. Florence under the Medici patronage produced Leonardo da Vinci, Michelangelo, Botticelli, and Machiavelli. Venice, Rome, Milan, and Naples were all vital centres. The printing press spread Renaissance ideas across Europe. Italian city-states also pioneered modern banking and diplomacy.",
+    periods: [
+      { name: 'Proto-Renaissance', start: 1300, end: 1400 },
+      { name: 'High Renaissance', start: 1400, end: 1527 },
+      { name: 'Late Renaissance', start: 1527, end: 1600 },
+    ],
+  },
+  {
+    id: 'foreign-domination',
+    name: 'Foreign Domination',
+    start: 1494, end: 1815,
+    region: 'medieval',
+    icon: '🔗',
+    description: "The Italian Wars (1494–1559) drew France, Spain, and the Holy Roman Empire into Italy, ending with Spanish Habsburgs dominating most of the peninsula. The 17th and 18th centuries saw Italy under Austrian Habsburg control after the War of the Spanish Succession. Napoleon's campaigns transformed Italy, briefly unifying much of it under the Cisalpine Republic and Kingdom of Italy, introducing revolutionary ideas that would fuel the Risorgimento.",
+    periods: [
+      { name: 'Italian Wars & Spanish Rule', start: 1494, end: 1700 },
+      { name: 'Austrian Dominance', start: 1700, end: 1796 },
+      { name: 'Napoleonic Era', start: 1796, end: 1815 },
+    ],
+  },
+  {
+    id: 'risorgimento',
+    name: 'Risorgimento & United Italy',
+    start: 1815, end: 1918,
+    region: 'risorgimento',
+    icon: '🤝',
+    description: "The Risorgimento ('resurgence') was the nationalist movement that unified Italy. Mazzini provided the ideology, Garibaldi the military action (his Expedition of the Thousand captured Sicily and Naples), and Cavour the diplomatic genius. The Kingdom of Italy was proclaimed in 1861 with Victor Emmanuel II as king. Rome became the capital in 1870 when French troops protecting the Pope withdrew. Italy joined WWI on the Allied side, winning its 'mutilated victory' that would fuel Fascism.",
+    periods: [
+      { name: 'Risorgimento', start: 1815, end: 1871 },
+      { name: 'Liberal Italy', start: 1871, end: 1915 },
+      { name: 'World War I', start: 1915, end: 1918 },
+    ],
+  },
+  {
+    id: 'fascism-republic',
+    name: 'Fascism & Republic',
+    start: 1918, end: 2025,
+    region: 'risorgimento',
+    icon: '🇮🇹',
+    description: "Post-WWI resentment and economic crisis enabled Mussolini's Fascist Party to seize power (March on Rome, 1922). Italy invaded Ethiopia (1935) and joined Germany in WWII, but Allied landings in Sicily (1943) led to Mussolini's overthrow and Italy's switch of sides. Post-war, Italy became a republic (1946), joined NATO and the European Coal and Steel Community, and experienced the 'economic miracle' of the 1950s–60s. Despite chronic political instability, Italy developed into a major industrial and cultural power.",
+    periods: [
+      { name: 'Fascist Italy', start: 1922, end: 1943 },
+      { name: 'Liberation & Republic', start: 1943, end: 1960 },
+      { name: 'Modern Italy', start: 1960, end: 2025 },
+    ],
+  },
+];

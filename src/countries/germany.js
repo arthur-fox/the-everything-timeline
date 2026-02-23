@@ -1,0 +1,113 @@
+export const germanyCategories = [
+  { id: 'ancient',    name: 'Ancient & Migration Era', color: '#78716C' },
+  { id: 'medieval',   name: 'Medieval Kingdoms',        color: '#C084FC' },
+  { id: 'empire',     name: 'Holy Roman & German Empire', color: '#6366F1' },
+  { id: 'conflicts',  name: 'Major Conflicts',           color: '#EF4444' },
+  { id: 'modern',     name: 'Modern Germany',            color: '#3B82F6' },
+];
+
+export const germanyItems = [
+  {
+    id: 'germanic-tribes',
+    name: 'Germanic Tribes & Rome',
+    start: -50, end: 500,
+    region: 'ancient',
+    icon: '⚔️',
+    description: 'Germanic tribes — Franks, Saxons, Visigoths, Vandals, and others — occupied the lands east of the Rhine and north of the Danube. Their resistance to Roman expansion culminated in the Battle of Teutoburg Forest (9 CE), where Arminius of the Cherusci destroyed three Roman legions and permanently halted Roman expansion into Germania. The Migration Period (Völkerwanderung) saw these peoples pour into the collapsing Western Roman Empire.',
+    periods: [
+      { name: 'Roman Contact', start: -50, end: 9 },
+      { name: 'Independent Germania', start: 9, end: 375 },
+      { name: 'Migration Period', start: 375, end: 500 },
+    ],
+  },
+  {
+    id: 'frankish-kingdom',
+    name: 'Frankish Kingdom',
+    start: 481, end: 843,
+    region: 'medieval',
+    icon: '👑',
+    description: 'Clovis I united the Frankish tribes and converted to Christianity, founding the Merovingian dynasty. The Carolingians supplanted them; Charlemagne (768–814) built an empire stretching from modern France to eastern Germany and was crowned Holy Roman Emperor on Christmas Day 800. The Treaty of Verdun (843) divided his empire among his grandsons, creating the outlines of modern France and Germany.',
+    periods: [
+      { name: 'Merovingian', start: 481, end: 751 },
+      { name: 'Carolingian', start: 751, end: 843 },
+    ],
+  },
+  {
+    id: 'holy-roman-empire',
+    name: 'Holy Roman Empire',
+    start: 962, end: 1806,
+    region: 'empire',
+    icon: '🦅',
+    description: "The Holy Roman Empire of the German Nation was a complex political entity dominated by German princes, bishops, and the Habsburg dynasty. At its height it encompassed much of Central Europe. Voltaire quipped it was 'neither holy, nor Roman, nor an empire.' The empire was wracked by the Investiture Controversy, the Black Death, and ultimately the Thirty Years' War (1618–1648), after which it was a hollow shell until Napoleon dissolved it in 1806.",
+    periods: [
+      { name: 'Ottonian & Salian', start: 962, end: 1125 },
+      { name: 'Hohenstaufen', start: 1138, end: 1250 },
+      { name: 'Habsburg Dominance', start: 1438, end: 1806 },
+    ],
+  },
+  {
+    id: 'reformation',
+    name: 'Reformation & Religious Wars',
+    start: 1517, end: 1648,
+    region: 'conflicts',
+    icon: '⛪',
+    description: "Martin Luther's posting of the 95 Theses in Wittenberg (1517) ignited the Protestant Reformation and split Western Christianity. The resulting religious wars culminated in the Thirty Years' War (1618–1648), fought largely on German soil, which killed a third of Germany's population. The Peace of Westphalia (1648) established the principle of state sovereignty and religious tolerance.",
+    periods: [
+      { name: 'Lutheran Reformation', start: 1517, end: 1555 },
+      { name: 'Religious Peace', start: 1555, end: 1618 },
+      { name: "Thirty Years' War", start: 1618, end: 1648 },
+    ],
+  },
+  {
+    id: 'prussia-rise',
+    name: 'Rise of Prussia',
+    start: 1618, end: 1871,
+    region: 'empire',
+    icon: '🎖️',
+    description: "Prussia emerged from the Brandenburg-Hohenzollern state as a major European power under Frederick the Great (1740–1786), who transformed it into a military powerhouse and cultural centre. After defeating Austria in the Austro-Prussian War (1866), Otto von Bismarck united the German states through 'blood and iron', culminating in the proclamation of the German Empire in the Hall of Mirrors at Versailles (1871).",
+    periods: [
+      { name: 'Brandenburg-Prussia', start: 1618, end: 1740 },
+      { name: 'Frederick the Great', start: 1740, end: 1786 },
+      { name: 'Path to Unification', start: 1815, end: 1871 },
+    ],
+  },
+  {
+    id: 'german-empire',
+    name: 'German Empire & WWI',
+    start: 1871, end: 1918,
+    region: 'empire',
+    icon: '⚓',
+    description: 'The Second Reich under Kaiser Wilhelm I and Chancellor Bismarck rapidly industrialised and became Europe\'s dominant land power. Wilhelm II\'s aggressive foreign policy, naval arms race with Britain, and the alliance system contributed to the outbreak of World War I (1914–1918). Germany\'s defeat, combined with revolution at home, led to the Kaiser\'s abdication and the armistice of November 1918.',
+    periods: [
+      { name: 'Bismarckian Era', start: 1871, end: 1890 },
+      { name: 'Wilhelmine Germany', start: 1890, end: 1914 },
+      { name: 'World War I', start: 1914, end: 1918 },
+    ],
+  },
+  {
+    id: 'weimar-nazi',
+    name: 'Weimar Republic & Third Reich',
+    start: 1918, end: 1945,
+    region: 'conflicts',
+    icon: '⚠️',
+    description: "The Weimar Republic (1919–1933) was Germany's first democratic experiment, beset by hyperinflation, the Great Depression, and political extremism. Adolf Hitler and the Nazi Party exploited these crises to seize power in 1933. The Third Reich launched World War II (1939–1945) and perpetrated the Holocaust — the systematic murder of six million Jews and millions of others. Germany's unconditional surrender in May 1945 left the country occupied and divided.",
+    periods: [
+      { name: 'Weimar Republic', start: 1918, end: 1933 },
+      { name: 'Third Reich', start: 1933, end: 1939 },
+      { name: 'World War II', start: 1939, end: 1945 },
+    ],
+  },
+  {
+    id: 'divided-unified-germany',
+    name: 'Division & Reunification',
+    start: 1945, end: 2025,
+    region: 'modern',
+    icon: '🧱',
+    description: 'After WWII, Germany was divided into West Germany (FRG, democratic and prosperous) and East Germany (GDR, communist). West Germany\'s Wirtschaftswunder (economic miracle) made it Europe\'s largest economy. The Berlin Wall (built 1961, fell 1989) became the Cold War\'s most potent symbol. Reunification on 3 October 1990 merged the two states. Unified Germany became the anchor of the European Union and the continent\'s leading economic and political power.',
+    periods: [
+      { name: 'Occupation & Division', start: 1945, end: 1949 },
+      { name: 'Cold War Germany', start: 1949, end: 1989 },
+      { name: 'Reunified Germany', start: 1990, end: 2025 },
+    ],
+  },
+];

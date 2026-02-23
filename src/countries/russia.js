@@ -1,0 +1,101 @@
+export const russiaCategories = [
+  { id: 'medieval',   name: 'Medieval Rus',             color: '#78716C' },
+  { id: 'tsardom',    name: 'Tsardom & Empire',          color: '#C084FC' },
+  { id: 'conflicts',  name: 'Major Conflicts',           color: '#EF4444' },
+  { id: 'soviet',     name: 'Soviet Era',                color: '#EF4444' },
+  { id: 'modern',     name: 'Modern Russia',             color: '#3B82F6' },
+];
+
+export const russiaItems = [
+  {
+    id: 'kievan-rus',
+    name: 'Kievan Rus',
+    start: 862, end: 1240,
+    region: 'medieval',
+    icon: '🏰',
+    description: 'Founded by Varangian (Norse) merchants and warriors, Kievan Rus became a powerful medieval state centred on Kyiv. Prince Vladimir the Great converted to Orthodox Christianity in 988, shaping Russian culture for a millennium. At its height under Yaroslav the Wise (1019–1054), it was one of Europe\'s largest states. Fragmentation into rival principalities left it vulnerable to the Mongol invasion of 1237–1240.',
+    periods: [
+      { name: 'Rurikid Foundation', start: 862, end: 980 },
+      { name: 'Golden Age', start: 980, end: 1054 },
+      { name: 'Fragmentation', start: 1054, end: 1240 },
+    ],
+  },
+  {
+    id: 'mongol-yoke',
+    name: 'Mongol Yoke',
+    start: 1237, end: 1480,
+    region: 'medieval',
+    icon: '🏹',
+    description: "Batu Khan's Mongol army devastated the Russian principalities between 1237 and 1240, destroying Kyiv, Vladimir, and dozens of cities. The Golden Horde dominated the Russian lands for over two centuries, extracting tribute and reshaping trade networks. Moscow gradually rose as the leading Russian principality, ultimately refusing tribute to the Horde in 1480, marking the end of the 'Mongol Yoke'.",
+    periods: [
+      { name: 'Mongol Conquest', start: 1237, end: 1242 },
+      { name: 'Golden Horde Dominance', start: 1242, end: 1380 },
+      { name: 'Decline of the Horde', start: 1380, end: 1480 },
+    ],
+  },
+  {
+    id: 'tsardom-of-russia',
+    name: 'Tsardom of Russia',
+    start: 1547, end: 1721,
+    region: 'tsardom',
+    icon: '👑',
+    description: 'Ivan IV (the Terrible) crowned himself the first Tsar of all Russia in 1547, centralising power and expanding eastward into Siberia. The Time of Troubles (1598–1613) saw civil war and Polish intervention before the Romanov dynasty was established. Peter the Great (1682–1725) transformed Russia into a European power, founding St Petersburg, reforming the military, and defeating Sweden in the Great Northern War.',
+    periods: [
+      { name: 'Ivan the Terrible', start: 1547, end: 1584 },
+      { name: 'Time of Troubles', start: 1598, end: 1613 },
+      { name: 'Early Romanovs', start: 1613, end: 1721 },
+    ],
+  },
+  {
+    id: 'russian-empire',
+    name: 'Russian Empire',
+    start: 1721, end: 1917,
+    region: 'tsardom',
+    icon: '🦅',
+    description: "Peter the Great proclaimed the Russian Empire in 1721 after his victory over Sweden. Catherine the Great (1762–1796) expanded Russia's territory dramatically and promoted Enlightenment ideas. Napoleon's invasion in 1812 ended in catastrophic French defeat. The Crimean War (1853–1856) exposed Russian backwardness; the Emancipation of the Serfs (1861) began modernisation. Defeat in WWI and the February Revolution of 1917 ended the Romanov dynasty after 304 years.",
+    periods: [
+      { name: 'Peter & Catherine', start: 1721, end: 1796 },
+      { name: '19th Century Expansion', start: 1796, end: 1905 },
+      { name: 'Late Empire & WWI', start: 1905, end: 1917 },
+    ],
+  },
+  {
+    id: 'russian-revolution',
+    name: 'Revolution & Civil War',
+    start: 1917, end: 1922,
+    region: 'conflicts',
+    icon: '🔴',
+    description: "The February Revolution of 1917 overthrew Tsar Nicholas II. The Bolsheviks under Lenin seized power in the October Revolution and signed the humiliating Treaty of Brest-Litovsk with Germany. A brutal civil war (1917–1922) between the Red Army and White Army forces (backed by foreign intervention) left millions dead. The Bolsheviks emerged victorious and established the Soviet Union in December 1922.",
+    periods: [
+      { name: 'February Revolution', start: 1917, end: 1917 },
+      { name: 'October Revolution', start: 1917, end: 1918 },
+      { name: 'Civil War', start: 1918, end: 1922 },
+    ],
+  },
+  {
+    id: 'soviet-union',
+    name: 'Soviet Union',
+    start: 1922, end: 1991,
+    region: 'soviet',
+    icon: '⭐',
+    description: "The USSR under Stalin (1924–1953) industrialised through brutal Five-Year Plans and collectivisation, killing millions in engineered famines. WWII (1941–1945) saw the USSR bear the brunt of the fighting against Nazi Germany, losing 27 million lives but emerging as a superpower. The Cold War competition with the USA drove the arms race and space race. Under Khrushchev and Brezhnev, the Soviet system stagnated. Gorbachev's reforms (glasnost, perestroika) unleashed forces that dissolved the USSR on 25 December 1991.",
+    periods: [
+      { name: 'Lenin & Stalin', start: 1922, end: 1953 },
+      { name: 'Khrushchev & Brezhnev', start: 1953, end: 1985 },
+      { name: 'Gorbachev & Collapse', start: 1985, end: 1991 },
+    ],
+  },
+  {
+    id: 'modern-russia',
+    name: 'Russian Federation',
+    start: 1991, end: 2025,
+    region: 'modern',
+    icon: '🇷🇺',
+    description: "Russia emerged from the Soviet collapse under Boris Yeltsin, experiencing chaotic privatisation, economic collapse, and the violent Chechen wars. Vladimir Putin came to power in 2000, stabilising Russia through oil revenues and reasserting state authority. Russia's annexation of Crimea (2014) and invasion of Ukraine (2022) marked a dramatic rupture with the post-Cold War order and triggered sweeping Western sanctions.",
+    periods: [
+      { name: 'Yeltsin Era', start: 1991, end: 1999 },
+      { name: 'Putin Era I', start: 2000, end: 2014 },
+      { name: 'Confrontation', start: 2014, end: 2025 },
+    ],
+  },
+];

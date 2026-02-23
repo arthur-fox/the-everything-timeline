@@ -1,0 +1,102 @@
+export const spainCategories = [
+  { id: 'ancient',    name: 'Ancient & Visigothic',     color: '#78716C' },
+  { id: 'medieval',   name: 'Medieval & Reconquista',   color: '#C084FC' },
+  { id: 'empire',     name: 'Spanish Empire',           color: '#EAB308' },
+  { id: 'modern',     name: 'Modern Spain',             color: '#3B82F6' },
+  { id: 'conflicts',  name: 'Major Conflicts',          color: '#EF4444' },
+];
+
+export const spainItems = [
+  {
+    id: 'ancient-hispania',
+    name: 'Ancient Hispania',
+    start: -218, end: 711,
+    region: 'ancient',
+    icon: '🏛️',
+    description: 'Iberians, Celts, Phoenicians, and Greeks inhabited the peninsula before Rome conquered it in the Second Punic War (218–201 BCE). Hispania became one of Rome\'s wealthiest provinces, birthplace of emperors Trajan and Hadrian and philosophers Seneca and Quintilian. After Rome\'s fall, the Visigoths established a Christian kingdom (415–711 CE) across most of Iberia.',
+    periods: [
+      { name: 'Pre-Roman', start: -218, end: -206 },
+      { name: 'Roman Hispania', start: -206, end: 409 },
+      { name: 'Visigothic Kingdom', start: 415, end: 711 },
+    ],
+  },
+  {
+    id: 'al-andalus',
+    name: 'Al-Andalus',
+    start: 711, end: 1492,
+    region: 'medieval',
+    icon: '🌙',
+    description: "Muslim Umayyad forces crossed from North Africa in 711 and conquered most of Iberia within seven years. Al-Andalus became one of medieval Europe's most sophisticated civilisations — its cities of Córdoba, Seville, and Granada were centres of learning, philosophy, and tolerance. Jewish, Christian, and Muslim scholars translated classical Greek works, preserving them for Europe. The Reconquista — Christian kingdoms' gradual reconquest — ended with the fall of Granada in 1492.",
+    periods: [
+      { name: 'Umayyad Emirate & Caliphate', start: 711, end: 1031 },
+      { name: 'Taifa Kingdoms', start: 1031, end: 1238 },
+      { name: 'Nasrid Granada', start: 1238, end: 1492 },
+    ],
+  },
+  {
+    id: 'reconquista',
+    name: 'Christian Kingdoms & Reconquista',
+    start: 718, end: 1516,
+    region: 'medieval',
+    icon: '✝️',
+    description: "The Reconquista began in the mountains of Asturias and took 770 years to complete. The marriage of Ferdinand of Aragon and Isabella of Castile (1469) united the two most powerful Christian kingdoms. 1492 was a pivotal year: Granada fell, Columbus reached the Americas, and the Jews were expelled from Spain. The Spanish Inquisition (1478) enforced religious orthodoxy. Spain entered the 16th century as Europe's dominant power.",
+    periods: [
+      { name: 'Kingdom of Asturias', start: 718, end: 910 },
+      { name: 'Castile & Aragon', start: 910, end: 1469 },
+      { name: 'United Crowns', start: 1469, end: 1516 },
+    ],
+  },
+  {
+    id: 'spanish-empire',
+    name: 'Spanish Empire',
+    start: 1492, end: 1898,
+    region: 'empire',
+    icon: '⚓',
+    description: "The Spanish Empire was the first global empire in history, spanning the Americas, Africa, Asia, and Europe. Silver from Potosí (Bolivia) and Mexico flooded into Spain, funding European wars. Conquistadors Cortés and Pizarro toppled the Aztec and Inca empires. The Philippines connected Spain to Asian trade. Spain dominated European politics under Charles V and Philip II but declined after the defeat of the Armada (1588), the Thirty Years' War, and repeated bankruptcies.",
+    periods: [
+      { name: 'Habsburg Golden Age', start: 1492, end: 1598 },
+      { name: 'Decline', start: 1598, end: 1713 },
+      { name: 'Bourbon Reform', start: 1713, end: 1808 },
+      { name: 'Colonial Loss', start: 1808, end: 1898 },
+    ],
+  },
+  {
+    id: 'napoleonic-liberal',
+    name: 'Napoleonic Era & Liberal Spain',
+    start: 1808, end: 1931,
+    region: 'modern',
+    icon: '⚖️',
+    description: "Napoleon's invasion (1808) and installation of his brother Joseph as king triggered the Peninsular War — a brutal guerrilla conflict that coined the word 'guerrilla'. Spain's American colonies used the chaos to gain independence (1810s–1820s). The 19th century brought chronic instability between liberals and conservatives, the Carlist Wars, and the 1898 Spanish-American War, which stripped Spain of Cuba, Puerto Rico, and the Philippines.",
+    periods: [
+      { name: 'Peninsular War', start: 1808, end: 1814 },
+      { name: 'Constitutional Turmoil', start: 1814, end: 1874 },
+      { name: 'Restoration', start: 1874, end: 1931 },
+    ],
+  },
+  {
+    id: 'civil-war-franco',
+    name: 'Civil War & Franco Era',
+    start: 1931, end: 1975,
+    region: 'conflicts',
+    icon: '✊',
+    description: "The Second Spanish Republic (1931) polarised the country. The military uprising of July 1936 led by General Franco triggered a civil war that became a proxy conflict: Hitler and Mussolini backed Franco; the USSR and International Brigades supported the Republic. Franco's victory in 1939 established a dictatorship that lasted until his death in 1975. Despite brutal repression, Spain industrialised in the 1960s ('Spanish Miracle').",
+    periods: [
+      { name: 'Second Republic', start: 1931, end: 1936 },
+      { name: 'Civil War', start: 1936, end: 1939 },
+      { name: 'Francoist Spain', start: 1939, end: 1975 },
+    ],
+  },
+  {
+    id: 'modern-spain',
+    name: 'Modern Democratic Spain',
+    start: 1975, end: 2025,
+    region: 'modern',
+    icon: '🇪🇸',
+    description: "King Juan Carlos I oversaw Spain's peaceful 'Transition to Democracy' after Franco's death. Spain joined NATO (1982) and the European Community (1986). The 1992 Barcelona Olympics and Seville Expo showcased a confident, modern Spain. The ETA Basque separatist conflict ended in 2011. The 2008 financial crisis hit Spain particularly hard. The Catalan independence movement and COVID-19 have been defining challenges of recent years.",
+    periods: [
+      { name: 'Transition & EU Accession', start: 1975, end: 1992 },
+      { name: 'Post-Cold War Boom', start: 1992, end: 2008 },
+      { name: 'Modern Spain', start: 2008, end: 2025 },
+    ],
+  },
+];

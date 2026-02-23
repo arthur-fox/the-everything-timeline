@@ -16,17 +16,47 @@ import { franceItems, franceCategories } from './countries/france.js';
 import { chinaItems, chinaCategories } from './countries/china.js';
 import { usItems, usCategories } from './countries/us.js';
 import { indiaItems, indiaCategories } from './countries/india.js';
+import { germanyItems, germanyCategories } from './countries/germany.js';
+import { russiaItems, russiaCategories } from './countries/russia.js';
+import { japanItems, japanCategories } from './countries/japan.js';
+import { italyItems, italyCategories } from './countries/italy.js';
+import { spainItems, spainCategories } from './countries/spain.js';
+import { turkeyItems, turkeyCategories } from './countries/turkey.js';
+import { egyptItems, egyptCategories } from './countries/egypt.js';
+import { iranItems, iranCategories } from './countries/iran.js';
+import { brazilItems, brazilCategories } from './countries/brazil.js';
+import { mexicoItems, mexicoCategories } from './countries/mexico.js';
+import { greeceItems, greeceCategories } from './countries/greece.js';
+import { portugalItems, portugalCategories } from './countries/portugal.js';
+import { netherlandsItems, netherlandsCategories } from './countries/netherlands.js';
+import { southKoreaItems, southKoreaCategories } from './countries/south-korea.js';
+import { australiaItems, australiaCategories } from './countries/australia.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
 
 // ============================================================
 // Country registry — add new countries here to scale to 190+
 // ============================================================
 const COUNTRY_REGISTRY = [
-  { id: 'uk',     name: 'United Kingdom', flag: '🇬🇧', minYear: -55,   maxYear: 2025, load: () => ({ items: ukItems,     categories: ukCategories }) },
-  { id: 'france', name: 'France',         flag: '🇫🇷', minYear: -51,   maxYear: 2025, load: () => ({ items: franceItems, categories: franceCategories }) },
-  { id: 'china',  name: 'China',          flag: '🇨🇳', minYear: -2100, maxYear: 2025, load: () => ({ items: chinaItems,  categories: chinaCategories }) },
-  { id: 'us',     name: 'United States',  flag: '🇺🇸', minYear: 1607,  maxYear: 2025, load: () => ({ items: usItems,     categories: usCategories }) },
-  { id: 'india',  name: 'India',          flag: '🇮🇳', minYear: -2600, maxYear: 2025, load: () => ({ items: indiaItems,  categories: indiaCategories }) },
+  { id: 'australia',    name: 'Australia',       flag: '🇦🇺', minYear: -65000, maxYear: 2025, load: () => ({ items: australiaItems,    categories: australiaCategories }) },
+  { id: 'brazil',       name: 'Brazil',          flag: '🇧🇷', minYear: -12000, maxYear: 2025, load: () => ({ items: brazilItems,       categories: brazilCategories }) },
+  { id: 'china',        name: 'China',           flag: '🇨🇳', minYear: -2100,  maxYear: 2025, load: () => ({ items: chinaItems,        categories: chinaCategories }) },
+  { id: 'egypt',        name: 'Egypt',           flag: '🇪🇬', minYear: -3100,  maxYear: 2025, load: () => ({ items: egyptItems,        categories: egyptCategories }) },
+  { id: 'france',       name: 'France',          flag: '🇫🇷', minYear: -51,    maxYear: 2025, load: () => ({ items: franceItems,       categories: franceCategories }) },
+  { id: 'germany',      name: 'Germany',         flag: '🇩🇪', minYear: -50,    maxYear: 2025, load: () => ({ items: germanyItems,      categories: germanyCategories }) },
+  { id: 'greece',       name: 'Greece',          flag: '🇬🇷', minYear: -3000,  maxYear: 2025, load: () => ({ items: greeceItems,       categories: greeceCategories }) },
+  { id: 'india',        name: 'India',           flag: '🇮🇳', minYear: -2600,  maxYear: 2025, load: () => ({ items: indiaItems,        categories: indiaCategories }) },
+  { id: 'iran',         name: 'Iran',            flag: '🇮🇷', minYear: -550,   maxYear: 2025, load: () => ({ items: iranItems,         categories: iranCategories }) },
+  { id: 'italy',        name: 'Italy',           flag: '🇮🇹', minYear: -753,   maxYear: 2025, load: () => ({ items: italyItems,        categories: italyCategories }) },
+  { id: 'japan',        name: 'Japan',           flag: '🇯🇵', minYear: -300,   maxYear: 2025, load: () => ({ items: japanItems,        categories: japanCategories }) },
+  { id: 'mexico',       name: 'Mexico',          flag: '🇲🇽', minYear: -2000,  maxYear: 2025, load: () => ({ items: mexicoItems,       categories: mexicoCategories }) },
+  { id: 'netherlands',  name: 'Netherlands',     flag: '🇳🇱', minYear: 1477,   maxYear: 2025, load: () => ({ items: netherlandsItems,  categories: netherlandsCategories }) },
+  { id: 'portugal',     name: 'Portugal',        flag: '🇵🇹', minYear: 1139,   maxYear: 2025, load: () => ({ items: portugalItems,     categories: portugalCategories }) },
+  { id: 'russia',       name: 'Russia',          flag: '🇷🇺', minYear: 862,    maxYear: 2025, load: () => ({ items: russiaItems,       categories: russiaCategories }) },
+  { id: 'south-korea',  name: 'South Korea',     flag: '🇰🇷', minYear: -2333,  maxYear: 2025, load: () => ({ items: southKoreaItems,   categories: southKoreaCategories }) },
+  { id: 'spain',        name: 'Spain',           flag: '🇪🇸', minYear: -218,   maxYear: 2025, load: () => ({ items: spainItems,        categories: spainCategories }) },
+  { id: 'turkey',       name: 'Turkey',          flag: '🇹🇷', minYear: 1071,   maxYear: 2025, load: () => ({ items: turkeyItems,       categories: turkeyCategories }) },
+  { id: 'uk',           name: 'United Kingdom',  flag: '🇬🇧', minYear: -55,    maxYear: 2025, load: () => ({ items: ukItems,           categories: ukCategories }) },
+  { id: 'us',           name: 'United States',   flag: '🇺🇸', minYear: 1607,   maxYear: 2025, load: () => ({ items: usItems,           categories: usCategories }) },
 ];
 
 // ============================================================
@@ -785,7 +815,7 @@ function switchView(view) {
   // 'countries' is a sentinel — open the picker rather than switch view
   if (view === 'countries') {
     openCountryPicker();
-    resetSelectAfterPickerClose(); // keep select on 'countries' (or current non-country view)
+    viewSelect.value = 'countries'; // keep select showing "Countries..." while picker is open
     return;
   }
 
@@ -813,7 +843,10 @@ let _countriesWasSelected = false;
 viewSelect.addEventListener('mousedown', () => {
   _countriesWasSelected = viewSelect.value === 'countries';
 });
-viewSelect.addEventListener('change', (e) => switchView(e.target.value));
+viewSelect.addEventListener('change', (e) => {
+  _countriesWasSelected = false; // reset so click handler doesn't misfire
+  switchView(e.target.value);
+});
 viewSelect.addEventListener('click', () => {
   if (_countriesWasSelected && viewSelect.value === 'countries') {
     openCountryPicker();
