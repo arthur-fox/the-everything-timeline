@@ -1,0 +1,110 @@
+export const southAfricaCategories = [
+  { id: 'indigenous', name: 'Indigenous Peoples',        color: '#F59E0B' },
+  { id: 'kingdoms',   name: 'African Kingdoms',          color: '#C084FC' },
+  { id: 'colonial',   name: 'Colonial Era',              color: '#78716C' },
+  { id: 'apartheid',  name: 'Apartheid Era',             color: '#EF4444' },
+  { id: 'modern',     name: 'Democratic South Africa',   color: '#3B82F6' },
+];
+
+export const southAfricaItems = [
+  {
+    id: 'san-khoikhoi',
+    name: 'San & Khoikhoi Peoples',
+    start: -100000, end: 1652,
+    region: 'indigenous',
+    icon: '🏹',
+    description: "The San (Bushmen) are among the world's oldest cultures — genetic evidence suggests a lineage stretching back over 100,000 years. Hunter-gatherers with deep ecological knowledge, the San produced extraordinary rock paintings throughout southern Africa — tens of thousands of images depicting animals, humans, and shamanic visions, representing one of humanity's longest artistic traditions. The Khoikhoi ('people people') were pastoralists with cattle and sheep. Both groups were progressively dispossessed by Bantu-speaking farmers moving southward (from c. 300 CE) and then devastated by European diseases and violence after Dutch arrival (1652). Today San communities survive in the Kalahari, Namibia, and Zimbabwe, working to preserve their language and heritage.",
+    periods: [
+      { name: 'Ancient San Culture', start: -100000, end: -10000 },
+      { name: 'Khoikhoi Pastoralism', start: -2000, end: 1652 },
+    ],
+  },
+  {
+    id: 'bantu-mapungubwe',
+    name: 'Bantu Migration & Mapungubwe',
+    start: -300, end: 1300,
+    region: 'kingdoms',
+    icon: '🌾',
+    description: "Bantu-speaking mixed farmers began migrating into southern Africa from central Africa around 300 CE, bringing iron-working, agriculture, and cattle-keeping. By 1000 CE, the Kingdom of Mapungubwe (in the Limpopo Valley, on the modern Zimbabwe/South Africa/Botswana border) was the region's most sophisticated polity — a sacred kingship built on long-distance trade with the Swahili Coast and Indian Ocean. Its rulers were buried with golden artefacts including the famous golden rhinoceros. Mapungubwe was succeeded by Great Zimbabwe (c. 1220–1450) as the region's major power. These kingdoms controlled the gold trade reaching the Indian Ocean world.",
+    periods: [
+      { name: 'Bantu Settlement', start: -300, end: 900 },
+      { name: 'Mapungubwe Kingdom', start: 900, end: 1290 },
+    ],
+  },
+  {
+    id: 'zulu-kingdom',
+    name: 'Zulu Kingdom & Mfecane',
+    start: 1816, end: 1906,
+    region: 'kingdoms',
+    icon: '⚔️',
+    description: "Shaka kaSenzangakhona (c. 1787–1828) transformed a minor Zulu chieftaincy into the most powerful military state in southern Africa through revolutionary tactics: the 'bull horn' encircling formation, short stabbing spear (assegai), and warrior regiments (impis) bound by age-grade loyalty. The Mfecane (c. 1815–1840) — 'the crushing' — saw Zulu military expansion trigger massive displacement and resettlement of peoples across the subcontinent, creating new kingdoms (Lesotho, Ndebele, Swazi). The British tried to subjugate the Zulus; at Isandlwana (January 22, 1879), 1,300 British and allied soldiers were killed — the worst British military defeat to an indigenous force. The British ultimately prevailed; Zululand was annexed in 1906.",
+    periods: [
+      { name: 'Shaka\'s Military Revolution', start: 1816, end: 1828 },
+      { name: 'Zulu Kingdom', start: 1828, end: 1879 },
+      { name: 'Anglo-Zulu War & Aftermath', start: 1879, end: 1906 },
+    ],
+  },
+  {
+    id: 'dutch-british-colony',
+    name: 'Dutch & British Cape Colony',
+    start: 1652, end: 1910,
+    region: 'colonial',
+    icon: '⚓',
+    description: "The Dutch East India Company (VOC) established a refreshment station at the Cape of Good Hope in 1652 — the beginning of permanent European settlement. The VOC imported enslaved people from Madagascar, East Africa, India, and Southeast Asia; their descendants, mixed with indigenous Khoikhoi, became the Cape Malay and Coloured communities. The British seized the Cape Colony in 1806. British settlers arrived in 1820; British annexation of the Eastern Cape triggered the Great Trek (1835–1846) — Boer (Afrikaner) settlers moving north and east to escape British rule, clashing violently with Zulus and Xhosa. The discovery of diamonds in Kimberley (1867) and gold on the Witwatersrand (1886) transformed the economy and drew massive British investment. The Anglo-Boer Wars (1880–81, 1899–1902) — Britain versus the Transvaal and Orange Free State Boer republics — ended with British victory; the scorched-earth policy and concentration camps killed 26,000–28,000 Boer civilians and perhaps 20,000 Black Africans.",
+    periods: [
+      { name: 'VOC Cape Colony', start: 1652, end: 1806 },
+      { name: 'British Cape & Great Trek', start: 1806, end: 1867 },
+      { name: 'Diamonds, Gold & Boer Wars', start: 1867, end: 1910 },
+    ],
+  },
+  {
+    id: 'union-early-apartheid',
+    name: 'Union & Apartheid System',
+    start: 1910, end: 1960,
+    region: 'apartheid',
+    icon: '📜',
+    description: "The Union of South Africa (1910) united the Cape Colony, Natal, Transvaal, and Orange Free State under British sovereignty — but excluded Black, Coloured, and Indian South Africans from meaningful political participation. The African National Congress (ANC) was founded in 1912 to defend African political rights. The National Party won the 1948 election on a platform of apartheid (Afrikaans: 'separateness') — an elaborate system of racial segregation codified in law. The Population Registration Act classified all South Africans by race; the Group Areas Act segregated residential areas; the Separate Amenities Act segregated all public facilities; the Bantu Education Act deliberately provided inferior education to Black children ('Bantu education' was designed to prepare them for a life of unskilled labour). Pass laws controlled Black movement.",
+    periods: [
+      { name: 'Union of South Africa', start: 1910, end: 1948 },
+      { name: 'Apartheid Enacted', start: 1948, end: 1960 },
+    ],
+  },
+  {
+    id: 'apartheid-resistance',
+    name: 'Apartheid & Armed Resistance',
+    start: 1960, end: 1990,
+    region: 'apartheid',
+    icon: '✊',
+    description: "The Sharpeville Massacre (March 21, 1960) — police killed 69 unarmed protesters against pass laws — was a turning point. The ANC was banned; Nelson Mandela and the ANC leadership founded Umkhonto we Sizwe (MK, 'Spear of the Nation') and turned to armed struggle. Mandela was arrested in 1962 and sentenced to life imprisonment at the Rivonia Trial (1964). He was imprisoned for 27 years, primarily on Robben Island. The Soweto Uprising (June 16, 1976) — students protesting compulsory Afrikaans education — was met with police gunfire; the iconic image of dying Hector Pieterson became a global symbol of apartheid's brutality. International sanctions, disinvestment campaigns, and sports boycotts increasingly isolated South Africa. P.W. Botha's limited reforms and state of emergency (1985) failed to quell resistance.",
+    periods: [
+      { name: 'Sharpeville & Rivonia', start: 1960, end: 1966 },
+      { name: 'Soweto & International Pressure', start: 1976, end: 1986 },
+      { name: 'State of Emergency', start: 1986, end: 1990 },
+    ],
+  },
+  {
+    id: 'transition-mandela',
+    name: 'Transition & Mandela Presidency',
+    start: 1990, end: 1999,
+    region: 'modern',
+    icon: '🕊️',
+    description: "F.W. de Klerk (elected 1989) recognised apartheid was unsustainable. On February 11, 1990, Nelson Mandela walked free after 27 years in prison — watched by hundreds of millions worldwide. The ANC and other parties were unbanned. The Convention for a Democratic South Africa (CODESA) negotiations crafted a peaceful transition through compromise. Violence between ANC and Inkatha Freedom Party supporters killed thousands during the transition; the murder of Chris Hani (1993) nearly derailed the process. On April 27, 1994 — Freedom Day — South Africans of all races voted in the first democratic election. Mandela was inaugurated President on May 10, 1994. The Truth and Reconciliation Commission (TRC), chaired by Archbishop Desmond Tutu, offered amnesty for perpetrators who fully disclosed their crimes — a remarkable experiment in restorative justice.",
+    periods: [
+      { name: 'Mandela Released & CODESA', start: 1990, end: 1994 },
+      { name: 'Mandela Presidency', start: 1994, end: 1999 },
+    ],
+  },
+  {
+    id: 'post-apartheid',
+    name: 'Democratic South Africa',
+    start: 1999, end: 2025,
+    region: 'modern',
+    icon: '🇿🇦',
+    description: "Post-apartheid South Africa has faced the enormous challenge of addressing extreme inequality (the world's highest Gini coefficient) while building democratic institutions. Thabo Mbeki (1999–2008) achieved macroeconomic stability but his HIV/AIDS denialism cost an estimated 330,000 lives. Jacob Zuma (2009–2018) was mired in corruption ('state capture' — the looting of state enterprises by private interests connected to the Gupta family) on a massive scale. Cyril Ramaphosa replaced Zuma in 2018 and pursues anti-corruption reforms. Persistent challenges: loadshedding (rolling power blackouts from failed electricity infrastructure), 35% unemployment, violent crime, and the 'triple crisis' of inequality, unemployment, and poverty. The ANC, increasingly corruption-tainted, lost its parliamentary majority for the first time in 2024 elections, forming a Government of National Unity.",
+    periods: [
+      { name: 'Mbeki Era', start: 1999, end: 2008 },
+      { name: 'Zuma Era & State Capture', start: 2009, end: 2018 },
+      { name: 'Ramaphosa & Democracy Tested', start: 2018, end: 2025 },
+    ],
+  },
+];

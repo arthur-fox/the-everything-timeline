@@ -1,0 +1,110 @@
+export const ethiopiaCategories = [
+  { id: 'ancient',   name: 'Ancient Ethiopia',        color: '#F59E0B' },
+  { id: 'axum',      name: 'Axumite Empire',          color: '#EAB308' },
+  { id: 'medieval',  name: 'Medieval & Solomonic',    color: '#C084FC' },
+  { id: 'modern',    name: 'Modern Ethiopia',         color: '#3B82F6' },
+  { id: 'conflicts', name: 'Major Conflicts',         color: '#EF4444' },
+];
+
+export const ethiopiaItems = [
+  {
+    id: 'pre-axumite',
+    name: 'Pre-Axumite & D\'mt Kingdom',
+    start: -1000, end: 100,
+    region: 'ancient',
+    icon: '🏺',
+    description: "Ethiopia is one of humanity's oldest homelands — Lucy (Australopithecus afarensis, 3.2 million years old) was found in the Afar region. The Kingdom of D'mt (c. 980–400 BCE) in northern Ethiopia and Eritrea was influenced by Sabaean traders from across the Red Sea in modern Yemen, adopting South Arabian script and architecture. Pre-Axumite towns show advanced urban organisation. The Ge'ez script — still used in Ethiopia and Eritrea — developed during this period. The region's position controlling the Red Sea trade routes between the Mediterranean, Arabia, India, and Africa made it strategically and commercially vital.",
+    periods: [
+      { name: 'Ancient Homeland & D\'mt', start: -1000, end: -400 },
+      { name: 'Pre-Axumite Period', start: -400, end: 100 },
+    ],
+  },
+  {
+    id: 'axumite-empire',
+    name: 'Axumite Empire',
+    start: 100, end: 940,
+    region: 'axum',
+    icon: '⭐',
+    description: "The Axumite Empire (1st–10th centuries CE) was one of the ancient world's great powers — alongside Rome, Persia, and China. Its capital Axum in northern Ethiopia commanded Red Sea trade routes, exporting ivory, gold, frankincense, and slaves. King Ezana converted to Christianity c. 330 CE, making Axum one of the first Christian states in the world — predating Rome's official conversion by decades. The Ethiopian Orthodox Church traces its foundation to this moment. The Axumite stelae — massive carved obelisks up to 33m tall — remain one of Africa's most striking architectural achievements. The Arab expansion (7th century) cut off Axum's Red Sea trade, causing gradual decline; the legendary Queen Yodit (Gudit) destroyed Axum c. 940 CE.",
+    periods: [
+      { name: 'Rise & Trade Dominance', start: 100, end: 330 },
+      { name: 'Christian Axum (Ezana)', start: 330, end: 700 },
+      { name: 'Decline', start: 700, end: 940 },
+    ],
+  },
+  {
+    id: 'zagwe-dynasty',
+    name: 'Zagwe Dynasty',
+    start: 900, end: 1270,
+    region: 'medieval',
+    icon: '⛪',
+    description: "After Axum's fall, the Zagwe dynasty ruled a Christian highland kingdom from Roha (renamed Lalibela). The most extraordinary achievement of the Zagwe period — and perhaps of all Ethiopian history — is the rock-hewn churches of Lalibela (c. 1180–1220 CE), commissioned by King Lalibela. Eleven churches were carved directly from the red volcanic rock, connected by tunnels and trenches, each with fully decorated interiors. The largest, Bete Medhane Alem, is the world's largest rock-hewn church. King Lalibela intended his city as an Ethiopian Jerusalem after Saladin captured the original. These churches remain a living pilgrimage site and UNESCO World Heritage Site.",
+    periods: [
+      { name: 'Early Zagwe', start: 900, end: 1150 },
+      { name: 'Lalibela & Rock Churches', start: 1150, end: 1270 },
+    ],
+  },
+  {
+    id: 'solomonic-dynasty',
+    name: 'Solomonic Dynasty',
+    start: 1270, end: 1855,
+    region: 'medieval',
+    icon: '👑',
+    description: "In 1270, Yekuno Amlak overthrew the Zagwe and claimed descent from Solomon and the Queen of Sheba — a lineage documented in the Kebra Nagast ('Glory of Kings'), Ethiopia's national epic. The Solomonic dynasty would rule (with brief interruptions) until Haile Selassie's overthrow in 1974 — one of the world's longest royal dynasties. Emperor Zara Yaqob (r. 1434–68) presided over a golden age of Christian art and literature. Ahmad ibn Ibrahim al-Ghazi ('Gragn', 'the Left-Handed') nearly destroyed the Christian kingdom in the early 16th century; Portuguese soldiers and firearms helped repel the invasion. The Oromo migrations (16th–17th centuries) transformed Ethiopian demographics.",
+    periods: [
+      { name: 'Early Solomonic', start: 1270, end: 1500 },
+      { name: 'Gragn\'s Jihad & Portuguese Aid', start: 1527, end: 1543 },
+      { name: 'Gondarine Period', start: 1636, end: 1855 },
+    ],
+  },
+  {
+    id: 'battle-of-adwa',
+    name: 'Battle of Adwa & Italian Wars',
+    start: 1889, end: 1941,
+    region: 'conflicts',
+    icon: '⚔️',
+    description: "Emperor Menelik II (r. 1889–1913) modernised Ethiopia and outmanoeuvred Italian ambitions. When Italy imposed the Treaty of Wuchale (1889) with a hidden clause making Ethiopia an Italian protectorate, Menelik repudiated it. Italy invaded in 1895–96; at the Battle of Adwa (March 1, 1896), an Ethiopian force of 100,000 annihilated the Italian colonial army — the most decisive military defeat of a European power by an African state in the colonial era. Adwa became a global symbol of African resistance; it inspired independence movements across the continent and the African diaspora. Mussolini's Italy took revenge by invading with poison gas (1935–36); Emperor Haile Selassie appealed to the League of Nations in vain. British and Ethiopian forces expelled the Italians in 1941.",
+    periods: [
+      { name: 'Menelik & Adwa', start: 1889, end: 1896 },
+      { name: 'Italian Occupation', start: 1935, end: 1941 },
+    ],
+  },
+  {
+    id: 'haile-selassie',
+    name: 'Haile Selassie Era',
+    start: 1930, end: 1974,
+    region: 'modern',
+    icon: '👑',
+    description: "Haile Selassie (Ras Tafari Makonnen, 1892–1975) became Emperor in 1930 and ruled until 1974. He was the 225th (claimed) descendant of Solomon and Sheba. His speech before the League of Nations (1936) after the Italian invasion became one of the 20th century's great orations — and the League's failure to act fatally undermined it. He helped found the Organisation of African Unity (OAU) in Addis Ababa (1963), championing African unity. He is also revered as a messianic figure (Jah) in Rastafarianism, which emerged in Jamaica in the 1930s. Increasingly authoritarian and unable to address the 1973 famine, Haile Selassie was deposed in a military coup on September 12, 1974.",
+    periods: [
+      { name: 'Coronation & Pre-War', start: 1930, end: 1935 },
+      { name: 'Exile & Restoration', start: 1935, end: 1950 },
+      { name: 'Pan-African Role & Decline', start: 1950, end: 1974 },
+    ],
+  },
+  {
+    id: 'derg',
+    name: 'Derg & Red Terror',
+    start: 1974, end: 1991,
+    region: 'conflicts',
+    icon: '💥',
+    description: "The Derg ('Committee') was a Marxist military junta led by Colonel Mengistu Haile Mariam that ruled Ethiopia 1974–1991. It declared Ethiopia a socialist state, nationalised land and industry, and carried out the 'Red Terror' (1977–78) — a campaign of political repression that killed an estimated 500,000 people. The 1983–85 famine, exacerbated by forced collectivisation and the disruption of relief supplies as a military tactic, killed approximately 1 million people; the Live Aid concert (1985) made it a global crisis. Protracted civil wars with Eritrea (fighting for independence since 1961) and Tigray (TPLF) eventually destroyed the regime. Eritrea achieved independence in 1991; the EPRDF coalition (led by Tigrayan Meles Zenawi) defeated the Derg.",
+    periods: [
+      { name: 'Socialist Revolution & Red Terror', start: 1974, end: 1980 },
+      { name: 'Famine & Civil War', start: 1980, end: 1991 },
+    ],
+  },
+  {
+    id: 'modern-ethiopia',
+    name: 'Modern Ethiopia',
+    start: 1991, end: 2025,
+    region: 'modern',
+    icon: '🇪🇹',
+    description: "The Ethiopian People's Revolutionary Democratic Front (EPRDF) under Meles Zenawi governed for 27 years, achieving rapid economic growth (averaging 10% annually) while maintaining authoritarian control. Ethiopia-Eritrea War (1998–2000) killed 80,000–100,000 in a pointless border conflict. Abiy Ahmed (born 1976) became Prime Minister in 2018, initiating democratic reforms, releasing political prisoners, and making peace with Eritrea — winning the Nobel Peace Prize in 2019. However, the Tigray War (November 2020–November 2022), triggered by tensions between Abiy's government and the TPLF, became one of the world's deadliest conflicts of recent decades, killing an estimated 300,000–500,000 people. Ethiopia remains Africa's second most populous nation (~125 million) and a major economic power, home to the African Union headquarters.",
+    periods: [
+      { name: 'EPRDF Rule (Meles Zenawi)', start: 1991, end: 2012 },
+      { name: 'Transition & Abiy Ahmed', start: 2018, end: 2020 },
+      { name: 'Tigray War & Aftermath', start: 2020, end: 2025 },
+    ],
+  },
+];

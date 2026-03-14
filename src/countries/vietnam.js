@@ -1,0 +1,100 @@
+export const vietnamCategories = [
+  { id: 'ancient',      name: 'Ancient Vietnam',        color: '#F59E0B' },
+  { id: 'chinese-rule', name: 'Chinese Domination',     color: '#C084FC' },
+  { id: 'independence', name: 'Dynastic Independence',  color: '#6366F1' },
+  { id: 'colonial',     name: 'Colonial & Conflict',    color: '#78716C' },
+  { id: 'modern',       name: 'Modern Vietnam',         color: '#3B82F6' },
+];
+
+export const vietnamItems = [
+  {
+    id: 'prehistoric-dong-son',
+    name: 'Prehistoric Vietnam & Đông Sơn Culture',
+    start: -2879, end: -111,
+    region: 'ancient',
+    icon: '🥁',
+    description: "Vietnamese tradition traces the Hùng kings back to 2879 BCE — the legendary founders of the first Vietnamese state, Văn Lang. Archaeological evidence confirms sophisticated Bronze Age cultures from at least 2000 BCE. The Đông Sơn culture (c. 700–200 BCE) produced one of Southeast Asia's greatest Bronze Age traditions — Đông Sơn drums, decorated with geometric patterns and images of warriors and boats, were traded across the entire Southeast Asian archipelago. The culture centred on the Red River Delta, which remains Vietnam's demographic heartland. The Lac Viet peoples of this culture are the direct ancestors of the Kinh Vietnamese majority.",
+    periods: [
+      { name: 'Legendary Hùng Kings', start: -2879, end: -700 },
+      { name: 'Đông Sơn Bronze Age', start: -700, end: -111 },
+    ],
+  },
+  {
+    id: 'chinese-domination',
+    name: 'Chinese Domination (Bắc thuộc)',
+    start: -111, end: 939,
+    region: 'chinese-rule',
+    icon: '🏯',
+    description: "The Han dynasty conquered Nam Việt in 111 BCE, beginning over a millennium of Chinese rule ('Bắc thuộc' — Northern domination). This profoundly shaped Vietnamese culture: Confucianism, the Chinese writing system, Buddhism, administrative structures, and architectural styles were all absorbed. Yet Vietnamese identity persisted, periodically asserting itself in revolts. The most celebrated rebellion was led by the Trưng Sisters (Trưng Trắc and Trưng Nhị) in 40–43 CE — they drove the Chinese out for three years before being defeated; they are Vietnam's greatest heroines. Later rebels included Bà Triệu (248 CE) and Phùng Hưng (8th century). The Chinese rule paradoxically strengthened Vietnamese identity by giving it something to resist.",
+    periods: [
+      { name: 'Han Conquest & Early Resistance', start: -111, end: 100 },
+      { name: 'Trưng Sisters & Continued Revolts', start: 40, end: 600 },
+      { name: 'Late Chinese Rule', start: 600, end: 939 },
+    ],
+  },
+  {
+    id: 'dynastic-independence',
+    name: 'Dynastic Independence',
+    start: 939, end: 1858,
+    region: 'independence',
+    icon: '👑',
+    description: "Ngô Quyền's victory at the Battle of Bạch Đằng River (938 CE) — using iron-tipped stakes hidden in the river to destroy a Chinese fleet — ended Chinese domination. For the next 900 years, Vietnam was independent under a succession of dynasties. The Lý (1009–1225), Trần (1225–1400), and Lê (1428–1789) dynasties built a sophisticated bureaucratic state. The Vietnamese genius at repelling invasions is legendary: Trần Hưng Đạo defeated three Mongol invasions (1258, 1285, 1287–88) using guerrilla warfare and scorched earth — one of history's greatest military achievements against the Mongols. Lê Lợi liberated Vietnam from a brief Chinese occupation (1407–1427). Vietnamese territory gradually expanded southward, absorbing the Hindu-Buddhist kingdom of Champa and Khmer territories in the Mekong Delta.",
+    periods: [
+      { name: 'Early Independence (Ngô, Đinh, Lý)', start: 939, end: 1200 },
+      { name: 'Trần Dynasty & Mongol Wars', start: 1225, end: 1400 },
+      { name: 'Lê Dynasty & Southern Expansion', start: 1428, end: 1788 },
+      { name: 'Tây Sơn & Nguyễn Dynasty', start: 1788, end: 1858 },
+    ],
+  },
+  {
+    id: 'french-colonisation',
+    name: 'French Colonisation',
+    start: 1858, end: 1954,
+    region: 'colonial',
+    icon: '🏳️',
+    description: "France began its military conquest of Vietnam in 1858 (Da Nang), driven by commercial interests and Catholic missionary protection. By 1887, France unified Vietnam, Cambodia, and Laos into French Indochina. The colonial economy centred on rubber plantations (worked in near-slave conditions), rice exports, and coal mining — enriching France while impoverishing Vietnamese peasants. The tax system was particularly brutal. Japanese forces occupied Indochina in WWII (1940–1945), undermining French authority. Hồ Chí Minh's Việt Minh (a broad anti-colonial coalition led by communists) fought the Japanese and then declared independence on September 2, 1945 — quoting the American Declaration of Independence. France refused to recognise independence; the First Indochina War (1946–1954) ended at Điện Biên Phủ, where Việt Minh forces besieged and destroyed the French garrison, forcing France to withdraw.",
+    periods: [
+      { name: 'French Conquest & Colonisation', start: 1858, end: 1940 },
+      { name: 'Japanese Occupation & Viet Minh', start: 1940, end: 1945 },
+      { name: 'First Indochina War', start: 1946, end: 1954 },
+    ],
+  },
+  {
+    id: 'american-war',
+    name: 'American War & Reunification',
+    start: 1954, end: 1975,
+    region: 'colonial',
+    icon: '💥',
+    description: "The Geneva Accords (1954) temporarily divided Vietnam at the 17th parallel, pending reunification elections promised for 1956 — elections that never happened, as the US and South Vietnam (under Ngô Đình Diệm) refused. The communist North (Democratic Republic of Vietnam) under Hồ Chí Minh supported National Liberation Front (Việt Cộng) insurgency in the South. The Gulf of Tonkin incident (August 1964, later revealed to be partly fabricated) gave President Johnson authority to escalate US involvement. At its peak, 543,000 US troops were deployed. The Tết Offensive (January 1968) — simultaneous NLF attacks on over 100 cities — shocked American public opinion. The 1968 My Lai massacre of civilians eroded support further. US forces withdrew after the Paris Peace Accords (1973). North Vietnam's final offensive captured Saigon on April 30, 1975; Vietnam was reunified in 1976. An estimated 3 million Vietnamese and 58,000 Americans died.",
+    periods: [
+      { name: 'Division & Diem Era', start: 1954, end: 1963 },
+      { name: 'US Escalation', start: 1964, end: 1968 },
+      { name: 'Vietnamisation & Withdrawal', start: 1969, end: 1975 },
+    ],
+  },
+  {
+    id: 'socialist-republic',
+    name: 'Post-War Socialist Republic',
+    start: 1975, end: 1986,
+    region: 'modern',
+    icon: '🔴',
+    description: "Reunification created immediate challenges: the South's economy was integrated into a socialist model, causing massive disruption. Hundreds of thousands of former South Vietnamese military and government officials were sent to 're-education' camps. 'Boat people' — Vietnamese refugees fleeing poverty, repression, and ethnic persecution (especially ethnic Chinese) — numbered over 800,000 between 1975 and 1995, in one of the Cold War's largest refugee crises. Vietnam invaded Cambodia in December 1978, deposing the genocidal Khmer Rouge — an internationally controversial but arguably humanitarian intervention. China, a Khmer Rouge ally, launched a punitive invasion of northern Vietnam (Sino-Vietnamese War, 1979); Vietnam repelled it. The US trade embargo and Soviet aid dependency constrained the economy.",
+    periods: [
+      { name: 'Reunification Struggles', start: 1975, end: 1979 },
+      { name: 'Cambodia & Sino-Vietnamese War', start: 1978, end: 1986 },
+    ],
+  },
+  {
+    id: 'doi-moi-modern',
+    name: 'Đổi Mới & Modern Vietnam',
+    start: 1986, end: 2025,
+    region: 'modern',
+    icon: '🇻🇳',
+    description: "The Sixth National Congress (December 1986) launched Đổi Mới ('renovation') — a series of economic reforms shifting Vietnam toward a socialist-oriented market economy. Collectivised agriculture was decollectivised; private enterprise and foreign investment were encouraged. GDP growth averaged over 7% annually in the 1990s–2010s, reducing poverty from over 60% (1986) to under 5% (2022). The US trade embargo was lifted (1994); diplomatic relations normalised (1995). Vietnam joined ASEAN (1995), the WTO (2007), and signed the Trans-Pacific Partnership's successor. The Communist Party of Vietnam maintains one-party rule while presiding over a dynamic economy. Vietnam has become a major manufacturing hub (especially electronics, textiles, and footwear), a popular tourist destination, and is navigating a careful balance between China and the United States.",
+    periods: [
+      { name: 'Đổi Mới Reforms', start: 1986, end: 1995 },
+      { name: 'Economic Growth & Integration', start: 1995, end: 2010 },
+      { name: 'Modern Manufacturing Power', start: 2010, end: 2025 },
+    ],
+  },
+];

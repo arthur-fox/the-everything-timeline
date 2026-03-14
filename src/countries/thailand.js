@@ -1,0 +1,113 @@
+export const thailandCategories = [
+  { id: 'ancient',   name: 'Ancient Kingdoms',   color: '#F59E0B' },
+  { id: 'sukhothai', name: 'Sukhothai & Ayutthaya', color: '#C084FC' },
+  { id: 'chakri',    name: 'Chakri Dynasty',      color: '#3B82F6' },
+  { id: 'modern',    name: 'Modern Thailand',     color: '#10B981' },
+  { id: 'conflicts', name: 'Conflicts & Coups',   color: '#EF4444' },
+];
+
+export const thailandItems = [
+  {
+    id: 'prehistoric-mon-khmer',
+    name: 'Prehistoric Thailand & Mon-Khmer Cultures',
+    start: -3000, end: 1238,
+    region: 'ancient',
+    icon: '🏺',
+    description: "The territory of modern Thailand was inhabited from at least 40,000 years ago; Ban Chiang (c. 3600–1000 BCE) produced some of Southeast Asia's earliest bronze objects. The Mon people created the Dvaravati culture (6th–11th centuries CE) — Theravada Buddhist kingdoms scattered across the central plains that produced distinctive stucco-ornamented Buddhist architecture and the earliest use of the Thai script's precursors. The Khmer Empire (centred in Angkor, Cambodia) dominated the eastern and northeastern regions from the 9th to 13th centuries, building temples and administrative centres. Tai-speaking peoples migrated southward from Yunnan (China) from approximately the 10th century onward, gradually becoming the dominant population.",
+    periods: [
+      { name: 'Prehistoric & Bronze Age', start: -3000, end: 500 },
+      { name: 'Dvaravati Mon Culture', start: 500, end: 1000 },
+      { name: 'Khmer Domination', start: 1000, end: 1238 },
+    ],
+  },
+  {
+    id: 'sukhothai',
+    name: 'Sukhothai Kingdom',
+    start: 1238, end: 1438,
+    region: 'sukhothai',
+    icon: '🏯',
+    description: "Sukhothai ('Dawn of Happiness') is traditionally considered the first Thai kingdom, founded when local chieftains threw off Khmer suzerainty. The most celebrated king was Ramkhamhaeng the Great (r. c. 1279–1298), who reportedly invented the Thai alphabet (c. 1283), creating a writing system beautifully adapted to the Thai language. His famous stone inscription describes Sukhothai as a prosperous, just kingdom where 'in the water there are fish, in the field there is rice.' Theravada Buddhism — brought from Sri Lanka — became the state religion and the foundation of Thai identity. Sukhothai's art (the walking Buddha image, ceramic kilns) deeply influenced subsequent Thai aesthetics. Sukhothai's power declined as Ayutthaya rose; it was absorbed in 1438.",
+    periods: [
+      { name: 'Sukhothai Independence', start: 1238, end: 1279 },
+      { name: 'Ramkhamhaeng\'s Golden Age', start: 1279, end: 1298 },
+      { name: 'Sukhothai Decline', start: 1298, end: 1438 },
+    ],
+  },
+  {
+    id: 'ayutthaya',
+    name: 'Ayutthaya Kingdom',
+    start: 1351, end: 1767,
+    region: 'sukhothai',
+    icon: '👑',
+    description: "Ayutthaya (1351–1767) was one of Asia's greatest pre-modern cities, with a population estimated at one million by the 17th century — comparable to London or Paris. Located at the confluence of three rivers and accessible to oceangoing vessels, it became the dominant commercial and political power in mainland Southeast Asia. Ayutthaya defeated the Khmer Empire (1431) and extracted tribute from the Malay Peninsula. The royal court adopted Khmer concepts of divine kingship (devaraja). Portuguese traders arrived in 1511; Dutch, English, French, and Japanese merchants followed, making Ayutthaya a cosmopolitan trading hub. The kingdom's warrior kings repulsed multiple Burmese invasions. However, the Burmese Konbaung dynasty's invasion of 1765–67 was catastrophic — Ayutthaya was completely destroyed after a 14-month siege, its treasures looted and its cultural memory shattered.",
+    periods: [
+      { name: 'Early Ayutthaya', start: 1351, end: 1500 },
+      { name: 'Height & Golden Age', start: 1500, end: 1700 },
+      { name: 'Burmese Conflicts & Fall', start: 1700, end: 1767 },
+    ],
+  },
+  {
+    id: 'thonburi-chakri',
+    name: 'Thonburi & Early Chakri Dynasty',
+    start: 1767, end: 1851,
+    region: 'chakri',
+    icon: '⚡',
+    description: "General Taksin reunified the shattered Thai kingdom within 15 years of Ayutthaya's fall — a remarkable military achievement. He established a new capital at Thonburi (across the river from modern Bangkok). Mental illness (or a political coup cloaked in that allegation) led to his overthrow and execution in 1782. General Chao Phraya Chakri became Rama I, founding the Chakri dynasty that rules Thailand to this day. He established the new capital at Bangkok (Krung Thep, 'City of Angels') and began rebuilding Thai civilisation — constructing the Grand Palace, Wat Phra Kaew (the Temple of the Emerald Buddha), and reconstituting the Buddhist canon. Rama II and Rama III continued consolidation while navigating increasing Western pressure.",
+    periods: [
+      { name: 'Taksin\'s Reunification', start: 1767, end: 1782 },
+      { name: 'Rama I: New Capital & Rebuilding', start: 1782, end: 1824 },
+      { name: 'Rama II & III', start: 1824, end: 1851 },
+    ],
+  },
+  {
+    id: 'mongkut-chulalongkorn',
+    name: 'Modernisation & Independence Preserved',
+    start: 1851, end: 1932,
+    region: 'chakri',
+    icon: '🌟',
+    description: "Siam's survival as the only Southeast Asian nation to avoid European colonisation required extraordinary diplomatic skill and strategic concessions. Rama IV, King Mongkut (1851–1868) — a Buddhist monk for 27 years before ascending the throne — modernised administration, opened Siam to Western trade and diplomacy, and hired British tutors (the historical basis for The King and I, though the musical misrepresents him). His son Rama V, King Chulalongkorn (1868–1910), carried out transformational reforms: abolished slavery (1905), modernised the legal and administrative system, built railways, and sent princes to European universities. He ceded territories to French Indochina and British Burma — roughly a third of the kingdom's territory — to preserve the core. His equestrian statue in Bangkok remains one of the most revered monuments.",
+    periods: [
+      { name: 'Mongkut & Opening', start: 1851, end: 1868 },
+      { name: 'Chulalongkorn\'s Reforms', start: 1868, end: 1910 },
+      { name: 'Vajiravudh & Prajadhipok', start: 1910, end: 1932 },
+    ],
+  },
+  {
+    id: 'constitutional-revolution',
+    name: 'Constitutional Revolution & WWII',
+    start: 1932, end: 1957,
+    region: 'conflicts',
+    icon: '⚔️',
+    description: "On June 24, 1932, the Khana Ratsadon ('People's Party') — Western-educated civilian and military officials — carried out a bloodless coup ending absolute monarchy. King Prajadhipok accepted constitutional limits. The new regime was dominated by competing military and civilian factions. Field Marshal Plaek Phibunsongkhram (Phibun) led governments with ultranationalist and fascist characteristics — renaming the country 'Thailand' (1939) and aligning with Japan in WWII after Japanese forces demanded transit rights through the kingdom. Thailand thus avoided invasion while Thai resistance (the Free Thai Movement) maintained Allied contacts. After Japan's defeat, Thailand was rehabilitated through American Cold War policy and joined the UN (1946).",
+    periods: [
+      { name: 'Constitutional Era', start: 1932, end: 1938 },
+      { name: 'Phibun & WWII Alliance with Japan', start: 1938, end: 1945 },
+      { name: 'Post-War Realignment', start: 1945, end: 1957 },
+    ],
+  },
+  {
+    id: 'cold-war-thailand',
+    name: 'Cold War & Development',
+    start: 1957, end: 1973,
+    region: 'conflicts',
+    icon: '🔴',
+    description: "Field Marshal Sarit Thanarat's 1957 coup established a decade of military-dominated development. Thailand aligned closely with the United States: Thai troops fought in the Korean and Vietnam Wars; US airbases in Thailand flew missions over Vietnam; CIA operations used Thailand as a base. American military spending transformed the Thai economy and social landscape. Rapid economic growth began. Despite authoritarian governance, Thailand developed a significant middle class and industrialising economy. The student revolution of October 14, 1973 — a mass democratic uprising that unexpectedly toppled the military government of Thanom Kittikachorn — briefly installed civilian democracy before another coup in 1976 ended the experiment in violence.",
+    periods: [
+      { name: 'Sarit\'s Development Dictatorship', start: 1957, end: 1963 },
+      { name: 'US Alliance & Vietnam War', start: 1963, end: 1973 },
+    ],
+  },
+  {
+    id: 'modern-thailand',
+    name: 'Modern Thailand',
+    start: 1973, end: 2025,
+    region: 'modern',
+    icon: '🇹🇭',
+    description: "Thailand's modern history has oscillated between democracy and military coups — experiencing 13 successful coups since 1932. The 1997 Asian financial crisis originated partly in Bangkok's property and currency collapse, devastating the economy and spreading across Asia. Thailand recovered strongly with IMF support. Thaksin Shinawatra (PM 2001–06) won landslide elections with rural populist policies; his 2006 military coup triggered a decade of 'Red Shirt vs. Yellow Shirt' political conflict. Another coup in 2014 brought General Prayuth Chan-o-cha to power; his junta governed until managed elections (2019) kept him in power. King Bhumibol Adulyadej (r. 1946–2016), revered as a stabilising father figure, was replaced by King Vajiralongkorn (Rama X). A new pro-democracy wave emerged; the Move Forward party won the 2023 elections but was blocked by the Senate from forming government.",
+    periods: [
+      { name: 'Democratic Experiments & Coups', start: 1973, end: 1997 },
+      { name: 'Asian Crisis & Thaksin Era', start: 1997, end: 2010 },
+      { name: 'Political Conflict & Prayuth Junta', start: 2010, end: 2025 },
+    ],
+  },
+];
