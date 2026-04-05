@@ -1,0 +1,100 @@
+export const saudiArabiaCategories = [
+  { id: 'ancient',   name: 'Ancient Arabia',        color: '#F59E0B' },
+  { id: 'islamic',   name: 'Birth of Islam',        color: '#10B981' },
+  { id: 'ottoman',   name: 'Ottoman & Reform Era',  color: '#78716C' },
+  { id: 'modern',    name: 'Saudi Kingdom',         color: '#3B82F6' },
+  { id: 'oil-era',   name: 'Oil Era & Modernisation', color: '#EAB308' },
+];
+
+export const saudiArabiaItems = [
+  {
+    id: 'ancient-arabia',
+    name: 'Ancient Arabia',
+    start: -3000, end: 600,
+    region: 'ancient',
+    icon: '🏺',
+    description: "The Arabian Peninsula was the birthplace of some of antiquity's most important trade networks. Incense — frankincense and myrrh — from southern Arabia was in enormous demand for religious ceremonies across the ancient Mediterranean and Near East; the 'Incense Route' made the Nabataean Kingdom (centred at Petra) and the kingdoms of Saba (biblical Sheba), Himyar, and Ma'in wealthy. Arab tribes traded with Mesopotamia, Egypt, and later Rome; the peninsula's desert interior remained unconquered by any imperial power. By the 6th century CE, the principal Arabian cities were Mecca (a pagan pilgrimage centre with the Kaaba) and Medina (then called Yathrib), connected to caravan routes linking Yemen to Syria. The Quraysh tribe controlled Mecca's commerce and religious functions.",
+    periods: [
+      { name: 'Ancient Trade Kingdoms (Saba/Himyar)', start: -3000, end: -500 },
+      { name: 'Nabataean & Roman Era', start: -500, end: 400 },
+      { name: 'Pre-Islamic Arabia (Jahiliyya)', start: 400, end: 610 },
+    ],
+  },
+  {
+    id: 'birth-of-islam',
+    name: 'Birth of Islam & the Prophet',
+    start: 610, end: 632,
+    region: 'islamic',
+    icon: '☪️',
+    description: "Muhammad ibn Abdullah (c. 570–632 CE), born in Mecca into the Quraysh tribe, began receiving divine revelations (the Quran) in 610 CE. The new monotheistic faith initially gained few converts in Mecca; the Quraysh elite, whose wealth depended on pagan pilgrimage, violently opposed it. In 622 CE, Muhammad and his followers emigrated to Yathrib (Medina) — the Hijra, which marks the beginning of the Islamic calendar. In Medina, Muhammad established the first Islamic community, negotiated between tribal factions (the Constitution of Medina), and began military campaigns. Mecca was conquered in 630 CE virtually without bloodshed; the Kaaba was cleared of idols. By Muhammad's death in 632 CE, most of Arabia had accepted Islam through a combination of conversion, diplomacy, and military force.",
+    periods: [
+      { name: 'First Revelations in Mecca', start: 610, end: 622 },
+      { name: 'Medina & Community Building', start: 622, end: 630 },
+      { name: 'Conquest of Mecca & Unification', start: 630, end: 632 },
+    ],
+  },
+  {
+    id: 'rashidun-caliphate',
+    name: 'Rashidun & Umayyad Caliphates',
+    start: 632, end: 750,
+    region: 'islamic',
+    icon: '🌙',
+    description: "The four 'Rightly Guided Caliphs' (Abu Bakr, Umar, Uthman, Ali) who succeeded Muhammad launched Islam's first extraordinary military expansion. Within 23 years of Muhammad's death, Arab armies had conquered Persia, Egypt, Syria, and Iraq — creating an empire stretching from the Pyrenees to the Indus. Mecca and Medina remained the spiritual centres of the new faith; the annual Hajj pilgrimage made them the world's first 'global cities' in terms of the diversity of their pilgrims. The first Islamic civil war (First Fitna, 656–661 CE) — over succession between Ali and Muawiyah — produced the Sunni-Shia split that divides Islam to this day. The Umayyad Caliphate (661–750) moved the capital to Damascus; Arabia became a religious heartland without political primacy.",
+    periods: [
+      { name: 'Rashidun Caliphate & Conquests', start: 632, end: 661 },
+      { name: 'First Fitna (Sunni-Shia Split)', start: 656, end: 661 },
+      { name: 'Umayyad Caliphate', start: 661, end: 750 },
+    ],
+  },
+  {
+    id: 'ottoman-hejaz',
+    name: 'Ottoman Rule & Wahhabi Reform',
+    start: 1517, end: 1924,
+    region: 'ottoman',
+    icon: '🏰',
+    description: "The Ottoman Sultan Selim I conquered Egypt and the Hejaz (the western Arabian coastal region including Mecca and Medina) in 1517, assuming the title of Caliph. For 400 years, the Ottomans maintained control of the Holy Cities and the Hajj route — a major source of prestige. In the 18th century, Muhammad ibn Abd al-Wahhab (1703–1792), a puritanical Islamic reformer, forged an alliance with Muhammad ibn Saud, chief of the Diriyah oasis — founding the First Saudi State (1744) and the Wahhabi-Salafi reform movement that would shape modern Sunni Islam. Ottoman-Egyptian forces crushed the First Saudi State (1818), but it revived twice. The Arab Revolt (1916), backed by Britain (Lawrence of Arabia), helped drive the Ottomans from Arabia. The Ottoman Caliphate was abolished by Atatürk in 1924.",
+    periods: [
+      { name: 'Ottoman Hejaz', start: 1517, end: 1744 },
+      { name: 'First & Second Saudi States', start: 1744, end: 1891 },
+      { name: 'Ottoman Decline & Arab Revolt', start: 1891, end: 1924 },
+    ],
+  },
+  {
+    id: 'saudi-kingdom',
+    name: 'Kingdom of Saudi Arabia',
+    start: 1902, end: 1960,
+    region: 'modern',
+    icon: '👑',
+    description: "Abdulaziz ibn Saud (Ibn Saud, 1876–1953) recaptured Riyadh from the rival Rashidi clan in 1902 with a force of 40 men — beginning a two-decade military campaign that united most of the Arabian Peninsula. By 1925 he controlled the Hejaz (including Mecca and Medina). On September 23, 1932, the Kingdom of Saudi Arabia was formally proclaimed with Ibn Saud as its first King. The discovery of oil by the California-Arabian Standard Oil Company (later Aramco) in 1938 transformed everything. In 1945, Ibn Saud met President Roosevelt aboard the USS Quincy — establishing the fundamental US-Saudi relationship: American security guarantees in exchange for reliable oil supplies at stable prices. Ibn Saud fathered at least 45 sons by multiple wives; the kingdom has been ruled by his descendants ever since.",
+    periods: [
+      { name: 'Ibn Saud\'s Conquests', start: 1902, end: 1932 },
+      { name: 'Kingdom Founded', start: 1932, end: 1938 },
+      { name: 'Oil Discovery & US Alliance', start: 1938, end: 1953 },
+    ],
+  },
+  {
+    id: 'oil-wealth',
+    name: 'Oil Wealth & OPEC',
+    start: 1960, end: 2000,
+    region: 'oil-era',
+    icon: '🛢️',
+    description: "Saudi Arabia's oil reserves — approximately 16% of the world's proven reserves — are the largest conventional deposits on Earth, mostly in the Eastern Province. Saudi Arabia was a founding member of OPEC (1960). The 1973 oil embargo, triggered by US support for Israel in the Yom Kippur War, quadrupled world oil prices and demonstrated Saudi Arabia's geopolitical leverage. Saudi Arabia channelled oil revenues into rapid modernisation — universities, hospitals, highways — while maintaining a deeply conservative Islamic social code under Wahhabi influence. The seizure of the Grand Mosque in Mecca (1979) by Juhayman al-Otaybi and 500 militants — ended by Saudi and French special forces — shocked the kingdom; the Al Saud responded by giving the religious establishment (ulema) greater social control in exchange for political loyalty. In 1990, Saddam Hussein's invasion of Kuwait brought 500,000 US troops to Saudi soil — a decision that inflamed Osama bin Laden.",
+    periods: [
+      { name: 'OPEC Founding & Oil Embargo', start: 1960, end: 1975 },
+      { name: 'Rapid Development & Mosque Seizure', start: 1975, end: 1990 },
+      { name: 'Gulf War & Bin Laden Era', start: 1990, end: 2000 },
+    ],
+  },
+  {
+    id: 'modern-saudi',
+    name: 'Modern Saudi Arabia',
+    start: 2000, end: 2025,
+    region: 'oil-era',
+    icon: '🇸🇦',
+    description: "Saudi Arabia's role in the 9/11 attacks (15 of 19 hijackers were Saudi citizens; Osama bin Laden was Saudi-born) strained the US relationship while forcing internal reckoning with religious extremism. King Abdullah (r. 2005–2015) introduced cautious reforms — municipalities allowed women to vote (2015). Mohammed bin Salman (MBS), elevated to Crown Prince in 2017, has pursued a sweeping modernisation agenda (Vision 2030): women now drive, cinemas reopened, entertainment expanded; simultaneously, political opponents were imprisoned or killed (Jamal Khashoggi's murder in the Istanbul consulate, 2018 — ordered by MBS according to US intelligence). Saudi Arabia and Iran lead a Sunni-Shia regional rivalry (Yemen War from 2015, Syria, Iraq). The kingdom is investing massively in post-oil diversification: NEOM megacity, sports (LIV Golf, Premier League, F1), and renewable energy.",
+    periods: [
+      { name: '9/11 Aftermath & Abdullah Reforms', start: 2001, end: 2015 },
+      { name: 'MBS & Vision 2030', start: 2017, end: 2025 },
+    ],
+  },
+];

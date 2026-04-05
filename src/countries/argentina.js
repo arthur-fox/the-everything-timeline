@@ -1,0 +1,101 @@
+export const argentinaCategories = [
+  { id: 'indigenous', name: 'Indigenous Peoples',        color: '#F59E0B' },
+  { id: 'colonial',   name: 'Spanish Colonial Era',      color: '#78716C' },
+  { id: 'republic',   name: 'Early Republic',            color: '#C084FC' },
+  { id: 'modern',     name: 'Modern Argentina',          color: '#3B82F6' },
+  { id: 'peronism',   name: 'Peronism & Political Cycles', color: '#EF4444' },
+];
+
+export const argentinaItems = [
+  {
+    id: 'indigenous-argentina',
+    name: 'Indigenous Peoples',
+    start: -11000, end: 1516,
+    region: 'indigenous',
+    icon: '🏹',
+    description: "The territory of modern Argentina was inhabited by diverse Indigenous cultures for at least 11,000 years. In the northwest (Tucumán, Jujuy, Salta), the Diaguita and Calchaquí peoples developed sedentary agricultural cultures and were part of the Andean cultural sphere; the Inca Empire (Tawantinsuyu) extended into northwestern Argentina by the 15th century. The Pampas grasslands were home to nomadic hunter-gatherers (Querandí, Puelche, Tehuelche) who hunted the guanaco and rhea. The Gran Chaco was occupied by the Toba, Wichí, and Moqoit peoples. Patagonia and Tierra del Fuego were home to the Mapuche and the Selk'nam, who survived in one of the world's harshest environments. The introduction of the horse (after Spanish colonisation) transformed Pampas peoples, creating highly mobile equestrian cultures that resisted Spanish and later Argentine expansion.",
+    periods: [
+      { name: 'Paleo-Indian Settlement', start: -11000, end: -3000 },
+      { name: 'Andean & Pampas Cultures', start: -3000, end: 1450 },
+      { name: 'Inca Expansion into NW Argentina', start: 1450, end: 1516 },
+    ],
+  },
+  {
+    id: 'spanish-colonial',
+    name: 'Spanish Colonial Argentina',
+    start: 1516, end: 1810,
+    region: 'colonial',
+    icon: '⚓',
+    description: "Juan Díaz de Solís entered the Río de la Plata estuary in 1516 (and was promptly killed and reportedly eaten by the Charrúa). Buenos Aires was first founded in 1535 by Pedro de Mendoza but abandoned due to Indigenous resistance; permanently re-established in 1580 by Juan de Garay. The region (Viceroyalty of the Río de la Plata, created 1776) was a colonial backwater compared to silver-rich Peru — Buenos Aires exported hides and smuggled goods. The Bourbon Reforms (1770s) broke the Lima trade monopoly and opened Buenos Aires to Atlantic trade, transforming it rapidly. The British invasions of Buenos Aires (1806–07) — repelled by local militia without Spanish help — gave porteños (Buenos Aires residents) self-confidence and made British commercial dominance without political control the model. The Napoleonic overthrow of the Spanish Bourbon monarchy triggered the independence movement.",
+    periods: [
+      { name: 'Conquest & Early Settlement', start: 1516, end: 1620 },
+      { name: 'Colonial Backwater & Jesuit Missions', start: 1620, end: 1776 },
+      { name: 'Viceroyalty & British Invasions', start: 1776, end: 1810 },
+    ],
+  },
+  {
+    id: 'independence',
+    name: 'Independence & Civil Wars',
+    start: 1810, end: 1862,
+    region: 'republic',
+    icon: '🗡️',
+    description: "Argentina declared independence on July 9, 1816. The independence movement was led by figures including Manuel Belgrano (creator of the national flag) and José de San Martín — who led his Army of the Andes (including Chilean and Argentine troops) over the Andes in an audacious winter campaign to liberate Chile (1817) and Peru (1821). After independence, Argentina was torn apart by civil wars between Unitarians (Buenos Aires, centralists) and Federalists (interior provinces). The caudillo (strongman) era: Juan Manuel de Rosas controlled Buenos Aires 1829–52 with brutal efficiency — a controversial figure, both tyrant and proto-populist. The Battle of Caseros (1852) ended Rosas's rule; the Argentine Confederation gradually unified. The Constitution of 1853 modelled on the US Constitution established the federal structure that endures today.",
+    periods: [
+      { name: 'Independence & San Martín', start: 1810, end: 1821 },
+      { name: 'Civil Wars & Rosas Era', start: 1829, end: 1852 },
+      { name: 'Constitutional Organisation', start: 1852, end: 1862 },
+    ],
+  },
+  {
+    id: 'belle-epoque',
+    name: 'Immigration Boom & Belle Époque',
+    start: 1880, end: 1930,
+    region: 'republic',
+    icon: '🌾',
+    description: "Between 1880 and 1930, Argentina received over 6 million immigrants — mostly Italian and Spanish, but also Jews fleeing pogroms, Welsh settlers in Patagonia, and immigrants from across Europe. Buenos Aires became 'the Paris of South America', with elegant boulevards, opera houses, and cafés. Argentine wheat and beef fed Britain and Europe; the country ranked among the world's top 10 economies by 1900. The pampas were transformed by railways and fenced estancias (cattle ranches) worked by gauchos. The Conquest of the Desert (1879–80) — General Roca's military campaign against the Mapuche and Tehuelche peoples — opened Patagonia to settlement but was a catastrophe for Indigenous peoples. Tango emerged in the Buenos Aires slums and conventillos (tenement houses) of Italian and African-Argentine communities in the 1880s–1890s — and became the country's defining cultural gift to the world.",
+    periods: [
+      { name: 'Conquest of the Desert & Land', start: 1879, end: 1890 },
+      { name: 'Mass Immigration & Growth', start: 1880, end: 1910 },
+      { name: 'Belle Époque & Tango', start: 1900, end: 1930 },
+    ],
+  },
+  {
+    id: 'peronism',
+    name: 'Peronism & Political Instability',
+    start: 1943, end: 1983,
+    region: 'peronism',
+    icon: '💥',
+    description: "Juan Domingo Perón (1895–1974) is the central — and most divisive — figure in Argentine history. A military officer who rose to prominence in the 1943 coup, he was elected president in 1946 with the support of urban workers ('descamisados' — the shirtless ones), organised labour, and the charismatic campaigning of his wife Eva 'Evita' Perón (1919–1952). Peronism combined labour rights, welfare expansion, and economic nationalism (industrialisation, nationalisation) with authoritarian populism and cult of personality. Evita's death at 33 from cancer created a political martyr whose image remains ubiquitous. Perón was overthrown in 1955 (Revolución Libertadora) and exiled; he returned in 1973 and died in 1974. The Dirty War (1976–1983) — the military junta's campaign against leftists — killed or disappeared an estimated 30,000 people; the Mothers of the Plaza de Mayo became a symbol of resistance worldwide.",
+    periods: [
+      { name: 'First Perón Government', start: 1946, end: 1955 },
+      { name: 'Military & Return of Perón', start: 1955, end: 1974 },
+      { name: 'Dirty War (Junta)', start: 1976, end: 1983 },
+    ],
+  },
+  {
+    id: 'falklands-democracy',
+    name: 'Falklands War & Democracy',
+    start: 1982, end: 2001,
+    region: 'modern',
+    icon: '⚔️',
+    description: "The military junta, facing economic collapse and political crisis, seized the Falkland Islands (Malvinas) from Britain on April 2, 1982 in a nationalist gamble. Britain dispatched a task force; Argentine forces surrendered on June 14, 1982. The defeat ended military rule: Raúl Alfonsín won democratic elections (1983) and oversaw a remarkable transition — the military juntas were tried and convicted, an unprecedented accountability for Latin American military rule. The trials of former junta leaders (including life sentences for Jorge Videla) set a global precedent for transitional justice. Democracy was established but the economy remained volatile: hyperinflation (1989, 3,000% annual rate); Carlos Menem's neoliberal reforms (1989–1999) with the controversial dollar peg; then the catastrophic economic collapse of 2001 — Argentina defaulted on $100 billion in debt, the largest sovereign default in history to that point, with five presidents in two weeks.",
+    periods: [
+      { name: 'Falklands War & Transition', start: 1982, end: 1983 },
+      { name: 'Alfonsín & Menem Era', start: 1983, end: 2001 },
+      { name: 'Economic Collapse of 2001', start: 2001, end: 2001 },
+    ],
+  },
+  {
+    id: 'modern-argentina',
+    name: 'Modern Argentina',
+    start: 2001, end: 2025,
+    region: 'modern',
+    icon: '🇦🇷',
+    description: "Post-2001 Argentina rebuilt under Néstor Kirchner (2003–2007) and Cristina Fernández de Kirchner (2007–2015) — Kirchnerism: debt renegotiation (Argentina restructured its default debt, paying cents on the dollar), economic nationalism, and social spending funded by commodity exports (soybean boom). Argentina legalised same-sex marriage (2010) — the first in Latin America. Economic mismanagement produced recurring inflation crises; the peso devalued repeatedly. Mauricio Macri's market-friendly government (2015–2019) faced another financial crisis. Argentina has the world's third largest shale gas reserves (Vaca Muerta), potentially transformative. The 2022 FIFA World Cup win — Argentina's third, and Lionel Messi's crowning achievement — produced national ecstasy. Javier Milei, a self-described 'anarcho-capitalist' and chainsaw-wielding radical libertarian, won the 2023 election on a platform of dollarisation and state dismantlement — applying the most extreme austerity measures in Argentine history.",
+    periods: [
+      { name: 'Kirchner Era', start: 2003, end: 2015 },
+      { name: 'Macri & Economic Crisis', start: 2015, end: 2023 },
+      { name: 'Milei\'s Radical Experiment', start: 2023, end: 2025 },
+    ],
+  },
+];

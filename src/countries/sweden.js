@@ -1,0 +1,100 @@
+export const swedenCategories = [
+  { id: 'viking',    name: 'Viking Age',              color: '#78716C' },
+  { id: 'medieval',  name: 'Medieval Kingdom',        color: '#C084FC' },
+  { id: 'empire',    name: 'Swedish Empire',          color: '#F59E0B' },
+  { id: 'modern',    name: 'Modern Sweden',           color: '#3B82F6' },
+  { id: 'welfare',   name: 'Welfare State & Culture', color: '#10B981' },
+];
+
+export const swedenItems = [
+  {
+    id: 'prehistoric-viking',
+    name: 'Prehistoric Sweden & Viking Age',
+    start: -8000, end: 1100,
+    region: 'viking',
+    icon: '⚓',
+    description: "Scandinavia was settled after the last Ice Age retreated (c. 8000 BCE). The Germanic tribes who inhabited the Swedish lands — the Svear (from whom 'Sverige', Sweden, derives) in the Lake Mälaren region and the Götar to the south — are first mentioned in Roman sources. The Viking Age (c. 793–1066 CE) was one of history's most dramatic periods of expansion. While Norwegian and Danish Vikings raided and settled western Europe (Normandy, Ireland, England), Swedish Vikings — the 'Varangians' — went east: along Russian rivers to Constantinople and Baghdad, establishing the trading routes that created the Kievan Rus state. The Varangian Guard in Constantinople was the Byzantine Emperor's elite personal bodyguard. Swedish Vikings reached the Volga and traded with the Abbasid Caliphate; Arab silver dirhams have been found in thousands of Scandinavian hoards.",
+    periods: [
+      { name: 'Prehistoric Sweden', start: -8000, end: 750 },
+      { name: 'Viking Age (Varangians East)', start: 793, end: 1066 },
+      { name: 'Christianisation', start: 1000, end: 1100 },
+    ],
+  },
+  {
+    id: 'medieval-kingdom',
+    name: 'Medieval Kingdom of Sweden',
+    start: 1100, end: 1521,
+    region: 'medieval',
+    icon: '👑',
+    description: "Medieval Sweden emerged as a unified kingdom under the Svea and Göta peoples, formally adopting Christianity in the 11th–12th centuries. Stockholm was founded c. 1252 as a trading post and defensive stronghold on the island of Stadsholmen. Sweden was brought into the Kalmar Union (1397) with Denmark and Norway under Danish leadership — a union resented by Swedish nobles. The mining of iron and copper in Bergslagen made Sweden economically important; the Hanseatic League traded extensively with Swedish ports. The struggle against Danish dominance shaped Sweden's medieval politics. The Stockholm Bloodbath (November 8–10, 1520) — King Christian II of Denmark executed 82–90 Swedish nobles, bishops, and burghers — provoked a Swedish revolt led by Gustav Vasa, who freed Sweden from Danish rule and was elected King (June 6, 1523 — Sweden's National Day).",
+    periods: [
+      { name: 'Early Kingdom & Stockholm Founded', start: 1100, end: 1300 },
+      { name: 'Kalmar Union', start: 1397, end: 1520 },
+      { name: 'Stockholm Bloodbath & Gustav Vasa', start: 1520, end: 1521 },
+    ],
+  },
+  {
+    id: 'reformation-vasa',
+    name: 'Vasa Dynasty & Reformation',
+    start: 1521, end: 1611,
+    region: 'medieval',
+    icon: '⛪',
+    description: "Gustav Vasa (r. 1523–1560) founded the Vasa dynasty and transformed Sweden from a medieval kingdom into a modern centralised state. He broke with Rome and introduced the Lutheran Reformation (1527) — confiscating Church property to fund the state. The Vasa dynasty was capable but turbulent: Erik XIV's mental instability ended with his deposition and poisoning; Johan III, Sigismund, and Karl IX struggled over religion (Lutheranism vs. Catholicism) and power. The Vasa kings expanded Swedish territory in the Baltic, acquiring Estonia (1561). Gustav Vasa's grandson Gustav II Adolf (Gustavus Adolphus, r. 1611–1632) would transform Sweden into a great power. The famous warship Vasa, built 1626–28 to project Swedish naval power, capsized in Stockholm harbour on its maiden voyage — salvaged intact in 1961, it is now one of the world's best-preserved 17th-century ships.",
+    periods: [
+      { name: 'Gustav Vasa & Reformation', start: 1521, end: 1560 },
+      { name: 'Later Vasa Conflicts', start: 1560, end: 1611 },
+    ],
+  },
+  {
+    id: 'swedish-empire',
+    name: 'Swedish Empire (Stormaktstiden)',
+    start: 1611, end: 1721,
+    region: 'empire',
+    icon: '🦁',
+    description: "Sweden's 'Age of Greatness' (Stormaktstiden, 1611–1721) saw it become the dominant Baltic power and a major European force. Gustav II Adolf — a military genius — transformed Swedish tactics (combined arms: mobile artillery, cavalry, infantry) and intervened in the Thirty Years' War (1630), saving the Protestant cause. He was killed at Lützen (1632) but Sweden continued fighting, emerging from the Peace of Westphalia (1648) with Pomerania, Bremen, and other German territories. Queen Christina — educated like a prince, one of the most learned monarchs in history — abdicated in 1654 to convert to Catholicism. Charles X Gustav and Charles XI further consolidated the empire. Charles XII (r. 1697–1718) was a military prodigy who spent his entire reign at war, initially winning brilliant victories but fatally overreaching: his invasion of Russia ended in catastrophic defeat at Poltava (1709). Sweden never recovered great-power status.",
+    periods: [
+      { name: 'Gustavus Adolphus & Thirty Years War', start: 1611, end: 1648 },
+      { name: 'Queen Christina & Consolidation', start: 1632, end: 1697 },
+      { name: 'Charles XII & Collapse (Poltava)', start: 1697, end: 1721 },
+    ],
+  },
+  {
+    id: 'age-of-liberty-napoleonic',
+    name: 'Age of Liberty & Bernadotte Dynasty',
+    start: 1718, end: 1900,
+    region: 'modern',
+    icon: '📜',
+    description: "After Charles XII's death, Sweden's parliament (Riksdag) seized power from the monarchy — the 'Age of Liberty' (1718–1772) was one of 18th-century Europe's most democratic experiments, with competing parliamentary parties ('Caps' and 'Hats'). Gustavus III (r. 1771–1792) staged a coup restoring royal power and patronised the arts (he founded the Swedish Academy in 1786, which awards the Nobel Prize in Literature). He was assassinated at a masked ball — inspiring Verdi's opera Un ballo in maschera. The Napoleonic Wars ended Sweden's last major war: France forced Sweden to cede Finland to Russia (1809), ending 600 years of Swedish rule. One of Napoleon's marshals, Jean-Baptiste Bernadotte, was elected Crown Prince (1810) — extraordinarily, his descendants (House of Bernadotte) still reign. Sweden entered a period of peaceful neutrality; industrial transformation began in the late 19th century.",
+    periods: [
+      { name: 'Age of Liberty', start: 1718, end: 1772 },
+      { name: 'Gustavus III & Loss of Finland', start: 1772, end: 1809 },
+      { name: 'Bernadotte Dynasty & Industrialisation', start: 1818, end: 1900 },
+    ],
+  },
+  {
+    id: 'world-wars-neutrality',
+    name: 'Neutrality & World Wars',
+    start: 1900, end: 1950,
+    region: 'modern',
+    icon: '🕊️',
+    description: "Sweden maintained formal neutrality in both World Wars, though its neutrality was pragmatically compromised in each. In WWI, Sweden traded with both sides; in WWII, it allowed German troops transit through its territory to Norway (the 'Midsummer Crisis', 1941) while also sheltering refugees — including nearly all of Denmark's 7,000 Jews when Denmark smuggled them to Sweden overnight in 1943. Swedish iron ore was critical to the German war economy. Raoul Wallenberg — a Swedish diplomat in Budapest — saved an estimated 100,000 Hungarian Jews by issuing Swedish protective passports before being arrested by the Soviets (1945, fate still unclear). Sweden also sold iron and ball bearings to the Allies. This 'humanitarian neutrality' model — staying out of war while doing good — became a cornerstone of Swedish identity.",
+    periods: [
+      { name: 'WWI Neutrality', start: 1914, end: 1918 },
+      { name: 'Interwar & Social Democracy Begins', start: 1918, end: 1939 },
+      { name: 'WWII Neutrality & Wallenberg', start: 1939, end: 1945 },
+    ],
+  },
+  {
+    id: 'welfare-state-modern',
+    name: 'Welfare State & Modern Sweden',
+    start: 1945, end: 2025,
+    region: 'welfare',
+    icon: '🇸🇪',
+    description: "The Swedish Social Democratic Party (SAP) dominated government from 1932 to 1976 (and repeatedly since), building the most comprehensive welfare state in the world: universal healthcare, generous parental leave, free higher education, and a welfare 'cradle to grave'. The 'Swedish Model' combined a highly competitive export economy with high taxation and social solidarity. ABBA, Volvo, Ericsson, H&M, Spotify, and IKEA are all Swedish global brands. Olof Palme (assassinated 1986) was the most internationally engaged Swedish PM, advocating Third World solidarity and opposing apartheid, Vietnam, and US foreign policy. Sweden joined the EU in 1995 (having rejected the euro). After 200 years of neutrality, Russia's invasion of Ukraine prompted Sweden to apply for NATO membership (May 2022), joining in March 2024 — a historic reversal. Immigration has tested the cohesion of the welfare model.",
+    periods: [
+      { name: 'Social Democratic Welfare State', start: 1945, end: 1976 },
+      { name: 'Olof Palme & Swedish Model', start: 1969, end: 1986 },
+      { name: 'EU Membership & NATO', start: 1995, end: 2025 },
+    ],
+  },
+];

@@ -1,0 +1,101 @@
+export const canadaCategories = [
+  { id: 'indigenous', name: 'Indigenous Peoples',     color: '#F59E0B' },
+  { id: 'colonial',   name: 'French & British Rivalry', color: '#78716C' },
+  { id: 'dominion',   name: 'Dominion of Canada',     color: '#EF4444' },
+  { id: 'modern',     name: 'Modern Canada',          color: '#3B82F6' },
+  { id: 'identity',   name: 'Identity & Society',     color: '#10B981' },
+];
+
+export const canadaItems = [
+  {
+    id: 'first-nations',
+    name: 'Indigenous Peoples',
+    start: -15000, end: 1500,
+    region: 'indigenous',
+    icon: '🦅',
+    description: "The lands now called Canada were home to diverse Indigenous peoples for at least 15,000 years before European contact. These were not primitive societies but sophisticated civilisations adapted to every environment the continent offered. The Pacific Northwest Coast peoples (Haida, Tlingit, Coast Salish) developed among the world's most complex hunter-gatherer cultures — with hereditary nobility, elaborate potlatch ceremonies, and monumental totem poles. The Haudenosaunee (Iroquois) Confederacy was a sophisticated confederal democracy whose governing principles may have influenced American constitutional thinkers. The Anishinaabe, Cree, Blackfoot, and Métis peoples of the interior were expert hunters of the vast buffalo herds. The Inuit of the Arctic developed technologies for survival in one of Earth's harshest environments. An estimated 500,000–2 million people lived in what is now Canada before European contact.",
+    periods: [
+      { name: 'Paleo-Indian Settlement', start: -15000, end: -8000 },
+      { name: 'Archaic & Woodland Cultures', start: -8000, end: 1000 },
+      { name: 'Late Pre-Contact', start: 1000, end: 1500 },
+    ],
+  },
+  {
+    id: 'european-contact',
+    name: 'Norse & Early European Contact',
+    start: 1000, end: 1600,
+    region: 'colonial',
+    icon: '⛵',
+    description: "Norse explorers under Leif Erikson established a settlement at L'Anse aux Meadows (in modern Newfoundland) around 1000 CE — the first confirmed European presence in the Americas, five centuries before Columbus. The settlement was short-lived. John Cabot (Giovanni Caboto), sailing for England, reached Newfoundland in 1497 — the first formal European claim to Canadian territory. Jacques Cartier (1534–42), commissioned by Francis I of France, sailed the St Lawrence River and claimed the territory for France, encountering Iroquoian villages at Stadacona (Québec City) and Hochelaga (Montréal). The Grand Banks off Newfoundland had been fished by Basque, Portuguese, and Norman fishermen since the early 16th century; their interactions with Indigenous peoples established early trading relationships.",
+    periods: [
+      { name: 'Norse Settlement (L\'Anse aux Meadows)', start: 1000, end: 1020 },
+      { name: 'Cabot & Cartier', start: 1497, end: 1543 },
+      { name: 'Early Fishing & Trade', start: 1500, end: 1600 },
+    ],
+  },
+  {
+    id: 'new-france',
+    name: 'New France & Fur Trade',
+    start: 1608, end: 1763,
+    region: 'colonial',
+    icon: '🦫',
+    description: "Samuel de Champlain founded Québec City (1608) — the first permanent French settlement — and became the 'Father of New France'. The fur trade drove French expansion: the beaver pelt, prized in Europe for felt hats, was the engine of colonial commerce. French explorers (coureurs des bois, voyageurs) and Jesuit missionaries pushed deep into the continent — reaching the Great Lakes, the Mississippi, and even Louisiana. New France at its peak (c. 1713) was vastly larger than British colonies but sparsely populated — perhaps 70,000 French settlers versus 250,000 in the British colonies. Catholic missionaries (Jean de Brébeuf and the 'Canadian Martyrs') worked among the Huron; devastating epidemics of European diseases killed 50–90% of many Indigenous populations. The Seven Years' War (French and Indian War) ended French Canada: General Wolfe's forces scaled the cliffs of Québec and defeated Montcalm on the Plains of Abraham (1759); France ceded Canada to Britain (1763).",
+    periods: [
+      { name: 'Champlain & Early Settlements', start: 1608, end: 1650 },
+      { name: 'Fur Trade Expansion', start: 1650, end: 1713 },
+      { name: 'British Rivalry & Plains of Abraham', start: 1713, end: 1763 },
+    ],
+  },
+  {
+    id: 'british-canada',
+    name: 'British Canada & American Revolution',
+    start: 1763, end: 1867,
+    region: 'colonial',
+    icon: '🏳️',
+    description: "After 1763, Britain faced the challenge of governing a large French Catholic population alongside Protestant British settlers. The Québec Act (1774) — guaranteeing French civil law, the Catholic Church, and French language rights — was enlightened but outraged American colonists. Canada became a refuge for ~50,000 United Empire Loyalists fleeing the American Revolution (1783) — the founding experience that shaped English Canada's identity as distinct from (and wary of) American republicanism. The War of 1812 saw American invasions repelled; Canadian (and Indigenous) forces burned Washington. The Rebellion of 1837–38 — in both Upper and Lower Canada — led Lord Durham's Report to recommend responsible government and the assimilation of French Canadians. The Act of Union (1840) united the two Canadas; responsible government (internal self-government) was achieved in 1848.",
+    periods: [
+      { name: 'Post-Conquest & Loyalists', start: 1763, end: 1800 },
+      { name: 'War of 1812 & Rebellions', start: 1812, end: 1838 },
+      { name: 'Responsible Government', start: 1840, end: 1867 },
+    ],
+  },
+  {
+    id: 'confederation',
+    name: 'Confederation & Transcontinental Nation',
+    start: 1867, end: 1945,
+    region: 'dominion',
+    icon: '🍁',
+    description: "The British North America Act (July 1, 1867) created the Dominion of Canada — a federal union of Ontario, Québec, Nova Scotia, and New Brunswick. John A. Macdonald became the first Prime Minister. 'Confederation' was driven by fear of American annexation, the need for economic integration, and the withdrawal of British military protection. The Canadian Pacific Railway (completed 1885) knitted the country together and fulfilled the promise to bring British Columbia into Confederation (1871). The construction used 15,000 Chinese labourers who faced discrimination and later the Chinese Head Tax. The North-West Resistance (1885) — Louis Riel's second uprising defending Métis rights — ended with his controversial execution. Canada joined WWI as part of the British Empire; the Battle of Vimy Ridge (1917, all four Canadian divisions attacking together) became the defining moment of national identity. The Statute of Westminster (1931) gave Canada full legislative independence.",
+    periods: [
+      { name: 'Confederation & CPR', start: 1867, end: 1885 },
+      { name: 'Immigration & Western Settlement', start: 1885, end: 1914 },
+      { name: 'WWI, WWII & Independence', start: 1914, end: 1945 },
+    ],
+  },
+  {
+    id: 'postwar-canada',
+    name: 'Postwar Canada & Quiet Revolution',
+    start: 1945, end: 1980,
+    region: 'modern',
+    icon: '🏙️',
+    description: "Post-WWII Canada was transformed by immigration (from Europe, then globally), the baby boom, and rapid urbanisation. The welfare state expanded: universal healthcare (medicare) was introduced nationally in 1966, following Tommy Douglas's Saskatchewan experiment (1962). The 'Quiet Revolution' (Révolution tranquille, 1960s) transformed Québec: the Catholic Church's dominance was broken, the provincial state expanded, and Francophone nationalism grew. The FLQ Crisis (October 1970) — separatist terrorists kidnapped and killed British trade commissioner James Cross and Québec Minister Pierre Laporte — prompted Prime Minister Pierre Trudeau to invoke the War Measures Act (the only peacetime use of emergency powers in Canadian history). The 1970 Trudeau declaration that Canada was officially bilingual and multicultural established the cultural framework that persists today.",
+    periods: [
+      { name: 'Post-War Boom & Welfare State', start: 1945, end: 1962 },
+      { name: 'Quiet Revolution & Bilingualism', start: 1960, end: 1972 },
+      { name: 'Trudeau Era', start: 1968, end: 1980 },
+    ],
+  },
+  {
+    id: 'modern-canada',
+    name: 'Modern Canada',
+    start: 1980, end: 2025,
+    region: 'identity',
+    icon: '🇨🇦',
+    description: "The 1980 Québec referendum on sovereignty-association was defeated (60–40), but the national unity question was not resolved. The Constitution Act (1982) — 'patriating' the constitution from Britain and adding the Charter of Rights and Freedoms — was signed without Québec's consent and remained a grievance. The Meech Lake and Charlottetown accords failed to bring Québec in; the 1995 Québec referendum nearly succeeded (50.6% No, 49.4% Yes — a margin of 50,000 votes). The Clarity Act (2000) established ground rules for future referenda. Canada signed NAFTA (1994) and became deeply integrated with the US economy. The Truth and Reconciliation Commission (2008–2015) documented the legacy of residential schools (150 years of forced assimilation of Indigenous children, with documented abuse); the discovery of unmarked graves at former school sites (2021) reignited national reckoning. Justin Trudeau (PM 2015–2025) championed progressive policies and immigration; Mark Carney's Liberal government won 2025 elections.",
+    periods: [
+      { name: 'Constitution & Québec Referenda', start: 1982, end: 2000 },
+      { name: 'NAFTA & Multicultural Canada', start: 1994, end: 2015 },
+      { name: 'Reconciliation & Modern Politics', start: 2015, end: 2025 },
+    ],
+  },
+];

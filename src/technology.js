@@ -165,6 +165,20 @@ export const technologies = [
     ],
   },
 
+  {
+    id: 'social-media',
+    name: 'Social Media',
+    start: 2004,
+    end: 2025,
+    region: 'communication',
+    icon: '📲',
+    description: 'What began as online bulletin boards and early social networks (Friendster, MySpace) exploded with Facebook (2004), YouTube (2005), Twitter (2006), Instagram (2010), WhatsApp, TikTok and countless others. Social media transformed political campaigning, enabled the Arab Spring uprisings (2010–12), amplified misinformation, and created a new attention economy. By 2025 over five billion people use social media — spending an average of 2.5 hours daily on platforms that harvest behavioural data for targeted advertising and shape public discourse at a scale no prior communication technology approached.',
+    periods: [
+      { name: 'Early Social Networks', start: 2004, end: 2010 },
+      { name: 'Mobile-First Dominance', start: 2010, end: 2025 },
+    ],
+  },
+
   // =========================================================
   // COMPUTING
   // =========================================================
@@ -359,6 +373,21 @@ export const technologies = [
     periods: [
       { name: 'X-Rays', start: 1895, end: 1970 },
       { name: 'CT & MRI', start: 1970, end: 2025 },
+    ],
+  },
+
+  {
+    id: 'genomics-biotech',
+    name: 'Genomics & Biotechnology',
+    start: 1953,
+    end: 2025,
+    region: 'medicine',
+    icon: '🧬',
+    description: "Watson and Crick's discovery of DNA's double helix (1953) opened the biological century. The Human Genome Project (1990–2003) sequenced all 3 billion base pairs of human DNA at a cost of $3 billion; today the same sequencing costs under $200. CRISPR-Cas9 gene editing (2012, Jennifer Doudna and Emmanuelle Charpentier, Nobel Prize 2020) enables precise genetic modification of any organism — with profound implications for treating genetic diseases, engineering drought-resistant crops, and potentially 'designer babies'. mRNA vaccine technology — developed over decades and deployed at speed for COVID-19 (2020) — demonstrated that entirely new vaccine platforms could be built in months. Synthetic biology, gene therapy (treating genetic disorders by replacing faulty genes), and the prospect of growing replacement organs from stem cells define the biotechnology frontier.",
+    periods: [
+      { name: 'DNA Discovery & Molecular Biology', start: 1953, end: 1990 },
+      { name: 'Human Genome Project', start: 1990, end: 2003 },
+      { name: 'CRISPR & mRNA Era', start: 2012, end: 2025 },
     ],
   },
 

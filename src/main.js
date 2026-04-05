@@ -13,6 +13,7 @@ import { religionItems, religionCategories } from './religion.js';
 import { philosophyItems, philosophyCategories } from './philosophy.js';
 import { artItems, artCategories } from './art.js';
 import { economicsItems, economicsCategories } from './economics.js';
+import { warsItems, warsCategories } from './wars.js';
 import { cosmicHistoryItems, cosmicHistoryCategories, COSMIC_LOG_MIN, COSMIC_LOG_MAX } from './cosmic-history.js';
 import { ukItems, ukCategories } from './countries/uk.js';
 import { franceItems, franceCategories } from './countries/france.js';
@@ -40,14 +41,22 @@ import { southAfricaItems, southAfricaCategories } from './countries/south-afric
 import { vietnamItems, vietnamCategories } from './countries/vietnam.js';
 import { indonesiaItems, indonesiaCategories } from './countries/indonesia.js';
 import { thailandItems, thailandCategories } from './countries/thailand.js';
+import { pakistanItems, pakistanCategories } from './countries/pakistan.js';
+import { saudiArabiaItems, saudiArabiaCategories } from './countries/saudi-arabia.js';
+import { polandItems, polandCategories } from './countries/poland.js';
+import { swedenItems, swedenCategories } from './countries/sweden.js';
+import { canadaItems, canadaCategories } from './countries/canada.js';
+import { argentinaItems, argentinaCategories } from './countries/argentina.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
 
 // ============================================================
 // Country registry — add new countries here to scale to 190+
 // ============================================================
 const COUNTRY_REGISTRY = [
-  { id: 'australia',    name: 'Australia',       flag: '🇦🇺', minYear: -65000, maxYear: 2025, load: () => ({ items: australiaItems,    categories: australiaCategories }) },
-  { id: 'brazil',       name: 'Brazil',          flag: '🇧🇷', minYear: -12000, maxYear: 2025, load: () => ({ items: brazilItems,       categories: brazilCategories }) },
+  { id: 'argentina',    name: 'Argentina',       flag: '🇦🇷', minYear: -11000,  maxYear: 2025, load: () => ({ items: argentinaItems,    categories: argentinaCategories }) },
+  { id: 'australia',    name: 'Australia',       flag: '🇦🇺', minYear: -65000,  maxYear: 2025, load: () => ({ items: australiaItems,    categories: australiaCategories }) },
+  { id: 'brazil',       name: 'Brazil',          flag: '🇧🇷', minYear: -12000,  maxYear: 2025, load: () => ({ items: brazilItems,       categories: brazilCategories }) },
+  { id: 'canada',       name: 'Canada',          flag: '🇨🇦', minYear: -15000,  maxYear: 2025, load: () => ({ items: canadaItems,       categories: canadaCategories }) },
   { id: 'china',        name: 'China',           flag: '🇨🇳', minYear: -2100,  maxYear: 2025, load: () => ({ items: chinaItems,        categories: chinaCategories }) },
   { id: 'egypt',        name: 'Egypt',           flag: '🇪🇬', minYear: -3100,   maxYear: 2025, load: () => ({ items: egyptItems,        categories: egyptCategories }) },
   { id: 'ethiopia',     name: 'Ethiopia',        flag: '🇪🇹', minYear: -1000,   maxYear: 2025, load: () => ({ items: ethiopiaItems,     categories: ethiopiaCategories }) },
@@ -62,10 +71,14 @@ const COUNTRY_REGISTRY = [
   { id: 'mexico',       name: 'Mexico',          flag: '🇲🇽', minYear: -2000,   maxYear: 2025, load: () => ({ items: mexicoItems,       categories: mexicoCategories }) },
   { id: 'netherlands',  name: 'Netherlands',     flag: '🇳🇱', minYear: 1477,    maxYear: 2025, load: () => ({ items: netherlandsItems,  categories: netherlandsCategories }) },
   { id: 'nigeria',      name: 'Nigeria',         flag: '🇳🇬', minYear: -1500,   maxYear: 2025, load: () => ({ items: nigeriaItems,      categories: nigeriaCategories }) },
-  { id: 'portugal',     name: 'Portugal',        flag: '🇵🇹', minYear: 1139,   maxYear: 2025, load: () => ({ items: portugalItems,     categories: portugalCategories }) },
-  { id: 'russia',       name: 'Russia',          flag: '🇷🇺', minYear: 862,    maxYear: 2025, load: () => ({ items: russiaItems,       categories: russiaCategories }) },
+  { id: 'pakistan',     name: 'Pakistan',        flag: '🇵🇰', minYear: -2600,   maxYear: 2025, load: () => ({ items: pakistanItems,     categories: pakistanCategories }) },
+  { id: 'poland',       name: 'Poland',          flag: '🇵🇱', minYear: 960,     maxYear: 2025, load: () => ({ items: polandItems,       categories: polandCategories }) },
+  { id: 'portugal',     name: 'Portugal',        flag: '🇵🇹', minYear: 1139,    maxYear: 2025, load: () => ({ items: portugalItems,     categories: portugalCategories }) },
+  { id: 'russia',       name: 'Russia',          flag: '🇷🇺', minYear: 862,     maxYear: 2025, load: () => ({ items: russiaItems,       categories: russiaCategories }) },
+  { id: 'saudi-arabia', name: 'Saudi Arabia',    flag: '🇸🇦', minYear: -3000,   maxYear: 2025, load: () => ({ items: saudiArabiaItems,  categories: saudiArabiaCategories }) },
   { id: 'south-africa', name: 'South Africa',    flag: '🇿🇦', minYear: -100000, maxYear: 2025, load: () => ({ items: southAfricaItems,  categories: southAfricaCategories }) },
   { id: 'south-korea',  name: 'South Korea',     flag: '🇰🇷', minYear: -2333,   maxYear: 2025, load: () => ({ items: southKoreaItems,   categories: southKoreaCategories }) },
+  { id: 'sweden',       name: 'Sweden',          flag: '🇸🇪', minYear: -8000,   maxYear: 2025, load: () => ({ items: swedenItems,       categories: swedenCategories }) },
   { id: 'spain',        name: 'Spain',           flag: '🇪🇸', minYear: -218,    maxYear: 2025, load: () => ({ items: spainItems,        categories: spainCategories }) },
   { id: 'thailand',     name: 'Thailand',        flag: '🇹🇭', minYear: -3000,   maxYear: 2025, load: () => ({ items: thailandItems,     categories: thailandCategories }) },
   { id: 'turkey',       name: 'Turkey',          flag: '🇹🇷', minYear: 1071,    maxYear: 2025, load: () => ({ items: turkeyItems,       categories: turkeyCategories }) },
@@ -169,6 +182,7 @@ const swimStates = {
   philosophy: createSwimLaneState(philosophyItems, philosophyCategories, -620, 2025),
   art: createSwimLaneState(artItems, artCategories, -40000, 2025),
   economics: createSwimLaneState(economicsItems, economicsCategories, -3500, 2025),
+  wars: createSwimLaneState(warsItems, warsCategories, -499, 2025),
 };
 
 // Lazy-initialise country swim states on first access

@@ -1,0 +1,103 @@
+export const polandCategories = [
+  { id: 'medieval',    name: 'Medieval Poland',              color: '#C084FC' },
+  { id: 'commonwealth',name: 'Polish-Lithuanian Commonwealth', color: '#F59E0B' },
+  { id: 'partitions',  name: 'Partitions & Uprisings',       color: '#EF4444' },
+  { id: 'modern',      name: 'Modern Poland',                color: '#3B82F6' },
+  { id: 'communist',   name: 'Communist Era',                color: '#78716C' },
+];
+
+export const polandItems = [
+  {
+    id: 'piast-dynasty',
+    name: 'Piast Dynasty & Early Poland',
+    start: 960, end: 1370,
+    region: 'medieval',
+    icon: '🦅',
+    description: "The Polish state emerged in the 10th century around the Piast dynasty in the region of Greater Poland (Wielkopolska). Duke Mieszko I accepted baptism in 966 CE — a pivotal moment that oriented Poland toward Western Christianity and Roman culture rather than Eastern Orthodoxy, with lasting consequences. His son Bolesław I 'the Brave' (r. 992–1025) was the first King of Poland. The Piast kingdom expanded and contracted through wars with the Holy Roman Empire, pagan Prussians (the Teutonic Knights, invited to convert them, carved out their own state in the Baltic), and the Mongol invasions (1241, 1259) that devastated Poland. The 14th century brought a golden age: Casimir III 'the Great' (r. 1333–1370) tripled Poland's territory, codified law, built stone castles to replace wooden fortifications, and founded the Jagiellonian University in Kraków (1364) — Central Europe's second oldest university.",
+    periods: [
+      { name: 'Mieszko I & Baptism', start: 960, end: 992 },
+      { name: 'Early Kingdom', start: 992, end: 1241 },
+      { name: 'Mongol Invasions & Recovery', start: 1241, end: 1333 },
+      { name: 'Casimir the Great', start: 1333, end: 1370 },
+    ],
+  },
+  {
+    id: 'jagiellonian',
+    name: 'Jagiellonian Dynasty & Grunwald',
+    start: 1386, end: 1572,
+    region: 'medieval',
+    icon: '⚔️',
+    description: "The marriage of Queen Jadwiga of Poland to Jogaila of Lithuania (1386) created the Polish-Lithuanian Union and the Jagiellonian dynasty, which would rule Central Europe for nearly two centuries. The Battle of Grunwald (Tannenberg, July 15, 1410) — where the combined Polish-Lithuanian force decisively defeated the Teutonic Knights — remains Poland's greatest military victory and a defining national myth. The Jagiellonian era was a golden age: Nicholas Copernicus (born 1473 in Royal Prussia) published his heliocentric model (1543); Kraków was a major Renaissance cultural centre; the Sejm (parliament) developed as a powerful noble institution. The Jagiellonians also ruled Bohemia and Hungary; at their peak they governed much of Central Europe.",
+    periods: [
+      { name: 'Union with Lithuania & Grunwald', start: 1386, end: 1410 },
+      { name: 'Jagiellonian Golden Age', start: 1410, end: 1490 },
+      { name: 'Late Jagiellonian & Renaissance', start: 1490, end: 1572 },
+    ],
+  },
+  {
+    id: 'polish-lithuanian-commonwealth',
+    name: 'Polish-Lithuanian Commonwealth',
+    start: 1569, end: 1795,
+    region: 'commonwealth',
+    icon: '👑',
+    description: "The Polish-Lithuanian Commonwealth (1569–1795) was one of Europe's largest states — stretching from the Baltic to near the Black Sea — and its most unusual: a parliamentary republic of the nobility (szlachta) elected their king, the Sejm could veto any legislation (liberum veto), and unprecedented religious tolerance made it a refuge for Jews, Protestants, Orthodox Christians, and Muslims. At its 17th-century height, the Commonwealth was a major European power: Jan III Sobieski's cavalry broke the Ottoman siege of Vienna (1683), saving Central Europe. However, the liberum veto paralysed decision-making; magnate factions allied with foreign powers; and the Commonwealth was unable to modernise or field effective armies. The 'Deluge' (1655–60) — simultaneous Swedish, Russian, and Cossack invasions — devastated Poland. The Constitution of May 3, 1791 — the world's first modern constitution — came too late; Russia, Prussia, and Austria partitioned the Commonwealth in three steps (1772, 1793, 1795), erasing Poland from the map.",
+    periods: [
+      { name: 'Commonwealth Formation', start: 1569, end: 1620 },
+      { name: 'Swedish Deluge & Recovery', start: 1655, end: 1683 },
+      { name: 'Vienna & Decline', start: 1683, end: 1772 },
+      { name: 'Three Partitions', start: 1772, end: 1795 },
+    ],
+  },
+  {
+    id: 'partitions-uprisings',
+    name: 'Partitions & National Uprisings',
+    start: 1795, end: 1918,
+    region: 'partitions',
+    icon: '🔥',
+    description: "Poland ceased to exist as a state for 123 years (1795–1918), divided between Russia, Prussia/Germany, and Austria. Yet Polish national identity was preserved through language, literature, Catholic faith, and repeated uprisings. The Kościuszko Uprising (1794) — last defence before the final partition — made Tadeusz Kościuszko a hero also of the American Revolution. Napoleon's Polish legions fought across Europe hoping to restore their homeland; his Duchy of Warsaw (1807–1815) gave brief hope. The November Uprising (1830–31) and January Uprising (1863–64) against Russian rule were brutally suppressed; thousands were executed or exiled to Siberia. Polish culture flourished in exile: Chopin's music, Mickiewicz's poetry, Słowacki's dramas. The partitioning powers pursued Germanisation and Russification policies; Polish identity survived through stubborn resistance.",
+    periods: [
+      { name: 'Partitions & Napoleonic Period', start: 1795, end: 1815 },
+      { name: 'November & January Uprisings', start: 1830, end: 1864 },
+      { name: 'Cultural Survival', start: 1864, end: 1918 },
+    ],
+  },
+  {
+    id: 'second-republic',
+    name: 'Second Republic & WWII',
+    start: 1918, end: 1945,
+    region: 'modern',
+    icon: '💥',
+    description: "Poland regained independence after WWI (November 11, 1918), simultaneous with German defeat and the collapse of the Russian and Austro-Hungarian empires. The new Second Republic (1918–1939) immediately faced war with Soviet Russia (1919–21); the Battle of Warsaw ('Miracle on the Vistula', 1920) — where Polish forces under Józef Piłsudski halted the Red Army — is considered one of the most decisive battles of the 20th century, possibly preventing communist revolution spreading westward. Between the wars, Piłsudski's coup (1926) established an authoritarian regime. Poland was destroyed by WWII from both sides: Germany invaded on September 1, 1939 (the war's start); the Soviet Union invaded from the east on September 17 (under the Molotov-Ribbentrop Pact). The Katyń massacre (1940) — Soviet NKVD murdered 22,000 Polish officers and intelligentsia. The Warsaw Ghetto Uprising (1943) and the Warsaw Uprising (1944) were heroic but hopeless. Poland lost 6 million citizens — 22% of its pre-war population — including virtually its entire Jewish population of 3.3 million.",
+    periods: [
+      { name: 'Independence & Soviet-Polish War', start: 1918, end: 1921 },
+      { name: 'Interwar Republic', start: 1921, end: 1939 },
+      { name: 'German & Soviet Occupation', start: 1939, end: 1945 },
+    ],
+  },
+  {
+    id: 'communist-poland',
+    name: 'Communist Poland',
+    start: 1945, end: 1989,
+    region: 'communist',
+    icon: '🔴',
+    description: "Poland emerged from WWII with its borders shifted westward (losing Lwów and Wilno to the USSR, gaining Silesia and Pomerania from Germany) and under Soviet-imposed communism. Stalinist terror (1949–56) was followed by a relative 'thaw' after the 1956 Poznań protests. The Polish October (1956) brought Władysław Gomułka to power — slightly more independent from Moscow. Despite collectivisation attempts, Polish farmers largely retained private land. Pope John Paul II's first papal visit to Poland (1979) electrified the nation and catalysed moral opposition to communism. Solidarity (Solidarność), the first independent trade union in the Eastern Bloc, was founded at the Gdańsk Shipyard (August 1980) under electrician Lech Wałęsa. Martial law (December 13, 1981) crushed Solidarity temporarily but the regime could not reverse the process. By 1989, with Soviet reforms underway, the communist government negotiated with Solidarity at the Round Table Agreements; partially free elections (June 1989) produced a Solidarity-led government.",
+    periods: [
+      { name: 'Stalinist Terror & Thaw', start: 1945, end: 1965 },
+      { name: 'Solidarity Movement', start: 1979, end: 1981 },
+      { name: 'Martial Law & Collapse', start: 1981, end: 1989 },
+    ],
+  },
+  {
+    id: 'modern-poland',
+    name: 'Democratic Poland',
+    start: 1989, end: 2025,
+    region: 'modern',
+    icon: '🇵🇱',
+    description: "Poland's transformation after communism was the most successful in Central Europe. 'Shock therapy' economic reforms (Finance Minister Leszek Balcerowicz, 1990) caused short-term pain but quickly created a market economy. Poland joined NATO (1999) and the European Union (2004), definitively anchoring itself in the Western world. The economy grew continuously — the only EU country to avoid recession during the 2008–09 financial crisis. Lech Kaczyński and 95 Polish officials were killed when their aircraft crashed near Smolensk, Russia (April 10, 2010), en route to a commemoration of the Katyń massacre. The Law and Justice party (PiS) government (2015–2023) pursued populist nationalism, undermined judicial independence, and strained EU relations. The October 2023 elections returned a pro-EU coalition under Donald Tusk. Poland is now NATO's largest eastern flank member and a major military spender since Russia's invasion of Ukraine.",
+    periods: [
+      { name: 'Shock Therapy & Market Transition', start: 1989, end: 1999 },
+      { name: 'NATO, EU & Economic Growth', start: 1999, end: 2015 },
+      { name: 'PiS Era & Return to Democracy', start: 2015, end: 2025 },
+    ],
+  },
+];
