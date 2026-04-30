@@ -132,7 +132,19 @@ Possible examples:
 
 This could start simple as two synchronized swim-lane panels before becoming more visual.
 
-### 10. Story mode
+### 10. Bookmarks and saved trails
+
+Let users save interesting events locally.
+
+- Bookmark events/items.
+- Create a simple reading list.
+- Later, support shareable trails.
+
+## Additional ideas to explore later
+
+These ideas may become useful, but they are less essential than search, validation, sources, filters, compare mode, and Globe Mode.
+
+### Story mode
 
 Curated guided paths through the data.
 
@@ -145,15 +157,7 @@ Possible stories:
 - The Scientific Revolution
 - From Writing to AI
 
-Story mode should link directly to timeline items and eventually to globe positions.
-
-### 11. Bookmarks and saved trails
-
-Let users save interesting events locally.
-
-- Bookmark events/items.
-- Create a simple reading list.
-- Later, support shareable trails.
+This could be compelling eventually, especially for education, but it should not drive the near-term roadmap until the core exploration tools are stronger.
 
 ## Phase 4 — Globe mode
 
@@ -354,7 +358,8 @@ A sensible near-term sequence:
 2. Active view label and country context improvements.
 3. Data validation script and CI check.
 4. Sources/citations field and detail-panel display.
-5. Globe view shell.
-6. Interactive globe prototype.
+5. Filters for swim-lane categories.
+6. Globe view shell.
+7. Interactive globe prototype.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
