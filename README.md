@@ -103,7 +103,7 @@ The preview workflow comments the exact URL and a QR code on each PR. When a PR 
 
 ## Deployment
 
-The repository includes a GitHub Actions workflow that builds the Vite app and deploys the `dist` directory to GitHub Pages whenever changes land on `main`.
+The repository includes GitHub Actions workflows that build the Vite app and publish the production site to the `gh-pages` branch whenever changes land on `main`. Pull requests publish temporary preview builds under `pr-preview/pr-<PR_NUMBER>` on that same branch.
 
 ## Development notes
 
