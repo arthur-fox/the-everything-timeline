@@ -186,6 +186,96 @@ html, body {
   border-color: var(--era-color, var(--accent));
 }
 
+
+/* --- Timeline search --- */
+.timeline-search-wrap {
+  position: relative;
+  flex: 0 1 260px;
+  min-width: 180px;
+  z-index: 20;
+}
+
+.timeline-search {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--bg-elevated);
+  background: var(--bg-surface);
+  color: var(--text);
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.timeline-search::placeholder {
+  color: var(--text-muted);
+}
+
+.timeline-search:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.timeline-search-results {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  max-height: min(360px, calc(100vh - 180px));
+  overflow-y: auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--bg-elevated);
+  border-radius: 12px;
+  box-shadow: 0 16px 44px var(--shadow-heavy);
+  padding: 6px;
+  z-index: 600;
+}
+
+.timeline-search-results.hidden {
+  display: none;
+}
+
+.timeline-search-result {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 10px;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  cursor: pointer;
+}
+
+.timeline-search-result:hover,
+.timeline-search-result:focus-visible {
+  background: var(--bg-elevated);
+  outline: none;
+}
+
+.timeline-search-result strong {
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.timeline-search-result span {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.timeline-search-empty {
+  padding: 14px 10px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
 /* --- Theme toggle --- */
 #theme-toggle {
   width: 36px;
@@ -426,6 +516,31 @@ html, body {
   .view-select {
     font-size: 0.7rem;
     padding: 5px 24px 5px 8px;
+  }
+
+  .timeline-search-wrap {
+    order: 4;
+    flex: 1 0 100%;
+    width: 100%;
+  }
+
+  .timeline-search {
+    min-height: 44px;
+    font-size: 1rem;
+  }
+
+  .timeline-search-results {
+    position: fixed;
+    top: auto;
+    left: 10px;
+    right: 10px;
+    bottom: calc(58px + env(safe-area-inset-bottom));
+    max-height: min(48vh, 420px);
+  }
+
+  .timeline-search-result {
+    min-height: 52px;
+    padding: 10px 12px;
   }
 
   .zoom-controls button,

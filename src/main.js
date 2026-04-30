@@ -227,6 +227,8 @@ const minimapCanvas = document.getElementById('minimap-canvas');
 const minimapCtx = minimapCanvas.getContext('2d');
 const minimapViewport = document.getElementById('minimap-viewport');
 const eraNav = document.getElementById('era-nav');
+const timelineSearch = document.getElementById('timeline-search');
+const timelineSearchResults = document.getElementById('timeline-search-results');
 const gestureHint = document.getElementById('gesture-hint');
 const gestureHintClose = document.getElementById('gesture-hint-close');
 
@@ -575,6 +577,7 @@ window.addEventListener('mousemove', (e) => {
         tooltip.classList.add('visible');
       } else {
         tooltip.classList.remove('visible');
+  closeTimelineSearchResults();
       }
       draw();
     }
@@ -874,6 +877,8 @@ function switchView(view) {
   // Close detail panel on switch
   document.getElementById('event-detail').classList.add('hidden');
   tooltip.classList.remove('visible');
+  closeTimelineSearchResults();
+  if (timelineSearch) timelineSearch.value = '';
   hoveredEvent = null;
   selectedEvent = null;
   // Clear hovered/selected in all swim-lane states
@@ -936,6 +941,166 @@ viewSelect.addEventListener('click', () => {
     }
     // (if already open, leave it open — user just clicked the select again)
   }
+});
+
+// ============================================================
+// Current-view search
+// ============================================================
+function getCurrentViewLabel() {
+  const country = COUNTRY_REGISTRY.find(c => c.id === currentView);
+  if (country) return country.flag + ' ' + country.name;
+  const option = viewSelect.querySelector(`option[value="${currentView}"]`);
+  return option ? option.textContent : 'Timeline';
+}
+
+function normalizeSearchText(value) {
+  return String(value || '').toLowerCase().trim();
+}
+
+function getSearchableItems() {
+  if (currentView === 'cosmic') {
+    return events.map(evt => ({
+      type: 'cosmic',
+      id: evt.title,
+      title: evt.icon + ' ' + evt.title,
+      subtitle: formatYear(evt.year) + ' · ' + evt.era,
+      haystack: [evt.title, evt.description, evt.era, formatYear(evt.year)].join(' '),
+      item: evt,
+    }));
+  }
+
+  const state = currentSwimState();
+  if (!state) return [];
+  const categoryName = new Map(state.categories.map(c => [c.id, c.name]));
+  return state.items.map(item => {
+    const start = item.startYear !== undefined ? item.startYear : item.start;
+    const end = item.endYear !== undefined ? item.endYear : item.end;
+    const category = categoryName.get(item.region) || item.region;
+    return {
+      type: 'swim',
+      id: item.id,
+      title: item.icon + ' ' + item.name,
+      subtitle: `${formatYear(start)} — ${formatYear(end)} · ${category}`,
+      haystack: [item.name, item.description, category, item.id, formatYear(start), formatYear(end)].join(' '),
+      item,
+    };
+  });
+}
+
+function renderTimelineSearchResults() {
+  if (!timelineSearch || !timelineSearchResults) return;
+  const query = normalizeSearchText(timelineSearch.value);
+  timelineSearchResults.innerHTML = '';
+  if (query.length < 2) {
+    closeTimelineSearchResults();
+    return;
+  }
+
+  const terms = query.split(/\s+/).filter(Boolean);
+  const results = getSearchableItems()
+    .map(result => {
+      const haystack = normalizeSearchText(result.haystack);
+      const title = normalizeSearchText(result.title);
+      let score = 0;
+      for (const term of terms) {
+        if (title.includes(term)) score += 3;
+        if (haystack.includes(term)) score += 1;
+      }
+      return { ...result, score };
+    })
+    .filter(result => result.score > 0)
+    .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
+    .slice(0, 8);
+
+  if (results.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'timeline-search-empty';
+    empty.textContent = `No matches in ${getCurrentViewLabel()}`;
+    timelineSearchResults.appendChild(empty);
+  } else {
+    for (const result of results) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'timeline-search-result';
+      button.setAttribute('role', 'option');
+      button.innerHTML = `<strong>${result.title}</strong><span>${result.subtitle}</span>`;
+      button.addEventListener('click', () => selectSearchResult(result));
+      timelineSearchResults.appendChild(button);
+    }
+  }
+
+  timelineSearchResults.classList.remove('hidden');
+}
+
+function closeTimelineSearchResults() {
+  if (timelineSearchResults) timelineSearchResults.classList.add('hidden');
+}
+
+function selectSearchResult(result) {
+  if (!timelineSearch) return;
+  timelineSearch.value = '';
+  closeTimelineSearchResults();
+  tooltip.classList.remove('visible');
+
+  if (result.type === 'cosmic') {
+    const evt = result.item;
+    const center = yearToLog(evt.year);
+    const range = Math.max(LOG_RANGE * 0.045, (viewEnd - viewStart) * 0.35);
+    targetViewStart = center - range / 2;
+    targetViewEnd = center + range / 2;
+    hoveredEvent = null;
+    selectedEvent = evt;
+    showDetail(evt.icon + ' ' + evt.title, formatYear(evt.year), evt.description);
+  } else {
+    const state = currentSwimState();
+    const item = result.item;
+    const coordStart = item.start;
+    const coordEnd = item.end;
+    const duration = Math.max(1, Math.abs(coordEnd - coordStart));
+    const padding = currentView === 'cosmic-history'
+      ? Math.max(state.defaults.yearRange * 0.015, duration * 0.6)
+      : Math.max(50, duration * 0.6);
+    state.targetStart = coordStart - padding;
+    state.targetEnd = coordEnd + padding;
+    state.viewStart = state.targetStart;
+    state.viewEnd = state.targetEnd;
+    state.hoveredItem = null;
+    state.selectedItem = item;
+
+    const displayStart = item.startYear !== undefined ? item.startYear : item.start;
+    const displayEnd = item.endYear !== undefined ? item.endYear : item.end;
+    const displayDuration = Math.abs(displayEnd - displayStart);
+    let durationStr;
+    if (displayDuration >= 1_000_000_000) durationStr = (displayDuration / 1_000_000_000).toFixed(1) + ' billion years';
+    else if (displayDuration >= 1_000_000) durationStr = Math.round(displayDuration / 1_000_000).toLocaleString() + ' million years';
+    else durationStr = displayDuration.toLocaleString() + ' years';
+    showDetail(item.icon + ' ' + item.name, `${formatYear(displayStart)} — ${formatYear(displayEnd)}  (${durationStr})`, item.description);
+  }
+
+  if (!animationId) animateZoom();
+  draw();
+}
+
+if (timelineSearch) {
+  timelineSearch.addEventListener('input', renderTimelineSearchResults);
+  timelineSearch.addEventListener('focus', renderTimelineSearchResults);
+  timelineSearch.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      timelineSearch.value = '';
+      closeTimelineSearchResults();
+      timelineSearch.blur();
+    }
+    if (e.key === 'Enter') {
+      const first = timelineSearchResults && timelineSearchResults.querySelector('.timeline-search-result');
+      if (first) first.click();
+    }
+  });
+}
+
+document.addEventListener('click', (e) => {
+  if (!timelineSearchResults || !timelineSearch) return;
+  const wrap = document.getElementById('timeline-search-wrap');
+  if (wrap && !wrap.contains(e.target)) closeTimelineSearchResults();
 });
 
 // ============================================================
@@ -1077,6 +1242,8 @@ function selectCountry(countryId) {
   eraNav.style.display = 'none';
   document.getElementById('event-detail').classList.add('hidden');
   tooltip.classList.remove('visible');
+  closeTimelineSearchResults();
+  if (timelineSearch) timelineSearch.value = '';
   hoveredEvent = null;
   selectedEvent = null;
   for (const key of Object.keys(swimStates)) {
