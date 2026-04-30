@@ -227,6 +227,8 @@ const minimapCanvas = document.getElementById('minimap-canvas');
 const minimapCtx = minimapCanvas.getContext('2d');
 const minimapViewport = document.getElementById('minimap-viewport');
 const eraNav = document.getElementById('era-nav');
+const gestureHint = document.getElementById('gesture-hint');
+const gestureHintClose = document.getElementById('gesture-hint-close');
 
 // Precompute log positions for events
 const eventPositions = events.map(e => ({
@@ -718,8 +720,12 @@ let touchStartDist = 0;
 let touchStartMid = 0;
 let touchStartViewStart = 0;
 let touchStartViewEnd = 0;
+let touchGestureLock = null; // 'horizontal' | 'vertical' | null
+const TOUCH_LOCK_THRESHOLD = 8;
 
 canvas.addEventListener('touchstart', (e) => {
+  touchGestureLock = null;
+  hideGestureHint();
   if (e.touches.length === 1) {
     isDragging = true;
     dragStartX = e.touches[0].clientX;
@@ -751,7 +757,12 @@ canvas.addEventListener('touchmove', (e) => {
 
   if (e.touches.length === 1 && isDragging) {
     const dx = e.touches[0].clientX - dragStartX;
+    const dy = e.touches[0].clientY - dragStartY;
     const w = parseFloat(canvas.style.width);
+
+    if (!touchGestureLock && Math.hypot(dx, dy) > TOUCH_LOCK_THRESHOLD) {
+      touchGestureLock = Math.abs(dx) >= Math.abs(dy) ? 'horizontal' : 'vertical';
+    }
 
     if (currentView === 'cosmic') {
       const logDx = (dx / w) * (viewEnd - viewStart);
@@ -764,14 +775,18 @@ canvas.addEventListener('touchmove', (e) => {
     } else {
       const state = currentSwimState();
       const range = state.targetEnd - state.targetStart;
-      const yearDx = (dx / w) * range;
-      state.viewStart = dragStartViewStart - yearDx;
-      state.viewEnd = state.viewStart + range;
-      state.targetStart = state.viewStart;
-      state.targetEnd = state.viewEnd;
 
-      const dy = e.touches[0].clientY - dragStartY;
-      state.scrollY = Math.max(0, Math.min(state.maxScrollY, dragStartScrollY - dy));
+      if (touchGestureLock !== 'vertical') {
+        const yearDx = (dx / w) * range;
+        state.viewStart = dragStartViewStart - yearDx;
+        state.viewEnd = state.viewStart + range;
+        state.targetStart = state.viewStart;
+        state.targetEnd = state.viewEnd;
+      }
+
+      if (touchGestureLock !== 'horizontal') {
+        state.scrollY = Math.max(0, Math.min(state.maxScrollY, dragStartScrollY - dy));
+      }
     }
     draw();
   } else if (e.touches.length === 2) {
@@ -808,6 +823,7 @@ canvas.addEventListener('touchmove', (e) => {
 
 canvas.addEventListener('touchend', () => {
   isDragging = false;
+  touchGestureLock = null;
 });
 
 // ============================================================
@@ -1127,6 +1143,35 @@ document.addEventListener('keydown', (e) => {
 buildCountryList();
 
 // ============================================================
+// Mobile gesture hint
+// ============================================================
+function hideGestureHint() {
+  if (!gestureHint) return;
+  gestureHint.classList.add('hidden');
+  try {
+    localStorage.setItem('timeline-gesture-hint-dismissed', 'true');
+  } catch (_) {
+    // Ignore storage failures; the hint is purely instructional.
+  }
+}
+
+function maybeShowGestureHint() {
+  if (!gestureHint) return;
+  const hasTouch = window.matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;
+  if (!hasTouch) return;
+  try {
+    if (localStorage.getItem('timeline-gesture-hint-dismissed') === 'true') return;
+  } catch (_) {
+    // If storage is unavailable, still show the hint for this session.
+  }
+  gestureHint.classList.remove('hidden');
+}
+
+if (gestureHintClose) {
+  gestureHintClose.addEventListener('click', hideGestureHint);
+}
+
+// ============================================================
 // Theme toggle
 // ============================================================
 initTheme();
@@ -1143,4 +1188,5 @@ themeToggleBtn.addEventListener('click', () => {
 // ============================================================
 window.addEventListener('resize', resize);
 resize();
+maybeShowGestureHint();
 canvas.style.cursor = 'grab';
