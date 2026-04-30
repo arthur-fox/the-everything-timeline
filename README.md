@@ -113,13 +113,6 @@ The repository includes GitHub Actions workflows that build the Vite app and pub
 - Countries are registered in `src/main.js`; adding a country generally means adding `src/countries/<country>.js` and registering it in `COUNTRY_REGISTRY`.
 - Theme colors are split between CSS variables for DOM elements and `src/theme.js` palettes for canvas drawing.
 
-## Roadmap ideas
+## Roadmap
 
-Some natural next steps:
-
-- Add data validation for timeline items and country modules.
-- Add source/citation fields for historical entries.
-- Add search across all events and timelines.
-- Add deep links for selected views/events.
-- Continue expanding country coverage toward a full world atlas of historical timelines.
-- Improve accessibility around canvas-rendered content with parallel semantic summaries.
+See [ROADMAP.md](ROADMAP.md) for the full project roadmap, including search, deep links, data validation, citations, story/compare modes, broader country and topic coverage, and the planned Globe Mode for spatial historical overlays.
