@@ -229,6 +229,9 @@ const minimapViewport = document.getElementById('minimap-viewport');
 const eraNav = document.getElementById('era-nav');
 const timelineSearch = document.getElementById('timeline-search');
 const timelineSearchResults = document.getElementById('timeline-search-results');
+if (timelineSearchResults && timelineSearchResults.parentElement !== document.body) {
+  document.body.appendChild(timelineSearchResults);
+}
 const gestureHint = document.getElementById('gesture-hint');
 const gestureHintClose = document.getElementById('gesture-hint-close');
 
@@ -987,6 +990,18 @@ function getSearchableItems() {
   });
 }
 
+function positionTimelineSearchResults() {
+  if (!timelineSearch || !timelineSearchResults || timelineSearchResults.classList.contains('hidden')) return;
+  const rect = timelineSearch.getBoundingClientRect();
+  const margin = 10;
+  const width = Math.min(Math.max(rect.width, 280), window.innerWidth - margin * 2);
+  const left = Math.min(Math.max(margin, rect.left), window.innerWidth - width - margin);
+  timelineSearchResults.style.left = left + 'px';
+  timelineSearchResults.style.top = (rect.bottom + 6) + 'px';
+  timelineSearchResults.style.width = width + 'px';
+  timelineSearchResults.style.maxHeight = Math.max(160, window.innerHeight - rect.bottom - 22) + 'px';
+}
+
 function renderTimelineSearchResults() {
   if (!timelineSearch || !timelineSearchResults) return;
   const query = normalizeSearchText(timelineSearch.value);
@@ -1030,6 +1045,7 @@ function renderTimelineSearchResults() {
   }
 
   timelineSearchResults.classList.remove('hidden');
+  positionTimelineSearchResults();
 }
 
 function closeTimelineSearchResults() {
@@ -1353,7 +1369,10 @@ themeToggleBtn.addEventListener('click', () => {
 // ============================================================
 // Init
 // ============================================================
-window.addEventListener('resize', resize);
+window.addEventListener('resize', () => {
+  resize();
+  positionTimelineSearchResults();
+});
 resize();
 maybeShowGestureHint();
 canvas.style.cursor = 'grab';
