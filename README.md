@@ -88,9 +88,22 @@ npm run preview
 
 > Note: in environments where `NODE_ENV=production` is set globally, `npm ci` may omit dev dependencies. Use `npm ci --include=dev` so Vite is installed for local builds.
 
+
+## Pull request previews
+
+Pull requests are configured to publish mobile-testable preview builds under:
+
+```text
+https://arthur-fox.github.io/the-everything-timeline/pr-preview/pr-<PR_NUMBER>/
+```
+
+The preview workflow comments the exact URL and a QR code on each PR. When a PR is closed, its preview is removed from the `gh-pages` branch.
+
+> Repository setup note: this branch-based preview flow requires GitHub Pages to serve from the `gh-pages` branch. If Pages is instead set to GitHub Actions-only deployment, the workflow can still publish preview files, but GitHub Pages will not serve them until the Pages source is changed.
+
 ## Deployment
 
-The repository includes a GitHub Actions workflow that builds the Vite app and deploys the `dist` directory to GitHub Pages whenever changes land on `main`.
+The repository includes GitHub Actions workflows that build the Vite app and publish the production site to the `gh-pages` branch whenever changes land on `main`. Pull requests publish temporary preview builds under `pr-preview/pr-<PR_NUMBER>` on that same branch.
 
 ## Development notes
 
