@@ -246,6 +246,55 @@ html, body {
   transform: translateY(0);
 }
 
+
+/* --- Mobile gesture hint --- */
+.gesture-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(520px, calc(100% - 28px));
+  padding: 10px 12px 10px 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-surface) 92%, transparent);
+  color: var(--text);
+  box-shadow: 0 12px 36px var(--shadow-tooltip);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  backdrop-filter: blur(10px);
+}
+
+.gesture-hint.hidden {
+  display: none;
+}
+
+.gesture-hint button {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.gesture-hint button:hover,
+.gesture-hint button:focus-visible {
+  color: var(--text);
+  outline: 2px solid var(--accent-glow);
+}
+
 /* --- Event detail panel --- */
 .event-detail {
   position: fixed;
@@ -275,6 +324,17 @@ html, body {
   to {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes mobileSheetUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -370,8 +430,9 @@ html, body {
 
   .zoom-controls button,
   #theme-toggle {
-    width: 32px;
-    height: 32px;
+    width: 44px;
+    height: 44px;
+    font-size: 1.05rem;
   }
 
   .era-btn {
@@ -380,7 +441,7 @@ html, body {
   }
 
   #minimap {
-    height: 30px;
+    height: 48px;
   }
 
   .tooltip {
@@ -388,18 +449,39 @@ html, body {
   }
 
   .event-detail {
-    bottom: 40px;
-    padding: 12px 16px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
     max-width: none;
-    border-radius: 12px;
+    max-height: min(58vh, 520px);
+    overflow-y: auto;
+    transform: none;
+    padding: 18px 18px calc(18px + env(safe-area-inset-bottom));
+    border-radius: 18px 18px 0 0;
+    animation: mobileSheetUp 0.25s ease;
   }
 
   .event-detail h2 {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
+    padding-right: 44px;
   }
 
   .event-detail #detail-description {
-    font-size: 0.8rem;
+    font-size: 0.88rem;
+  }
+
+  #detail-close {
+    width: 44px;
+    height: 44px;
+    top: 8px;
+    right: 10px;
+  }
+
+  .gesture-hint {
+    bottom: 10px;
+    border-radius: 14px;
+    font-size: 0.78rem;
   }
 }
 
@@ -553,6 +635,21 @@ html, body {
     left: 8px !important;
     right: 8px;
     width: auto;
+  }
+
+  .country-search {
+    min-height: 44px;
+    font-size: 1rem;
+  }
+
+  .country-picker-close {
+    width: 44px;
+    height: 44px;
+  }
+
+  .country-list li {
+    min-height: 44px;
+    font-size: 0.95rem;
   }
 }
 
