@@ -856,13 +856,34 @@ document.getElementById('detail-close').addEventListener('click', () => {
 // View toggle
 // ============================================================
 const viewSelect = document.getElementById('view-select');
+const activeViewLabel = document.getElementById('active-view-label');
+const countriesOption = viewSelect.querySelector('option[value="countries"]');
+const COUNTRIES_SENTINEL_LABEL = 'Countries...';
+
+// Keep header context + Countries... sentinel in sync with currentView.
+function updateActiveViewChrome() {
+  const label = getCurrentViewLabel();
+  if (activeViewLabel) {
+    activeViewLabel.textContent = label;
+  }
+
+  const country = COUNTRY_REGISTRY.find(c => c.id === currentView);
+  if (countriesOption) {
+    countriesOption.textContent = country
+      ? (country.flag + ' ' + country.name)
+      : COUNTRIES_SENTINEL_LABEL;
+  }
+
+  // Country views have no dedicated <option>; map them onto the sentinel.
+  const isCountry = Boolean(country);
+  viewSelect.value = isCountry ? 'countries' : currentView;
+}
 
 // Set the select to the correct option after picker closes.
 // When a country is active, currentView is e.g. 'us' which has no <option>,
 // so we map it back to the 'countries' sentinel option.
 function resetSelectAfterPickerClose() {
-  const isCountry = COUNTRY_REGISTRY.some(c => c.id === currentView);
-  viewSelect.value = isCountry ? 'countries' : currentView;
+  updateActiveViewChrome();
 }
 
 function switchView(view) {
@@ -874,8 +895,8 @@ function switchView(view) {
   }
 
   currentView = view;
-  viewSelect.value = view;
   eraNav.style.display = view === 'cosmic' ? 'flex' : 'none';
+  updateActiveViewChrome();
 
   // Close detail panel on switch
   document.getElementById('event-detail').classList.add('hidden');
@@ -896,8 +917,9 @@ function switchView(view) {
 // ── View select ──────────────────────────────────────────────
 // We need to handle two cases cleanly:
 //   A) User picks "Countries..." when a different view is active → open picker
-//   B) User picks "Countries..." when a country is already active (select
-//      already shows "Countries...") → no 'change' fires, must detect re-click
+//   B) User re-opens the country sentinel when a country is already active
+//      (select value stays 'countries', label shows e.g. 🇯🇵 Japan) → no
+//      'change' fires, must detect re-click
 //
 // We also need the document-level click handler that closes the picker on
 // outside clicks to NOT fire for the very same click that opens it.
@@ -933,12 +955,11 @@ viewSelect.addEventListener('change', (e) => {
   _prevSelectValue = newVal;
 });
 
-// Handle the re-click case: user picks "Countries..." when it's already
-// the selected value, so no 'change' fires. We detect this by comparing
-// the value on mousedown (_prevSelectValue) with the value on click.
+// Handle the re-click case: sentinel value is already 'countries' (whether
+// labeled Countries... or a selected country), so no 'change' fires.
 viewSelect.addEventListener('click', () => {
   if (_prevSelectValue === 'countries' && viewSelect.value === 'countries') {
-    // Re-click on Countries... — toggle picker
+    // Re-click on country sentinel — open picker if closed
     if (countryPicker.classList.contains('hidden')) {
       openCountryPicker();
     }
@@ -1253,9 +1274,8 @@ function selectCountry(countryId) {
   closeCountryPicker();
   getOrCreateCountryState(countryId);
   currentView = countryId;
-  // Keep the select showing "Countries..." as a hint that a country is active
-  viewSelect.value = 'countries';
   eraNav.style.display = 'none';
+  updateActiveViewChrome();
   document.getElementById('event-detail').classList.add('hidden');
   tooltip.classList.remove('visible');
   closeTimelineSearchResults();
@@ -1373,6 +1393,7 @@ window.addEventListener('resize', () => {
   resize();
   positionTimelineSearchResults();
 });
+updateActiveViewChrome();
 resize();
 maybeShowGestureHint();
 canvas.style.cursor = 'grab';
