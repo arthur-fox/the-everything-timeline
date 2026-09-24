@@ -7,14 +7,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/the-everything-timeline/assets/index-DcfTmboB.js"></script>
-  <link rel="stylesheet" crossorigin href="/the-everything-timeline/assets/index-B09HjrqP.css">
+  <script type="module" crossorigin src="/the-everything-timeline/assets/index-B-iUaG-9.js"></script>
+  <link rel="stylesheet" crossorigin href="/the-everything-timeline/assets/index-DK__Jgio.css">
 </head>
 <body>
   <div id="app">
     <header id="header">
       <h1>The Everything Timeline</h1>
       <p class="subtitle">From the Big Bang to the age of AI</p>
+      <p id="active-view-label" class="active-view-label" aria-live="polite">Timeline</p>
     </header>
 
     <div id="controls">
@@ -35,6 +36,11 @@
         <button id="zoom-in" title="Zoom In">+</button>
         <button id="zoom-out" title="Zoom Out">&minus;</button>
         <button id="zoom-fit" title="Fit All">Fit</button>
+      </div>
+      <div id="timeline-search-wrap" class="timeline-search-wrap">
+        <input id="timeline-search" class="timeline-search" type="search"
+               placeholder="Search this view..." autocomplete="off" spellcheck="false" />
+        <div id="timeline-search-results" class="timeline-search-results hidden" role="listbox"></div>
       </div>
       <div id="era-nav"></div>
       <button id="theme-toggle" title="Toggle light/dark mode">🌙</button>
