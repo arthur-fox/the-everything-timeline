@@ -861,16 +861,38 @@ const countriesOption = viewSelect.querySelector('option[value="countries"]');
 const COUNTRIES_SENTINEL_LABEL = 'Countries...';
 
 // Keep header context + Countries... sentinel in sync with currentView.
-function updateActiveViewChrome() {
-  const label = getCurrentViewLabel();
-  if (activeViewLabel) {
-    activeViewLabel.textContent = label;
+function setActiveViewLabelContent(country) {
+  if (!activeViewLabel) return;
+
+  // Country views are nested under Countries — show parent › child hierarchy.
+  if (country) {
+    activeViewLabel.replaceChildren();
+    const parent = document.createElement('span');
+    parent.className = 'active-view-parent';
+    parent.textContent = 'Countries';
+    const sep = document.createElement('span');
+    sep.className = 'active-view-sep';
+    sep.setAttribute('aria-hidden', 'true');
+    sep.textContent = '›';
+    const child = document.createElement('span');
+    child.className = 'active-view-child';
+    child.textContent = country.flag + ' ' + country.name;
+    activeViewLabel.append(parent, sep, child);
+    activeViewLabel.setAttribute('aria-label', 'Viewing Countries, ' + country.name);
+    return;
   }
 
+  activeViewLabel.removeAttribute('aria-label');
+  activeViewLabel.textContent = getCurrentViewLabel();
+}
+
+function updateActiveViewChrome() {
   const country = COUNTRY_REGISTRY.find(c => c.id === currentView);
+  setActiveViewLabelContent(country);
+
   if (countriesOption) {
     countriesOption.textContent = country
-      ? (country.flag + ' ' + country.name)
+      ? ('Countries › ' + country.flag + ' ' + country.name)
       : COUNTRIES_SENTINEL_LABEL;
   }
 
@@ -972,7 +994,7 @@ viewSelect.addEventListener('click', () => {
 // ============================================================
 function getCurrentViewLabel() {
   const country = COUNTRY_REGISTRY.find(c => c.id === currentView);
-  if (country) return country.flag + ' ' + country.name;
+  if (country) return 'Countries › ' + country.flag + ' ' + country.name;
   const option = viewSelect.querySelector(`option[value="${currentView}"]`);
   return option ? option.textContent : 'Timeline';
 }

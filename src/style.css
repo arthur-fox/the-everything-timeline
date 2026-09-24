@@ -108,6 +108,23 @@ html, body {
   letter-spacing: 0.06em;
 }
 
+#header .active-view-parent {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+#header .active-view-sep {
+  color: var(--text-muted);
+  opacity: 0.7;
+  font-weight: 400;
+  padding: 0 1px;
+}
+
+#header .active-view-child {
+  color: var(--text);
+  font-weight: 600;
+}
+
 /* --- Controls --- */
 #controls {
   display: flex;
