@@ -68,19 +68,24 @@ Continue improving the phone experience.
 
 The project should become more credible as it grows.
 
-### 5. Data validation
+### 5. Data validation — done (Day 4)
 
 Add validation scripts and CI checks for timeline datasets.
 
-Checks should include:
+- `npm run validate` runs `scripts/validate-data.js` against all topic + country datasets and the overview events list.
+- Wired into `npm run build` so existing **PR Preview** and **Deploy** GitHub Actions jobs fail the build on validation errors (no separate workflow file required).
+- Errors (fail build/CI): duplicate/missing IDs, invalid date ranges, unknown regions/categories, country registry ↔ file mismatches.
+- Warnings (printed; `npm run validate:strict` fails on them): missing icons/descriptions, periods outside parent item dates (a few historical spillover edges remain as warnings).
 
-- duplicate IDs
-- missing IDs
-- invalid date ranges
-- periods outside parent item dates
-- missing icons/descriptions
-- regions/categories that do not exist
-- country registry mismatches
+Checks covered:
+
+- duplicate IDs ✅
+- missing IDs ✅
+- invalid date ranges ✅
+- periods outside parent item dates ✅ (warn)
+- missing icons/descriptions ✅ (warn)
+- regions/categories that do not exist ✅
+- country registry mismatches ✅
 
 ### 6. Sources and citations
 
