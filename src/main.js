@@ -205,6 +205,228 @@ function isSwimLaneView() {
   return currentView !== 'cosmic';
 }
 
+// ============================================================
+// Deep links (URL query params)
+// Patterns (location.search only — Vite base path stays intact):
+//   ?view=technology&id=internet-web
+//   ?view=country:us&id=civil-war   (also accepts bare ?view=us)
+//   ?view=civilisations&year=117
+// Country views are written as view=country:<id>.
+// ============================================================
+const NAMED_VIEWS = new Set([
+  'cosmic', 'cosmic-history', 'civilisations', 'technology', 'science',
+  'religion', 'philosophy', 'art', 'economics', 'wars',
+]);
+
+let _syncingFromUrl = false;
+
+function isCountryViewId(id) {
+  return COUNTRY_REGISTRY.some(c => c.id === id);
+}
+
+function resolveViewParam(raw) {
+  if (raw == null || raw === '') return null;
+  const v = String(raw).trim().toLowerCase();
+  if (NAMED_VIEWS.has(v)) return { kind: 'named', id: v };
+  if (v.startsWith('country:')) {
+    const id = v.slice('country:'.length).trim();
+    if (isCountryViewId(id)) return { kind: 'country', id };
+    return null;
+  }
+  if (isCountryViewId(v)) return { kind: 'country', id: v };
+  return null;
+}
+
+function getSelectedDeepLinkId() {
+  if (currentView === 'cosmic') {
+    return selectedEvent ? selectedEvent.title : null;
+  }
+  const state = currentSwimState();
+  return state && state.selectedItem ? state.selectedItem.id : null;
+}
+
+function syncDeepLinkUrl() {
+  if (_syncingFromUrl) return;
+
+  const params = new URLSearchParams();
+  if (isCountryViewId(currentView)) {
+    params.set('view', 'country:' + currentView);
+  } else if (currentView !== 'cosmic') {
+    params.set('view', currentView);
+  }
+
+  const selectedId = getSelectedDeepLinkId();
+  if (selectedId) {
+    // Always include view when an item is selected so shares are unambiguous
+    if (!params.has('view')) params.set('view', 'cosmic');
+    params.set('id', selectedId);
+  }
+
+  const qs = params.toString();
+  const next = qs
+    ? location.pathname + '?' + qs + location.hash
+    : location.pathname + location.hash;
+  const current = location.pathname + location.search + location.hash;
+  if (next !== current) {
+    history.replaceState(null, '', next);
+  }
+}
+
+function centerTimelineOnYear(yearRaw) {
+  const year = Number(yearRaw);
+  if (!Number.isFinite(year)) return;
+
+  if (currentView === 'cosmic') {
+    const center = yearToLog(year);
+    // Focused window so a shared year is actually visible, not full cosmic span
+    const range = Math.max(LOG_RANGE * 0.08, 0.45);
+    targetViewStart = center - range / 2;
+    targetViewEnd = center + range / 2;
+    viewStart = targetViewStart;
+    viewEnd = targetViewEnd;
+  } else {
+    const state = currentSwimState();
+    if (!state) return;
+    if (currentView === 'cosmic-history') {
+      const center = yearToLog(year);
+      const range = 0.85;
+      state.targetStart = center - range / 2;
+      state.targetEnd = center + range / 2;
+    } else {
+      // ~600y window (clamped) so year=117 lands in a readable historical slice
+      const range = Math.min(
+        Math.max(400, state.defaults.yearRange * 0.1),
+        Math.max(600, state.defaults.yearRange * 0.2),
+        state.defaults.yearRange
+      );
+      state.targetStart = year - range / 2;
+      state.targetEnd = year + range / 2;
+    }
+    state.viewStart = state.targetStart;
+    state.viewEnd = state.targetEnd;
+  }
+}
+
+function focusItemById(id) {
+  if (!id) return false;
+
+  if (currentView === 'cosmic') {
+    const needle = normalizeSearchText(id);
+    const evt = events.find(e => e.title === id)
+      || events.find(e => normalizeSearchText(e.title) === needle);
+    if (!evt) return false;
+    applyItemFocus({ type: 'cosmic', item: evt });
+    return true;
+  }
+
+  const state = currentSwimState();
+  if (!state) return false;
+  const item = state.items.find(i => i.id === id);
+  if (!item) return false;
+  applyItemFocus({ type: 'swim', item });
+  return true;
+}
+
+function applyItemFocus(result) {
+  tooltip.classList.remove('visible');
+
+  if (result.type === 'cosmic') {
+    const evt = result.item;
+    const center = yearToLog(evt.year);
+    const range = Math.max(LOG_RANGE * 0.045, (viewEnd - viewStart) * 0.35);
+    targetViewStart = center - range / 2;
+    targetViewEnd = center + range / 2;
+    hoveredEvent = null;
+    selectedEvent = evt;
+    showDetail(evt.icon + ' ' + evt.title, formatYear(evt.year), evt.description);
+  } else {
+    const state = currentSwimState();
+    const item = result.item;
+    const coordStart = item.start;
+    const coordEnd = item.end;
+    const duration = Math.max(1, Math.abs(coordEnd - coordStart));
+    const padding = currentView === 'cosmic-history'
+      ? Math.max(state.defaults.yearRange * 0.015, duration * 0.6)
+      : Math.max(50, duration * 0.6);
+    state.targetStart = coordStart - padding;
+    state.targetEnd = coordEnd + padding;
+    state.viewStart = state.targetStart;
+    state.viewEnd = state.targetEnd;
+    state.hoveredItem = null;
+    state.selectedItem = item;
+
+    const displayStart = item.startYear !== undefined ? item.startYear : item.start;
+    const displayEnd = item.endYear !== undefined ? item.endYear : item.end;
+    const displayDuration = Math.abs(displayEnd - displayStart);
+    let durationStr;
+    if (displayDuration >= 1_000_000_000) durationStr = (displayDuration / 1_000_000_000).toFixed(1) + ' billion years';
+    else if (displayDuration >= 1_000_000) durationStr = Math.round(displayDuration / 1_000_000).toLocaleString() + ' million years';
+    else durationStr = displayDuration.toLocaleString() + ' years';
+    showDetail(item.icon + ' ' + item.name, `${formatYear(displayStart)} — ${formatYear(displayEnd)}  (${durationStr})`, item.description);
+  }
+
+  if (!animationId) animateZoom();
+  draw();
+}
+
+function activateViewForDeepLink(viewId, { clearSelection = true } = {}) {
+  if (isCountryViewId(viewId)) {
+    getOrCreateCountryState(viewId);
+  }
+  currentView = viewId;
+  eraNav.style.display = viewId === 'cosmic' ? 'flex' : 'none';
+  updateActiveViewChrome();
+  closeCountryPicker();
+  closeTimelineSearchResults();
+  if (timelineSearch) timelineSearch.value = '';
+  tooltip.classList.remove('visible');
+
+  if (clearSelection) {
+    document.getElementById('event-detail').classList.add('hidden');
+    hoveredEvent = null;
+    selectedEvent = null;
+    for (const key of Object.keys(swimStates)) {
+      if (swimStates[key]) {
+        swimStates[key].hoveredItem = null;
+        swimStates[key].selectedItem = null;
+      }
+    }
+  }
+}
+
+function applyDeepLinkFromUrl() {
+  const params = new URLSearchParams(location.search);
+  const resolved = resolveViewParam(params.get('view'));
+  const id = params.get('id');
+  const year = params.get('year');
+
+  if (!resolved && !id && (year == null || year === '')) {
+    updateActiveViewChrome();
+    return;
+  }
+
+  _syncingFromUrl = true;
+  try {
+    if (resolved) {
+      activateViewForDeepLink(resolved.id, { clearSelection: true });
+    } else {
+      updateActiveViewChrome();
+    }
+
+    let focused = false;
+    if (id) {
+      focused = focusItemById(id);
+    }
+    if (!focused && year != null && year !== '') {
+      centerTimelineOnYear(year);
+    }
+    draw();
+  } finally {
+    _syncingFromUrl = false;
+  }
+}
+
+
 // Responsive scale factor (1 on desktop, smaller on mobile)
 let uiScale = 1;
 
@@ -627,6 +849,7 @@ canvas.addEventListener('click', (e) => {
       selectedEvent = evt;
       showDetail(evt.icon + ' ' + evt.title, formatYear(evt.year), evt.description);
       draw();
+      syncDeepLinkUrl();
     }
   } else {
     const state = currentSwimState();
@@ -643,6 +866,7 @@ canvas.addEventListener('click', (e) => {
       const dateStr = formatYear(itemStart) + ' — ' + formatYear(itemEnd) + '  (' + durationStr + ')';
       showDetail(item.icon + ' ' + item.name, dateStr, item.description);
       draw();
+      syncDeepLinkUrl();
     }
   }
 });
@@ -850,6 +1074,7 @@ document.getElementById('detail-close').addEventListener('click', () => {
     swimStates[key].selectedItem = null;
   }
   draw();
+  syncDeepLinkUrl();
 });
 
 // ============================================================
@@ -934,6 +1159,7 @@ function switchView(view) {
   }
 
   draw();
+  syncDeepLinkUrl();
 }
 
 // ── View select ──────────────────────────────────────────────
@@ -1099,45 +1325,8 @@ function selectSearchResult(result) {
   if (!timelineSearch) return;
   timelineSearch.value = '';
   closeTimelineSearchResults();
-  tooltip.classList.remove('visible');
-
-  if (result.type === 'cosmic') {
-    const evt = result.item;
-    const center = yearToLog(evt.year);
-    const range = Math.max(LOG_RANGE * 0.045, (viewEnd - viewStart) * 0.35);
-    targetViewStart = center - range / 2;
-    targetViewEnd = center + range / 2;
-    hoveredEvent = null;
-    selectedEvent = evt;
-    showDetail(evt.icon + ' ' + evt.title, formatYear(evt.year), evt.description);
-  } else {
-    const state = currentSwimState();
-    const item = result.item;
-    const coordStart = item.start;
-    const coordEnd = item.end;
-    const duration = Math.max(1, Math.abs(coordEnd - coordStart));
-    const padding = currentView === 'cosmic-history'
-      ? Math.max(state.defaults.yearRange * 0.015, duration * 0.6)
-      : Math.max(50, duration * 0.6);
-    state.targetStart = coordStart - padding;
-    state.targetEnd = coordEnd + padding;
-    state.viewStart = state.targetStart;
-    state.viewEnd = state.targetEnd;
-    state.hoveredItem = null;
-    state.selectedItem = item;
-
-    const displayStart = item.startYear !== undefined ? item.startYear : item.start;
-    const displayEnd = item.endYear !== undefined ? item.endYear : item.end;
-    const displayDuration = Math.abs(displayEnd - displayStart);
-    let durationStr;
-    if (displayDuration >= 1_000_000_000) durationStr = (displayDuration / 1_000_000_000).toFixed(1) + ' billion years';
-    else if (displayDuration >= 1_000_000) durationStr = Math.round(displayDuration / 1_000_000).toLocaleString() + ' million years';
-    else durationStr = displayDuration.toLocaleString() + ' years';
-    showDetail(item.icon + ' ' + item.name, `${formatYear(displayStart)} — ${formatYear(displayEnd)}  (${durationStr})`, item.description);
-  }
-
-  if (!animationId) animateZoom();
-  draw();
+  applyItemFocus(result);
+  syncDeepLinkUrl();
 }
 
 if (timelineSearch) {
@@ -1311,6 +1500,7 @@ function selectCountry(countryId) {
     }
   }
   draw();
+  syncDeepLinkUrl();
 }
 
 function filterCountryList(query) {
@@ -1415,7 +1605,7 @@ window.addEventListener('resize', () => {
   resize();
   positionTimelineSearchResults();
 });
-updateActiveViewChrome();
+applyDeepLinkFromUrl();
 resize();
 maybeShowGestureHint();
 canvas.style.cursor = 'grab';
