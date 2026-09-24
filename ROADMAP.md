@@ -87,11 +87,11 @@ Checks covered:
 - regions/categories that do not exist ✅
 - country registry mismatches ✅
 
-### 6. Sources and citations
+### 6. Sources and citations — done (Day 5)
 
 Add optional source fields to timeline items.
 
-Possible shape:
+Shape:
 
 ```js
 sources: [
@@ -100,7 +100,9 @@ sources: [
 ]
 ```
 
-Detail panels should display sources gracefully without overwhelming the main interface.
+- Detail panel shows a **Sources** section with external links (`target=_blank`, `rel=noopener`) when present; hidden when absent.
+- Seeded ~16 notable items (Technology, Civilisations, Science, Japan, + 2 overview events) with real Wikipedia/Britannica URLs — not mass-annotated.
+- `scripts/validate-data.js`: if `sources` is present, require `[{ title: string, url: http(s)... }]`; missing sources remain fine.
 
 ### 7. Content schema
 

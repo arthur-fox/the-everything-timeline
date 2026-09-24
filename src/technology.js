@@ -34,6 +34,10 @@ export const technologies = [
     region: 'communication',
     icon: '🖨️',
     description: 'The technology that democratised knowledge. From Chinese woodblock printing to Gutenberg\'s movable type, the printing press fuelled the Renaissance, the Reformation, and the Scientific Revolution.',
+    sources: [
+      { title: 'Wikipedia — Printing press', url: 'https://en.wikipedia.org/wiki/Printing_press' },
+      { title: 'Britannica — Printing', url: 'https://www.britannica.com/topic/printing-publishing' },
+    ],
     periods: [
       { name: 'Woodblock', start: -200, end: 1440 },
       { name: 'Movable Type', start: 1440, end: 1800 },
@@ -74,6 +78,11 @@ export const technologies = [
     region: 'communication',
     icon: '🌐',
     description: 'The most transformative communication technology since the printing press. What began as a Cold War military network became a global web connecting billions of people and reshaping every facet of modern life.',
+    sources: [
+      { title: 'Wikipedia — Internet', url: 'https://en.wikipedia.org/wiki/Internet' },
+      { title: 'Wikipedia — World Wide Web', url: 'https://en.wikipedia.org/wiki/World_Wide_Web' },
+      { title: 'Britannica — Internet', url: 'https://www.britannica.com/technology/Internet' },
+    ],
     periods: [
       { name: 'ARPANET', start: 1969, end: 1990 },
       { name: 'World Wide Web', start: 1990, end: 2025 },
@@ -243,6 +252,10 @@ export const technologies = [
     region: 'computing',
     icon: '🤖',
     description: 'The quest to build machines that think. From early symbolic reasoning to deep neural networks capable of generating text, images, and code, AI is reshaping what it means to be intelligent.',
+    sources: [
+      { title: 'Wikipedia — Artificial intelligence', url: 'https://en.wikipedia.org/wiki/Artificial_intelligence' },
+      { title: 'Britannica — Artificial intelligence', url: 'https://www.britannica.com/technology/artificial-intelligence' },
+    ],
     periods: [
       { name: 'Symbolic AI', start: 1956, end: 1990 },
       { name: 'Machine Learning', start: 1990, end: 2017 },
@@ -288,6 +301,10 @@ export const technologies = [
     region: 'energy',
     icon: '⚡',
     description: 'From Benjamin Franklin\'s kite experiment to the vast power grids that light up cities, electricity became the lifeblood of modern civilisation, powering everything from light bulbs to supercomputers.',
+    sources: [
+      { title: 'Wikipedia — Electricity', url: 'https://en.wikipedia.org/wiki/Electricity' },
+      { title: 'Britannica — Electricity', url: 'https://www.britannica.com/science/electricity' },
+    ],
     periods: [
       { name: 'Discovery', start: 1752, end: 1880 },
       { name: 'Grid Power', start: 1880, end: 2025 },
@@ -344,6 +361,10 @@ export const technologies = [
     region: 'medicine',
     icon: '💉',
     description: 'The single greatest life-saving innovation in medical history. Edward Jenner\'s smallpox vaccine launched a revolution that has eradicated or controlled dozens of deadly diseases worldwide.',
+    sources: [
+      { title: 'Wikipedia — Vaccination', url: 'https://en.wikipedia.org/wiki/Vaccination' },
+      { title: 'Britannica — Vaccine', url: 'https://www.britannica.com/science/vaccine' },
+    ],
     periods: [
       { name: 'Smallpox Era', start: 1796, end: 1950 },
       { name: 'Mass Immunisation', start: 1950, end: 2025 },

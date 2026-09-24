@@ -64,6 +64,10 @@ export const japanItems = [
     region: 'feudal',
     icon: '🏯',
     description: "Tokugawa Ieyasu's victory at Sekigahara (1600) and establishment of the Tokugawa shogunate inaugurated 265 years of peace and enforced isolation (sakoku). Japan was closed to most foreign trade and contact; Christianity was banned. The merchant class (chonin) flourished, producing kabuki theatre, ukiyo-e woodblock prints, and haiku poetry. When American Commodore Perry's 'Black Ships' arrived in 1853, the shock of Japan's technological gap with the West triggered the Meiji Restoration.",
+    sources: [
+      { title: 'Wikipedia — Edo period', url: 'https://en.wikipedia.org/wiki/Edo_period' },
+      { title: 'Britannica — Tokugawa period', url: 'https://www.britannica.com/event/Tokugawa-period' },
+    ],
     periods: [
       { name: 'Early Edo', start: 1603, end: 1700 },
       { name: 'Genroku & High Edo', start: 1700, end: 1800 },
@@ -77,6 +81,10 @@ export const japanItems = [
     region: 'imperial',
     icon: '🏭',
     description: "The Meiji Restoration (1868) abolished the shogunate and restored imperial rule. Japan rapidly modernised, adopting Western technology, institutions, and military methods. It defeated China (1895) and Russia (1905) in quick succession — shocking the world by demonstrating that a non-Western nation could defeat a European great power. The Taisho era brought tentative democracy and vibrant cosmopolitan culture.",
+    sources: [
+      { title: 'Wikipedia — Meiji Restoration', url: 'https://en.wikipedia.org/wiki/Meiji_Restoration' },
+      { title: 'Britannica — Meiji Restoration', url: 'https://www.britannica.com/event/Meiji-Restoration' },
+    ],
     periods: [
       { name: 'Meiji Era', start: 1868, end: 1912 },
       { name: 'Taisho Democracy', start: 1912, end: 1926 },
@@ -101,6 +109,10 @@ export const japanItems = [
     region: 'modern',
     icon: '📱',
     description: "American occupation (1945–1952) demilitarised Japan and established a democratic constitution. The Korean War triggered Japan's economic recovery. The 1960s–80s saw the Japanese Economic Miracle: Japan became the world's second-largest economy, pioneering consumer electronics, automobiles, and manufacturing quality (Toyota Production System). The 1990s 'Lost Decade' and 2011 Fukushima disaster presented major challenges. Japan remains a global technological and cultural powerhouse.",
+    sources: [
+      { title: 'Wikipedia — Postwar Japan', url: 'https://en.wikipedia.org/wiki/Japan#Postwar_period' },
+      { title: 'Britannica — Japan: The postwar years', url: 'https://www.britannica.com/place/Japan/The-postwar-years-to-the-present' },
+    ],
     periods: [
       { name: 'American Occupation', start: 1945, end: 1952 },
       { name: 'Economic Miracle', start: 1955, end: 1991 },

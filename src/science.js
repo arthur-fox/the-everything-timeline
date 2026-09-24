@@ -86,6 +86,10 @@ export const sciences = [
     region: 'physics',
     icon: '🕳️',
     description: 'Einstein\'s twin revolutions redefined space, time, and gravity. Special relativity revealed that mass and energy are interchangeable; general relativity showed that massive objects warp the fabric of spacetime itself.',
+    sources: [
+      { title: 'Wikipedia — Theory of relativity', url: 'https://en.wikipedia.org/wiki/Theory_of_relativity' },
+      { title: 'Britannica — Relativity', url: 'https://www.britannica.com/science/relativity' },
+    ],
     periods: [
       { name: 'Special Relativity', start: 1905, end: 1915 },
       { name: 'General Relativity', start: 1915, end: 2025 },
@@ -186,6 +190,10 @@ export const sciences = [
     region: 'biology',
     icon: '🐒',
     description: 'Darwin\'s theory of natural selection is arguably the most transformative idea in the history of biology, explaining how the staggering diversity of life arose from common ancestors. The Modern Synthesis merged it with genetics to form the bedrock of modern biology.',
+    sources: [
+      { title: 'Wikipedia — Evolution', url: 'https://en.wikipedia.org/wiki/Evolution' },
+      { title: 'Britannica — Evolution', url: 'https://www.britannica.com/science/evolution-scientific-theory' },
+    ],
     periods: [
       { name: 'Darwinian Theory', start: 1859, end: 1930 },
       { name: 'Modern Synthesis', start: 1930, end: 2025 },

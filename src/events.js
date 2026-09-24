@@ -19,6 +19,10 @@ export const events = [
     year: -13_800_000_000,
     title: 'The Big Bang',
     description: 'The universe begins from an infinitely dense singularity, expanding rapidly in the first fractions of a second. All matter, energy, space, and time originate from this moment.',
+    sources: [
+      { title: 'Wikipedia — Big Bang', url: 'https://en.wikipedia.org/wiki/Big_Bang' },
+      { title: 'Britannica — Big-bang model', url: 'https://www.britannica.com/science/big-bang-model' },
+    ],
     era: 'Cosmic',
     icon: '💥',
   },
@@ -215,6 +219,10 @@ export const events = [
     year: -12_000,
     title: 'Agricultural Revolution',
     description: 'Humans begin farming crops and domesticating animals in the Fertile Crescent, transitioning from nomadic hunter-gatherers to settled communities.',
+    sources: [
+      { title: 'Wikipedia — Neolithic Revolution', url: 'https://en.wikipedia.org/wiki/Neolithic_Revolution' },
+      { title: 'Britannica — Origins of agriculture', url: 'https://www.britannica.com/topic/agriculture/Origins-of-agriculture' },
+    ],
     era: 'Human Prehistory',
     icon: '🌾',
   },
