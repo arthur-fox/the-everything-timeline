@@ -1261,6 +1261,17 @@ function getSearchableItems() {
 
 function positionTimelineSearchResults() {
   if (!timelineSearch || !timelineSearchResults || timelineSearchResults.classList.contains('hidden')) return;
+  const isMobile = window.matchMedia('(max-width: 640px)').matches;
+  if (isMobile) {
+    // CSS bottom sheet; clear desktop inline offsets so media rules win.
+    timelineSearchResults.style.left = '';
+    timelineSearchResults.style.top = '';
+    timelineSearchResults.style.bottom = '';
+    timelineSearchResults.style.width = '';
+    timelineSearchResults.style.maxHeight = '';
+    return;
+  }
+  timelineSearchResults.style.bottom = '';
   const rect = timelineSearch.getBoundingClientRect();
   const margin = 10;
   const width = Math.min(Math.max(rect.width, 280), window.innerWidth - margin * 2);

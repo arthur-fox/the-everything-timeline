@@ -18,7 +18,7 @@ The guiding product idea:
 
 These features make the current timeline easier to use as content grows.
 
-### 1. Search
+### 1. Search — done (in-view)
 
 Add search as a core navigation tool.
 
@@ -27,7 +27,7 @@ Add search as a core navigation tool.
 - Result click/tap should pan/zoom to the item and open its detail panel.
 - Mobile search should feel like a command palette or bottom sheet.
 
-### 2. Active view and context labels
+### 2. Active view and context labels — done
 
 Make it obvious what the user is looking at.
 
@@ -35,7 +35,7 @@ Make it obvious what the user is looking at.
 - Improve the current `Countries...` dropdown sentinel so selected countries are clearer.
 - Consider a compact mobile header that prioritizes the current context.
 
-### 3. Deep links
+### 3. Deep links — done (view / item / year)
 
 Make timeline states shareable and restorable.
 
@@ -54,14 +54,15 @@ Deep links should eventually support:
 - approximate year/range
 - active filters
 
-### 4. Better mobile controls
+### 4. Better mobile controls — done (Day 3)
 
 Continue improving the phone experience.
 
-- Compact top bar.
-- More ergonomic zoom/filter controls.
-- Better current-view display.
-- Refined bottom sheets for search, filters, and details.
+- Compact top bar. ✅ single-row header with shortened title + Viewing pill
+- More ergonomic zoom/theme controls. ✅ thumb bar above minimap (44px targets)
+- Better current-view display. ✅ readable pill in compact header (`Countries › 🇯🇵 Japan`)
+- Refined bottom sheets for search and details. ✅ drag handle, safe-area, taller sheet; search as bottom sheet on mobile
+- Filters sheet still future work (with filters feature).
 
 ## Phase 2 — Trust and data quality
 
