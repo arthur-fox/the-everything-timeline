@@ -21,6 +21,10 @@ export const civilisations = [
     region: 'middle-east',
     icon: '🏺',
     description: 'The cradle of civilisation between the Tigris and Euphrates rivers. Home to Sumer, Akkad, Babylon, and Assyria — where writing, law, and urban life first emerged.',
+    sources: [
+      { title: 'Wikipedia — Mesopotamia', url: 'https://en.wikipedia.org/wiki/Mesopotamia' },
+      { title: 'Britannica — Mesopotamia', url: 'https://www.britannica.com/place/Mesopotamia' },
+    ],
     periods: [
       { name: 'Sumer', start: -3500, end: -2334 },
       { name: 'Akkadian Empire', start: -2334, end: -2154 },
@@ -109,6 +113,10 @@ export const civilisations = [
     region: 'middle-east',
     icon: '🌙',
     description: 'One of the largest and longest-lasting empires in history. At its height it controlled Southeast Europe, Western Asia, and North Africa from its capital in Constantinople.',
+    sources: [
+      { title: 'Wikipedia — Ottoman Empire', url: 'https://en.wikipedia.org/wiki/Ottoman_Empire' },
+      { title: 'Britannica — Ottoman Empire', url: 'https://www.britannica.com/place/Ottoman-Empire' },
+    ],
     periods: [
       { name: 'Classical Age', start: 1453, end: 1566 },
     ],
@@ -137,6 +145,10 @@ export const civilisations = [
     region: 'africa',
     icon: '🔺',
     description: 'One of the longest-lasting civilisations in history, spanning over 3,000 years along the Nile. Built the pyramids, developed hieroglyphics, and created an extraordinarily rich culture.',
+    sources: [
+      { title: 'Wikipedia — Ancient Egypt', url: 'https://en.wikipedia.org/wiki/Ancient_Egypt' },
+      { title: 'Britannica — Ancient Egypt', url: 'https://www.britannica.com/place/ancient-Egypt' },
+    ],
     periods: [
       { name: 'Old Kingdom', start: -2686, end: -2181 },
       { name: 'Middle Kingdom', start: -2055, end: -1650 },
@@ -274,6 +286,10 @@ export const civilisations = [
     region: 'europe',
     icon: '🏛️',
     description: 'From Augustus to the fall of the West — the Roman Empire shaped Western law, language, engineering, and culture. At its peak it ruled over 70 million people.',
+    sources: [
+      { title: 'Wikipedia — Roman Empire', url: 'https://en.wikipedia.org/wiki/Roman_Empire' },
+      { title: 'Britannica — Roman Empire', url: 'https://www.britannica.com/place/Roman-Empire' },
+    ],
     periods: [
       { name: 'Pax Romana', start: 27, end: 180 },
       { name: 'Crisis of the Third Century', start: 235, end: 284 },

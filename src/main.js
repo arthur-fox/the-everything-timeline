@@ -338,7 +338,7 @@ function applyItemFocus(result) {
     targetViewEnd = center + range / 2;
     hoveredEvent = null;
     selectedEvent = evt;
-    showDetail(evt.icon + ' ' + evt.title, formatYear(evt.year), evt.description);
+    showDetail(evt.icon + ' ' + evt.title, formatYear(evt.year), evt.description, evt.sources);
   } else {
     const state = currentSwimState();
     const item = result.item;
@@ -362,7 +362,7 @@ function applyItemFocus(result) {
     if (displayDuration >= 1_000_000_000) durationStr = (displayDuration / 1_000_000_000).toFixed(1) + ' billion years';
     else if (displayDuration >= 1_000_000) durationStr = Math.round(displayDuration / 1_000_000).toLocaleString() + ' million years';
     else durationStr = displayDuration.toLocaleString() + ' years';
-    showDetail(item.icon + ' ' + item.name, `${formatYear(displayStart)} — ${formatYear(displayEnd)}  (${durationStr})`, item.description);
+    showDetail(item.icon + ' ' + item.name, `${formatYear(displayStart)} — ${formatYear(displayEnd)}  (${durationStr})`, item.description, item.sources);
   }
 
   if (!animationId) animateZoom();
@@ -847,7 +847,7 @@ canvas.addEventListener('click', (e) => {
     const evt = getEventAtPos(mx, my);
     if (evt) {
       selectedEvent = evt;
-      showDetail(evt.icon + ' ' + evt.title, formatYear(evt.year), evt.description);
+      showDetail(evt.icon + ' ' + evt.title, formatYear(evt.year), evt.description, evt.sources);
       draw();
       syncDeepLinkUrl();
     }
@@ -864,7 +864,7 @@ canvas.addEventListener('click', (e) => {
       else if (duration >= 1_000_000) durationStr = Math.round(duration / 1_000_000).toLocaleString() + ' million years';
       else durationStr = duration.toLocaleString() + ' years';
       const dateStr = formatYear(itemStart) + ' — ' + formatYear(itemEnd) + '  (' + durationStr + ')';
-      showDetail(item.icon + ' ' + item.name, dateStr, item.description);
+      showDetail(item.icon + ' ' + item.name, dateStr, item.description, item.sources);
       draw();
       syncDeepLinkUrl();
     }
@@ -1059,15 +1059,58 @@ canvas.addEventListener('touchend', () => {
 // ============================================================
 // Detail panel
 // ============================================================
-function showDetail(title, date, description) {
+function clearDetailSources() {
+  const wrap = document.getElementById('detail-sources');
+  const list = document.getElementById('detail-sources-list');
+  if (list) list.innerHTML = '';
+  if (wrap) {
+    wrap.classList.add('hidden');
+    wrap.hidden = true;
+  }
+}
+
+function renderDetailSources(sources) {
+  const wrap = document.getElementById('detail-sources');
+  const list = document.getElementById('detail-sources-list');
+  if (!wrap || !list) return;
+
+  list.innerHTML = '';
+  const entries = Array.isArray(sources)
+    ? sources.filter((s) => s && typeof s.title === 'string' && typeof s.url === 'string' && /^https?:\/\//i.test(s.url))
+    : [];
+
+  if (entries.length === 0) {
+    wrap.classList.add('hidden');
+    wrap.hidden = true;
+    return;
+  }
+
+  for (const source of entries) {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = source.url;
+    a.textContent = source.title;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    li.appendChild(a);
+    list.appendChild(li);
+  }
+
+  wrap.classList.remove('hidden');
+  wrap.hidden = false;
+}
+
+function showDetail(title, date, description, sources) {
   document.getElementById('detail-title').textContent = title;
   document.getElementById('detail-date').textContent = date;
   document.getElementById('detail-description').textContent = description;
+  renderDetailSources(sources);
   document.getElementById('event-detail').classList.remove('hidden');
 }
 
 document.getElementById('detail-close').addEventListener('click', () => {
   document.getElementById('event-detail').classList.add('hidden');
+  clearDetailSources();
   selectedEvent = null;
   // Clear selected item in all swim-lane states
   for (const key of Object.keys(swimStates)) {

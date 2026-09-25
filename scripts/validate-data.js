@@ -3,7 +3,8 @@
  * Validate timeline datasets (Phase 2 #5).
  *
  * Errors (exit 1): duplicate/missing IDs, invalid date ranges,
- * unknown regions/categories, country registry mismatches.
+ * unknown regions/categories, country registry mismatches,
+ * invalid optional sources shapes (when present).
  * Warnings (printed; fail only with --strict): missing icons/descriptions,
  * periods outside parent item dates.
  *
@@ -26,6 +27,28 @@ function err(msg) {
 }
 function warn(msg) {
   warnings.push(msg);
+}
+
+/** Optional sources: if present, must be [{ title: string, url: http(s)... }]. */
+function validateSources(label, sources) {
+  if (sources == null) return;
+  if (!Array.isArray(sources)) {
+    err(`${label}: sources must be an array`);
+    return;
+  }
+  sources.forEach((source, i) => {
+    const sLabel = `${label}: sources[${i}]`;
+    if (!source || typeof source !== 'object') {
+      err(`${sLabel}: must be an object`);
+      return;
+    }
+    if (typeof source.title !== 'string' || !source.title.trim()) {
+      err(`${sLabel}: title must be a non-empty string`);
+    }
+    if (typeof source.url !== 'string' || !/^https?:\/\//i.test(source.url)) {
+      err(`${sLabel}: url must be a string starting with http:// or https://`);
+    }
+  });
 }
 
 /** Swim-lane topic datasets: items + category lists. */
@@ -144,6 +167,8 @@ function validateSwimLaneItems(datasetName, items, categoryIds, { useLogDates = 
       warn(`${datasetName}/${label}: missing description`);
     }
 
+    validateSources(`${datasetName}/${label}`, item?.sources);
+
     if (item?.region != null && item.region !== '' && !categoryIds.has(item.region)) {
       err(`${datasetName}/${label}: region/category "${item.region}" does not exist`);
     }
@@ -206,6 +231,8 @@ function validateEvents(events, eras) {
     if (!event?.description || !String(event.description).trim()) {
       warn(`events/${label}: missing description`);
     }
+
+    validateSources(`events/${label}`, event?.sources);
   }
 }
 
