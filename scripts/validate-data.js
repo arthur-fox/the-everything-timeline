@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * Validate timeline datasets (Phase 2 #5).
+ * Validate timeline datasets (Phase 2 #5 + #7 schema).
  *
- * Errors (exit 1): duplicate/missing IDs, invalid date ranges,
- * unknown regions/categories, country registry mismatches,
- * invalid optional sources shapes (when present).
+ * Errors (exit 1): JSON Schema shape failures, duplicate/missing IDs,
+ * invalid date ranges, unknown regions/categories, country registry
+ * mismatches, invalid optional sources shapes (when present).
  * Warnings (printed; fail only with --strict): missing icons/descriptions,
  * periods outside parent item dates.
  *
@@ -14,6 +14,7 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import Ajv from 'ajv';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
@@ -27,6 +28,37 @@ function err(msg) {
 }
 function warn(msg) {
   warnings.push(msg);
+}
+
+// --- JSON Schema (Phase 2 #7) ---
+const timelineSchema = JSON.parse(
+  readFileSync(join(root, 'schemas/timeline.schema.json'), 'utf8'),
+);
+const ajv = new Ajv({ allErrors: true, strict: false });
+ajv.addSchema(timelineSchema);
+const schemaId = timelineSchema.$id;
+const schemaValidators = {
+  category: ajv.getSchema(`${schemaId}#/definitions/category`),
+  period: ajv.getSchema(`${schemaId}#/definitions/period`),
+  source: ajv.getSchema(`${schemaId}#/definitions/source`),
+  swimLaneItem: ajv.getSchema(`${schemaId}#/definitions/swimLaneItem`),
+  overviewEvent: ajv.getSchema(`${schemaId}#/definitions/overviewEvent`),
+  era: ajv.getSchema(`${schemaId}#/definitions/era`),
+};
+
+function formatAjvErrors(validate) {
+  return (validate.errors || [])
+    .map((e) => `${e.instancePath || '/'} ${e.message}`)
+    .join('; ');
+}
+
+function assertSchema(kind, data, label) {
+  const validate = schemaValidators[kind];
+  if (!validate(data)) {
+    err(`${label}: schema(${kind}) ${formatAjvErrors(validate)}`);
+    return false;
+  }
+  return true;
 }
 
 /** Optional sources: if present, must be [{ title: string, url: http(s)... }]. */
@@ -123,6 +155,8 @@ function validateCategories(datasetName, categories) {
   }
   const ids = new Set();
   for (const cat of categories) {
+    const catLabel = `${datasetName}: category "${cat?.id ?? '?'}"`;
+    assertSchema('category', cat, catLabel);
     if (!cat?.id) {
       err(`${datasetName}: category missing id (${JSON.stringify(cat)})`);
       continue;
@@ -144,6 +178,7 @@ function validateSwimLaneItems(datasetName, items, categoryIds, { useLogDates = 
 
   for (const item of items) {
     const label = item?.id ?? item?.name ?? '(unknown)';
+    assertSchema('swimLaneItem', item, `${datasetName}/${label}`);
 
     if (item?.id == null || item.id === '') {
       err(`${datasetName}: missing id for item "${item?.name ?? '?'}"`);
@@ -207,6 +242,12 @@ function validateEvents(events, eras) {
   const eraNames = new Set((eras || []).map((e) => e.name));
   const seen = new Map();
 
+  if (Array.isArray(eras)) {
+    for (const [i, era] of eras.entries()) {
+      assertSchema('era', era, `events: eras[${i}] "${era?.name ?? '?'}"`);
+    }
+  }
+
   if (!Array.isArray(events)) {
     err('events: events export is not an array');
     return;
@@ -214,6 +255,7 @@ function validateEvents(events, eras) {
 
   for (const [i, event] of events.entries()) {
     const label = event?.title ?? `#${i}`;
+    assertSchema('overviewEvent', event, `events/${label}`);
     // Events use year+title rather than id; treat missing title/year as errors.
     if (!event?.title) err(`events: entry #${i} missing title`);
     if (typeof event?.year !== 'number' || Number.isNaN(event.year)) {
@@ -289,7 +331,8 @@ async function validateCountries(registryIds) {
 }
 
 async function main() {
-  console.log('Validating timeline datasets…\n');
+  console.log('Validating timeline datasets…');
+  console.log(`Schema: schemas/timeline.schema.json (Ajv draft-07 definitions)\n`);
 
   for (const ds of TOPIC_DATASETS) {
     const mod = await importModule(ds.file);

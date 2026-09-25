@@ -8,7 +8,8 @@
     "build": "npm run validate && vite build",
     "preview": "vite preview",
     "validate": "node scripts/validate-data.js",
-    "validate:strict": "node scripts/validate-data.js --strict"
+    "validate:strict": "node scripts/validate-data.js --strict",
+    "validate:schema": "node scripts/validate-data.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
   },
   "homepage": "https://github.com/arthur-fox/the-everything-timeline#readme",
   "devDependencies": {
+    "ajv": "^8.20.0",
     "vite": "^7.3.1"
   }
 }
