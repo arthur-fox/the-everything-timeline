@@ -170,7 +170,55 @@ function createSwimLaneState(items, categories, minYear, maxYear) {
     hoveredItem: null,
     selectedItem: null,
     hitAreas: [],
+    // null = show all categories; Set of category ids when filtering
+    activeFilters: null,
   };
+}
+
+// --- Category filters (Phase 3 #8) ---
+function isFilterActive(state) {
+  return Boolean(state && state.activeFilters && state.activeFilters.size > 0);
+}
+
+function getVisibleCategories(state) {
+  if (!state) return [];
+  if (!isFilterActive(state)) return state.categories;
+  return state.categories.filter(c => state.activeFilters.has(c.id));
+}
+
+function getVisibleItems(state) {
+  if (!state) return [];
+  if (!isFilterActive(state)) return state.items;
+  return state.items.filter(it => state.activeFilters.has(it.region));
+}
+
+function clearFiltersForView() {
+  const state = currentSwimState();
+  if (!state) return;
+  state.activeFilters = null;
+  state.scrollY = 0;
+}
+
+function setFilterSelection(categoryIds) {
+  const state = currentSwimState();
+  if (!state) return;
+  const valid = new Set(state.categories.map(c => c.id));
+  const next = new Set();
+  for (const id of categoryIds) {
+    if (valid.has(id)) next.add(id);
+  }
+  // Empty or full selection ⇒ show all
+  if (next.size === 0 || next.size === valid.size) {
+    state.activeFilters = null;
+  } else {
+    state.activeFilters = next;
+  }
+  state.scrollY = 0;
+  // Drop selection if the selected item is now hidden
+  if (state.selectedItem && state.activeFilters && !state.activeFilters.has(state.selectedItem.region)) {
+    state.selectedItem = null;
+    document.getElementById('event-detail').classList.add('hidden');
+  }
 }
 
 const swimStates = {
@@ -260,6 +308,13 @@ function syncDeepLinkUrl() {
     // Always include view when an item is selected so shares are unambiguous
     if (!params.has('view')) params.set('view', 'cosmic');
     params.set('id', selectedId);
+  }
+
+  if (isSwimLaneView()) {
+    const state = currentSwimState();
+    if (isFilterActive(state)) {
+      params.set('filters', [...state.activeFilters].join(','));
+    }
   }
 
   const qs = params.toString();
@@ -378,6 +433,7 @@ function activateViewForDeepLink(viewId, { clearSelection = true } = {}) {
   updateActiveViewChrome();
   closeCountryPicker();
   closeTimelineSearchResults();
+  closeFiltersPanel();
   if (timelineSearch) timelineSearch.value = '';
   tooltip.classList.remove('visible');
 
@@ -399,9 +455,11 @@ function applyDeepLinkFromUrl() {
   const resolved = resolveViewParam(params.get('view'));
   const id = params.get('id');
   const year = params.get('year');
+  const filtersRaw = params.get('filters');
 
-  if (!resolved && !id && (year == null || year === '')) {
+  if (!resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '')) {
     updateActiveViewChrome();
+    updateFiltersUI();
     return;
   }
 
@@ -413,6 +471,11 @@ function applyDeepLinkFromUrl() {
       updateActiveViewChrome();
     }
 
+    if (filtersRaw != null && filtersRaw !== '' && isSwimLaneView()) {
+      const ids = filtersRaw.split(',').map(s => s.trim()).filter(Boolean);
+      setFilterSelection(ids);
+    }
+
     let focused = false;
     if (id) {
       focused = focusItemById(id);
@@ -420,6 +483,7 @@ function applyDeepLinkFromUrl() {
     if (!focused && year != null && year !== '') {
       centerTimelineOnYear(year);
     }
+    updateFiltersUI();
     draw();
   } finally {
     _syncingFromUrl = false;
@@ -699,12 +763,15 @@ function drawSwimView() {
     ? (logVal) => formatYearShort(logToYear(logVal))
     : formatYearShort;
 
+  const visibleCategories = getVisibleCategories(state);
+  const visibleItems = getVisibleItems(state);
+
   const result = drawSwimLaneView(
     ctx, w, h,
     state.viewStart, state.viewEnd,
     state.scrollY, state.hoveredItem,
     formatFn, uiScale,
-    state.items, state.categories
+    visibleItems, visibleCategories
   );
 
   state.hitAreas = result.hitAreas;
@@ -716,7 +783,7 @@ function drawSwimView() {
   const vp = drawSwimLaneMinimap(
     minimapCtx, mmW, mmH,
     state.viewStart, state.viewEnd, uiScale,
-    state.items, state.categories,
+    visibleItems, visibleCategories,
     state.defaults.minYear, state.defaults.maxYear
   );
   minimapViewport.style.left = vp.vpLeft + 'px';
@@ -1192,6 +1259,7 @@ function switchView(view) {
   document.getElementById('event-detail').classList.add('hidden');
   tooltip.classList.remove('visible');
   closeTimelineSearchResults();
+  closeFiltersPanel();
   if (timelineSearch) timelineSearch.value = '';
   hoveredEvent = null;
   selectedEvent = null;
@@ -1201,6 +1269,7 @@ function switchView(view) {
     swimStates[key].selectedItem = null;
   }
 
+  updateFiltersUI();
   draw();
   syncDeepLinkUrl();
 }
@@ -1287,7 +1356,7 @@ function getSearchableItems() {
   const state = currentSwimState();
   if (!state) return [];
   const categoryName = new Map(state.categories.map(c => [c.id, c.name]));
-  return state.items.map(item => {
+  return getVisibleItems(state).map(item => {
     const start = item.startYear !== undefined ? item.startYear : item.start;
     const end = item.endYear !== undefined ? item.endYear : item.end;
     const category = categoryName.get(item.region) || item.region;
@@ -1544,6 +1613,7 @@ function selectCountry(countryId) {
   document.getElementById('event-detail').classList.add('hidden');
   tooltip.classList.remove('visible');
   closeTimelineSearchResults();
+  closeFiltersPanel();
   if (timelineSearch) timelineSearch.value = '';
   hoveredEvent = null;
   selectedEvent = null;
@@ -1553,6 +1623,7 @@ function selectCountry(countryId) {
       swimStates[key].selectedItem = null;
     }
   }
+  updateFiltersUI();
   draw();
   syncDeepLinkUrl();
 }
@@ -1640,6 +1711,195 @@ if (gestureHintClose) {
   gestureHintClose.addEventListener('click', hideGestureHint);
 }
 
+
+// ============================================================
+// Category filters UI (Phase 3 #8)
+// ============================================================
+const filtersToggle = document.getElementById('filters-toggle');
+const filtersPanel = document.getElementById('filters-panel');
+const filtersChips = document.getElementById('filters-chips');
+const filtersBadge = document.getElementById('filters-badge');
+const filtersClose = document.getElementById('filters-close');
+const filtersShowAll = document.getElementById('filters-show-all');
+const filtersHint = document.getElementById('filters-hint');
+const filtersTitle = document.getElementById('filters-title');
+
+function closeFiltersPanel() {
+  if (!filtersPanel) return;
+  filtersPanel.classList.add('hidden');
+  if (filtersToggle) filtersToggle.setAttribute('aria-expanded', 'false');
+}
+
+function openFiltersPanel() {
+  if (!filtersPanel || !filtersToggle || filtersToggle.disabled) return;
+  renderFiltersChips();
+  positionFiltersPanel();
+  filtersPanel.classList.remove('hidden');
+  filtersToggle.setAttribute('aria-expanded', 'true');
+}
+
+function toggleFiltersPanel() {
+  if (!filtersPanel) return;
+  if (filtersPanel.classList.contains('hidden')) openFiltersPanel();
+  else closeFiltersPanel();
+}
+
+function positionFiltersPanel() {
+  if (!filtersPanel || !filtersToggle) return;
+  const isMobile = window.matchMedia('(max-width: 640px)').matches;
+  if (isMobile) {
+    filtersPanel.style.left = '';
+    filtersPanel.style.right = '';
+    filtersPanel.style.top = '';
+    return;
+  }
+  const rect = filtersToggle.getBoundingClientRect();
+  const width = Math.min(360, window.innerWidth - 24);
+  let left = rect.right - width;
+  left = Math.max(12, Math.min(left, window.innerWidth - width - 12));
+  filtersPanel.style.position = 'fixed';
+  filtersPanel.style.top = (rect.bottom + 6) + 'px';
+  filtersPanel.style.left = left + 'px';
+  filtersPanel.style.right = 'auto';
+}
+
+function updateFiltersUI() {
+  if (!filtersToggle) return;
+  const canFilter = isSwimLaneView();
+  filtersToggle.disabled = !canFilter;
+
+  if (!canFilter) {
+    closeFiltersPanel();
+    filtersToggle.classList.remove('is-active');
+    if (filtersBadge) filtersBadge.classList.add('hidden');
+    return;
+  }
+
+  const state = currentSwimState();
+  const active = isFilterActive(state);
+  filtersToggle.classList.toggle('is-active', active);
+  if (filtersBadge) {
+    if (active) {
+      filtersBadge.textContent = String(state.activeFilters.size);
+      filtersBadge.classList.remove('hidden');
+    } else {
+      filtersBadge.classList.add('hidden');
+    }
+  }
+
+  if (filtersTitle) {
+    filtersTitle.textContent = 'Filters · ' + getCurrentViewLabel();
+  }
+  if (filtersHint) {
+    filtersHint.textContent = active
+      ? 'Showing selected categories only. Empty selection shows all.'
+      : 'Tap categories to filter this view. Empty selection shows all.';
+  }
+
+  // Keep chip list in sync when the panel is open
+  if (filtersPanel && !filtersPanel.classList.contains('hidden')) {
+    renderFiltersChips();
+    positionFiltersPanel();
+  }
+}
+
+function renderFiltersChips() {
+  if (!filtersChips) return;
+  filtersChips.innerHTML = '';
+  const state = currentSwimState();
+  if (!state || !state.categories.length) {
+    const empty = document.createElement('div');
+    empty.className = 'filters-empty';
+    empty.textContent = 'No categories in this view.';
+    filtersChips.appendChild(empty);
+    return;
+  }
+
+  const showingAll = !isFilterActive(state);
+
+  // "All" chip
+  const allChip = document.createElement('button');
+  allChip.type = 'button';
+  allChip.className = 'filters-chip is-all' + (showingAll ? ' is-selected' : '');
+  allChip.textContent = 'All';
+  allChip.setAttribute('aria-pressed', showingAll ? 'true' : 'false');
+  allChip.addEventListener('click', () => {
+    clearFiltersForView();
+    updateFiltersUI();
+    draw();
+    syncDeepLinkUrl();
+  });
+  filtersChips.appendChild(allChip);
+
+  for (const cat of state.categories) {
+    const selected = showingAll ? false : state.activeFilters.has(cat.id);
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'filters-chip' + (selected ? ' is-selected' : '');
+    chip.style.setProperty('--chip-color', cat.color);
+    chip.setAttribute('aria-pressed', selected ? 'true' : 'false');
+    chip.dataset.categoryId = cat.id;
+
+    const swatch = document.createElement('span');
+    swatch.className = 'filters-chip-swatch';
+    swatch.setAttribute('aria-hidden', 'true');
+    chip.appendChild(swatch);
+    chip.appendChild(document.createTextNode(cat.name));
+
+    chip.addEventListener('click', () => {
+      const current = isFilterActive(state)
+        ? new Set(state.activeFilters)
+        : new Set(); // start from empty when leaving "All"
+      if (showingAll) {
+        // First pick from All → show only this category
+        setFilterSelection([cat.id]);
+      } else if (current.has(cat.id)) {
+        current.delete(cat.id);
+        setFilterSelection([...current]);
+      } else {
+        current.add(cat.id);
+        setFilterSelection([...current]);
+      }
+      updateFiltersUI();
+      draw();
+      syncDeepLinkUrl();
+    });
+    filtersChips.appendChild(chip);
+  }
+}
+
+if (filtersToggle) {
+  filtersToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleFiltersPanel();
+  });
+}
+if (filtersClose) {
+  filtersClose.addEventListener('click', closeFiltersPanel);
+}
+if (filtersShowAll) {
+  filtersShowAll.addEventListener('click', () => {
+    clearFiltersForView();
+    updateFiltersUI();
+    draw();
+    syncDeepLinkUrl();
+  });
+}
+
+document.addEventListener('click', (e) => {
+  if (!filtersPanel || filtersPanel.classList.contains('hidden')) return;
+  const wrap = document.getElementById('filters-wrap');
+  if (filtersPanel.contains(e.target)) return;
+  if (wrap && wrap.contains(e.target)) return;
+  closeFiltersPanel();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && filtersPanel && !filtersPanel.classList.contains('hidden')) {
+    closeFiltersPanel();
+  }
+});
+
 // ============================================================
 // Theme toggle
 // ============================================================
@@ -1658,8 +1918,10 @@ themeToggleBtn.addEventListener('click', () => {
 window.addEventListener('resize', () => {
   resize();
   positionTimelineSearchResults();
+  if (filtersPanel && !filtersPanel.classList.contains('hidden')) positionFiltersPanel();
 });
 applyDeepLinkFromUrl();
+updateFiltersUI();
 resize();
 maybeShowGestureHint();
 canvas.style.cursor = 'grab';

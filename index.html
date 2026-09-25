@@ -46,7 +46,26 @@
                placeholder="Search this view..." autocomplete="off" spellcheck="false" />
         <div id="timeline-search-results" class="timeline-search-results hidden" role="listbox"></div>
       </div>
+      <div id="filters-wrap" class="filters-wrap">
+        <button id="filters-toggle" class="filters-toggle" type="button" aria-expanded="false" aria-controls="filters-panel" title="Filter categories in this view" disabled>
+          Filters
+          <span id="filters-badge" class="filters-badge hidden" aria-hidden="true"></span>
+        </button>
+      </div>
       <div id="era-nav"></div>
+    </div>
+
+    <div id="filters-panel" class="filters-panel hidden" role="dialog" aria-label="Filter categories" aria-modal="false">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <div class="filters-panel-header">
+        <h3 id="filters-title">Filters</h3>
+        <button id="filters-close" class="filters-close" type="button" aria-label="Close filters">&times;</button>
+      </div>
+      <p id="filters-hint" class="filters-hint">Show categories in this view</p>
+      <div id="filters-chips" class="filters-chips" role="group" aria-label="Category filters"></div>
+      <div class="filters-actions">
+        <button id="filters-show-all" class="filters-show-all" type="button">Show all</button>
+      </div>
     </div>
 
     <div id="country-picker" class="country-picker hidden">
