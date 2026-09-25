@@ -49,10 +49,10 @@ Potential URL patterns:
 
 Deep links should eventually support:
 
-- selected view
-- selected item
-- approximate year/range
-- active filters
+- selected view ✅
+- selected item ✅
+- approximate year/range ✅
+- active filters ✅ (Day 7 — `filters` query param)
 
 ### 4. Better mobile controls — done (Day 3)
 
@@ -62,7 +62,7 @@ Continue improving the phone experience.
 - More ergonomic zoom/theme controls. ✅ thumb bar above minimap (44px targets)
 - Better current-view display. ✅ readable pill in compact header (`Countries › 🇯🇵 Japan`)
 - Refined bottom sheets for search and details. ✅ drag handle, safe-area, taller sheet; search as bottom sheet on mobile
-- Filters sheet still future work (with filters feature).
+- Filters sheet. ✅ mobile bottom sheet + desktop panel (Day 7 / Phase 3 #8)
 
 ## Phase 2 — Trust and data quality
 
@@ -119,7 +119,7 @@ Formalize the data model (without a TypeScript migration).
 
 These features make the app more than a static timeline.
 
-### 8. Filters
+### 8. Filters — done (Day 7)
 
 Allow users to filter within views.
 
@@ -129,6 +129,14 @@ Examples:
 - Civilisations: Europe, Africa, East Asia, Americas
 - Wars: Ancient, Medieval, Modern, Global
 - Countries: political, cultural, scientific, economic
+
+Shipped:
+
+- Filters control in the header (disabled on the cosmic Timeline view).
+- Multi-select category chips for every swim-lane view (topics + countries), reusing each view’s existing `regions` / `*Categories` lanes — hide non-selected lanes/items.
+- Empty / “All” = show everything; active filter count badge on the button.
+- Desktop: compact panel near the Filters button; mobile: bottom sheet (same pattern as search/details).
+- Deep links: optional `filters` query param (comma-separated category ids), e.g. `?view=technology&filters=computing,medicine`.
 
 ### 9. Compare mode
 
@@ -369,7 +377,7 @@ A sensible near-term sequence:
 2. Active view label and country context improvements.
 3. Data validation script and CI check.
 4. Sources/citations field and detail-panel display.
-5. Filters for swim-lane categories.
+5. Filters for swim-lane categories. ✅ Day 7
 6. Globe view shell.
 7. Interactive globe prototype.
 
