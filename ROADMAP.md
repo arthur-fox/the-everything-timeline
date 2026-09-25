@@ -104,13 +104,16 @@ sources: [
 - Seeded ~16 notable items (Technology, Civilisations, Science, Japan, + 2 overview events) with real Wikipedia/Britannica URLs — not mass-annotated.
 - `scripts/validate-data.js`: if `sources` is present, require `[{ title: string, url: http(s)... }]`; missing sources remain fine.
 
-### 7. Content schema
+### 7. Content schema — done (Day 6)
 
-Formalize the data model.
+Formalize the data model (without a TypeScript migration).
 
-- Define common item/category shapes.
-- Consider TypeScript or JSON schema later.
-- Keep country/topic data consistent before expanding aggressively.
+- `schemas/timeline.schema.json` — draft-07 definitions for category, period, source, swim-lane item, overview event, and era.
+- `schemas/README.md` — authoring guide for future content.
+- `npm run validate` (and `validate:schema`) runs Ajv schema checks on every dataset object, then the existing semantic rules.
+- TypeScript types still optional / later.
+
+**Phase 2 complete.** Next up is Phase 3.
 
 ## Phase 3 — Exploration features
 

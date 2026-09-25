@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://arthur-fox.github.io/the-everything-timeline/schemas/timeline.schema.json",
+  "title": "The Everything Timeline content schema",
+  "description": "Formal shapes for categories, periods, sources, swim-lane items, overview events, and eras. Matches what the app and scripts/validate-data.js use today. TypeScript migration is deliberately deferred.",
+  "definitions": {
+    "category": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "color"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Stable slug used as region on items (e.g. communication, europe)."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable lane / region label."
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$",
+          "description": "Hex color for the swim lane."
+        }
+      }
+    },
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "start", "end"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "start": { "type": "number", "description": "Start year (CE positive, BCE negative) or log-space for cosmic-history periods." },
+        "end": { "type": "number", "description": "End year or log-space end." }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "url"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "url": {
+          "type": "string",
+          "pattern": "^https?://",
+          "description": "Absolute http(s) URL to a reputable source."
+        }
+      }
+    },
+    "swimLaneItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "start", "end"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "start": { "type": "number", "description": "Start year, or log-space start for cosmic-history." },
+        "end": { "type": "number", "description": "End year, or log-space end for cosmic-history." },
+        "startYear": {
+          "type": "number",
+          "description": "Optional raw year when start/end are log-space (cosmic-history)."
+        },
+        "endYear": {
+          "type": "number",
+          "description": "Optional raw year when start/end are log-space (cosmic-history)."
+        },
+        "region": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Category id this item belongs to."
+        },
+        "icon": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "periods": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/period" }
+        },
+        "sources": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/source" }
+        }
+      }
+    },
+    "overviewEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "year"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Display title; together with year acts as the unique key (no separate id field today)."
+        },
+        "year": { "type": "number" },
+        "icon": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "era": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Must match an eras[].name from events.js when set."
+        },
+        "sources": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/source" }
+        }
+      }
+    },
+    "era": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "color", "start", "end"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "color": {
+          "type": "string",
+          "pattern": "^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$"
+        },
+        "start": { "type": "number" },
+        "end": { "type": "number" }
+      }
+    }
+  }
+}
