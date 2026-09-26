@@ -83,10 +83,13 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 // --- Drawing (generic) ---
-export function drawSwimLaneView(ctx, w, h, viewStart, viewEnd, scrollY, hoveredItem, formatYearShort, scale, items, categories) {
+export function drawSwimLaneView(ctx, w, h, viewStart, viewEnd, scrollY, hoveredItem, formatYearShort, scale, items, categories, options) {
   const theme = currentTheme();
   const s = scale || 1;
-  ctx.clearRect(0, 0, w, h);
+  const opts = options || {};
+  if (opts.clear !== false) {
+    ctx.clearRect(0, 0, w, h);
+  }
 
   // Scaled layout constants
   const timeAxisH = Math.round(TIME_AXIS_HEIGHT * s);
