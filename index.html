@@ -52,7 +52,25 @@
           <span id="filters-badge" class="filters-badge hidden" aria-hidden="true"></span>
         </button>
       </div>
+      <div id="compare-wrap" class="compare-wrap">
+        <button id="compare-toggle" class="compare-toggle" type="button" aria-pressed="false" title="Compare two timelines side by side">
+          Compare
+        </button>
+      </div>
       <div id="era-nav"></div>
+    </div>
+
+    <div id="compare-bar" class="compare-bar hidden" role="region" aria-label="Compare timelines">
+      <label class="compare-field">
+        <span class="compare-field-label">A</span>
+        <select id="compare-select-a" class="compare-select" aria-label="Compare timeline A"></select>
+      </label>
+      <span class="compare-vs" aria-hidden="true">vs</span>
+      <label class="compare-field">
+        <span class="compare-field-label">B</span>
+        <select id="compare-select-b" class="compare-select" aria-label="Compare timeline B"></select>
+      </label>
+      <button id="compare-exit" class="compare-exit" type="button" title="Exit compare mode">Exit</button>
     </div>
 
     <div id="filters-panel" class="filters-panel hidden" role="dialog" aria-label="Filter categories" aria-modal="false">
