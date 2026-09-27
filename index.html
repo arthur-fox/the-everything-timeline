@@ -57,6 +57,12 @@
           Compare
         </button>
       </div>
+      <div id="bookmarks-wrap" class="bookmarks-wrap">
+        <button id="bookmarks-toggle" class="bookmarks-toggle" type="button" aria-expanded="false" aria-controls="bookmarks-panel" title="Saved bookmarks / reading list">
+          Bookmarks
+          <span id="bookmarks-badge" class="bookmarks-badge hidden" aria-hidden="true"></span>
+        </button>
+      </div>
       <div id="era-nav"></div>
     </div>
 
@@ -86,6 +92,19 @@
       </div>
     </div>
 
+    <div id="bookmarks-panel" class="bookmarks-panel hidden" role="dialog" aria-label="Bookmarks reading list" aria-modal="false">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <div class="bookmarks-panel-header">
+        <h3 id="bookmarks-title">Bookmarks</h3>
+        <button id="bookmarks-close" class="bookmarks-close" type="button" aria-label="Close bookmarks">&times;</button>
+      </div>
+      <p id="bookmarks-hint" class="bookmarks-hint">Saved locally on this device. Open an item to jump to it.</p>
+      <ul id="bookmarks-list" class="bookmarks-list" role="list"></ul>
+      <div class="bookmarks-actions">
+        <button id="bookmarks-clear" class="bookmarks-clear" type="button">Clear all</button>
+      </div>
+    </div>
+
     <div id="country-picker" class="country-picker hidden">
       <div class="country-picker-header">
         <input id="country-search" class="country-search" type="search"
@@ -110,6 +129,12 @@
       <h2 id="detail-title"></h2>
       <p id="detail-date"></p>
       <p id="detail-description"></p>
+      <div class="detail-actions">
+        <button id="detail-bookmark" class="detail-bookmark" type="button" aria-pressed="false" title="Save to bookmarks">
+          <span class="detail-bookmark-icon" aria-hidden="true">☆</span>
+          <span class="detail-bookmark-label">Bookmark</span>
+        </button>
+      </div>
       <div id="detail-sources" class="detail-sources hidden" hidden>
         <h3 class="detail-sources-heading">Sources</h3>
         <ul id="detail-sources-list" class="detail-sources-list"></ul>
