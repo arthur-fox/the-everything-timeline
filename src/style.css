@@ -1771,7 +1771,7 @@ body.compare-active .bookmarks-toggle {
 
 
 /* ============================================================
-   Globe mode shell (Phase 4 / PR A)
+   Globe mode (Phase 4 — shell + interactive Globe.gl)
    ============================================================ */
 .globe-view {
   flex: 1;
@@ -1805,56 +1805,42 @@ body.globe-active .filters-toggle {
   flex: 1;
   min-height: 0;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  gap: 36px;
+  gap: 28px;
   flex-wrap: wrap;
-  padding: 8px 0;
+  padding: 4px 0;
 }
 
-.globe-orb {
+.globe-canvas-host {
   position: relative;
-  width: min(280px, 42vw);
-  height: min(280px, 42vw);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 32% 28%, rgba(255,255,255,0.35), transparent 28%),
-    radial-gradient(circle at 70% 60%, #1d4ed8 0%, #0f766e 38%, #14532d 62%, #0f172a 100%);
-  box-shadow:
-    inset -18px -12px 40px rgba(0,0,0,0.45),
-    0 0 0 1px var(--border-subtle),
-    0 24px 60px var(--shadow-heavy);
+  flex: 1 1 420px;
+  min-width: min(100%, 280px);
+  min-height: min(52vh, 420px);
+  max-width: 720px;
+  height: min(56vh, 520px);
+  border-radius: 18px;
   overflow: hidden;
-  flex-shrink: 0;
-}
-
-.globe-orb-shine {
-  position: absolute;
-  inset: 8% 18% auto auto;
-  width: 34%;
-  height: 22%;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.18);
-  filter: blur(2px);
-  transform: rotate(-18deg);
-}
-
-.globe-orb-grid {
-  position: absolute;
-  inset: 0;
+  border: 1px solid var(--border-subtle);
   background:
-    repeating-linear-gradient(
-      0deg,
-      transparent 0 18px,
-      rgba(255,255,255,0.06) 18px 19px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 22px,
-      rgba(255,255,255,0.05) 22px 23px
-    );
-  opacity: 0.55;
-  mask-image: radial-gradient(circle, #000 58%, transparent 72%);
+    radial-gradient(ellipse at 50% 40%, rgba(129, 140, 248, 0.18), transparent 55%),
+    var(--bg);
+  box-shadow: 0 20px 50px var(--shadow-heavy);
+  touch-action: none; /* let Globe.gl / orbit controls own gestures */
+}
+
+.globe-canvas-host canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  outline: none;
+}
+
+.globe-hint {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 10px;
 }
 
 .globe-copy {
@@ -2000,10 +1986,17 @@ body.globe-active .filters-toggle {
     align-items: flex-start;
   }
 
-  .globe-orb {
-    width: min(160px, 46vw);
-    height: min(160px, 46vw);
-    margin: 0 auto;
+  .globe-canvas-host {
+    flex: 1 1 100%;
+    max-width: none;
+    width: 100%;
+    min-height: 42vh;
+    height: 46vh;
+    border-radius: 14px;
+  }
+
+  .globe-hint {
+    text-align: center;
   }
 
   .globe-title {
