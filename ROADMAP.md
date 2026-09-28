@@ -53,6 +53,7 @@ Deep links should eventually support:
 - selected item ✅
 - approximate year/range ✅
 - active filters ✅ (Day 7 — `filters` query param)
+- compare pair ✅ (Day 8 — `compare` query param)
 
 ### 4. Better mobile controls — done (Day 3)
 
@@ -138,7 +139,7 @@ Shipped:
 - Desktop: compact panel near the Filters button; mobile: bottom sheet (same pattern as search/details).
 - Deep links: optional `filters` query param (comma-separated category ids), e.g. `?view=technology&filters=computing,medicine`.
 
-### 9. Compare mode
+### 9. Compare mode — done (Day 8)
 
 Let users compare timelines or regions.
 
@@ -149,7 +150,14 @@ Possible examples:
 - United States vs United Kingdom
 - Religion vs Philosophy
 
-This could start simple as two synchronized swim-lane panels before becoming more visual.
+Shipped:
+
+- Compare toggle in the header; Exit restores the previous view.
+- Two synchronized swim-lane panels (A / B) sharing zoom, pan, and minimap time window.
+- Pick any two topic or country views (linear-year swim lanes; cosmic / cosmic-history excluded).
+- Independent vertical scroll per panel; shared horizontal time navigation.
+- Search spans both panels; detail panel and deep links work (`?compare=technology,wars`, `?compare=country:us,country:uk`).
+- Filters disabled while comparing (per-panel filters can come later).
 
 ### 10. Bookmarks and saved trails
 
@@ -378,7 +386,9 @@ A sensible near-term sequence:
 3. Data validation script and CI check.
 4. Sources/citations field and detail-panel display.
 5. Filters for swim-lane categories. ✅ Day 7
-6. Globe view shell.
-7. Interactive globe prototype.
+6. Compare mode. ✅ Day 8
+7. Bookmarks and saved trails (Phase 3 #10).
+8. Globe view shell.
+9. Interactive globe prototype.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

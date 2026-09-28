@@ -254,6 +254,236 @@ function isSwimLaneView() {
 }
 
 // ============================================================
+// Compare mode (Phase 3 #9) — two synchronized swim-lane panels
+// ============================================================
+const COMPARE_TOPIC_VIEWS = [
+  { id: 'civilisations', label: 'Civilisations' },
+  { id: 'technology', label: 'Technology' },
+  { id: 'science', label: 'Science' },
+  { id: 'religion', label: 'Religion' },
+  { id: 'philosophy', label: 'Philosophy' },
+  { id: 'art', label: 'Art & Culture' },
+  { id: 'economics', label: 'Economics' },
+  { id: 'wars', label: 'Wars & Conflicts' },
+];
+
+const COMPARE_DIVIDER_H = 30;
+
+let compareMode = false;
+let compareLeft = 'technology';
+let compareRight = 'wars';
+let compareShared = null; // { viewStart, viewEnd, targetStart, targetEnd, minYear, maxYear }
+let compareDragPanel = null; // 'left' | 'right' | null
+let compareHover = { panel: null, item: null };
+let compareSelected = { panel: null, item: null };
+let compareHitAreas = { left: [], right: [] };
+let compareMaxScroll = { left: 0, right: 0 };
+let compareScroll = { left: 0, right: 0 };
+let compareBeforeView = 'cosmic';
+
+function isComparableViewId(id) {
+  if (!id) return false;
+  if (id === 'cosmic' || id === 'cosmic-history' || id === 'countries') return false;
+  if (COMPARE_TOPIC_VIEWS.some(v => v.id === id)) return true;
+  return isCountryViewId(id);
+}
+
+function resolveSwimStateForView(viewId) {
+  if (!isComparableViewId(viewId)) return null;
+  if (isCountryViewId(viewId)) return getOrCreateCountryState(viewId);
+  return swimStates[viewId] || null;
+}
+
+function getCompareViewLabel(viewId) {
+  const topic = COMPARE_TOPIC_VIEWS.find(v => v.id === viewId);
+  if (topic) return topic.label;
+  const country = COUNTRY_REGISTRY.find(c => c.id === viewId);
+  if (country) return country.flag + ' ' + country.name;
+  return viewId;
+}
+
+function encodeCompareViewParam(viewId) {
+  return isCountryViewId(viewId) ? ('country:' + viewId) : viewId;
+}
+
+function parseComparePair(raw) {
+  if (raw == null || raw === '') return null;
+  const parts = String(raw).split(',').map(s => s.trim()).filter(Boolean);
+  if (parts.length !== 2) return null;
+  const a = resolveViewParam(parts[0]);
+  const b = resolveViewParam(parts[1]);
+  if (!a || !b) return null;
+  if (!isComparableViewId(a.id) || !isComparableViewId(b.id)) return null;
+  return { left: a.id, right: b.id };
+}
+
+function rebuildCompareSharedRange() {
+  const stateA = resolveSwimStateForView(compareLeft);
+  const stateB = resolveSwimStateForView(compareRight);
+  if (!stateA || !stateB) return;
+  const minYear = Math.min(stateA.defaults.minYear, stateB.defaults.minYear);
+  const maxYear = Math.max(stateA.defaults.maxYear, stateB.defaults.maxYear);
+  const yearRange = Math.max(1, maxYear - minYear);
+  if (!compareShared) {
+    compareShared = {
+      minYear,
+      maxYear,
+      yearRange,
+      viewStart: minYear,
+      viewEnd: maxYear,
+      targetStart: minYear,
+      targetEnd: maxYear,
+    };
+  } else {
+    compareShared.minYear = minYear;
+    compareShared.maxYear = maxYear;
+    compareShared.yearRange = yearRange;
+    // Clamp current window into the new union range
+    const range = compareShared.viewEnd - compareShared.viewStart;
+    let start = compareShared.viewStart;
+    let end = compareShared.viewEnd;
+    if (start < minYear) {
+      start = minYear;
+      end = start + range;
+    }
+    if (end > maxYear) {
+      end = maxYear;
+      start = end - range;
+    }
+    if (start < minYear) start = minYear;
+    compareShared.viewStart = start;
+    compareShared.viewEnd = Math.max(start + 20, end);
+    compareShared.targetStart = compareShared.viewStart;
+    compareShared.targetEnd = compareShared.viewEnd;
+  }
+}
+
+function getCompareLayout(h) {
+  const divider = Math.round(COMPARE_DIVIDER_H * uiScale);
+  const usable = Math.max(80, h - divider);
+  const panelH = Math.floor(usable / 2);
+  return {
+    divider,
+    left: { y: 0, h: panelH },
+    right: { y: panelH + divider, h: h - (panelH + divider) },
+  };
+}
+
+function panelAtY(my, h) {
+  const layout = getCompareLayout(h);
+  if (my < layout.left.h) return 'left';
+  if (my >= layout.right.y) return 'right';
+  return null;
+}
+
+function enterCompareMode(leftId, rightId, { fromDeepLink = false } = {}) {
+  const left = isComparableViewId(leftId) ? leftId : 'technology';
+  const right = isComparableViewId(rightId) ? rightId : (left === 'wars' ? 'technology' : 'wars');
+  if (!fromDeepLink) {
+    compareBeforeView = currentView;
+  }
+  compareLeft = left === right
+    ? (COMPARE_TOPIC_VIEWS.find(v => v.id !== left)?.id || 'civilisations')
+    : left;
+  compareRight = right === compareLeft
+    ? (COMPARE_TOPIC_VIEWS.find(v => v.id !== compareLeft)?.id || 'wars')
+    : right;
+
+  resolveSwimStateForView(compareLeft);
+  resolveSwimStateForView(compareRight);
+  compareShared = null;
+  rebuildCompareSharedRange();
+  compareScroll = { left: 0, right: 0 };
+  compareHover = { panel: null, item: null };
+  compareSelected = { panel: null, item: null };
+  compareHitAreas = { left: [], right: [] };
+  compareMode = true;
+
+  document.body.classList.add('compare-active');
+  const bar = document.getElementById('compare-bar');
+  if (bar) bar.classList.remove('hidden');
+  const toggle = document.getElementById('compare-toggle');
+  if (toggle) {
+    toggle.classList.add('is-active');
+    toggle.setAttribute('aria-pressed', 'true');
+  }
+
+  eraNav.style.display = 'none';
+  closeCountryPicker();
+  closeTimelineSearchResults();
+  closeFiltersPanel();
+  if (timelineSearch) timelineSearch.value = '';
+  document.getElementById('event-detail').classList.add('hidden');
+  tooltip.classList.remove('visible');
+
+  syncCompareSelects();
+  updateActiveViewChrome();
+  updateFiltersUI();
+  draw();
+  syncDeepLinkUrl();
+}
+
+function exitCompareMode({ restoreView = true } = {}) {
+  if (!compareMode) return;
+  compareMode = false;
+  document.body.classList.remove('compare-active');
+  const bar = document.getElementById('compare-bar');
+  if (bar) bar.classList.add('hidden');
+  const toggle = document.getElementById('compare-toggle');
+  if (toggle) {
+    toggle.classList.remove('is-active');
+    toggle.setAttribute('aria-pressed', 'false');
+  }
+  compareHover = { panel: null, item: null };
+  compareSelected = { panel: null, item: null };
+  tooltip.classList.remove('visible');
+  document.getElementById('event-detail').classList.add('hidden');
+
+  if (restoreView) {
+    const restore = isComparableViewId(compareBeforeView) || compareBeforeView === 'cosmic' || compareBeforeView === 'cosmic-history'
+      ? compareBeforeView
+      : 'cosmic';
+    // Use switchView path without re-entering compare
+    currentView = restore;
+    eraNav.style.display = restore === 'cosmic' ? 'flex' : 'none';
+    updateActiveViewChrome();
+  }
+  updateFiltersUI();
+  draw();
+  syncDeepLinkUrl();
+}
+
+function syncCompareSelects() {
+  const a = document.getElementById('compare-select-a');
+  const b = document.getElementById('compare-select-b');
+  if (a) a.value = compareLeft;
+  if (b) b.value = compareRight;
+}
+
+function setCompareSide(side, viewId) {
+  if (!isComparableViewId(viewId)) return;
+  if (side === 'left') {
+    if (viewId === compareRight) return; // keep distinct
+    compareLeft = viewId;
+  } else {
+    if (viewId === compareLeft) return;
+    compareRight = viewId;
+  }
+  resolveSwimStateForView(viewId);
+  rebuildCompareSharedRange();
+  compareScroll[side] = 0;
+  if (compareSelected.panel === side) {
+    compareSelected = { panel: null, item: null };
+    document.getElementById('event-detail').classList.add('hidden');
+  }
+  syncCompareSelects();
+  updateActiveViewChrome();
+  draw();
+  syncDeepLinkUrl();
+}
+
+
+// ============================================================
 // Deep links (URL query params)
 // Patterns (location.search only — Vite base path stays intact):
 //   ?view=technology&id=internet-web
@@ -297,23 +527,30 @@ function syncDeepLinkUrl() {
   if (_syncingFromUrl) return;
 
   const params = new URLSearchParams();
-  if (isCountryViewId(currentView)) {
-    params.set('view', 'country:' + currentView);
-  } else if (currentView !== 'cosmic') {
-    params.set('view', currentView);
-  }
+  if (compareMode) {
+    params.set('compare', encodeCompareViewParam(compareLeft) + ',' + encodeCompareViewParam(compareRight));
+    if (compareSelected.item) {
+      params.set('id', compareSelected.item.id);
+    }
+  } else {
+    if (isCountryViewId(currentView)) {
+      params.set('view', 'country:' + currentView);
+    } else if (currentView !== 'cosmic') {
+      params.set('view', currentView);
+    }
 
-  const selectedId = getSelectedDeepLinkId();
-  if (selectedId) {
-    // Always include view when an item is selected so shares are unambiguous
-    if (!params.has('view')) params.set('view', 'cosmic');
-    params.set('id', selectedId);
-  }
+    const selectedId = getSelectedDeepLinkId();
+    if (selectedId) {
+      // Always include view when an item is selected so shares are unambiguous
+      if (!params.has('view')) params.set('view', 'cosmic');
+      params.set('id', selectedId);
+    }
 
-  if (isSwimLaneView()) {
-    const state = currentSwimState();
-    if (isFilterActive(state)) {
-      params.set('filters', [...state.activeFilters].join(','));
+    if (isSwimLaneView()) {
+      const state = currentSwimState();
+      if (isFilterActive(state)) {
+        params.set('filters', [...state.activeFilters].join(','));
+      }
     }
   }
 
@@ -385,7 +622,26 @@ function focusItemById(id) {
 function applyItemFocus(result) {
   tooltip.classList.remove('visible');
 
-  if (result.type === 'cosmic') {
+  if (result.type === 'compare' && compareMode && compareShared) {
+    const item = result.item;
+    const panel = result.panel || 'left';
+    compareSelected = { panel, item };
+    compareHover = { panel: null, item: null };
+    const duration = Math.max(1, Math.abs(item.end - item.start));
+    const padding = Math.max(50, duration * 0.6);
+    compareShared.targetStart = item.start - padding;
+    compareShared.targetEnd = item.end + padding;
+    compareShared.viewStart = compareShared.targetStart;
+    compareShared.viewEnd = compareShared.targetEnd;
+    const displayStart = item.startYear !== undefined ? item.startYear : item.start;
+    const displayEnd = item.endYear !== undefined ? item.endYear : item.end;
+    const displayDuration = Math.abs(displayEnd - displayStart);
+    let durationStr;
+    if (displayDuration >= 1_000_000_000) durationStr = (displayDuration / 1_000_000_000).toFixed(1) + ' billion years';
+    else if (displayDuration >= 1_000_000) durationStr = Math.round(displayDuration / 1_000_000).toLocaleString() + ' million years';
+    else durationStr = displayDuration.toLocaleString() + ' years';
+    showDetail(item.icon + ' ' + item.name, `${formatYear(displayStart)} — ${formatYear(displayEnd)}  (${durationStr})`, item.description, item.sources);
+  } else if (result.type === 'cosmic') {
     const evt = result.item;
     const center = yearToLog(evt.year);
     const range = Math.max(LOG_RANGE * 0.045, (viewEnd - viewStart) * 0.35);
@@ -425,6 +681,7 @@ function applyItemFocus(result) {
 }
 
 function activateViewForDeepLink(viewId, { clearSelection = true } = {}) {
+  if (compareMode) exitCompareMode({ restoreView: false });
   if (isCountryViewId(viewId)) {
     getOrCreateCountryState(viewId);
   }
@@ -452,12 +709,13 @@ function activateViewForDeepLink(viewId, { clearSelection = true } = {}) {
 
 function applyDeepLinkFromUrl() {
   const params = new URLSearchParams(location.search);
+  const comparePair = parseComparePair(params.get('compare'));
   const resolved = resolveViewParam(params.get('view'));
   const id = params.get('id');
   const year = params.get('year');
   const filtersRaw = params.get('filters');
 
-  if (!resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '')) {
+  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '')) {
     updateActiveViewChrome();
     updateFiltersUI();
     return;
@@ -465,6 +723,21 @@ function applyDeepLinkFromUrl() {
 
   _syncingFromUrl = true;
   try {
+    if (comparePair) {
+      enterCompareMode(comparePair.left, comparePair.right, { fromDeepLink: true });
+      if (id) {
+        focusCompareItemById(id);
+      }
+      if (year != null && year !== '' && compareShared) {
+        centerCompareOnYear(year);
+      }
+      updateFiltersUI();
+      draw();
+      return;
+    }
+
+    if (compareMode) exitCompareMode({ restoreView: false });
+
     if (resolved) {
       activateViewForDeepLink(resolved.id, { clearSelection: true });
     } else {
@@ -488,6 +761,47 @@ function applyDeepLinkFromUrl() {
   } finally {
     _syncingFromUrl = false;
   }
+}
+
+function centerCompareOnYear(yearRaw) {
+  const year = Number(yearRaw);
+  if (!Number.isFinite(year) || !compareShared) return;
+  const range = Math.min(
+    compareShared.yearRange * 0.35,
+    Math.max(80, (compareShared.viewEnd - compareShared.viewStart))
+  );
+  compareShared.targetStart = year - range / 2;
+  compareShared.targetEnd = year + range / 2;
+  compareShared.viewStart = compareShared.targetStart;
+  compareShared.viewEnd = compareShared.targetEnd;
+}
+
+function focusCompareItemById(id) {
+  if (!id || !compareShared) return false;
+  for (const side of ['left', 'right']) {
+    const viewId = side === 'left' ? compareLeft : compareRight;
+    const state = resolveSwimStateForView(viewId);
+    if (!state) continue;
+    const item = state.items.find(i => i.id === id);
+    if (!item) continue;
+    compareSelected = { panel: side, item };
+    const duration = Math.max(1, Math.abs(item.end - item.start));
+    const padding = Math.max(40, duration * 0.35);
+    compareShared.targetStart = item.start - padding;
+    compareShared.targetEnd = item.end + padding;
+    compareShared.viewStart = compareShared.targetStart;
+    compareShared.viewEnd = compareShared.targetEnd;
+    const displayStart = item.startYear !== undefined ? item.startYear : item.start;
+    const displayEnd = item.endYear !== undefined ? item.endYear : item.end;
+    const displayDuration = Math.abs(displayEnd - displayStart);
+    let durationStr;
+    if (displayDuration >= 1_000_000_000) durationStr = (displayDuration / 1_000_000_000).toFixed(1) + ' billion years';
+    else if (displayDuration >= 1_000_000) durationStr = Math.round(displayDuration / 1_000_000).toLocaleString() + ' million years';
+    else durationStr = displayDuration.toLocaleString() + ' years';
+    showDetail(item.icon + ' ' + item.name, `${formatYear(displayStart)} — ${formatYear(displayEnd)}  (${durationStr})`, item.description, item.sources);
+    return true;
+  }
+  return false;
 }
 
 
@@ -554,7 +868,9 @@ function resize() {
 // Draw dispatcher
 // ============================================================
 function draw() {
-  if (currentView === 'cosmic') {
+  if (compareMode) {
+    drawCompareView();
+  } else if (currentView === 'cosmic') {
     drawCosmicTimeline();
   } else {
     drawSwimView();
@@ -790,6 +1106,105 @@ function drawSwimView() {
   minimapViewport.style.width = Math.max(4, vp.vpWidth) + 'px';
 }
 
+function drawCompareView() {
+  const w = parseFloat(canvas.style.width);
+  const h = parseFloat(canvas.style.height);
+  const theme = currentTheme();
+  if (!compareShared) rebuildCompareSharedRange();
+  const shared = compareShared;
+  if (!shared) return;
+
+  const layout = getCompareLayout(h);
+  const stateA = resolveSwimStateForView(compareLeft);
+  const stateB = resolveSwimStateForView(compareRight);
+  if (!stateA || !stateB) return;
+
+  ctx.clearRect(0, 0, w, h);
+
+  const panels = [
+    { key: 'left', viewId: compareLeft, state: stateA, box: layout.left },
+    { key: 'right', viewId: compareRight, state: stateB, box: layout.right },
+  ];
+
+  for (const panel of panels) {
+    const items = getVisibleItems(panel.state);
+    const categories = getVisibleCategories(panel.state);
+    const hovered = (compareHover.panel === panel.key) ? compareHover.item : null;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, panel.box.y, w, panel.box.h);
+    ctx.clip();
+    ctx.translate(0, panel.box.y);
+
+    const result = drawSwimLaneView(
+      ctx, w, panel.box.h,
+      shared.viewStart, shared.viewEnd,
+      compareScroll[panel.key], hovered,
+      formatYearShort, uiScale,
+      items, categories,
+      { clear: false }
+    );
+
+    // Offset hit areas into full-canvas coordinates
+    compareHitAreas[panel.key] = result.hitAreas.map(area => ({
+      ...area,
+      y: area.y + panel.box.y,
+      panel: panel.key,
+    }));
+    compareMaxScroll[panel.key] = Math.max(0, result.totalHeight - panel.box.h + 40);
+
+    ctx.restore();
+  }
+
+  // Divider strip with labels
+  const divY = layout.left.h;
+  ctx.fillStyle = theme.clipBg;
+  ctx.fillRect(0, divY, w, layout.divider);
+  ctx.strokeStyle = theme.axisLight || theme.axis;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, divY + 0.5);
+  ctx.lineTo(w, divY + 0.5);
+  ctx.moveTo(0, divY + layout.divider - 0.5);
+  ctx.lineTo(w, divY + layout.divider - 0.5);
+  ctx.stroke();
+
+  const labelA = 'A · ' + getCompareViewLabel(compareLeft);
+  const labelB = 'B · ' + getCompareViewLabel(compareRight);
+  const midLabel = 'vs';
+  const fontSize = Math.round(11 * uiScale);
+  ctx.font = `600 ${fontSize}px Inter, sans-serif`;
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = theme.text;
+  ctx.textAlign = 'left';
+  ctx.fillText(labelA, Math.round(12 * uiScale), divY + layout.divider / 2, w * 0.4);
+  ctx.textAlign = 'center';
+  ctx.fillStyle = theme.textMuted;
+  ctx.fillText(midLabel, w / 2, divY + layout.divider / 2);
+  ctx.textAlign = 'right';
+  ctx.fillStyle = theme.text;
+  ctx.fillText(labelB, w - Math.round(12 * uiScale), divY + layout.divider / 2, w * 0.4);
+
+  // Combined minimap (union year range, both panels' items)
+  const mmW = parseFloat(minimapCanvas.style.width);
+  const mmH = parseFloat(minimapCanvas.style.height);
+  const allItems = [...getVisibleItems(stateA), ...getVisibleItems(stateB)];
+  // Use a synthetic category list so minimap still colour-codes
+  const allCats = [...getVisibleCategories(stateA)];
+  for (const cat of getVisibleCategories(stateB)) {
+    if (!allCats.some(c => c.id === cat.id)) allCats.push(cat);
+  }
+  const vp = drawSwimLaneMinimap(
+    minimapCtx, mmW, mmH,
+    shared.viewStart, shared.viewEnd, uiScale,
+    allItems, allCats,
+    shared.minYear, shared.maxYear
+  );
+  minimapViewport.style.left = vp.vpLeft + 'px';
+  minimapViewport.style.width = Math.max(4, vp.vpWidth) + 'px';
+}
+
 // ============================================================
 // Interaction — cosmic
 // ============================================================
@@ -812,7 +1227,14 @@ canvas.addEventListener('mousedown', (e) => {
   dragStartY = e.clientY;
   canvas.style.cursor = 'grabbing';
 
-  if (currentView === 'cosmic') {
+  if (compareMode) {
+    const rect = canvas.getBoundingClientRect();
+    const my = e.clientY - rect.top;
+    const h = parseFloat(canvas.style.height);
+    compareDragPanel = panelAtY(my, h);
+    dragStartViewStart = compareShared.viewStart;
+    dragStartScrollY = compareDragPanel ? compareScroll[compareDragPanel] : 0;
+  } else if (currentView === 'cosmic') {
     dragStartViewStart = viewStart;
   } else {
     const state = currentSwimState();
@@ -826,7 +1248,21 @@ window.addEventListener('mousemove', (e) => {
     const dx = e.clientX - dragStartX;
     const w = parseFloat(canvas.style.width);
 
-    if (currentView === 'cosmic') {
+    if (compareMode && compareShared) {
+      const range = compareShared.targetEnd - compareShared.targetStart;
+      const yearDx = (dx / w) * range;
+      compareShared.viewStart = dragStartViewStart - yearDx;
+      compareShared.viewEnd = compareShared.viewStart + range;
+      compareShared.targetStart = compareShared.viewStart;
+      compareShared.targetEnd = compareShared.viewEnd;
+      const dy = e.clientY - dragStartY;
+      if (compareDragPanel) {
+        compareScroll[compareDragPanel] = Math.max(
+          0,
+          Math.min(compareMaxScroll[compareDragPanel], dragStartScrollY - dy)
+        );
+      }
+    } else if (currentView === 'cosmic') {
       const logDx = (dx / w) * (viewEnd - viewStart);
       const newStart = dragStartViewStart - logDx;
       const range = viewEnd - viewStart;
@@ -857,7 +1293,28 @@ window.addEventListener('mousemove', (e) => {
   const mx = e.clientX - rect.left;
   const my = e.clientY - rect.top;
 
-  if (currentView === 'cosmic') {
+  if (compareMode) {
+    const areas = [...compareHitAreas.left, ...compareHitAreas.right];
+    const hit = areas.find(a => mx >= a.x && mx <= a.x + a.w && my >= a.y && my <= a.y + a.h);
+    const item = hit ? hit.item : null;
+    const panel = hit ? hit.panel : null;
+    if (item !== compareHover.item || panel !== compareHover.panel) {
+      compareHover = { panel, item };
+      canvas.style.cursor = item ? 'pointer' : 'grab';
+      if (item) {
+        const tooltipX = Math.min(mx + 20, parseFloat(canvas.style.width) - 260);
+        const itemStart = item.startYear !== undefined ? item.startYear : item.start;
+        const itemEnd = item.endYear !== undefined ? item.endYear : item.end;
+        tooltip.innerHTML = `<strong>${item.icon} ${item.name}</strong><br>${formatYear(itemStart)} — ${formatYear(itemEnd)}`;
+        tooltip.style.left = tooltipX + 'px';
+        tooltip.style.top = (my - 10) + 'px';
+        tooltip.classList.add('visible');
+      } else {
+        tooltip.classList.remove('visible');
+      }
+      draw();
+    }
+  } else if (currentView === 'cosmic') {
     const evt = getEventAtPos(mx, my);
     if (evt !== hoveredEvent) {
       hoveredEvent = evt;
@@ -897,7 +1354,10 @@ window.addEventListener('mousemove', (e) => {
 
 window.addEventListener('mouseup', () => {
   isDragging = false;
-  if (currentView === 'cosmic') {
+  compareDragPanel = null;
+  if (compareMode) {
+    canvas.style.cursor = compareHover.item ? 'pointer' : 'grab';
+  } else if (currentView === 'cosmic') {
     canvas.style.cursor = hoveredEvent ? 'pointer' : 'grab';
   } else {
     const state = currentSwimState();
@@ -910,7 +1370,25 @@ canvas.addEventListener('click', (e) => {
   const mx = e.clientX - rect.left;
   const my = e.clientY - rect.top;
 
-  if (currentView === 'cosmic') {
+  if (compareMode) {
+    const areas = [...compareHitAreas.left, ...compareHitAreas.right];
+    const hit = areas.find(a => mx >= a.x && mx <= a.x + a.w && my >= a.y && my <= a.y + a.h);
+    if (hit) {
+      compareSelected = { panel: hit.panel, item: hit.item };
+      const item = hit.item;
+      const itemStart = item.startYear !== undefined ? item.startYear : item.start;
+      const itemEnd = item.endYear !== undefined ? item.endYear : item.end;
+      const duration = Math.abs(itemEnd - itemStart);
+      let durationStr;
+      if (duration >= 1_000_000_000) durationStr = (duration / 1_000_000_000).toFixed(1) + ' billion years';
+      else if (duration >= 1_000_000) durationStr = Math.round(duration / 1_000_000).toLocaleString() + ' million years';
+      else durationStr = duration.toLocaleString() + ' years';
+      const dateStr = formatYear(itemStart) + ' — ' + formatYear(itemEnd) + '  (' + durationStr + ')';
+      showDetail(item.icon + ' ' + item.name, dateStr, item.description, item.sources);
+      draw();
+      syncDeepLinkUrl();
+    }
+  } else if (currentView === 'cosmic') {
     const evt = getEventAtPos(mx, my);
     if (evt) {
       selectedEvent = evt;
@@ -947,7 +1425,16 @@ canvas.addEventListener('wheel', (e) => {
   const mx = e.clientX - rect.left;
   const w = rect.width;
 
-  if (currentView === 'cosmic') {
+  if (compareMode && compareShared) {
+    const mouseYear = compareShared.viewStart + (mx / w) * (compareShared.viewEnd - compareShared.viewStart);
+    const zoomFactor = e.deltaY > 0 ? 1.12 : 0.89;
+    const range = (compareShared.viewEnd - compareShared.viewStart) * zoomFactor;
+    const clampedRange = Math.min(compareShared.yearRange * 1.2, Math.max(20, range));
+    const mouseRatio = mx / w;
+    compareShared.targetStart = mouseYear - clampedRange * mouseRatio;
+    compareShared.targetEnd = mouseYear + clampedRange * (1 - mouseRatio);
+    if (!animationId) animateZoom();
+  } else if (currentView === 'cosmic') {
     const mouseLog = xToLog(mx);
     const zoomFactor = e.deltaY > 0 ? 1.15 : 0.87;
     const newRange = (viewEnd - viewStart) * zoomFactor;
@@ -976,7 +1463,22 @@ canvas.addEventListener('wheel', (e) => {
 function animateZoom() {
   const lerp = 0.25;
 
-  if (currentView === 'cosmic') {
+  if (compareMode && compareShared) {
+    const shared = compareShared;
+    shared.viewStart += (shared.targetStart - shared.viewStart) * lerp;
+    shared.viewEnd += (shared.targetEnd - shared.viewEnd) * lerp;
+    const done = Math.abs(shared.viewStart - shared.targetStart) < 0.5 && Math.abs(shared.viewEnd - shared.targetEnd) < 0.5;
+    if (done) {
+      shared.viewStart = shared.targetStart;
+      shared.viewEnd = shared.targetEnd;
+    }
+    draw();
+    if (!done) {
+      animationId = requestAnimationFrame(animateZoom);
+    } else {
+      animationId = null;
+    }
+  } else if (currentView === 'cosmic') {
     viewStart += (targetViewStart - viewStart) * lerp;
     viewEnd += (targetViewEnd - viewEnd) * lerp;
     const done = Math.abs(viewStart - targetViewStart) < 0.0001 && Math.abs(viewEnd - targetViewEnd) < 0.0001;
@@ -1027,7 +1529,14 @@ canvas.addEventListener('touchstart', (e) => {
     isDragging = true;
     dragStartX = e.touches[0].clientX;
     dragStartY = e.touches[0].clientY;
-    if (currentView === 'cosmic') {
+    if (compareMode && compareShared) {
+      const rect = canvas.getBoundingClientRect();
+      const my = e.touches[0].clientY - rect.top;
+      const h = parseFloat(canvas.style.height);
+      compareDragPanel = panelAtY(my, h);
+      dragStartViewStart = compareShared.viewStart;
+      dragStartScrollY = compareDragPanel ? compareScroll[compareDragPanel] : 0;
+    } else if (currentView === 'cosmic') {
       dragStartViewStart = viewStart;
     } else {
       const state = currentSwimState();
@@ -1038,7 +1547,10 @@ canvas.addEventListener('touchstart', (e) => {
     isDragging = false;
     touchStartDist = Math.abs(e.touches[0].clientX - e.touches[1].clientX);
     touchStartMid = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-    if (currentView === 'cosmic') {
+    if (compareMode && compareShared) {
+      touchStartViewStart = compareShared.viewStart;
+      touchStartViewEnd = compareShared.viewEnd;
+    } else if (currentView === 'cosmic') {
       touchStartViewStart = viewStart;
       touchStartViewEnd = viewEnd;
     } else {
@@ -1061,7 +1573,22 @@ canvas.addEventListener('touchmove', (e) => {
       touchGestureLock = Math.abs(dx) >= Math.abs(dy) ? 'horizontal' : 'vertical';
     }
 
-    if (currentView === 'cosmic') {
+    if (compareMode && compareShared) {
+      const range = compareShared.targetEnd - compareShared.targetStart;
+      if (touchGestureLock !== 'vertical') {
+        const yearDx = (dx / w) * range;
+        compareShared.viewStart = dragStartViewStart - yearDx;
+        compareShared.viewEnd = compareShared.viewStart + range;
+        compareShared.targetStart = compareShared.viewStart;
+        compareShared.targetEnd = compareShared.viewEnd;
+      }
+      if (touchGestureLock !== 'horizontal' && compareDragPanel) {
+        compareScroll[compareDragPanel] = Math.max(
+          0,
+          Math.min(compareMaxScroll[compareDragPanel], dragStartScrollY - dy)
+        );
+      }
+    } else if (currentView === 'cosmic') {
       const logDx = (dx / w) * (viewEnd - viewStart);
       const newStart = dragStartViewStart - logDx;
       const range = viewEnd - viewStart;
@@ -1093,7 +1620,16 @@ canvas.addEventListener('touchmove', (e) => {
     const mid = touchStartMid - rect.left;
     const w = rect.width;
 
-    if (currentView === 'cosmic') {
+    if (compareMode && compareShared) {
+      const mouseYear = touchStartViewStart + (mid / w) * (touchStartViewEnd - touchStartViewStart);
+      const origRange = touchStartViewEnd - touchStartViewStart;
+      const newRange = Math.min(compareShared.yearRange * 1.2, Math.max(20, origRange * scale));
+      const mouseRatio = mid / w;
+      compareShared.viewStart = mouseYear - newRange * mouseRatio;
+      compareShared.viewEnd = mouseYear + newRange * (1 - mouseRatio);
+      compareShared.targetStart = compareShared.viewStart;
+      compareShared.targetEnd = compareShared.viewEnd;
+    } else if (currentView === 'cosmic') {
       const mouseLog = touchStartViewStart + (mid / w) * (touchStartViewEnd - touchStartViewStart);
       const origRange = touchStartViewEnd - touchStartViewStart;
       const newRange = Math.min(LOG_RANGE * 1.1, Math.max(LOG_RANGE * 0.0001, origRange * scale));
@@ -1121,6 +1657,7 @@ canvas.addEventListener('touchmove', (e) => {
 canvas.addEventListener('touchend', () => {
   isDragging = false;
   touchGestureLock = null;
+  compareDragPanel = null;
 });
 
 // ============================================================
@@ -1222,6 +1759,28 @@ function setActiveViewLabelContent(country) {
 }
 
 function updateActiveViewChrome() {
+  if (compareMode) {
+    if (activeViewLabel) {
+      activeViewLabel.replaceChildren();
+      const parent = document.createElement('span');
+      parent.className = 'active-view-parent';
+      parent.textContent = 'Compare';
+      const sep = document.createElement('span');
+      sep.className = 'active-view-sep';
+      sep.setAttribute('aria-hidden', 'true');
+      sep.textContent = '›';
+      const child = document.createElement('span');
+      child.className = 'active-view-child';
+      child.textContent = getCompareViewLabel(compareLeft) + ' vs ' + getCompareViewLabel(compareRight);
+      activeViewLabel.append(parent, sep, child);
+      activeViewLabel.setAttribute(
+        'aria-label',
+        'Comparing ' + getCompareViewLabel(compareLeft) + ' and ' + getCompareViewLabel(compareRight)
+      );
+    }
+    return;
+  }
+
   const country = COUNTRY_REGISTRY.find(c => c.id === currentView);
   setActiveViewLabelContent(country);
 
@@ -1249,6 +1808,10 @@ function switchView(view) {
     openCountryPicker();
     viewSelect.value = 'countries'; // keep select showing "Countries..." while picker is open
     return;
+  }
+
+  if (compareMode) {
+    exitCompareMode({ restoreView: false });
   }
 
   currentView = view;
@@ -1331,6 +1894,9 @@ viewSelect.addEventListener('click', () => {
 // Current-view search
 // ============================================================
 function getCurrentViewLabel() {
+  if (compareMode) {
+    return 'Compare › ' + getCompareViewLabel(compareLeft) + ' vs ' + getCompareViewLabel(compareRight);
+  }
   const country = COUNTRY_REGISTRY.find(c => c.id === currentView);
   if (country) return 'Countries › ' + country.flag + ' ' + country.name;
   const option = viewSelect.querySelector(`option[value="${currentView}"]`);
@@ -1342,6 +1908,32 @@ function normalizeSearchText(value) {
 }
 
 function getSearchableItems() {
+  if (compareMode) {
+    const results = [];
+    for (const side of ['left', 'right']) {
+      const viewId = side === 'left' ? compareLeft : compareRight;
+      const state = resolveSwimStateForView(viewId);
+      if (!state) continue;
+      const categoryName = new Map(state.categories.map(c => [c.id, c.name]));
+      const viewLabel = getCompareViewLabel(viewId);
+      for (const item of getVisibleItems(state)) {
+        const start = item.startYear !== undefined ? item.startYear : item.start;
+        const end = item.endYear !== undefined ? item.endYear : item.end;
+        const category = categoryName.get(item.region) || item.region;
+        results.push({
+          type: 'compare',
+          id: item.id,
+          panel: side,
+          title: item.icon + ' ' + item.name,
+          subtitle: `${formatYear(start)} — ${formatYear(end)} · ${viewLabel} · ${category}`,
+          haystack: [item.name, item.description, category, item.id, viewLabel, formatYear(start), formatYear(end)].join(' '),
+          item,
+        });
+      }
+    }
+    return results;
+  }
+
   if (currentView === 'cosmic') {
     return events.map(evt => ({
       type: 'cosmic',
@@ -1478,7 +2070,12 @@ document.addEventListener('click', (e) => {
 // Zoom controls
 // ============================================================
 document.getElementById('zoom-in').addEventListener('click', () => {
-  if (currentView === 'cosmic') {
+  if (compareMode && compareShared) {
+    const mid = (compareShared.viewStart + compareShared.viewEnd) / 2;
+    const range = (compareShared.viewEnd - compareShared.viewStart) * 0.5;
+    compareShared.targetStart = mid - range / 2;
+    compareShared.targetEnd = mid + range / 2;
+  } else if (currentView === 'cosmic') {
     const mid = (viewStart + viewEnd) / 2;
     const range = (viewEnd - viewStart) * 0.5;
     targetViewStart = mid - range / 2;
@@ -1494,7 +2091,13 @@ document.getElementById('zoom-in').addEventListener('click', () => {
 });
 
 document.getElementById('zoom-out').addEventListener('click', () => {
-  if (currentView === 'cosmic') {
+  if (compareMode && compareShared) {
+    const mid = (compareShared.viewStart + compareShared.viewEnd) / 2;
+    const range = (compareShared.viewEnd - compareShared.viewStart) * 2;
+    const clampedRange = Math.min(compareShared.yearRange * 1.2, range);
+    compareShared.targetStart = mid - clampedRange / 2;
+    compareShared.targetEnd = mid + clampedRange / 2;
+  } else if (currentView === 'cosmic') {
     const mid = (viewStart + viewEnd) / 2;
     const range = (viewEnd - viewStart) * 2;
     const clampedRange = Math.min(LOG_RANGE * 1.1, range);
@@ -1512,7 +2115,12 @@ document.getElementById('zoom-out').addEventListener('click', () => {
 });
 
 document.getElementById('zoom-fit').addEventListener('click', () => {
-  if (currentView === 'cosmic') {
+  if (compareMode && compareShared) {
+    compareShared.targetStart = compareShared.minYear;
+    compareShared.targetEnd = compareShared.maxYear;
+    compareScroll.left = 0;
+    compareScroll.right = 0;
+  } else if (currentView === 'cosmic') {
     targetViewStart = LOG_MIN_PADDED;
     targetViewEnd = LOG_MAX_PADDED;
   } else {
@@ -1551,7 +2159,12 @@ document.getElementById('minimap').addEventListener('click', (e) => {
   const mx = e.clientX - rect.left;
   const mmW = rect.width;
 
-  if (currentView === 'cosmic') {
+  if (compareMode && compareShared) {
+    const clickYear = minimapClickToYear(mx, mmW, compareShared.minYear, compareShared.maxYear);
+    const range = compareShared.viewEnd - compareShared.viewStart;
+    compareShared.targetStart = clickYear - range / 2;
+    compareShared.targetEnd = clickYear + range / 2;
+  } else if (currentView === 'cosmic') {
     const clickLog = LOG_MIN + (mx / mmW) * LOG_RANGE;
     const range = viewEnd - viewStart;
     targetViewStart = clickLog - range / 2;
@@ -1606,6 +2219,7 @@ function closeCountryPicker() {
 
 function selectCountry(countryId) {
   closeCountryPicker();
+  if (compareMode) exitCompareMode({ restoreView: false });
   getOrCreateCountryState(countryId);
   currentView = countryId;
   eraNav.style.display = 'none';
@@ -1765,7 +2379,7 @@ function positionFiltersPanel() {
 
 function updateFiltersUI() {
   if (!filtersToggle) return;
-  const canFilter = isSwimLaneView();
+  const canFilter = isSwimLaneView() && !compareMode;
   filtersToggle.disabled = !canFilter;
 
   if (!canFilter) {
@@ -1897,6 +2511,85 @@ document.addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && filtersPanel && !filtersPanel.classList.contains('hidden')) {
     closeFiltersPanel();
+  }
+});
+
+// ============================================================
+// Compare mode UI (Phase 3 #9)
+// ============================================================
+const compareToggle = document.getElementById('compare-toggle');
+const compareBar = document.getElementById('compare-bar');
+const compareSelectA = document.getElementById('compare-select-a');
+const compareSelectB = document.getElementById('compare-select-b');
+const compareExitBtn = document.getElementById('compare-exit');
+
+function populateCompareSelect(selectEl) {
+  if (!selectEl) return;
+  selectEl.innerHTML = '';
+  const topics = document.createElement('optgroup');
+  topics.label = 'Topics';
+  for (const view of COMPARE_TOPIC_VIEWS) {
+    const opt = document.createElement('option');
+    opt.value = view.id;
+    opt.textContent = view.label;
+    topics.appendChild(opt);
+  }
+  selectEl.appendChild(topics);
+
+  const countries = document.createElement('optgroup');
+  countries.label = 'Countries';
+  for (const country of COUNTRY_REGISTRY) {
+    const opt = document.createElement('option');
+    opt.value = country.id;
+    opt.textContent = country.flag + ' ' + country.name;
+    countries.appendChild(opt);
+  }
+  selectEl.appendChild(countries);
+}
+
+populateCompareSelect(compareSelectA);
+populateCompareSelect(compareSelectB);
+
+if (compareToggle) {
+  compareToggle.addEventListener('click', () => {
+    if (compareMode) {
+      exitCompareMode({ restoreView: true });
+    } else {
+      // Prefer comparing current swim view against a sensible counterpart
+      let left = 'technology';
+      let right = 'wars';
+      if (isComparableViewId(currentView)) {
+        left = currentView;
+        right = left === 'wars' ? 'technology' : 'wars';
+        if (left === 'technology') right = 'civilisations';
+      }
+      enterCompareMode(left, right);
+    }
+  });
+}
+
+if (compareSelectA) {
+  compareSelectA.addEventListener('change', (e) => {
+    setCompareSide('left', e.target.value);
+  });
+}
+if (compareSelectB) {
+  compareSelectB.addEventListener('change', (e) => {
+    setCompareSide('right', e.target.value);
+  });
+}
+if (compareExitBtn) {
+  compareExitBtn.addEventListener('click', () => exitCompareMode({ restoreView: true }));
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && compareMode) {
+    // Prefer closing detail/search/filters first; exit compare if nothing else open
+    const detail = document.getElementById('event-detail');
+    if (detail && !detail.classList.contains('hidden')) return;
+    if (timelineSearchResults && !timelineSearchResults.classList.contains('hidden')) return;
+    if (filtersPanel && !filtersPanel.classList.contains('hidden')) return;
+    exitCompareMode({ restoreView: true });
   }
 });
 

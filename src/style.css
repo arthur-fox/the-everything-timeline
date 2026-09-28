@@ -539,6 +539,136 @@ html, body {
   font-size: 0.8rem;
 }
 
+/* --- Compare mode (Phase 3 #9) --- */
+.compare-wrap {
+  position: relative;
+  flex-shrink: 0;
+  z-index: 20;
+}
+
+.compare-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid var(--bg-elevated);
+  background: var(--bg-surface);
+  color: var(--text);
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.compare-toggle:hover {
+  border-color: var(--accent);
+  background: var(--bg-elevated);
+}
+
+.compare-toggle:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.compare-toggle.is-active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, var(--bg-surface));
+}
+
+.compare-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px 10px;
+  z-index: 10;
+  flex-wrap: wrap;
+}
+
+.compare-bar.hidden {
+  display: none;
+}
+
+.compare-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.compare-field-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.compare-select {
+  min-width: 0;
+  max-width: 220px;
+  padding: 6px 28px 6px 10px;
+  border: 1px solid var(--bg-elevated);
+  background: var(--bg-surface);
+  color: var(--text);
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  cursor: pointer;
+}
+
+.compare-select:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.compare-vs {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.compare-exit {
+  margin-left: auto;
+  padding: 6px 12px;
+  border: 1px solid var(--bg-elevated);
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: 10px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.compare-exit:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: var(--bg-surface);
+}
+
+body.compare-active #view-select {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+body.compare-active .filters-toggle {
+  opacity: 0.45;
+}
+
 /* --- Theme toggle --- */
 #theme-toggle {
   width: 36px;
@@ -1010,6 +1140,34 @@ html, body {
     min-height: 40px;
     padding: 8px 14px;
     font-size: 0.88rem;
+  }
+
+  .compare-wrap {
+    order: 6;
+    flex: 0 0 auto;
+  }
+
+  .compare-toggle {
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    border-radius: 12px;
+  }
+
+  .compare-bar {
+    padding: 0 12px 8px;
+    gap: 8px;
+  }
+
+  .compare-select {
+    max-width: min(42vw, 160px);
+    min-height: 40px;
+    font-size: 0.78rem;
+  }
+
+  .compare-exit {
+    min-height: 40px;
+    margin-left: 0;
   }
 
   .era-btn {
