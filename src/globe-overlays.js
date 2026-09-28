@@ -238,7 +238,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: 565,
-        label: 'Justinianic reconquest (schematic)',
+        label: 'Justinianic reconquest',
         approximation: 'schematic',
         regions: [
           { id: 'byzantine-core', name: 'Balkans / Anatolia', bbox: [20, 35, 42, 46] },
@@ -257,7 +257,7 @@ export const spatialEntities = [
       },
       {
         year: 1025,
-        label: 'Macedonian apex (schematic)',
+        label: 'Macedonian apex',
         approximation: 'schematic',
         regions: [
           { id: 'byzantine-core', name: 'Balkans / Anatolia', bbox: [19, 35, 42, 46] },
@@ -513,7 +513,7 @@ export const spatialEntities = [
       },
       {
         year: 1683,
-        label: 'Ottoman high water (schematic)',
+        label: 'Ottoman high water',
         approximation: 'schematic',
         regions: [
           { id: 'anatolia-balkans', name: 'Anatolia / Balkans', bbox: [15, 34, 48, 48] },
@@ -556,7 +556,7 @@ export const spatialEntities = [
       },
       {
         year: 1550,
-        label: 'Spanish Americas (schematic)',
+        label: 'Spanish Americas',
         approximation: 'schematic',
         regions: [
           { id: 'iberia', name: 'Iberia' },
@@ -566,7 +566,7 @@ export const spatialEntities = [
       },
       {
         year: 1700,
-        label: 'Bourbon-era Spanish world (schematic)',
+        label: 'Bourbon-era Spanish world',
         approximation: 'schematic',
         regions: [
           { id: 'iberia', name: 'Iberia' },
@@ -680,7 +680,7 @@ export const spatialEntities = [
       },
       {
         year: 1700,
-        label: 'Aurangzeb-era extent (schematic)',
+        label: 'Aurangzeb-era extent',
         approximation: 'schematic',
         regions: [
           { id: 'india-north', name: 'North India' },
@@ -741,7 +741,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: 1700,
-        label: 'Petrine Russia (schematic)',
+        label: 'Petrine Russia',
         approximation: 'schematic',
         regions: [
           { id: 'russia-european', name: 'European Russia', bbox: [28, 48, 60, 68] },
@@ -785,7 +785,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: 1700,
-        label: 'Early British Atlantic (schematic)',
+        label: 'Early British Atlantic',
         approximation: 'schematic',
         regions: [
           { id: 'british-isles', name: 'British Isles', bbox: [-8, 50, 2, 59] },
@@ -794,7 +794,7 @@ export const spatialEntities = [
       },
       {
         year: 1850,
-        label: 'Victorian expansion (schematic)',
+        label: 'Victorian expansion',
         approximation: 'schematic',
         regions: [
           { id: 'british-isles', name: 'British Isles' },
@@ -838,7 +838,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: -500,
-        label: 'Height under Darius (schematic)',
+        label: 'Height under Darius',
         approximation: 'schematic',
         regions: [
           { id: 'persia', name: 'Iranian plateau' },
@@ -865,7 +865,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: -1250,
-        label: 'New Kingdom core (schematic)',
+        label: 'New Kingdom core',
         approximation: 'schematic',
         regions: [
           { id: 'egypt', name: 'Nile / Egypt' },
@@ -874,7 +874,7 @@ export const spatialEntities = [
       },
       {
         year: -500,
-        label: 'Late Period (schematic)',
+        label: 'Late Period',
         approximation: 'schematic',
         regions: [
           { id: 'egypt', name: 'Nile / Egypt' },
@@ -897,7 +897,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: -450,
-        label: 'Classical Aegean (schematic)',
+        label: 'Classical Aegean',
         approximation: 'schematic',
         regions: [
           { id: 'greece', name: 'Greece / Aegean', bbox: [19, 35, 28, 42] },
@@ -920,7 +920,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: -500,
-        label: 'Punic western Med (schematic)',
+        label: 'Punic western Med',
         approximation: 'schematic',
         regions: [
           { id: 'carthage-core', name: 'Carthage / Tunisia', bbox: [8, 32, 12, 38] },
@@ -929,7 +929,7 @@ export const spatialEntities = [
       },
       {
         year: -220,
-        label: 'Before Second Punic War (schematic)',
+        label: 'Before Second Punic War',
         approximation: 'schematic',
         regions: [
           { id: 'carthage-core', name: 'Carthage / Tunisia' },
@@ -953,7 +953,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: 400,
-        label: 'Sassanid high (schematic)',
+        label: 'Sassanid high',
         approximation: 'schematic',
         regions: [
           { id: 'persia', name: 'Iranian plateau' },
@@ -963,7 +963,7 @@ export const spatialEntities = [
       },
       {
         year: 620,
-        label: 'Late Sassanid (schematic)',
+        label: 'Late Sassanid',
         approximation: 'schematic',
         regions: [
           { id: 'persia', name: 'Iranian plateau' },
@@ -989,7 +989,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: 720,
-        label: 'Umayyad extent (schematic)',
+        label: 'Umayyad extent',
         approximation: 'schematic',
         regions: [
           { id: 'iberia', name: 'Al-Andalus / Iberia' },
@@ -1017,7 +1017,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: 1050,
-        label: 'Ottonian–Salian core (schematic)',
+        label: 'Ottonian–Salian core',
         approximation: 'schematic',
         regions: [
           { id: 'central-europe-hre', name: 'German lands', bbox: [5, 45, 18, 55] },
@@ -1026,7 +1026,7 @@ export const spatialEntities = [
       },
       {
         year: 1250,
-        label: 'High medieval HRE (schematic)',
+        label: 'High medieval HRE',
         approximation: 'schematic',
         regions: [
           { id: 'central-europe-hre', name: 'German lands' },
@@ -1050,7 +1050,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: 1500,
-        label: 'Age of Discovery (schematic)',
+        label: 'Age of Discovery',
         approximation: 'schematic',
         regions: [
           { id: 'iberia', name: 'Portugal / Iberia west' },
@@ -1060,7 +1060,7 @@ export const spatialEntities = [
       },
       {
         year: 1700,
-        label: 'Brazil & Atlantic (schematic)',
+        label: 'Brazil & Atlantic',
         approximation: 'schematic',
         regions: [
           { id: 'iberia', name: 'Portugal' },
@@ -1085,7 +1085,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: 1650,
-        label: 'Dutch Golden Age (schematic)',
+        label: 'Dutch Golden Age',
         approximation: 'schematic',
         regions: [
           { id: 'low-countries', name: 'Low Countries', bbox: [3, 50, 8, 54] },
@@ -1094,7 +1094,7 @@ export const spatialEntities = [
       },
       {
         year: 1700,
-        label: 'VOC peak (schematic)',
+        label: 'VOC peak',
         approximation: 'schematic',
         regions: [
           { id: 'low-countries', name: 'Low Countries' },
@@ -1119,7 +1119,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: 1700,
-        label: 'First colonial empire (schematic)',
+        label: 'First colonial empire',
         approximation: 'schematic',
         regions: [
           { id: 'frankish-west', name: 'Metropolitan France' },
@@ -1129,7 +1129,7 @@ export const spatialEntities = [
       },
       {
         year: 1914,
-        label: 'Second colonial empire (schematic)',
+        label: 'Second colonial empire',
         approximation: 'schematic',
         regions: [
           { id: 'frankish-west', name: 'France' },
@@ -1155,7 +1155,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: 1620,
-        label: 'Safavid golden age (schematic)',
+        label: 'Safavid golden age',
         approximation: 'schematic',
         regions: [
           { id: 'persia', name: 'Iran / Persia' },
@@ -1180,7 +1180,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: -500,
-        label: 'Preclassic Maya fringe (schematic)',
+        label: 'Preclassic Maya fringe',
         approximation: 'schematic',
         regions: [
           { id: 'yucatan', name: 'Yucatán / Maya lowlands', bbox: [-92, 14, -86, 22] },
@@ -1188,7 +1188,7 @@ export const spatialEntities = [
       },
       {
         year: 800,
-        label: 'Classic Maya (schematic)',
+        label: 'Classic Maya',
         approximation: 'schematic',
         regions: [
           { id: 'yucatan', name: 'Yucatán / Maya lowlands' },
@@ -1212,7 +1212,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: 1500,
-        label: 'Songhai height (schematic)',
+        label: 'Songhai height',
         approximation: 'schematic',
         regions: [
           { id: 'west-africa-sahel', name: 'Sahel / Niger bend' },
@@ -1236,7 +1236,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: 1350,
-        label: 'Majapahit thalassocracy (schematic)',
+        label: 'Majapahit thalassocracy',
         approximation: 'schematic',
         regions: [
           { id: 'java-bali', name: 'Java / Bali' },
@@ -1260,7 +1260,7 @@ export const spatialEntities = [
     overlays: [
       {
         year: 1905,
-        label: 'After Russo-Japanese War (schematic)',
+        label: 'After Russo-Japanese War',
         approximation: 'schematic',
         regions: [
           { id: 'japan-honshu', name: 'Japanese home islands', bbox: [129, 30, 146, 46] },
@@ -1270,7 +1270,7 @@ export const spatialEntities = [
       },
       {
         year: 1914,
-        label: 'Early 20th-century empire (schematic)',
+        label: 'Early 20th-century empire',
         approximation: 'schematic',
         regions: [
           { id: 'japan-honshu', name: 'Home islands' },
