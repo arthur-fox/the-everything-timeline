@@ -323,11 +323,36 @@ User feedback: globe feels good but is missing lots of information — timeline�
 - −500 preset no longer empty; Africa / SE Asia / early-modern colonial coverage thickened. ✅
 - Timeline tap integration still deferred to **PR E**.
 
-#### PR E — Timeline integration (next)
+#### Day 18 — Clamp globe overlay lifespans — done
 
-- Selecting a year updates the globe overlays.
+User bug: Ottomans (and other late-snapshot empires) still showing in the 1980s while scrubbing.
+
+- Root cause: `OVERLAY_ACTIVE_WINDOW = 80` kept an entity “on” if any overlay/keyYear was within ±80 years — so a 1900 Ottoman snapshot stayed active until ~1980. ✅ fixed
+- Activation is now the **intersection** of (1) linked timeline item start/end (union of `timelineItemIds`) and (2) first→last overlay keyframe ± `OVERLAY_EDGE_GRACE` (15 years, not 80). ✅
+- Ottoman ON at 1900, OFF by 1925 / 1980; same systematic clamp for British / Qing / Russian / etc. ✅
+- `scripts/check-overlay-lifespan.js` wired into `npm run validate`. ✅
+- Still nearest-keyframe geometry only — **no morphing yet**.
+
+#### PR F — Living / morphing borders (next major globe investment)
+
+Arthur’s vision for the globe flagship:
+
+> Shapes should feel alive — amorphous regions that **grow, stretch, deform and reform** through the years until they dissolve and disappear. Not static blobs that sit on the map and then vanish.
+
+Direction (still schematic / honest, not GIS-perfect):
+
+- Treat today’s overlay snapshots as **keyframes**
+- Interpolate / morph region rings between keyframes while scrubbing
+- Soft dissolve at the end of an entity’s lifespan (builds on Day 18 clamps)
+- Grow and stretch as power expands; shrink and fragment as it contracts
+
+This is the larger next globe phase. Ship in slices after lifespan behaviour feels right.
+
+#### PR E — Timeline integration (still needed; secondary to living borders)
+
+- Selecting a year updates the globe overlays (year scrub already drives overlays; deepen sync).
 - Tapping a region opens details.
-- Details link back to timeline/civilisation entries.
+- Details link back to timeline/civilisation entries via `timelineItemIds`.
 - Deep links support globe year/entity state.
 
 ### Long-term globe layers
@@ -447,6 +472,8 @@ A sensible near-term sequence:
 13. Overlay UI polish — unique colors + layout split (Day 15). ✅
 14. Overlays sidebar cleanup — caption/borders stack (Day 16). ✅
 15. Denser globe overlays — ancient + colonial pass (Day 17). ✅
-16. Timeline ↔ globe integration (PR E).
+16. Clamp globe overlay lifespans (Day 18). ✅
+17. Living / morphing borders — grow, stretch, dissolve (PR F).
+18. Timeline ↔ globe integration (PR E).
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
