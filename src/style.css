@@ -1897,7 +1897,7 @@ body.globe-active .filters-toggle {
   padding: 14px 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   border-radius: 16px;
   border: 1px solid var(--border-subtle);
   background: color-mix(in srgb, var(--bg-surface) 96%, transparent);
@@ -1951,10 +1951,10 @@ body.globe-active .filters-toggle {
   color: var(--text);
   font-size: 0.88rem;
   line-height: 1.45;
-  padding: 12px 14px;
+  padding: 12px 14px 14px;
   border-radius: 12px;
   border: 1px solid var(--border-subtle);
-  background: var(--bg-elevated, var(--bg-surface));
+  background: var(--bg-elevated);
   box-shadow: none;
   min-height: 0;
 }
@@ -2042,7 +2042,7 @@ body.globe-active .filters-toggle {
 
 .globe-overlay-panel {
   margin: 0;
-  padding: 0;
+  padding: 2px 0 0;
   border: none;
   border-radius: 0;
   background: transparent;
@@ -2050,7 +2050,7 @@ body.globe-active .filters-toggle {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .globe-overlay-panel-heading {
