@@ -48,6 +48,7 @@ import { swedenItems, swedenCategories } from './countries/sweden.js';
 import { canadaItems, canadaCategories } from './countries/canada.js';
 import { argentinaItems, argentinaCategories } from './countries/argentina.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
+import { mountGlobe, pauseGlobe, destroyGlobe } from './globe-view.js';
 
 // ============================================================
 // Country registry — add new countries here to scale to 190+
@@ -244,9 +245,10 @@ function getOrCreateCountryState(countryId) {
 }
 
 function currentSwimState() {
+  if (currentView === 'globe') return null;
   const isCountry = COUNTRY_REGISTRY.some(c => c.id === currentView);
   if (isCountry) return getOrCreateCountryState(currentView);
-  return swimStates[currentView];
+  return swimStates[currentView] || null;
 }
 
 function isSwimLaneView() {
@@ -925,7 +927,7 @@ function draw() {
   } else if (currentView === 'cosmic') {
     drawCosmicTimeline();
   } else if (currentView === 'globe') {
-    // Globe shell uses DOM (year scrubber + placeholder), not the canvas.
+    // Globe.gl owns its WebGL canvas inside #globe-canvas-host.
     return;
   } else {
     drawSwimView();
@@ -1277,6 +1279,7 @@ function getEventAtPos(mx, my) {
 // Mouse handlers
 // ============================================================
 canvas.addEventListener('mousedown', (e) => {
+  if (currentView === 'globe' && !compareMode) return;
   isDragging = true;
   dragStartX = e.clientX;
   dragStartY = e.clientY;
@@ -1291,14 +1294,19 @@ canvas.addEventListener('mousedown', (e) => {
     dragStartScrollY = compareDragPanel ? compareScroll[compareDragPanel] : 0;
   } else if (currentView === 'cosmic') {
     dragStartViewStart = viewStart;
+  } else if (currentView === 'globe') {
+    return;
   } else {
     const state = currentSwimState();
+    if (!state) return;
     dragStartViewStart = state.viewStart;
     dragStartScrollY = state.scrollY;
   }
 });
 
 window.addEventListener('mousemove', (e) => {
+  if (currentView === 'globe' && !compareMode) return;
+
   if (isDragging) {
     const dx = e.clientX - dragStartX;
     const w = parseFloat(canvas.style.width);
@@ -1327,6 +1335,7 @@ window.addEventListener('mousemove', (e) => {
       targetViewEnd = viewEnd;
     } else {
       const state = currentSwimState();
+      if (!state) return;
       const range = state.targetEnd - state.targetStart;
       const yearDx = (dx / w) * range;
       state.viewStart = dragStartViewStart - yearDx;
@@ -1387,6 +1396,7 @@ window.addEventListener('mousemove', (e) => {
     }
   } else {
     const state = currentSwimState();
+    if (!state) return;
     const item = getItemAtPos(state.hitAreas, mx, my);
     if (item !== state.hoveredItem) {
       state.hoveredItem = item;
@@ -1410,17 +1420,19 @@ window.addEventListener('mousemove', (e) => {
 window.addEventListener('mouseup', () => {
   isDragging = false;
   compareDragPanel = null;
+  if (currentView === 'globe' && !compareMode) return;
   if (compareMode) {
     canvas.style.cursor = compareHover.item ? 'pointer' : 'grab';
   } else if (currentView === 'cosmic') {
     canvas.style.cursor = hoveredEvent ? 'pointer' : 'grab';
   } else {
     const state = currentSwimState();
-    canvas.style.cursor = state.hoveredItem ? 'pointer' : 'grab';
+    canvas.style.cursor = state?.hoveredItem ? 'pointer' : 'grab';
   }
 });
 
 canvas.addEventListener('click', (e) => {
+  if (currentView === 'globe' && !compareMode) return;
   const rect = canvas.getBoundingClientRect();
   const mx = e.clientX - rect.left;
   const my = e.clientY - rect.top;
@@ -1487,6 +1499,7 @@ canvas.addEventListener('click', (e) => {
 // Wheel / zoom
 // ============================================================
 canvas.addEventListener('wheel', (e) => {
+  if (currentView === 'globe' && !compareMode) return;
   e.preventDefault();
   const rect = canvas.getBoundingClientRect();
   const mx = e.clientX - rect.left;
@@ -1590,6 +1603,7 @@ let touchGestureLock = null; // 'horizontal' | 'vertical' | null
 const TOUCH_LOCK_THRESHOLD = 8;
 
 canvas.addEventListener('touchstart', (e) => {
+  if (currentView === 'globe' && !compareMode) return;
   touchGestureLock = null;
   hideGestureHint();
   if (e.touches.length === 1) {
@@ -1605,8 +1619,11 @@ canvas.addEventListener('touchstart', (e) => {
       dragStartScrollY = compareDragPanel ? compareScroll[compareDragPanel] : 0;
     } else if (currentView === 'cosmic') {
       dragStartViewStart = viewStart;
+    } else if (currentView === 'globe') {
+      return;
     } else {
       const state = currentSwimState();
+      if (!state) return;
       dragStartViewStart = state.viewStart;
       dragStartScrollY = state.scrollY;
     }
@@ -1629,6 +1646,7 @@ canvas.addEventListener('touchstart', (e) => {
 }, { passive: true });
 
 canvas.addEventListener('touchmove', (e) => {
+  if (currentView === 'globe' && !compareMode) return;
   e.preventDefault();
 
   if (e.touches.length === 1 && isDragging) {
@@ -1665,6 +1683,7 @@ canvas.addEventListener('touchmove', (e) => {
       targetViewEnd = viewEnd;
     } else {
       const state = currentSwimState();
+      if (!state) return;
       const range = state.targetEnd - state.targetStart;
 
       if (touchGestureLock !== 'vertical') {
@@ -3028,6 +3047,25 @@ function setGlobeModeActive(active) {
   }
   if (active) {
     updateGlobeYearUI();
+    const host = document.getElementById('globe-canvas-host');
+    // Mount after layout so the host has non-zero size
+    requestAnimationFrame(() => {
+      if (!isGlobeView()) return;
+      mountGlobe(host).catch((err) => {
+        console.error('Failed to mount Globe.gl:', err);
+        if (host && !host.dataset.globeError) {
+          host.dataset.globeError = '1';
+          const fallback = document.createElement('p');
+          fallback.className = 'globe-note';
+          fallback.style.padding = '16px';
+          fallback.textContent = 'WebGL globe could not load in this browser. Year scrubber still works; try Chrome/Firefox/Safari with hardware acceleration.';
+          host.appendChild(fallback);
+        }
+      });
+    });
+  } else {
+    // Full dispose so switching views never leaks a WebGL context
+    destroyGlobe();
   }
 }
 
@@ -3063,6 +3101,15 @@ if (globeYearSlider) {
 
 document.querySelectorAll('.globe-year-preset').forEach((btn) => {
   btn.addEventListener('click', () => setGlobeYear(btn.dataset.year));
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (!isGlobeView()) return;
+  if (document.hidden) pauseGlobe();
+  else {
+    const host = document.getElementById('globe-canvas-host');
+    mountGlobe(host).catch(() => {});
+  }
 });
 
 // ============================================================

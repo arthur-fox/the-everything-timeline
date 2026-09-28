@@ -228,18 +228,13 @@ This keeps the feature achievable and honest.
 - Include placeholder explanatory copy. ✅ approximate-overlays disclaimer
 - Deep link: `?view=globe&year=117`
 
-#### PR B — Interactive globe prototype
+#### PR B — Interactive globe prototype — done (Day 11)
 
-- Render an interactive 3D globe.
-- Support mouse/touch rotation.
-- Support zoom.
-- Keep mobile performance in mind.
-
-Likely technologies to evaluate:
-
-- Three.js
-- Globe.gl
-- D3 geo projections / TopoJSON for a possible 2D fallback
+- Render an interactive 3D globe. ✅ **Globe.gl** + Three.js (Blue Marble texture)
+- Support mouse/touch rotation. ✅ orbit drag; subtle auto-rotate until first interaction
+- Support zoom. ✅ scroll / pinch
+- Keep mobile performance in mind. ✅ pause on hide/leave, dispose WebGL on view switch, lighter atmosphere on coarse pointers
+- Year scrubber from PR A kept (label/caption only until overlay data)
 
 #### PR C — Historical overlay data model
 
@@ -397,6 +392,7 @@ A sensible near-term sequence:
 6. Compare mode. ✅ Day 8
 7. Bookmarks and saved trails. ✅ Day 9
 8. Globe view shell. ✅ Day 10
-9. Interactive globe prototype.
+9. Interactive globe prototype. ✅ Day 11
+10. Historical overlay data model (PR C).
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

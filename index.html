@@ -126,14 +126,14 @@
 
     <div id="globe-view" class="globe-view hidden" role="region" aria-label="Globe mode">
       <div class="globe-stage">
-        <div class="globe-orb" aria-hidden="true">
-          <div class="globe-orb-shine"></div>
-          <div class="globe-orb-grid"></div>
-        </div>
+        <div id="globe-canvas-host" class="globe-canvas-host"
+             role="img"
+             aria-label="Interactive 3D Earth. Drag to rotate. Scroll or pinch to zoom."></div>
         <div class="globe-copy">
           <h2 class="globe-title">Globe mode</h2>
-          <p class="globe-lede">Timeline shows <em>what happened when</em>. Globe mode will show <em>where</em> power, culture, borders, and influence shifted over time.</p>
-          <p class="globe-note">This is the shell (Day 10). Overlays will be approximate — rough spheres of control, not exact ancient borders. Interactive 3D globe and historical layers come next.</p>
+          <p class="globe-lede">Timeline shows <em>what happened when</em>. Globe mode shows <em>where</em> — drag to turn the Earth, scroll or pinch to zoom.</p>
+          <p class="globe-note">Interactive prototype (Day 11). Historical overlays will be approximate — rough spheres of control, not exact ancient borders. Overlay data comes next.</p>
+          <p class="globe-hint" aria-hidden="true">Drag to rotate · Scroll / pinch to zoom</p>
           <p id="globe-year-caption" class="globe-year-caption" aria-live="polite"></p>
         </div>
       </div>
