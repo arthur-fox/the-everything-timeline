@@ -220,12 +220,13 @@ This keeps the feature achievable and honest.
 
 ### Globe MVP sequence
 
-#### PR A — Globe view shell
+#### PR A — Globe view shell — done (Day 10)
 
-- Add `Globe` to the view selector.
-- Create a dedicated globe view container.
-- Add a year slider and current-year label.
-- Include placeholder explanatory copy.
+- Add `Globe` to the view selector. ✅
+- Create a dedicated globe view container. ✅ placeholder orb + copy
+- Add a year slider and current-year label. ✅ scrubber + presets + captions
+- Include placeholder explanatory copy. ✅ approximate-overlays disclaimer
+- Deep link: `?view=globe&year=117`
 
 #### PR B — Interactive globe prototype
 
@@ -395,7 +396,7 @@ A sensible near-term sequence:
 5. Filters for swim-lane categories. ✅ Day 7
 6. Compare mode. ✅ Day 8
 7. Bookmarks and saved trails. ✅ Day 9
-8. Globe view shell.
+8. Globe view shell. ✅ Day 10
 9. Interactive globe prototype.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

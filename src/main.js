@@ -250,7 +250,11 @@ function currentSwimState() {
 }
 
 function isSwimLaneView() {
-  return currentView !== 'cosmic';
+  return currentView !== 'cosmic' && currentView !== 'globe';
+}
+
+function isGlobeView() {
+  return currentView === 'globe';
 }
 
 // ============================================================
@@ -440,13 +444,16 @@ function exitCompareMode({ restoreView = true } = {}) {
   document.getElementById('event-detail').classList.add('hidden');
 
   if (restoreView) {
-    const restore = isComparableViewId(compareBeforeView) || compareBeforeView === 'cosmic' || compareBeforeView === 'cosmic-history'
+    const restore = isComparableViewId(compareBeforeView) || compareBeforeView === 'cosmic' || compareBeforeView === 'cosmic-history' || compareBeforeView === 'globe'
       ? compareBeforeView
       : 'cosmic';
     // Use switchView path without re-entering compare
     currentView = restore;
     eraNav.style.display = restore === 'cosmic' ? 'flex' : 'none';
+    setGlobeModeActive(restore === 'globe');
     updateActiveViewChrome();
+  } else {
+    setGlobeModeActive(currentView === 'globe');
   }
   updateFiltersUI();
   draw();
@@ -493,7 +500,7 @@ function setCompareSide(side, viewId) {
 // ============================================================
 const NAMED_VIEWS = new Set([
   'cosmic', 'cosmic-history', 'civilisations', 'technology', 'science',
-  'religion', 'philosophy', 'art', 'economics', 'wars',
+  'religion', 'philosophy', 'art', 'economics', 'wars', 'globe',
 ]);
 
 let _syncingFromUrl = false;
@@ -537,6 +544,7 @@ function getSelectedDeepLinkId() {
   if (currentView === 'cosmic') {
     return selectedEvent ? selectedEvent.title : null;
   }
+  if (currentView === 'globe') return null;
   const state = currentSwimState();
   return state && state.selectedItem ? state.selectedItem.id : null;
 }
@@ -557,17 +565,21 @@ function syncDeepLinkUrl() {
       params.set('view', currentView);
     }
 
-    const selectedId = getSelectedDeepLinkId();
-    if (selectedId) {
-      // Always include view when an item is selected so shares are unambiguous
-      if (!params.has('view')) params.set('view', 'cosmic');
-      params.set('id', selectedId);
-    }
+    if (currentView === 'globe') {
+      params.set('year', String(globeYear));
+    } else {
+      const selectedId = getSelectedDeepLinkId();
+      if (selectedId) {
+        // Always include view when an item is selected so shares are unambiguous
+        if (!params.has('view')) params.set('view', 'cosmic');
+        params.set('id', selectedId);
+      }
 
-    if (isSwimLaneView()) {
-      const state = currentSwimState();
-      if (isFilterActive(state)) {
-        params.set('filters', [...state.activeFilters].join(','));
+      if (isSwimLaneView()) {
+        const state = currentSwimState();
+        if (isFilterActive(state)) {
+          params.set('filters', [...state.activeFilters].join(','));
+        }
       }
     }
   }
@@ -585,6 +597,11 @@ function syncDeepLinkUrl() {
 function centerTimelineOnYear(yearRaw) {
   const year = Number(yearRaw);
   if (!Number.isFinite(year)) return;
+
+  if (currentView === 'globe') {
+    setGlobeYear(year, { syncUrl: false });
+    return;
+  }
 
   if (currentView === 'cosmic') {
     const center = yearToLog(year);
@@ -718,10 +735,12 @@ function activateViewForDeepLink(viewId, { clearSelection = true } = {}) {
   }
   currentView = viewId;
   eraNav.style.display = viewId === 'cosmic' ? 'flex' : 'none';
+  setGlobeModeActive(viewId === 'globe');
   updateActiveViewChrome();
   closeCountryPicker();
   closeTimelineSearchResults();
   closeFiltersPanel();
+  closeBookmarksPanel();
   if (timelineSearch) timelineSearch.value = '';
   tooltip.classList.remove('visible');
 
@@ -905,6 +924,9 @@ function draw() {
     drawCompareView();
   } else if (currentView === 'cosmic') {
     drawCosmicTimeline();
+  } else if (currentView === 'globe') {
+    // Globe shell uses DOM (year scrubber + placeholder), not the canvas.
+    return;
   } else {
     drawSwimView();
   }
@@ -1871,6 +1893,7 @@ function switchView(view) {
 
   currentView = view;
   eraNav.style.display = view === 'cosmic' ? 'flex' : 'none';
+  setGlobeModeActive(view === 'globe');
   updateActiveViewChrome();
 
   // Close detail panel on switch
@@ -1990,6 +2013,10 @@ function getSearchableItems() {
       }
     }
     return results;
+  }
+
+  if (currentView === 'globe') {
+    return [];
   }
 
   if (currentView === 'cosmic') {
@@ -2946,6 +2973,96 @@ document.addEventListener('keydown', (e) => {
     if (filtersPanel && !filtersPanel.classList.contains('hidden')) return;
     exitCompareMode({ restoreView: true });
   }
+});
+
+
+// ============================================================
+// Globe mode shell (Phase 4 / PR A)
+// ============================================================
+const GLOBE_YEAR_MIN = -3000;
+const GLOBE_YEAR_MAX = 2025;
+let globeYear = 117;
+
+const GLOBE_YEAR_CAPTIONS = [
+  { year: -500, text: 'Around 500 BCE — Classical poleis, Persian Empire, and Axial Age thought across Eurasia (approximate).' },
+  { year: 117, text: 'Around 117 CE — Roman Empire near its greatest extent under Trajan (approximate).' },
+  { year: 800, text: 'Around 800 CE — Carolingian, Abbasid, and Tang worlds at high water (approximate).' },
+  { year: 1492, text: '1492 CE — Oceanic contact accelerates; empires and trade networks begin a global rewiring (approximate).' },
+  { year: 1914, text: '1914 CE — Industrial empires on the eve of World War I (approximate).' },
+  { year: 2025, text: '2025 CE — Today’s political map — future overlays will still be approximate for earlier eras.' },
+];
+
+const globeViewEl = document.getElementById('globe-view');
+const globeYearSlider = document.getElementById('globe-year-slider');
+const globeYearLabel = document.getElementById('globe-year-label');
+const globeYearCaption = document.getElementById('globe-year-caption');
+
+function formatGlobeYear(year) {
+  const y = Math.round(Number(year));
+  if (!Number.isFinite(y)) return '';
+  if (y < 0) return Math.abs(y).toLocaleString() + ' BCE';
+  if (y === 0) return '1 BCE / 1 CE';
+  return y.toLocaleString() + ' CE';
+}
+
+function globeCaptionForYear(year) {
+  let best = GLOBE_YEAR_CAPTIONS[0];
+  let bestDist = Infinity;
+  for (const entry of GLOBE_YEAR_CAPTIONS) {
+    const d = Math.abs(entry.year - year);
+    if (d < bestDist) {
+      best = entry;
+      bestDist = d;
+    }
+  }
+  if (bestDist > 120) {
+    return 'Scrub the year to preview how Globe mode will track approximate overlays across history. Full borders and playback come in later PRs.';
+  }
+  return best.text;
+}
+
+function setGlobeModeActive(active) {
+  document.body.classList.toggle('globe-active', Boolean(active));
+  if (globeViewEl) {
+    globeViewEl.classList.toggle('hidden', !active);
+  }
+  if (active) {
+    updateGlobeYearUI();
+  }
+}
+
+function updateGlobeYearUI() {
+  const label = formatGlobeYear(globeYear);
+  if (globeYearLabel) globeYearLabel.textContent = label;
+  if (globeYearCaption) globeYearCaption.textContent = globeCaptionForYear(globeYear);
+  if (globeYearSlider) {
+    globeYearSlider.value = String(globeYear);
+    globeYearSlider.setAttribute('aria-valuenow', String(globeYear));
+    globeYearSlider.setAttribute('aria-valuetext', label);
+  }
+  document.querySelectorAll('.globe-year-preset').forEach((btn) => {
+    const y = Number(btn.dataset.year);
+    btn.classList.toggle('is-active', y === globeYear);
+  });
+}
+
+function setGlobeYear(yearRaw, { syncUrl = true } = {}) {
+  let year = Math.round(Number(yearRaw));
+  if (!Number.isFinite(year)) return;
+  year = Math.max(GLOBE_YEAR_MIN, Math.min(GLOBE_YEAR_MAX, year));
+  globeYear = year;
+  updateGlobeYearUI();
+  if (syncUrl) syncDeepLinkUrl();
+}
+
+if (globeYearSlider) {
+  globeYearSlider.addEventListener('input', (e) => {
+    setGlobeYear(e.target.value);
+  });
+}
+
+document.querySelectorAll('.globe-year-preset').forEach((btn) => {
+  btn.addEventListener('click', () => setGlobeYear(btn.dataset.year));
 });
 
 // ============================================================

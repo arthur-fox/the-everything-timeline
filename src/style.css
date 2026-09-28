@@ -1769,6 +1769,266 @@ body.compare-active .bookmarks-toggle {
   }
 }
 
+
+/* ============================================================
+   Globe mode shell (Phase 4 / PR A)
+   ============================================================ */
+.globe-view {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 5;
+  padding: 12px 20px 16px;
+  gap: 14px;
+}
+
+.globe-view.hidden {
+  display: none;
+}
+
+body.globe-active #timeline-container,
+body.globe-active #minimap {
+  display: none;
+}
+
+body.globe-active .thumb-bar {
+  display: none;
+}
+
+body.globe-active .filters-toggle {
+  opacity: 0.45;
+}
+
+.globe-stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+
+.globe-orb {
+  position: relative;
+  width: min(280px, 42vw);
+  height: min(280px, 42vw);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255,255,255,0.35), transparent 28%),
+    radial-gradient(circle at 70% 60%, #1d4ed8 0%, #0f766e 38%, #14532d 62%, #0f172a 100%);
+  box-shadow:
+    inset -18px -12px 40px rgba(0,0,0,0.45),
+    0 0 0 1px var(--border-subtle),
+    0 24px 60px var(--shadow-heavy);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.globe-orb-shine {
+  position: absolute;
+  inset: 8% 18% auto auto;
+  width: 34%;
+  height: 22%;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  filter: blur(2px);
+  transform: rotate(-18deg);
+}
+
+.globe-orb-grid {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 18px,
+      rgba(255,255,255,0.06) 18px 19px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 22px,
+      rgba(255,255,255,0.05) 22px 23px
+    );
+  opacity: 0.55;
+  mask-image: radial-gradient(circle, #000 58%, transparent 72%);
+}
+
+.globe-copy {
+  max-width: 420px;
+  min-width: min(100%, 260px);
+}
+
+.globe-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #818CF8, #C084FC, #F472B6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="light"] .globe-title {
+  background: linear-gradient(135deg, #4F46E5, #7C3AED, #DB2777);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.globe-lede {
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin-bottom: 10px;
+}
+
+.globe-lede em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.globe-note {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.globe-year-caption {
+  color: var(--text);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  min-height: 3.2em;
+}
+
+.globe-scrubber {
+  flex-shrink: 0;
+  padding: 12px 14px 10px;
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+  background: color-mix(in srgb, var(--bg-surface) 92%, transparent);
+  box-shadow: 0 8px 28px var(--shadow-tooltip);
+}
+
+.globe-year-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.globe-year-heading {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.globe-year-label {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.globe-year-slider {
+  width: 100%;
+  accent-color: var(--accent);
+  height: 28px;
+  cursor: pointer;
+}
+
+.globe-year-ticks {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  margin-top: 2px;
+  margin-bottom: 10px;
+}
+
+.globe-year-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.globe-year-preset {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--bg-elevated);
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.globe-year-preset:hover,
+.globe-year-preset:focus-visible {
+  color: var(--text);
+  border-color: var(--accent);
+  outline: none;
+}
+
+.globe-year-preset.is-active {
+  color: var(--text);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, var(--bg-surface));
+}
+
+@media (max-width: 640px) {
+  .globe-view {
+    padding: 8px 12px calc(12px + env(safe-area-inset-bottom, 0px));
+    gap: 10px;
+  }
+
+  .globe-stage {
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .globe-orb {
+    width: min(160px, 46vw);
+    height: min(160px, 46vw);
+    margin: 0 auto;
+  }
+
+  .globe-title {
+    font-size: 1.25rem;
+    text-align: center;
+  }
+
+  .globe-lede,
+  .globe-note {
+    font-size: 0.84rem;
+  }
+
+  .globe-year-label {
+    font-size: 1.2rem;
+  }
+
+  .globe-year-preset {
+    min-height: 36px;
+    padding: 8px 12px;
+  }
+
+  .globe-year-slider {
+    min-height: 44px;
+  }
+}
 /* --- Starfield background --- */
 body::before {
   content: '';
