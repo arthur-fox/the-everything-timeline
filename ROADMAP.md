@@ -305,6 +305,14 @@ User bugs after Day 14:
 - **Layout:** globe stage uses CSS grid split (canvas | overlays sidebar) so the rounded globe card no longer overlaps empire rows; sidebar scrolls independently. ✅
 - Timeline tap integration still deferred to **PR E**.
 
+#### Day 16 — Overlays sidebar cleanup — done
+
+User bug: divider/border sliced through the era caption pill and cramped the OVERLAYS header.
+
+- Sidebar restacked with flex `gap` only: disclaimer → gesture hint → opaque era caption card → overlays heading → scrollable list. ✅
+- Removed conflicting `border-top` / nested panel chrome that crossed the caption. ✅
+- Day 14/15 color + stage grid kept. **PR E** still next.
+
 #### PR E — Timeline integration (next)
 
 - Selecting a year updates the globe overlays.
@@ -427,6 +435,7 @@ A sensible near-term sequence:
 11. First historical overlays on the globe (PR D). ✅ Day 13
 12. Overlay polish — z-fight fix + denser empires (Day 14). ✅
 13. Overlay UI polish — unique colors + layout split (Day 15). ✅
-14. Timeline ↔ globe integration (PR E).
+14. Overlays sidebar cleanup — caption/borders stack (Day 16). ✅
+15. Timeline ↔ globe integration (PR E).
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
