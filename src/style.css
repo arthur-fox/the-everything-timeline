@@ -1840,7 +1840,7 @@ body.globe-active .filters-toggle {
   grid-template-columns: minmax(0, 1fr) minmax(260px, 380px);
   grid-template-rows: minmax(0, 1fr);
   align-items: stretch;
-  gap: 20px 24px;
+  gap: 20px 28px;
   padding: 4px 0;
   overflow: hidden;
 }
@@ -1850,6 +1850,7 @@ body.globe-active .filters-toggle {
   z-index: 0;
   grid-column: 1;
   grid-row: 1;
+  contain: layout paint;
   width: 100%;
   min-width: 0;
   min-height: 0;
@@ -1862,7 +1863,7 @@ body.globe-active .filters-toggle {
   background:
     radial-gradient(ellipse at 50% 40%, rgba(129, 140, 248, 0.18), transparent 55%),
     var(--bg);
-  box-shadow: 0 20px 50px var(--shadow-heavy);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--shadow-heavy) 55%, transparent);
   touch-action: none; /* let Globe.gl / orbit controls own gestures */
 }
 
@@ -1884,7 +1885,7 @@ body.globe-active .filters-toggle {
   grid-column: 2;
   grid-row: 1;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   min-width: 0;
   max-width: none;
   width: 100%;
@@ -1892,9 +1893,13 @@ body.globe-active .filters-toggle {
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding-right: 2px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+  background: color-mix(in srgb, var(--bg-surface) 94%, transparent);
+  box-shadow: 0 8px 24px var(--shadow-tooltip);
 }
 
 .globe-title {
@@ -2027,10 +2032,11 @@ body.globe-active .filters-toggle {
 
 .globe-overlay-panel {
   margin-top: 12px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid var(--border-subtle);
-  background: color-mix(in srgb, var(--bg-surface) 88%, transparent);
+  padding: 8px 0 0;
+  border-radius: 0;
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+  background: transparent;
   flex: 1 1 auto;
   min-height: 0;
 }
