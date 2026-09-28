@@ -48,7 +48,7 @@ import { swedenItems, swedenCategories } from './countries/sweden.js';
 import { canadaItems, canadaCategories } from './countries/canada.js';
 import { argentinaItems, argentinaCategories } from './countries/argentina.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
-import { mountGlobe, pauseGlobe, destroyGlobe } from './globe-view.js';
+import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear } from './globe-view.js';
 import { getActiveOverlaysAtYear } from './globe-overlays.js';
 
 // ============================================================
@@ -3055,7 +3055,7 @@ function setGlobeModeActive(active) {
     // Mount after layout so the host has non-zero size
     requestAnimationFrame(() => {
       if (!isGlobeView()) return;
-      mountGlobe(host).catch((err) => {
+      mountGlobe(host, { year: globeYear }).catch((err) => {
         console.error('Failed to mount Globe.gl:', err);
         if (host && !host.dataset.globeError) {
           host.dataset.globeError = '1';
@@ -3143,6 +3143,7 @@ function updateGlobeYearUI() {
     btn.classList.toggle('is-active', y === globeYear);
   });
   updateGlobeOverlayPanel();
+  setGlobeOverlayYear(globeYear);
 }
 
 function setGlobeYear(yearRaw, { syncUrl = true } = {}) {
@@ -3169,7 +3170,7 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden) pauseGlobe();
   else {
     const host = document.getElementById('globe-canvas-host');
-    mountGlobe(host).catch(() => {});
+    mountGlobe(host, { year: globeYear }).catch(() => {});
   }
 });
 

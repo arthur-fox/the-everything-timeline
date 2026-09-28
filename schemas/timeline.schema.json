@@ -195,7 +195,7 @@
       }
     },
     "regionRef": {
-      "description": "Named region reference for PR C overlays (no precise polygons yet). May be a string id or { id, name?, bbox? }.",
+      "description": "Named region reference. May be a string id or { id, name?, bbox?, ring? }. Rings/bboxes are schematic \u2014 not precise historical borders.",
       "oneOf": [
         {
           "type": "string",
@@ -223,6 +223,19 @@
               "maxItems": 4,
               "items": {
                 "type": "number"
+              }
+            },
+            "ring": {
+              "type": "array",
+              "description": "Optional closed schematic polygon ring as GeoJSON [lng, lat] pairs (PR D). Intentionally approximate.",
+              "minItems": 4,
+              "items": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "items": {
+                  "type": "number"
+                }
               }
             }
           }
@@ -261,7 +274,7 @@
           "items": {
             "$ref": "#/definitions/regionRef"
           },
-          "description": "Named region references (and optional bbox). GeoJSON polygons deferred to PR D."
+          "description": "Named region references. Optional bbox/ring for schematic globe polygons (PR D)."
         }
       }
     },

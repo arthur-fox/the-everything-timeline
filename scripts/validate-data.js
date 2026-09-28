@@ -366,6 +366,55 @@ async function collectSwimLaneItemIds() {
  * Unknown timelineItemIds are errors (omit the id rather than invent one).
  * Overlay years must be strictly ascending per entity.
  */
+
+/** PR D — shared REGION_RINGS must be well-formed and cover seed region ids when possible. */
+function validateRegionRings(overlaysMod) {
+  const rings = overlaysMod?.REGION_RINGS;
+  if (rings == null) {
+    warn('globe-overlays: REGION_RINGS missing (polygon layer may be empty)');
+    return;
+  }
+  if (typeof rings !== 'object' || Array.isArray(rings)) {
+    err('globe-overlays: REGION_RINGS must be an object map of id → ring');
+    return;
+  }
+
+  for (const [id, ring] of Object.entries(rings)) {
+    if (!Array.isArray(ring) || ring.length < 4) {
+      err(`globe-overlays: REGION_RINGS["${id}"] must have at least 4 [lng,lat] points`);
+      continue;
+    }
+    for (const [pi, pt] of ring.entries()) {
+      if (!Array.isArray(pt) || pt.length < 2 || typeof pt[0] !== 'number' || typeof pt[1] !== 'number') {
+        err(`globe-overlays: REGION_RINGS["${id}"][${pi}] must be [lng, lat] numbers`);
+        continue;
+      }
+      if (pt[0] < -180 || pt[0] > 180 || pt[1] < -90 || pt[1] > 90) {
+        err(`globe-overlays: REGION_RINGS["${id}"][${pi}] out of range`);
+      }
+    }
+  }
+
+  // Warn when a referenced region has neither shared ring nor bbox/inline ring.
+  for (const entity of overlaysMod.spatialEntities || []) {
+    for (const [i, overlay] of (entity.overlays || []).entries()) {
+      for (const region of overlay.regions || []) {
+        const id = typeof region === 'string' ? region : region?.id;
+        if (!id) continue;
+        const hasShared = Array.isArray(rings[id]);
+        const hasInline = region && typeof region === 'object' && Array.isArray(region.ring);
+        const hasBbox = region && typeof region === 'object' && Array.isArray(region.bbox);
+        if (!hasShared && !hasInline && !hasBbox) {
+          warn(
+            `globe-overlays/${entity.id}/overlays[${i}]: region "${id}" has no ring/bbox ` +
+              `(will not draw on globe)`,
+          );
+        }
+      }
+    }
+  }
+}
+
 function validateSpatialEntities(entities, knownItemIds) {
   if (!Array.isArray(entities)) {
     err('globe-overlays: spatialEntities export is not an array');
@@ -407,6 +456,26 @@ function validateSpatialEntities(entities, knownItemIds) {
           }
           prevYear = overlay.year;
         }
+
+        // PR D — optional schematic rings (inline); bbox alone is still OK.
+        (overlay?.regions || []).forEach((region, ri) => {
+          if (!region || typeof region !== 'object' || region.ring == null) return;
+          const rLabel = `${oLabel}/regions[${ri}]`;
+          const ring = region.ring;
+          if (!Array.isArray(ring) || ring.length < 4) {
+            err(`${rLabel}: ring must have at least 4 [lng,lat] points`);
+            return;
+          }
+          for (const [pi, pt] of ring.entries()) {
+            if (!Array.isArray(pt) || pt.length < 2 || typeof pt[0] !== 'number' || typeof pt[1] !== 'number') {
+              err(`${rLabel}: ring[${pi}] must be [lng, lat] numbers`);
+              continue;
+            }
+            if (pt[0] < -180 || pt[0] > 180 || pt[1] < -90 || pt[1] > 90) {
+              err(`${rLabel}: ring[${pi}] out of range`);
+            }
+          }
+        });
       });
     }
 
@@ -453,6 +522,7 @@ async function main() {
   const knownItemIds = await collectSwimLaneItemIds();
   const overlaysMod = await importModule('src/globe-overlays.js');
   validateSpatialEntities(overlaysMod.spatialEntities, knownItemIds);
+  validateRegionRings(overlaysMod);
 
   console.log(`Country registry: ${registryIds.length} entries`);
   console.log(`Spatial entities: ${overlaysMod.spatialEntities?.length ?? 0}`);
