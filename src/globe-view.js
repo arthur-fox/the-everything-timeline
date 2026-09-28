@@ -30,7 +30,21 @@ function sizeToHost() {
   if (!globe || !hostEl) return;
   const w = Math.max(1, Math.floor(hostEl.clientWidth));
   const h = Math.max(1, Math.floor(hostEl.clientHeight));
-  globe.width(w).height(h);
+  if (w < 2 || h < 2) return;
+  try {
+    globe.width(w).height(h);
+  } catch (_) {
+    // ignore mid-dispose
+  }
+}
+
+/** Re-measure after CSS grid/flex settles (esp. phone layout / orientation). */
+function scheduleSizeToHost() {
+  sizeToHost();
+  requestAnimationFrame(() => {
+    sizeToHost();
+    setTimeout(sizeToHost, 120);
+  });
 }
 
 function parseHex(hex) {
@@ -115,7 +129,7 @@ export async function mountGlobe(container, opts = {}) {
   const year = Number.isFinite(Number(opts.year)) ? Number(opts.year) : currentPolygonYear;
 
   if (globe && mounted) {
-    sizeToHost();
+    scheduleSizeToHost();
     try {
       globe.resumeAnimation();
     } catch (_) {
@@ -143,7 +157,7 @@ export async function mountGlobe(container, opts = {}) {
   applyPolygonLayer();
 
   await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-  sizeToHost();
+  scheduleSizeToHost();
 
   const controls = globe.controls();
   if (controls) {
@@ -169,11 +183,25 @@ export async function mountGlobe(container, opts = {}) {
   }
 
   if (typeof ResizeObserver !== 'undefined') {
-    resizeObserver = new ResizeObserver(() => sizeToHost());
+    resizeObserver = new ResizeObserver(() => scheduleSizeToHost());
     resizeObserver.observe(hostEl);
+    const stage = hostEl.closest('.globe-stage');
+    const view = hostEl.closest('.globe-view');
+    if (stage) resizeObserver.observe(stage);
+    if (view) resizeObserver.observe(view);
   } else {
-    window.addEventListener('resize', sizeToHost);
+    window.addEventListener('resize', scheduleSizeToHost);
   }
+  window.addEventListener('orientationchange', scheduleSizeToHost);
+
+  // Soften page-scroll stealing while dragging on the canvas (iOS Safari)
+  hostEl.addEventListener(
+    'touchmove',
+    (e) => {
+      if (e.cancelable) e.preventDefault();
+    },
+    { passive: false },
+  );
 
   mounted = true;
   if (Number.isFinite(year)) setGlobeOverlayYear(year);
@@ -193,13 +221,14 @@ export function resumeGlobe() {
   if (!globe) return;
   try {
     globe.resumeAnimation();
-    sizeToHost();
+    scheduleSizeToHost();
   } catch (_) {
     // ignore
   }
 }
 
 export function destroyGlobe() {
+  window.removeEventListener('orientationchange', scheduleSizeToHost);
   if (resizeObserver) {
     try {
       resizeObserver.disconnect();
@@ -208,7 +237,7 @@ export function destroyGlobe() {
     }
     resizeObserver = null;
   } else {
-    window.removeEventListener('resize', sizeToHost);
+    window.removeEventListener('resize', scheduleSizeToHost);
   }
 
   if (globe) {

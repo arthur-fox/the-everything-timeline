@@ -342,6 +342,7 @@ User scrubbed 3000–1200 BCE and found nothing — keep the −3000 scrubber ra
 - Added Shang, Phoenicia, Olmec, Kush; early Maya Preclassic snapshot (−1500). ✅
 - Presets **2500 BCE** / **2000 BCE** (+ captions). Scrubber min stays −3000. ✅
 - Lifespan clamps respected — early years have real overlay keyframes, not orphan keyYears. ✅
+- **Mobile globe polish:** phone layout prioritises canvas height (~42–50vh), collapses lede/note, scrollable overlays, horizontal preset chips, touch-action + resize settle so drag-rotate works. ✅
 - Living/morphing borders (**PR F**) still the next major globe phase; **PR E** still listed.
 
 #### PR F — Living / morphing borders (next major globe investment)
