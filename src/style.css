@@ -1975,6 +1975,76 @@ body.globe-active .filters-toggle {
   background: color-mix(in srgb, var(--accent) 16%, var(--bg-surface));
 }
 
+
+.globe-overlay-panel {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: color-mix(in srgb, var(--bg-surface) 88%, transparent);
+}
+
+.globe-overlay-panel-heading {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.globe-overlay-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.globe-overlay-list.hidden,
+.globe-overlay-empty.hidden {
+  display: none;
+}
+
+.globe-overlay-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.84rem;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.globe-overlay-swatch {
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  margin-top: 4px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--text) 20%, transparent);
+}
+
+.globe-overlay-item-body {
+  min-width: 0;
+}
+
+.globe-overlay-item-name {
+  font-weight: 600;
+}
+
+.globe-overlay-item-meta {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.globe-overlay-empty {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
 @media (max-width: 640px) {
   .globe-view {
     padding: 8px 12px calc(12px + env(safe-area-inset-bottom, 0px));
@@ -2020,6 +2090,10 @@ body.globe-active .filters-toggle {
 
   .globe-year-slider {
     min-height: 44px;
+  }
+
+  .globe-overlay-panel {
+    margin-top: 10px;
   }
 }
 /* --- Starfield background --- */

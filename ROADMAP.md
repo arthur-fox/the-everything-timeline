@@ -236,9 +236,9 @@ This keeps the feature achievable and honest.
 - Keep mobile performance in mind. ✅ pause on hide/leave, dispose WebGL on view switch, lighter atmosphere on coarse pointers
 - Year scrubber from PR A kept (label/caption only until overlay data)
 
-#### PR C — Historical overlay data model
+#### PR C — Historical overlay data model — done (Day 12)
 
-Introduce a data model for spatial entities.
+Introduce a data model for spatial entities. ✅
 
 Example rough shape:
 
@@ -261,6 +261,14 @@ Example rough shape:
   timelineItemIds: ['roman-republic', 'roman-empire']
 }
 ```
+
+Shipped:
+
+- Schema definitions (`spatialEntity`, `overlaySnapshot`, `regionRef`) in `schemas/timeline.schema.json` + authoring notes in `schemas/README.md`. ✅
+- Seed module `src/globe-overlays.js` with 5 entities (Roman Empire, Han China, Mongol Empire, Abbasid Caliphate, Inca Empire) — named region refs + optional bbox placeholders, no invented precise polygons. ✅
+- `npm run validate` schema-checks entities/overlays; errors on duplicate ids, unsorted overlay years, and unknown `timelineItemIds`. ✅
+- Globe UI: year scrubber drives a small “Overlays at …” panel listing active seed entities (still no polygon drawing). ✅
+- Deep link `?view=globe&year=117` still works. ✅
 
 #### PR D — First historical overlays
 
@@ -393,6 +401,7 @@ A sensible near-term sequence:
 7. Bookmarks and saved trails. ✅ Day 9
 8. Globe view shell. ✅ Day 10
 9. Interactive globe prototype. ✅ Day 11
-10. Historical overlay data model (PR C).
+10. Historical overlay data model (PR C). ✅ Day 12
+11. First historical overlays on the globe (PR D).
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
