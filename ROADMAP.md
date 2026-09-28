@@ -333,6 +333,17 @@ User bug: Ottomans (and other late-snapshot empires) still showing in the 1980s 
 - `scripts/check-overlay-lifespan.js` wired into `npm run validate`. ✅
 - Still nearest-keyframe geometry only — **no morphing yet**.
 
+#### Day 19 — Early Bronze Age globe fill (3000–1200 BCE) — done
+
+User scrubbed 3000–1200 BCE and found nothing — keep the −3000 scrubber range; fill it.
+
+- Added **Mesopotamia** with schematic snapshots (−3000…−1200). ✅
+- Extended **Ancient Egypt** with Old/Middle Kingdom overlays (−2500, −2000, −1500) so the Nile lights early. ✅
+- Added Shang, Phoenicia, Olmec, Kush; early Maya Preclassic snapshot (−1500). ✅
+- Presets **2500 BCE** / **2000 BCE** (+ captions). Scrubber min stays −3000. ✅
+- Lifespan clamps respected — early years have real overlay keyframes, not orphan keyYears. ✅
+- Living/morphing borders (**PR F**) still the next major globe phase; **PR E** still listed.
+
 #### PR F — Living / morphing borders (next major globe investment)
 
 Arthur’s vision for the globe flagship:
@@ -473,7 +484,8 @@ A sensible near-term sequence:
 14. Overlays sidebar cleanup — caption/borders stack (Day 16). ✅
 15. Denser globe overlays — ancient + colonial pass (Day 17). ✅
 16. Clamp globe overlay lifespans (Day 18). ✅
-17. Living / morphing borders — grow, stretch, dissolve (PR F).
-18. Timeline ↔ globe integration (PR E).
+17. Early Bronze Age globe fill — 3000–1200 BCE (Day 19). ✅
+18. Living / morphing borders — grow, stretch, dissolve (PR F).
+19. Timeline ↔ globe integration (PR E).
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
