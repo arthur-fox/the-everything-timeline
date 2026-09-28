@@ -159,13 +159,20 @@ Shipped:
 - Search spans both panels; detail panel and deep links work (`?compare=technology,wars`, `?compare=country:us,country:uk`).
 - Filters disabled while comparing (per-panel filters can come later).
 
-### 10. Bookmarks and saved trails
+### 10. Bookmarks and saved trails — done (Day 9)
 
 Let users save interesting events locally.
 
-- Bookmark events/items.
-- Create a simple reading list.
+- Bookmark events/items. ✅ detail-panel Bookmark toggle
+- Create a simple reading list. ✅ Bookmarks panel (localStorage)
 - Later, support shareable trails.
+
+Shipped:
+
+- **Bookmark** control on the detail panel (☆ / ★) for cosmic events and swim-lane items.
+- Header **Bookmarks** button with count badge; desktop panel + mobile bottom sheet (same pattern as Filters).
+- Reading list shows icon, name, view, and date; tap to jump (switches view + focuses item); per-item remove + Clear all.
+- Persisted in `localStorage` (`timeline-bookmarks-v1`) on this device — shareable trails deferred.
 
 ## Additional ideas to explore later
 
@@ -387,7 +394,7 @@ A sensible near-term sequence:
 4. Sources/citations field and detail-panel display.
 5. Filters for swim-lane categories. ✅ Day 7
 6. Compare mode. ✅ Day 8
-7. Bookmarks and saved trails (Phase 3 #10).
+7. Bookmarks and saved trails. ✅ Day 9
 8. Globe view shell.
 9. Interactive globe prototype.
 

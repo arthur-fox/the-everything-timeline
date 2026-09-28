@@ -515,6 +515,24 @@ function resolveViewParam(raw) {
   return null;
 }
 
+
+function getDeepLinkViewParam(viewId = currentView) {
+  if (isCountryViewId(viewId)) return 'country:' + viewId;
+  return viewId || 'cosmic';
+}
+
+function viewLabelForParam(viewParam) {
+  const resolved = resolveViewParam(viewParam);
+  if (!resolved) return 'Timeline';
+  if (resolved.kind === 'country') {
+    const country = COUNTRY_REGISTRY.find(c => c.id === resolved.id);
+    return country ? ('Countries › ' + country.flag + ' ' + country.name) : resolved.id;
+  }
+  if (resolved.id === 'cosmic') return 'Timeline';
+  const option = viewSelect ? viewSelect.querySelector(`option[value="${resolved.id}"]`) : null;
+  return option ? option.textContent : resolved.id;
+}
+
 function getSelectedDeepLinkId() {
   if (currentView === 'cosmic') {
     return selectedEvent ? selectedEvent.title : null;
@@ -649,7 +667,13 @@ function applyItemFocus(result) {
     targetViewEnd = center + range / 2;
     hoveredEvent = null;
     selectedEvent = evt;
-    showDetail(evt.icon + ' ' + evt.title, formatYear(evt.year), evt.description, evt.sources);
+    showDetail(evt.icon + ' ' + evt.title, formatYear(evt.year), evt.description, evt.sources, {
+      view: 'cosmic',
+      id: evt.title,
+      icon: evt.icon || '',
+      name: evt.title,
+      dateLabel: formatYear(evt.year),
+    });
   } else {
     const state = currentSwimState();
     const item = result.item;
@@ -673,7 +697,14 @@ function applyItemFocus(result) {
     if (displayDuration >= 1_000_000_000) durationStr = (displayDuration / 1_000_000_000).toFixed(1) + ' billion years';
     else if (displayDuration >= 1_000_000) durationStr = Math.round(displayDuration / 1_000_000).toLocaleString() + ' million years';
     else durationStr = displayDuration.toLocaleString() + ' years';
-    showDetail(item.icon + ' ' + item.name, `${formatYear(displayStart)} — ${formatYear(displayEnd)}  (${durationStr})`, item.description, item.sources);
+    const dateLabel = `${formatYear(displayStart)} — ${formatYear(displayEnd)}  (${durationStr})`;
+    showDetail(item.icon + ' ' + item.name, dateLabel, item.description, item.sources, {
+      view: getDeepLinkViewParam(currentView),
+      id: item.id,
+      icon: item.icon || '',
+      name: item.name,
+      dateLabel,
+    });
   }
 
   if (!animationId) animateZoom();
@@ -696,6 +727,8 @@ function activateViewForDeepLink(viewId, { clearSelection = true } = {}) {
 
   if (clearSelection) {
     document.getElementById('event-detail').classList.add('hidden');
+    detailContext = null;
+    updateDetailBookmarkButton();
     hoveredEvent = null;
     selectedEvent = null;
     for (const key of Object.keys(swimStates)) {
@@ -1392,7 +1425,13 @@ canvas.addEventListener('click', (e) => {
     const evt = getEventAtPos(mx, my);
     if (evt) {
       selectedEvent = evt;
-      showDetail(evt.icon + ' ' + evt.title, formatYear(evt.year), evt.description, evt.sources);
+      showDetail(evt.icon + ' ' + evt.title, formatYear(evt.year), evt.description, evt.sources, {
+        view: 'cosmic',
+        id: evt.title,
+        icon: evt.icon || '',
+        name: evt.title,
+        dateLabel: formatYear(evt.year),
+      });
       draw();
       syncDeepLinkUrl();
     }
@@ -1409,7 +1448,13 @@ canvas.addEventListener('click', (e) => {
       else if (duration >= 1_000_000) durationStr = Math.round(duration / 1_000_000).toLocaleString() + ' million years';
       else durationStr = duration.toLocaleString() + ' years';
       const dateStr = formatYear(itemStart) + ' — ' + formatYear(itemEnd) + '  (' + durationStr + ')';
-      showDetail(item.icon + ' ' + item.name, dateStr, item.description, item.sources);
+      showDetail(item.icon + ' ' + item.name, dateStr, item.description, item.sources, {
+        view: getDeepLinkViewParam(currentView),
+        id: item.id,
+        icon: item.icon || '',
+        name: item.name,
+        dateLabel: dateStr,
+      });
       draw();
       syncDeepLinkUrl();
     }
@@ -1704,22 +1749,32 @@ function renderDetailSources(sources) {
   wrap.hidden = false;
 }
 
-function showDetail(title, date, description, sources) {
+// Context for the open detail panel (used by bookmarks)
+let detailContext = null;
+
+function showDetail(title, date, description, sources, context = null) {
   document.getElementById('detail-title').textContent = title;
   document.getElementById('detail-date').textContent = date;
   document.getElementById('detail-description').textContent = description;
   renderDetailSources(sources);
+  detailContext = context;
+  updateDetailBookmarkButton();
   document.getElementById('event-detail').classList.remove('hidden');
 }
 
-document.getElementById('detail-close').addEventListener('click', () => {
+function hideDetailPanel() {
   document.getElementById('event-detail').classList.add('hidden');
   clearDetailSources();
+  detailContext = null;
+  updateDetailBookmarkButton();
   selectedEvent = null;
-  // Clear selected item in all swim-lane states
   for (const key of Object.keys(swimStates)) {
-    swimStates[key].selectedItem = null;
+    if (swimStates[key]) swimStates[key].selectedItem = null;
   }
+}
+
+document.getElementById('detail-close').addEventListener('click', () => {
+  hideDetailPanel();
   draw();
   syncDeepLinkUrl();
 });
@@ -1820,9 +1875,12 @@ function switchView(view) {
 
   // Close detail panel on switch
   document.getElementById('event-detail').classList.add('hidden');
+  detailContext = null;
+  updateDetailBookmarkButton();
   tooltip.classList.remove('visible');
   closeTimelineSearchResults();
   closeFiltersPanel();
+  closeBookmarksPanel();
   if (timelineSearch) timelineSearch.value = '';
   hoveredEvent = null;
   selectedEvent = null;
@@ -2346,6 +2404,7 @@ function closeFiltersPanel() {
 
 function openFiltersPanel() {
   if (!filtersPanel || !filtersToggle || filtersToggle.disabled) return;
+  closeBookmarksPanel();
   renderFiltersChips();
   positionFiltersPanel();
   filtersPanel.classList.remove('hidden');
@@ -2514,6 +2573,302 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+
+// ============================================================
+// Bookmarks / reading list (Phase 3 #10)
+// Persisted in localStorage on this device.
+// ============================================================
+const BOOKMARKS_STORAGE_KEY = 'timeline-bookmarks-v1';
+
+const bookmarksToggle = document.getElementById('bookmarks-toggle');
+const bookmarksPanel = document.getElementById('bookmarks-panel');
+const bookmarksList = document.getElementById('bookmarks-list');
+const bookmarksBadge = document.getElementById('bookmarks-badge');
+const bookmarksClose = document.getElementById('bookmarks-close');
+const bookmarksClear = document.getElementById('bookmarks-clear');
+const bookmarksHint = document.getElementById('bookmarks-hint');
+const detailBookmarkBtn = document.getElementById('detail-bookmark');
+
+function bookmarkKey(view, id) {
+  return String(view || 'cosmic') + '::' + String(id || '');
+}
+
+function loadBookmarks() {
+  try {
+    const raw = localStorage.getItem(BOOKMARKS_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((b) => b && typeof b.id === 'string' && typeof b.view === 'string' && typeof b.name === 'string');
+  } catch {
+    return [];
+  }
+}
+
+function saveBookmarks(list) {
+  try {
+    localStorage.setItem(BOOKMARKS_STORAGE_KEY, JSON.stringify(list));
+  } catch {
+    // Quota / private mode — ignore; UI still works for the session via re-load failure
+  }
+}
+
+let bookmarks = loadBookmarks();
+
+function findBookmarkIndex(view, id) {
+  const key = bookmarkKey(view, id);
+  return bookmarks.findIndex((b) => bookmarkKey(b.view, b.id) === key);
+}
+
+function isBookmarked(view, id) {
+  return findBookmarkIndex(view, id) !== -1;
+}
+
+function addBookmark(entry) {
+  if (!entry || !entry.id || !entry.view) return;
+  const idx = findBookmarkIndex(entry.view, entry.id);
+  const record = {
+    view: entry.view,
+    id: entry.id,
+    icon: entry.icon || '',
+    name: entry.name,
+    dateLabel: entry.dateLabel || '',
+    savedAt: Date.now(),
+  };
+  if (idx === -1) bookmarks.unshift(record);
+  else bookmarks[idx] = { ...bookmarks[idx], ...record, savedAt: bookmarks[idx].savedAt || record.savedAt };
+  saveBookmarks(bookmarks);
+  updateBookmarksUI();
+  updateDetailBookmarkButton();
+}
+
+function removeBookmark(view, id) {
+  const idx = findBookmarkIndex(view, id);
+  if (idx === -1) return;
+  bookmarks.splice(idx, 1);
+  saveBookmarks(bookmarks);
+  updateBookmarksUI();
+  updateDetailBookmarkButton();
+}
+
+function toggleBookmarkForDetail() {
+  if (!detailContext) return;
+  if (isBookmarked(detailContext.view, detailContext.id)) {
+    removeBookmark(detailContext.view, detailContext.id);
+  } else {
+    addBookmark(detailContext);
+  }
+}
+
+function updateDetailBookmarkButton() {
+  if (!detailBookmarkBtn) return;
+  const canBookmark = Boolean(detailContext && detailContext.id);
+  detailBookmarkBtn.disabled = !canBookmark;
+  if (!canBookmark) {
+    detailBookmarkBtn.classList.remove('is-bookmarked');
+    detailBookmarkBtn.setAttribute('aria-pressed', 'false');
+    const label = detailBookmarkBtn.querySelector('.detail-bookmark-label');
+    const icon = detailBookmarkBtn.querySelector('.detail-bookmark-icon');
+    if (label) label.textContent = 'Bookmark';
+    if (icon) icon.textContent = '☆';
+    return;
+  }
+  const saved = isBookmarked(detailContext.view, detailContext.id);
+  detailBookmarkBtn.classList.toggle('is-bookmarked', saved);
+  detailBookmarkBtn.setAttribute('aria-pressed', saved ? 'true' : 'false');
+  const label = detailBookmarkBtn.querySelector('.detail-bookmark-label');
+  const icon = detailBookmarkBtn.querySelector('.detail-bookmark-icon');
+  if (label) label.textContent = saved ? 'Bookmarked' : 'Bookmark';
+  if (icon) icon.textContent = saved ? '★' : '☆';
+  detailBookmarkBtn.title = saved ? 'Remove from bookmarks' : 'Save to bookmarks';
+}
+
+function closeBookmarksPanel() {
+  if (!bookmarksPanel) return;
+  bookmarksPanel.classList.add('hidden');
+  if (bookmarksToggle) bookmarksToggle.setAttribute('aria-expanded', 'false');
+}
+
+function openBookmarksPanel() {
+  if (!bookmarksPanel || !bookmarksToggle) return;
+  closeFiltersPanel();
+  renderBookmarksList();
+  positionBookmarksPanel();
+  bookmarksPanel.classList.remove('hidden');
+  bookmarksToggle.setAttribute('aria-expanded', 'true');
+}
+
+function toggleBookmarksPanel() {
+  if (!bookmarksPanel) return;
+  if (bookmarksPanel.classList.contains('hidden')) openBookmarksPanel();
+  else closeBookmarksPanel();
+}
+
+function positionBookmarksPanel() {
+  if (!bookmarksPanel || !bookmarksToggle) return;
+  const isMobile = window.matchMedia('(max-width: 640px)').matches;
+  if (isMobile) {
+    bookmarksPanel.style.left = '';
+    bookmarksPanel.style.right = '';
+    bookmarksPanel.style.top = '';
+    return;
+  }
+  const rect = bookmarksToggle.getBoundingClientRect();
+  const width = Math.min(380, window.innerWidth - 24);
+  let left = rect.right - width;
+  left = Math.max(12, Math.min(left, window.innerWidth - width - 12));
+  bookmarksPanel.style.position = 'fixed';
+  bookmarksPanel.style.top = (rect.bottom + 6) + 'px';
+  bookmarksPanel.style.left = left + 'px';
+  bookmarksPanel.style.right = 'auto';
+}
+
+function updateBookmarksUI() {
+  if (bookmarksToggle) {
+    bookmarksToggle.classList.toggle('is-active', bookmarks.length > 0);
+  }
+  if (bookmarksBadge) {
+    if (bookmarks.length > 0) {
+      bookmarksBadge.textContent = String(bookmarks.length);
+      bookmarksBadge.classList.remove('hidden');
+    } else {
+      bookmarksBadge.classList.add('hidden');
+    }
+  }
+  if (bookmarksHint) {
+    bookmarksHint.textContent = bookmarks.length
+      ? `${bookmarks.length} saved · stored locally on this device`
+      : 'Save items from the detail panel. Stored locally on this device.';
+  }
+  if (bookmarksClear) {
+    bookmarksClear.disabled = bookmarks.length === 0;
+  }
+  if (bookmarksPanel && !bookmarksPanel.classList.contains('hidden')) {
+    renderBookmarksList();
+    positionBookmarksPanel();
+  }
+  updateDetailBookmarkButton();
+}
+
+function renderBookmarksList() {
+  if (!bookmarksList) return;
+  bookmarksList.innerHTML = '';
+  if (!bookmarks.length) {
+    const empty = document.createElement('li');
+    empty.className = 'bookmarks-empty';
+    empty.textContent = 'No bookmarks yet. Open any event and tap Bookmark.';
+    bookmarksList.appendChild(empty);
+    return;
+  }
+
+  for (const entry of bookmarks) {
+    const li = document.createElement('li');
+    li.className = 'bookmarks-item';
+
+    const openBtn = document.createElement('button');
+    openBtn.type = 'button';
+    openBtn.className = 'bookmarks-item-open';
+    openBtn.setAttribute('aria-label', 'Open ' + entry.name);
+
+    const title = document.createElement('span');
+    title.className = 'bookmarks-item-title';
+    title.textContent = (entry.icon ? entry.icon + ' ' : '') + entry.name;
+
+    const meta = document.createElement('span');
+    meta.className = 'bookmarks-item-meta';
+    const viewLabel = viewLabelForParam(entry.view);
+    meta.textContent = entry.dateLabel
+      ? viewLabel + ' · ' + entry.dateLabel
+      : viewLabel;
+
+    openBtn.appendChild(title);
+    openBtn.appendChild(meta);
+    openBtn.addEventListener('click', () => openBookmark(entry));
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'bookmarks-item-remove';
+    removeBtn.setAttribute('aria-label', 'Remove ' + entry.name);
+    removeBtn.textContent = '×';
+    removeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      removeBookmark(entry.view, entry.id);
+    });
+
+    li.appendChild(openBtn);
+    li.appendChild(removeBtn);
+    bookmarksList.appendChild(li);
+  }
+}
+
+function openBookmark(entry) {
+  if (!entry) return;
+  closeBookmarksPanel();
+  closeFiltersPanel();
+  closeCountryPicker();
+
+  _syncingFromUrl = true;
+  try {
+    const resolved = resolveViewParam(entry.view);
+    if (resolved) {
+      activateViewForDeepLink(resolved.id, { clearSelection: true });
+    } else {
+      activateViewForDeepLink('cosmic', { clearSelection: true });
+    }
+    const focused = focusItemById(entry.id);
+    if (!focused) {
+      // Stale bookmark — still land on the view
+      updateFiltersUI();
+      draw();
+    }
+    updateFiltersUI();
+  } finally {
+    _syncingFromUrl = false;
+  }
+  syncDeepLinkUrl();
+  updateBookmarksUI();
+}
+
+if (detailBookmarkBtn) {
+  detailBookmarkBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleBookmarkForDetail();
+  });
+}
+if (bookmarksToggle) {
+  bookmarksToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleBookmarksPanel();
+  });
+}
+if (bookmarksClose) {
+  bookmarksClose.addEventListener('click', closeBookmarksPanel);
+}
+if (bookmarksClear) {
+  bookmarksClear.addEventListener('click', () => {
+    if (!bookmarks.length) return;
+    if (!confirm('Clear all bookmarks on this device?')) return;
+    bookmarks = [];
+    saveBookmarks(bookmarks);
+    updateBookmarksUI();
+  });
+}
+
+document.addEventListener('click', (e) => {
+  if (!bookmarksPanel || bookmarksPanel.classList.contains('hidden')) return;
+  const wrap = document.getElementById('bookmarks-wrap');
+  if (bookmarksPanel.contains(e.target)) return;
+  if (wrap && wrap.contains(e.target)) return;
+  if (detailBookmarkBtn && detailBookmarkBtn.contains(e.target)) return;
+  closeBookmarksPanel();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && bookmarksPanel && !bookmarksPanel.classList.contains('hidden')) {
+    closeBookmarksPanel();
+  }
+});
+
 // ============================================================
 // Compare mode UI (Phase 3 #9)
 // ============================================================
@@ -2612,9 +2967,11 @@ window.addEventListener('resize', () => {
   resize();
   positionTimelineSearchResults();
   if (filtersPanel && !filtersPanel.classList.contains('hidden')) positionFiltersPanel();
+  if (bookmarksPanel && !bookmarksPanel.classList.contains('hidden')) positionBookmarksPanel();
 });
 applyDeepLinkFromUrl();
 updateFiltersUI();
+updateBookmarksUI();
 resize();
 maybeShowGestureHint();
 canvas.style.cursor = 'grab';
