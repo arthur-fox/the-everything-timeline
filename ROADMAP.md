@@ -297,6 +297,14 @@ User feedback after PR D:
 - Presets/captions expanded (1700, 1900). ✅
 - Timeline tap integration still deferred to **PR E**.
 
+#### Day 15 — Overlay UI polish (colors + layout) — done
+
+User bugs after Day 14:
+
+- **Unique colors:** curated 24-color palette — Qing (pink) vs British (sky blue) and no near-identical reds; list swatch matches polygon. ✅
+- **Layout:** globe stage uses CSS grid split (canvas | overlays sidebar) so the rounded globe card no longer overlaps empire rows; sidebar scrolls independently. ✅
+- Timeline tap integration still deferred to **PR E**.
+
 #### PR E — Timeline integration (next)
 
 - Selecting a year updates the globe overlays.
@@ -418,6 +426,7 @@ A sensible near-term sequence:
 10. Historical overlay data model (PR C). ✅ Day 12
 11. First historical overlays on the globe (PR D). ✅ Day 13
 12. Overlay polish — z-fight fix + denser empires (Day 14). ✅
-13. Timeline ↔ globe integration (PR E).
+13. Overlay UI polish — unique colors + layout split (Day 15). ✅
+14. Timeline ↔ globe integration (PR E).
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

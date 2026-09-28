@@ -41,7 +41,7 @@ export const spatialEntities = [
   {
     id: 'roman-empire',
     name: 'Roman Empire',
-    color: '#DC2626',
+    color: '#FF5A5F',
     type: 'empire',
     description:
       'A major Mediterranean empire centered on Rome. At its height under Trajan it spanned three continents.',
@@ -83,7 +83,7 @@ export const spatialEntities = [
   {
     id: 'han-china',
     name: 'Han China',
-    color: '#CA8A04',
+    color: '#F59E0B',
     type: 'empire',
     description:
       'Golden-age Chinese empire that consolidated imperial administration and opened Silk Road exchange.',
@@ -124,7 +124,7 @@ export const spatialEntities = [
   {
     id: 'parthian-empire',
     name: 'Parthian Empire',
-    color: '#B45309',
+    color: '#A8A29E',
     type: 'empire',
     description:
       'Iranian empire controlling the Iranian plateau and Mesopotamia; Rome’s great eastern rival.',
@@ -158,7 +158,7 @@ export const spatialEntities = [
   {
     id: 'kushan-empire',
     name: 'Kushan Empire',
-    color: '#A855F7',
+    color: '#D946EF',
     type: 'empire',
     description:
       'Central Asian / North Indian empire linking Silk Road trade between China, Iran, and the Gangetic plain.',
@@ -182,7 +182,7 @@ export const spatialEntities = [
   {
     id: 'maurya-empire',
     name: 'Maurya Empire',
-    color: '#16A34A',
+    color: '#059669',
     type: 'empire',
     description:
       'Early Indian empire that, under Ashoka, controlled much of the subcontinent.',
@@ -206,7 +206,7 @@ export const spatialEntities = [
   {
     id: 'gupta-empire',
     name: 'Gupta Empire',
-    color: '#22C55E',
+    color: '#34D399',
     type: 'empire',
     description:
       'Classical Indian empire often associated with a “golden age” of science, art, and literature.',
@@ -230,7 +230,7 @@ export const spatialEntities = [
   {
     id: 'byzantine-empire',
     name: 'Byzantine Empire',
-    color: '#2563EB',
+    color: '#6366F1',
     type: 'empire',
     description:
       'Eastern Roman continuity centered on Constantinople; endured through medieval centuries.',
@@ -272,7 +272,7 @@ export const spatialEntities = [
   {
     id: 'frankish-empire',
     name: 'Carolingian / Frankish realm',
-    color: '#0EA5E9',
+    color: '#14B8A6',
     type: 'empire',
     description:
       'Frankish realm under Charlemagne covering much of Western and Central Europe.',
@@ -297,7 +297,7 @@ export const spatialEntities = [
   {
     id: 'tang-china',
     name: 'Tang China',
-    color: '#EAB308',
+    color: '#FDE047',
     type: 'empire',
     description:
       'Cosmopolitan Chinese empire of the early medieval period; capital Chang’an a hub of Eurasian exchange.',
@@ -322,7 +322,7 @@ export const spatialEntities = [
   {
     id: 'song-china',
     name: 'Song China',
-    color: '#F59E0B',
+    color: '#CA8A04',
     type: 'empire',
     description:
       'Song dynasty China — commercially advanced, later pressed by Jurchen and Mongol powers.',
@@ -352,7 +352,7 @@ export const spatialEntities = [
   {
     id: 'abbasid-caliphate',
     name: 'Abbasid Caliphate',
-    color: '#059669',
+    color: '#10B981',
     type: 'empire',
     description:
       'Islamic caliphate centered on Baghdad; a major scholarly and commercial power across the Middle East and beyond.',
@@ -390,7 +390,7 @@ export const spatialEntities = [
   {
     id: 'mali-empire',
     name: 'Mali Empire',
-    color: '#D97706',
+    color: '#EAB308',
     type: 'empire',
     description:
       'West African empire famed for gold, scholarship (Timbuktu), and the pilgrimage of Mansa Musa.',
@@ -413,7 +413,7 @@ export const spatialEntities = [
   {
     id: 'khmer-empire',
     name: 'Khmer Empire',
-    color: '#F97316',
+    color: '#FB7185',
     type: 'empire',
     description:
       'Mainland Southeast Asian empire centered on Angkor; hydraulic cities and temple complexes.',
@@ -436,7 +436,7 @@ export const spatialEntities = [
   {
     id: 'mongol-empire',
     name: 'Mongol Empire',
-    color: '#7C3AED',
+    color: '#8B5CF6',
     type: 'empire',
     description:
       'Largest contiguous land empire in history, founded by Genghis Khan; linked East and West along the Silk Road.',
@@ -470,7 +470,7 @@ export const spatialEntities = [
   {
     id: 'delhi-sultanate',
     name: 'Delhi Sultanate',
-    color: '#84CC16',
+    color: '#A3E635',
     type: 'state',
     description:
       'Series of Muslim dynasties ruling large parts of the Indian subcontinent from Delhi.',
@@ -494,7 +494,7 @@ export const spatialEntities = [
   {
     id: 'ottoman-empire',
     name: 'Ottoman Empire',
-    color: '#991B1B',
+    color: '#9A3412',
     type: 'empire',
     description:
       'Turkish empire spanning southeastern Europe, Anatolia, and much of the eastern Mediterranean.',
@@ -539,7 +539,7 @@ export const spatialEntities = [
   {
     id: 'spanish-empire',
     name: 'Spanish Empire',
-    color: '#EF4444',
+    color: '#FF8C42',
     type: 'empire',
     description:
       'Iberian oceanic empire with American viceroyalties and Pacific footholds after 1492.',
@@ -583,7 +583,7 @@ export const spatialEntities = [
   {
     id: 'aztec-empire',
     name: 'Aztec Empire',
-    color: '#C026D3',
+    color: '#A855F7',
     type: 'empire',
     description:
       'Mesoamerican tributary empire centered on Tenochtitlan in the Valley of Mexico.',
@@ -630,7 +630,7 @@ export const spatialEntities = [
   {
     id: 'ming-china',
     name: 'Ming China',
-    color: '#FACC15',
+    color: '#FBBF24',
     type: 'empire',
     description:
       'Ming dynasty restored Han Chinese rule after the Yuan; maritime voyages then inward turn.',
@@ -661,7 +661,7 @@ export const spatialEntities = [
   {
     id: 'mughal-empire',
     name: 'Mughal Empire',
-    color: '#65A30D',
+    color: '#4D7C0F',
     type: 'empire',
     description:
       'Early modern Indian empire blending Persianate court culture with the subcontinent’s diversity.',
@@ -697,7 +697,7 @@ export const spatialEntities = [
   {
     id: 'qing-china',
     name: 'Qing China',
-    color: '#E11D48',
+    color: '#F472B6',
     type: 'empire',
     description:
       'Manchu-led Qing empire — China’s last imperial dynasty, with vast Inner Asian frontiers.',
@@ -732,7 +732,7 @@ export const spatialEntities = [
   {
     id: 'russian-empire',
     name: 'Russian Empire',
-    color: '#1D4ED8',
+    color: '#3B82F6',
     type: 'empire',
     description:
       'Eurasian land empire expanding from Muscovy across Siberia to the Pacific and into Central Asia.',
@@ -776,7 +776,7 @@ export const spatialEntities = [
   {
     id: 'british-empire',
     name: 'British Empire',
-    color: '#BE123C',
+    color: '#38BDF8',
     type: 'empire',
     description:
       'Oceanic empire with settler colonies, Indian Raj, and African/Asian possessions at its Victorian peak.',
