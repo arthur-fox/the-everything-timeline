@@ -313,6 +313,16 @@ User bug: divider/border sliced through the era caption pill and cramped the OVE
 - Removed conflicting `border-top` / nested panel chrome that crossed the caption. ✅
 - Day 14/15 color + stage grid kept. **PR E** still next.
 
+#### Day 17 — Denser globe overlays (ancient + colonial pass) — done
+
+User feedback: globe feels good but is missing lots of information — timeline↔globe only works if the same civilisations appear in both.
+
+- Fixed `song-china.timelineItemIds` → `['song-dynasty']`. ✅
+- Added ~15 schematic entities with unique colours and valid `timelineItemIds`: Achaemenid Persia, Ancient Egypt, Classical Greece, Carthage, Sassanid, Umayyad, Holy Roman Empire, Portuguese, Dutch, French Colonial, Safavid, Maya, Songhai, Majapahit, Imperial Japan. ✅
+- Extended `REGION_RINGS` (Greece, Anatolia, Yucatán, Japan, Java, Low Countries, etc.) — still approximate, not GIS. ✅
+- −500 preset no longer empty; Africa / SE Asia / early-modern colonial coverage thickened. ✅
+- Timeline tap integration still deferred to **PR E**.
+
 #### PR E — Timeline integration (next)
 
 - Selecting a year updates the globe overlays.
@@ -436,6 +446,7 @@ A sensible near-term sequence:
 12. Overlay polish — z-fight fix + denser empires (Day 14). ✅
 13. Overlay UI polish — unique colors + layout split (Day 15). ✅
 14. Overlays sidebar cleanup — caption/borders stack (Day 16). ✅
-15. Timeline ↔ globe integration (PR E).
+15. Denser globe overlays — ancient + colonial pass (Day 17). ✅
+16. Timeline ↔ globe integration (PR E).
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

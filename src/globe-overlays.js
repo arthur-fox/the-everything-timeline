@@ -1,5 +1,5 @@
 /**
- * Historical overlay spatial entities (Phase 4 / PR C + Day 14 density).
+ * Historical overlay spatial entities (Phase 4 / PR C + Day 14–17 density).
  *
  * Spatial entities + schematic region rings for Globe polygons.
  * Rings are intentionally rough — not GIS-accurate ancient borders.
@@ -345,6 +345,7 @@ export const spatialEntities = [
         ],
       },
     ],
+    timelineItemIds: ['song-dynasty'],
     sources: [
       { title: 'Wikipedia — Song dynasty', url: 'https://en.wikipedia.org/wiki/Song_dynasty' },
     ],
@@ -824,6 +825,465 @@ export const spatialEntities = [
       { title: 'Wikipedia — British Empire', url: 'https://en.wikipedia.org/wiki/British_Empire' },
     ],
   },
+
+  // --- Day 17 densification: ancient + colonial pass ---
+  {
+    id: 'achaemenid-empire',
+    name: 'Achaemenid Persian Empire',
+    color: '#C2410C',
+    type: 'empire',
+    description:
+      'First true superpower of the ancient Near East — schematic core from Anatolia and Egypt to the Iranian plateau.',
+    keyYears: [-550, -500, -330],
+    overlays: [
+      {
+        year: -500,
+        label: 'Height under Darius (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'persia', name: 'Iranian plateau' },
+          { id: 'mesopotamia', name: 'Mesopotamia' },
+          { id: 'levant', name: 'Levant' },
+          { id: 'egypt', name: 'Egypt' },
+          { id: 'anatolia', name: 'Anatolia', bbox: [26, 36, 44, 42] },
+        ],
+      },
+    ],
+    timelineItemIds: ['persian-achaemenid'],
+    sources: [
+      { title: 'Wikipedia — Achaemenid Empire', url: 'https://en.wikipedia.org/wiki/Achaemenid_Empire' },
+    ],
+  },
+  {
+    id: 'ancient-egypt',
+    name: 'Ancient Egypt',
+    color: '#A16207',
+    type: 'civilization',
+    description:
+      'Nile-valley civilisation across Old, Middle, and New Kingdoms — schematic river-core influence.',
+    keyYears: [-2500, -1250, -500, -30],
+    overlays: [
+      {
+        year: -1250,
+        label: 'New Kingdom core (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'egypt', name: 'Nile / Egypt' },
+          { id: 'nile-upper', name: 'Upper Nile fringe', bbox: [30, 10, 36, 22] },
+        ],
+      },
+      {
+        year: -500,
+        label: 'Late Period (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'egypt', name: 'Nile / Egypt' },
+        ],
+      },
+    ],
+    timelineItemIds: ['ancient-egypt'],
+    sources: [
+      { title: 'Wikipedia — Ancient Egypt', url: 'https://en.wikipedia.org/wiki/Ancient_Egypt' },
+    ],
+  },
+  {
+    id: 'classical-greece',
+    name: 'Classical Greece',
+    color: '#1D4ED8',
+    type: 'civilization',
+    description:
+      'City-state world of the Aegean and southern Balkans — schematic cultural-political core, not a unitary empire.',
+    keyYears: [-480, -450, -323, -146],
+    overlays: [
+      {
+        year: -450,
+        label: 'Classical Aegean (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'greece', name: 'Greece / Aegean', bbox: [19, 35, 28, 42] },
+        ],
+      },
+    ],
+    timelineItemIds: ['classical-greece'],
+    sources: [
+      { title: 'Wikipedia — Classical Greece', url: 'https://en.wikipedia.org/wiki/Classical_Greece' },
+    ],
+  },
+  {
+    id: 'carthage',
+    name: 'Carthage',
+    color: '#7F1D1D',
+    type: 'empire',
+    description:
+      'Phoenician-founded North African power with western Mediterranean trade reach — schematic Maghreb core.',
+    keyYears: [-814, -500, -264, -146],
+    overlays: [
+      {
+        year: -500,
+        label: 'Punic western Med (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'carthage-core', name: 'Carthage / Tunisia', bbox: [8, 32, 12, 38] },
+          { id: 'maghreb-east', name: 'Eastern Maghreb fringe' },
+        ],
+      },
+      {
+        year: -220,
+        label: 'Before Second Punic War (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'carthage-core', name: 'Carthage / Tunisia' },
+          { id: 'iberia', name: 'Iberian fringe' },
+        ],
+      },
+    ],
+    timelineItemIds: ['carthage'],
+    sources: [
+      { title: 'Wikipedia — Ancient Carthage', url: 'https://en.wikipedia.org/wiki/Ancient_Carthage' },
+    ],
+  },
+  {
+    id: 'sassanid-empire',
+    name: 'Sassanid Empire',
+    color: '#9D174D',
+    type: 'empire',
+    description:
+      'Late antique Iranian empire rivaling Rome and Byzantium — schematic Persia–Mesopotamia core.',
+    keyYears: [224, 400, 620, 651],
+    overlays: [
+      {
+        year: 400,
+        label: 'Sassanid high (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'persia', name: 'Iranian plateau' },
+          { id: 'mesopotamia', name: 'Mesopotamia' },
+          { id: 'parthia-east', name: 'Eastern fringe' },
+        ],
+      },
+      {
+        year: 620,
+        label: 'Late Sassanid (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'persia', name: 'Iranian plateau' },
+          { id: 'mesopotamia', name: 'Mesopotamia' },
+          { id: 'levant', name: 'Levant fringe' },
+          { id: 'egypt', name: 'Egypt (briefly)' },
+        ],
+      },
+    ],
+    timelineItemIds: ['sassanid'],
+    sources: [
+      { title: 'Wikipedia — Sasanian Empire', url: 'https://en.wikipedia.org/wiki/Sasanian_Empire' },
+    ],
+  },
+  {
+    id: 'umayyad-caliphate',
+    name: 'Umayyad Caliphate',
+    color: '#115E59',
+    type: 'empire',
+    description:
+      'Early Islamic caliphate spanning Iberia to Central Asia — schematic Maghreb–Near East–Iberia arc.',
+    keyYears: [661, 711, 750],
+    overlays: [
+      {
+        year: 720,
+        label: 'Umayyad extent (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'iberia', name: 'Al-Andalus / Iberia' },
+          { id: 'maghreb-east', name: 'Maghreb' },
+          { id: 'egypt', name: 'Egypt' },
+          { id: 'levant', name: 'Levant' },
+          { id: 'mesopotamia', name: 'Mesopotamia' },
+          { id: 'persia', name: 'Iran fringe' },
+        ],
+      },
+    ],
+    timelineItemIds: ['umayyad-caliphate'],
+    sources: [
+      { title: 'Wikipedia — Umayyad Caliphate', url: 'https://en.wikipedia.org/wiki/Umayyad_Caliphate' },
+    ],
+  },
+  {
+    id: 'holy-roman-empire',
+    name: 'Holy Roman Empire',
+    color: '#B45309',
+    type: 'empire',
+    description:
+      'Central European patchwork empire — schematic German–Italian core, not precise princely borders.',
+    keyYears: [962, 1050, 1250, 1550],
+    overlays: [
+      {
+        year: 1050,
+        label: 'Ottonian–Salian core (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'central-europe-hre', name: 'German lands', bbox: [5, 45, 18, 55] },
+          { id: 'italy', name: 'Northern Italy fringe' },
+        ],
+      },
+      {
+        year: 1250,
+        label: 'High medieval HRE (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'central-europe-hre', name: 'German lands' },
+          { id: 'frankish-east', name: 'East Francia fringe' },
+        ],
+      },
+    ],
+    timelineItemIds: ['holy-roman-empire'],
+    sources: [
+      { title: 'Wikipedia — Holy Roman Empire', url: 'https://en.wikipedia.org/wiki/Holy_Roman_Empire' },
+    ],
+  },
+  {
+    id: 'portuguese-empire',
+    name: 'Portuguese Empire',
+    color: '#16A34A',
+    type: 'empire',
+    description:
+      'Early modern oceanic empire — schematic Iberian home plus Brazilian and African footholds.',
+    keyYears: [1415, 1500, 1700, 1822],
+    overlays: [
+      {
+        year: 1500,
+        label: 'Age of Discovery (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'iberia', name: 'Portugal / Iberia west' },
+          { id: 'brazil-coast', name: 'Brazilian coast', bbox: [-50, -25, -35, -5] },
+          { id: 'west-africa-coast', name: 'West African forts', bbox: [-18, 4, -5, 15] },
+        ],
+      },
+      {
+        year: 1700,
+        label: 'Brazil & Atlantic (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'iberia', name: 'Portugal' },
+          { id: 'brazil-coast', name: 'Brazil' },
+          { id: 'west-africa-coast', name: 'West Africa fringe' },
+        ],
+      },
+    ],
+    timelineItemIds: ['portugal'],
+    sources: [
+      { title: 'Wikipedia — Portuguese Empire', url: 'https://en.wikipedia.org/wiki/Portuguese_Empire' },
+    ],
+  },
+  {
+    id: 'dutch-republic',
+    name: 'Dutch Republic / Empire',
+    color: '#F97316',
+    type: 'empire',
+    description:
+      'Dutch Golden Age maritime power — schematic Low Countries plus East Indies footholds.',
+    keyYears: [1581, 1650, 1700, 1795],
+    overlays: [
+      {
+        year: 1650,
+        label: 'Dutch Golden Age (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'low-countries', name: 'Low Countries', bbox: [3, 50, 8, 54] },
+          { id: 'java-bali', name: 'East Indies / Java', bbox: [105, -9, 116, -5] },
+        ],
+      },
+      {
+        year: 1700,
+        label: 'VOC peak (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'low-countries', name: 'Low Countries' },
+          { id: 'java-bali', name: 'Java / Spice Islands fringe' },
+          { id: 'south-africa', name: 'Cape fringe' },
+        ],
+      },
+    ],
+    timelineItemIds: ['dutch-republic'],
+    sources: [
+      { title: 'Wikipedia — Dutch Empire', url: 'https://en.wikipedia.org/wiki/Dutch_Empire' },
+    ],
+  },
+  {
+    id: 'french-colonial',
+    name: 'French Colonial Empire',
+    color: '#2563EB',
+    type: 'empire',
+    description:
+      'French Atlantic and later African/Asian empire — schematic metro France plus early colonial footholds.',
+    keyYears: [1534, 1700, 1830, 1914],
+    overlays: [
+      {
+        year: 1700,
+        label: 'First colonial empire (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'frankish-west', name: 'Metropolitan France' },
+          { id: 'canada-east', name: 'New France fringe' },
+          { id: 'west-africa-coast', name: 'West Africa fringe' },
+        ],
+      },
+      {
+        year: 1914,
+        label: 'Second colonial empire (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'frankish-west', name: 'France' },
+          { id: 'maghreb-east', name: 'Maghreb' },
+          { id: 'west-africa-sahel', name: 'West Africa Sahel' },
+          { id: 'mainland-sea', name: 'Indochina fringe' },
+        ],
+      },
+    ],
+    timelineItemIds: ['french-colonial'],
+    sources: [
+      { title: 'Wikipedia — French colonial empire', url: 'https://en.wikipedia.org/wiki/French_colonial_empire' },
+    ],
+  },
+  {
+    id: 'safavid-empire',
+    name: 'Safavid Empire',
+    color: '#5B21B6',
+    type: 'empire',
+    description:
+      'Early modern Iranian empire that shaped Shiʿa identity — schematic Persia core.',
+    keyYears: [1501, 1587, 1629, 1736],
+    overlays: [
+      {
+        year: 1620,
+        label: 'Safavid golden age (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'persia', name: 'Iran / Persia' },
+          { id: 'mesopotamia', name: 'Mesopotamia fringe' },
+          { id: 'caucasus-south', name: 'South Caucasus fringe', bbox: [43, 38, 50, 43] },
+        ],
+      },
+    ],
+    timelineItemIds: ['safavid'],
+    sources: [
+      { title: 'Wikipedia — Safavid dynasty', url: 'https://en.wikipedia.org/wiki/Safavid_dynasty' },
+    ],
+  },
+  {
+    id: 'maya',
+    name: 'Maya Civilisation',
+    color: '#65A30D',
+    type: 'civilization',
+    description:
+      'Mesoamerican civilisation of the Yucatán and highlands — schematic Classic-period core.',
+    keyYears: [-500, 250, 800, 1500],
+    overlays: [
+      {
+        year: -500,
+        label: 'Preclassic Maya fringe (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'yucatan', name: 'Yucatán / Maya lowlands', bbox: [-92, 14, -86, 22] },
+        ],
+      },
+      {
+        year: 800,
+        label: 'Classic Maya (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'yucatan', name: 'Yucatán / Maya lowlands' },
+          { id: 'mesoamerica', name: 'Southern Mesoamerica fringe' },
+        ],
+      },
+    ],
+    timelineItemIds: ['maya'],
+    sources: [
+      { title: 'Wikipedia — Maya civilization', url: 'https://en.wikipedia.org/wiki/Maya_civilization' },
+    ],
+  },
+  {
+    id: 'songhai-empire',
+    name: 'Songhai Empire',
+    color: '#D97706',
+    type: 'empire',
+    description:
+      'West African Sahel empire succeeding Mali along the Niger bend — schematic Sahel core.',
+    keyYears: [1430, 1500, 1591],
+    overlays: [
+      {
+        year: 1500,
+        label: 'Songhai height (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'west-africa-sahel', name: 'Sahel / Niger bend' },
+          { id: 'west-africa-coast', name: 'Gulf of Guinea fringe' },
+        ],
+      },
+    ],
+    timelineItemIds: ['songhai'],
+    sources: [
+      { title: 'Wikipedia — Songhai Empire', url: 'https://en.wikipedia.org/wiki/Songhai_Empire' },
+    ],
+  },
+  {
+    id: 'majapahit-empire',
+    name: 'Majapahit Empire',
+    color: '#E11D48',
+    type: 'empire',
+    description:
+      'Maritime Southeast Asian empire centered on Java — schematic archipelago core.',
+    keyYears: [1293, 1350, 1527],
+    overlays: [
+      {
+        year: 1350,
+        label: 'Majapahit thalassocracy (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'java-bali', name: 'Java / Bali' },
+          { id: 'sumatra-south', name: 'Southern Sumatra fringe', bbox: [100, -6, 106, 2] },
+        ],
+      },
+    ],
+    timelineItemIds: ['majapahit'],
+    sources: [
+      { title: 'Wikipedia — Majapahit', url: 'https://en.wikipedia.org/wiki/Majapahit' },
+    ],
+  },
+  {
+    id: 'meiji-japan',
+    name: 'Imperial Japan',
+    color: '#BE185D',
+    type: 'empire',
+    description:
+      'Meiji-to-Shōwa imperial state — schematic home islands plus early overseas footholds.',
+    keyYears: [1868, 1905, 1914, 1945],
+    overlays: [
+      {
+        year: 1905,
+        label: 'After Russo-Japanese War (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'japan-honshu', name: 'Japanese home islands', bbox: [129, 30, 146, 46] },
+          { id: 'korea-peninsula', name: 'Korea (protectorate fringe)', bbox: [124, 33, 130, 43] },
+          { id: 'manchuria', name: 'Manchuria fringe' },
+        ],
+      },
+      {
+        year: 1914,
+        label: 'Early 20th-century empire (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'japan-honshu', name: 'Home islands' },
+          { id: 'korea-peninsula', name: 'Korea' },
+          { id: 'manchuria', name: 'Manchuria fringe' },
+        ],
+      },
+    ],
+    timelineItemIds: ['meiji-japan'],
+    sources: [
+      { title: 'Wikipedia — Empire of Japan', url: 'https://en.wikipedia.org/wiki/Empire_of_Japan' },
+    ],
+  },
 ];
 
 /**
@@ -992,6 +1452,50 @@ export const REGION_RINGS = {
   ],
   'australia-east': [
     [140, -36], [142, -16], [152, -12], [154, -28], [150, -38], [144, -38], [140, -36],
+  ],
+
+  // --- Day 17 densification rings ---
+  anatolia: [
+    [26, 36], [28, 42], [36, 42], [44, 40], [42, 36], [35, 35], [28, 35], [26, 36],
+  ],
+  'nile-upper': [
+    [30, 12], [32, 22], [36, 22], [35, 12], [32, 10], [30, 12],
+  ],
+  greece: [
+    [19, 36], [20, 41], [24, 42], [28, 41], [27, 36], [24, 35], [21, 35], [19, 36],
+  ],
+  'carthage-core': [
+    [8, 33], [9, 37.5], [12, 38], [11, 33], [9, 32], [8, 33],
+  ],
+  'central-europe-hre': [
+    [5, 46], [7, 54], [15, 55], [18, 50], [16, 46], [10, 45], [5, 46],
+  ],
+  'brazil-coast': [
+    [-50, -24], [-48, -8], [-38, -5], [-35, -16], [-40, -25], [-48, -25], [-50, -24],
+  ],
+  'west-africa-coast': [
+    [-18, 5], [-16, 14], [-8, 15], [-5, 8], [-8, 4], [-14, 4], [-18, 5],
+  ],
+  'low-countries': [
+    [3.2, 50.5], [3.5, 53.5], [7.2, 53.8], [7.5, 51], [5.5, 50.2], [3.2, 50.5],
+  ],
+  'java-bali': [
+    [105, -8.5], [106, -5.5], [115, -5], [116, -8], [112, -9], [106, -9], [105, -8.5],
+  ],
+  'sumatra-south': [
+    [100, -5], [102, 1], [106, 2], [105, -4], [102, -6], [100, -5],
+  ],
+  yucatan: [
+    [-92, 15], [-91, 21.5], [-87, 22], [-86, 18], [-88, 14], [-91, 14], [-92, 15],
+  ],
+  'caucasus-south': [
+    [43, 39], [44, 42.5], [49, 42], [50, 39], [47, 38], [43, 39],
+  ],
+  'japan-honshu': [
+    [129, 31], [131, 42], [141, 46], [146, 43], [142, 35], [136, 33], [131, 30], [129, 31],
+  ],
+  'korea-peninsula': [
+    [124, 34], [126, 42], [130, 43], [129, 35], [127, 33], [124, 34],
   ],
 };
 
