@@ -49,6 +49,7 @@ import { canadaItems, canadaCategories } from './countries/canada.js';
 import { argentinaItems, argentinaCategories } from './countries/argentina.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
 import { mountGlobe, pauseGlobe, destroyGlobe } from './globe-view.js';
+import { getActiveOverlaysAtYear } from './globe-overlays.js';
 
 // ============================================================
 // Country registry — add new countries here to scale to 190+
@@ -3015,6 +3016,9 @@ const globeViewEl = document.getElementById('globe-view');
 const globeYearSlider = document.getElementById('globe-year-slider');
 const globeYearLabel = document.getElementById('globe-year-label');
 const globeYearCaption = document.getElementById('globe-year-caption');
+const globeOverlayList = document.getElementById('globe-overlay-list');
+const globeOverlayEmpty = document.getElementById('globe-overlay-empty');
+const globeOverlayPanelHeading = document.querySelector('.globe-overlay-panel-heading');
 
 function formatGlobeYear(year) {
   const y = Math.round(Number(year));
@@ -3069,6 +3073,62 @@ function setGlobeModeActive(active) {
   }
 }
 
+
+function updateGlobeOverlayPanel() {
+  if (!globeOverlayList) return;
+  const active = getActiveOverlaysAtYear(globeYear);
+  const yearLabel = formatGlobeYear(globeYear);
+
+  if (globeOverlayPanelHeading) {
+    globeOverlayPanelHeading.textContent = active.length
+      ? `Overlays at ${yearLabel}`
+      : `Overlays near ${yearLabel}`;
+  }
+
+  globeOverlayList.innerHTML = '';
+  if (!active.length) {
+    globeOverlayList.classList.add('hidden');
+    if (globeOverlayEmpty) globeOverlayEmpty.classList.remove('hidden');
+    return;
+  }
+
+  globeOverlayList.classList.remove('hidden');
+  if (globeOverlayEmpty) globeOverlayEmpty.classList.add('hidden');
+
+  for (const { entity, overlay } of active) {
+    const li = document.createElement('li');
+    li.className = 'globe-overlay-item';
+
+    const swatch = document.createElement('span');
+    swatch.className = 'globe-overlay-swatch';
+    swatch.style.background = entity.color;
+    swatch.setAttribute('aria-hidden', 'true');
+
+    const body = document.createElement('div');
+    body.className = 'globe-overlay-item-body';
+
+    const name = document.createElement('div');
+    name.className = 'globe-overlay-item-name';
+    name.textContent = entity.name;
+
+    const meta = document.createElement('div');
+    meta.className = 'globe-overlay-item-meta';
+    if (overlay) {
+      const approx = overlay.approximation || 'rough';
+      const label = overlay.label || formatOverlayYear(overlay.year);
+      meta.textContent = `${label} (${approx})`;
+    } else {
+      meta.textContent = 'Key year nearby (no snapshot label)';
+    }
+
+    body.appendChild(name);
+    body.appendChild(meta);
+    li.appendChild(swatch);
+    li.appendChild(body);
+    globeOverlayList.appendChild(li);
+  }
+}
+
 function updateGlobeYearUI() {
   const label = formatGlobeYear(globeYear);
   if (globeYearLabel) globeYearLabel.textContent = label;
@@ -3082,6 +3142,7 @@ function updateGlobeYearUI() {
     const y = Number(btn.dataset.year);
     btn.classList.toggle('is-active', y === globeYear);
   });
+  updateGlobeOverlayPanel();
 }
 
 function setGlobeYear(yearRaw, { syncUrl = true } = {}) {

@@ -132,9 +132,14 @@
         <div class="globe-copy">
           <h2 class="globe-title">Globe mode</h2>
           <p class="globe-lede">Timeline shows <em>what happened when</em>. Globe mode shows <em>where</em> — drag to turn the Earth, scroll or pinch to zoom.</p>
-          <p class="globe-note">Interactive prototype (Day 11). Historical overlays will be approximate — rough spheres of control, not exact ancient borders. Overlay data comes next.</p>
+          <p class="globe-note">Historical overlays are approximate — rough spheres of control / named regions, not exact ancient borders. Polygon drawing comes in a later PR.</p>
           <p class="globe-hint" aria-hidden="true">Drag to rotate · Scroll / pinch to zoom</p>
           <p id="globe-year-caption" class="globe-year-caption" aria-live="polite"></p>
+          <div id="globe-overlay-panel" class="globe-overlay-panel" aria-live="polite">
+            <div class="globe-overlay-panel-heading">Overlays at this year</div>
+            <ul id="globe-overlay-list" class="globe-overlay-list"></ul>
+            <p id="globe-overlay-empty" class="globe-overlay-empty hidden">No seeded overlay snapshots near this year yet.</p>
+          </div>
         </div>
       </div>
       <div class="globe-scrubber" role="group" aria-label="Globe year">

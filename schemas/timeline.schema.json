@@ -2,12 +2,16 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://arthur-fox.github.io/the-everything-timeline/schemas/timeline.schema.json",
   "title": "The Everything Timeline content schema",
-  "description": "Formal shapes for categories, periods, sources, swim-lane items, overview events, and eras. Matches what the app and scripts/validate-data.js use today. TypeScript migration is deliberately deferred.",
+  "description": "Formal shapes for categories, periods, sources, swim-lane items, overview events, eras, and globe spatial overlays. Matches what the app and scripts/validate-data.js use today. TypeScript migration is deliberately deferred.",
   "definitions": {
     "category": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "color"],
+      "required": [
+        "id",
+        "name",
+        "color"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -29,19 +33,38 @@
     "period": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "start", "end"],
+      "required": [
+        "name",
+        "start",
+        "end"
+      ],
       "properties": {
-        "name": { "type": "string", "minLength": 1 },
-        "start": { "type": "number", "description": "Start year (CE positive, BCE negative) or log-space for cosmic-history periods." },
-        "end": { "type": "number", "description": "End year or log-space end." }
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start": {
+          "type": "number",
+          "description": "Start year (CE positive, BCE negative) or log-space for cosmic-history periods."
+        },
+        "end": {
+          "type": "number",
+          "description": "End year or log-space end."
+        }
       }
     },
     "source": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["title", "url"],
+      "required": [
+        "title",
+        "url"
+      ],
       "properties": {
-        "title": { "type": "string", "minLength": 1 },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
         "url": {
           "type": "string",
           "pattern": "^https?://",
@@ -52,12 +75,29 @@
     "swimLaneItem": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "start", "end"],
+      "required": [
+        "id",
+        "name",
+        "start",
+        "end"
+      ],
       "properties": {
-        "id": { "type": "string", "minLength": 1 },
-        "name": { "type": "string", "minLength": 1 },
-        "start": { "type": "number", "description": "Start year, or log-space start for cosmic-history." },
-        "end": { "type": "number", "description": "End year, or log-space end for cosmic-history." },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start": {
+          "type": "number",
+          "description": "Start year, or log-space start for cosmic-history."
+        },
+        "end": {
+          "type": "number",
+          "description": "End year, or log-space end for cosmic-history."
+        },
         "startYear": {
           "type": "number",
           "description": "Optional raw year when start/end are log-space (cosmic-history)."
@@ -71,31 +111,50 @@
           "minLength": 1,
           "description": "Category id this item belongs to."
         },
-        "icon": { "type": "string", "minLength": 1 },
-        "description": { "type": "string" },
+        "icon": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
         "periods": {
           "type": "array",
-          "items": { "$ref": "#/definitions/period" }
+          "items": {
+            "$ref": "#/definitions/period"
+          }
         },
         "sources": {
           "type": "array",
-          "items": { "$ref": "#/definitions/source" }
+          "items": {
+            "$ref": "#/definitions/source"
+          }
         }
       }
     },
     "overviewEvent": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["title", "year"],
+      "required": [
+        "title",
+        "year"
+      ],
       "properties": {
         "title": {
           "type": "string",
           "minLength": 1,
           "description": "Display title; together with year acts as the unique key (no separate id field today)."
         },
-        "year": { "type": "number" },
-        "icon": { "type": "string", "minLength": 1 },
-        "description": { "type": "string" },
+        "year": {
+          "type": "number"
+        },
+        "icon": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
         "era": {
           "type": "string",
           "minLength": 1,
@@ -103,22 +162,174 @@
         },
         "sources": {
           "type": "array",
-          "items": { "$ref": "#/definitions/source" }
+          "items": {
+            "$ref": "#/definitions/source"
+          }
         }
       }
     },
     "era": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "color", "start", "end"],
+      "required": [
+        "name",
+        "color",
+        "start",
+        "end"
+      ],
       "properties": {
-        "name": { "type": "string", "minLength": 1 },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
         "color": {
           "type": "string",
           "pattern": "^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$"
         },
-        "start": { "type": "number" },
-        "end": { "type": "number" }
+        "start": {
+          "type": "number"
+        },
+        "end": {
+          "type": "number"
+        }
+      }
+    },
+    "regionRef": {
+      "description": "Named region reference for PR C overlays (no precise polygons yet). May be a string id or { id, name?, bbox? }.",
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "bbox": {
+              "type": "array",
+              "description": "Optional approximate bounding box [west, south, east, north] in degrees. Placeholder only \u2014 not precise borders.",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "overlaySnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "year",
+        "approximation",
+        "regions"
+      ],
+      "properties": {
+        "year": {
+          "type": "number",
+          "description": "Snapshot year (CE positive, BCE negative)."
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "approximation": {
+          "type": "string",
+          "enum": [
+            "rough",
+            "simplified",
+            "schematic"
+          ],
+          "description": "Honesty level for the spatial claim."
+        },
+        "regions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/regionRef"
+          },
+          "description": "Named region references (and optional bbox). GeoJSON polygons deferred to PR D."
+        }
+      }
+    },
+    "spatialEntity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "color",
+        "type",
+        "description",
+        "overlays"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "empire",
+            "civilization",
+            "state",
+            "other"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "keyYears": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "description": "Notable years for scrubber highlighting / presets."
+        },
+        "overlays": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/overlaySnapshot"
+          }
+        },
+        "timelineItemIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Links to existing swim-lane item ids (civilisations, wars, etc.)."
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/source"
+          }
+        }
       }
     }
   }

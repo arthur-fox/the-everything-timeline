@@ -6,7 +6,7 @@ This folder formalizes the data shapes used by The Everything Timeline (Phase 2 
 
 | File | Purpose |
 |------|---------|
-| `timeline.schema.json` | JSON Schema (draft-07) definitions for categories, periods, sources, swim-lane items, overview events, and eras |
+| `timeline.schema.json` | JSON Schema (draft-07) definitions for categories, periods, sources, swim-lane items, overview events, eras, and globe spatial overlays (PR C) |
 
 `npm run validate` loads these definitions via [Ajv](https://ajv.js.org/) and checks every dataset object before the existing semantic rules (duplicate IDs, unknown regions, period spillover warnings, country registry, etc.).
 
@@ -84,6 +84,39 @@ There is no separate `id` field today — uniqueness is `year` + `title`.
 3. New countries need both `src/countries/<id>.js` and an entry in `COUNTRY_REGISTRY` in `src/main.js`.
 4. Optional `sources` should use real Wikipedia / Britannica (or similar) URLs only.
 
+### Spatial entity (globe overlays — Phase 4 PR C)
+
+```js
+{
+  id: 'roman-empire',
+  name: 'Roman Empire',
+  color: '#DC2626',
+  type: 'empire', // empire | civilization | state | other
+  description: '…',
+  keyYears: [-27, 117, 395, 476], // optional
+  overlays: [
+    {
+      year: 117,
+      label: 'Height under Trajan',       // optional
+      approximation: 'rough',             // rough | simplified | schematic
+      regions: [
+        { id: 'mediterranean', name: 'Mediterranean basin', bbox: [-10, 24, 45, 56] },
+        // bbox is [west, south, east, north] degrees — placeholder only
+        // string ids also allowed: 'italy'
+      ]
+    }
+  ],
+  timelineItemIds: ['roman-empire', 'roman-conquest'], // optional; must exist in swim-lane data
+  sources: [ /* optional; same shape as timeline sources */ ]
+}
+```
+
+Seed data lives in `src/globe-overlays.js`. **PR C does not draw polygons on the globe** — named region refs + optional bbox only. Precise GeoJSON overlays are PR D.
+
+### Overlay snapshot
+
+Required: `year`, `approximation`, `regions` (non-empty). `label` optional. Regions are string ids or `{ id, name?, bbox? }` — not invented precise borders.
+
 ## What schema does *not* cover
 
 Cross-object rules stay in `scripts/validate-data.js`:
@@ -92,3 +125,5 @@ Cross-object rules stay in `scripts/validate-data.js`:
 - `region` must exist in that file’s categories
 - Country registry ↔ file pairing
 - Period dates outside parent item range (warning)
+- Duplicate spatial entity ids; overlay years must be sorted ascending per entity
+- `timelineItemIds` on spatial entities must resolve to real swim-lane item ids (**error** if unknown)

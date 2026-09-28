@@ -4,7 +4,9 @@
  *
  * Errors (exit 1): JSON Schema shape failures, duplicate/missing IDs,
  * invalid date ranges, unknown regions/categories, country registry
- * mismatches, invalid optional sources shapes (when present).
+ * mismatches, invalid optional sources shapes (when present),
+ * spatial entity / overlay schema failures, duplicate spatial entity ids,
+ * unsorted overlay years, unknown timelineItemIds on spatial entities.
  * Warnings (printed; fail only with --strict): missing icons/descriptions,
  * periods outside parent item dates.
  *
@@ -44,6 +46,8 @@ const schemaValidators = {
   swimLaneItem: ajv.getSchema(`${schemaId}#/definitions/swimLaneItem`),
   overviewEvent: ajv.getSchema(`${schemaId}#/definitions/overviewEvent`),
   era: ajv.getSchema(`${schemaId}#/definitions/era`),
+  spatialEntity: ajv.getSchema(`${schemaId}#/definitions/spatialEntity`),
+  overlaySnapshot: ajv.getSchema(`${schemaId}#/definitions/overlaySnapshot`),
 };
 
 function formatAjvErrors(validate) {
@@ -330,9 +334,106 @@ async function validateCountries(registryIds) {
   }
 }
 
+
+/**
+ * Collect every swim-lane item id across topics + countries for timelineItemIds checks.
+ */
+async function collectSwimLaneItemIds() {
+  const ids = new Set();
+  for (const ds of TOPIC_DATASETS) {
+    const mod = await importModule(ds.file);
+    const items = mod[ds.itemsKey];
+    if (!Array.isArray(items)) continue;
+    for (const item of items) {
+      if (item?.id) ids.add(item.id);
+    }
+  }
+  const countriesDir = join(root, 'src/countries');
+  const files = readdirSync(countriesDir).filter((f) => f.endsWith('.js'));
+  for (const file of files) {
+    const mod = await importModule(`src/countries/${file}`);
+    const itemsKey = Object.keys(mod).find((k) => k.endsWith('Items'));
+    if (!itemsKey) continue;
+    for (const item of mod[itemsKey] || []) {
+      if (item?.id) ids.add(item.id);
+    }
+  }
+  return ids;
+}
+
+/**
+ * Phase 4 PR C — spatial entities / overlay snapshots.
+ * Unknown timelineItemIds are errors (omit the id rather than invent one).
+ * Overlay years must be strictly ascending per entity.
+ */
+function validateSpatialEntities(entities, knownItemIds) {
+  if (!Array.isArray(entities)) {
+    err('globe-overlays: spatialEntities export is not an array');
+    return;
+  }
+  if (entities.length === 0) {
+    warn('globe-overlays: spatialEntities is empty');
+    return;
+  }
+
+  const seenIds = new Set();
+  for (const entity of entities) {
+    const label = entity?.id ?? entity?.name ?? '(unknown)';
+    assertSchema('spatialEntity', entity, `globe-overlays/${label}`);
+
+    if (!entity?.id) {
+      err(`globe-overlays: entity missing id (${JSON.stringify(entity?.name)})`);
+      continue;
+    }
+    if (seenIds.has(entity.id)) {
+      err(`globe-overlays: duplicate spatial entity id "${entity.id}"`);
+    }
+    seenIds.add(entity.id);
+
+    validateSources(`globe-overlays/${label}`, entity?.sources);
+
+    const overlays = entity?.overlays;
+    if (Array.isArray(overlays)) {
+      let prevYear = -Infinity;
+      overlays.forEach((overlay, i) => {
+        const oLabel = `globe-overlays/${label}/overlays[${i}]`;
+        assertSchema('overlaySnapshot', overlay, oLabel);
+        if (typeof overlay?.year === 'number') {
+          if (overlay.year < prevYear) {
+            err(
+              `${oLabel}: overlay years must be sorted ascending ` +
+                `(got ${overlay.year} after ${prevYear})`,
+            );
+          }
+          prevYear = overlay.year;
+        }
+      });
+    }
+
+    const links = entity?.timelineItemIds;
+    if (links == null) continue;
+    if (!Array.isArray(links)) {
+      err(`globe-overlays/${label}: timelineItemIds must be an array`);
+      continue;
+    }
+    for (const itemId of links) {
+      if (typeof itemId !== 'string' || !itemId.trim()) {
+        err(`globe-overlays/${label}: timelineItemIds entries must be non-empty strings`);
+        continue;
+      }
+      if (!knownItemIds.has(itemId)) {
+        err(
+          `globe-overlays/${label}: unknown timelineItemId "${itemId}" ` +
+            `(must match a swim-lane item id — omit rather than invent)`,
+        );
+      }
+    }
+  }
+}
+
 async function main() {
   console.log('Validating timeline datasets…');
-  console.log(`Schema: schemas/timeline.schema.json (Ajv draft-07 definitions)\n`);
+  console.log(`Schema: schemas/timeline.schema.json (Ajv draft-07 definitions, incl. spatial overlays)\n`);
 
   for (const ds of TOPIC_DATASETS) {
     const mod = await importModule(ds.file);
@@ -349,7 +450,12 @@ async function main() {
   const registryIds = parseCountryRegistry(mainSource);
   await validateCountries(registryIds);
 
+  const knownItemIds = await collectSwimLaneItemIds();
+  const overlaysMod = await importModule('src/globe-overlays.js');
+  validateSpatialEntities(overlaysMod.spatialEntities, knownItemIds);
+
   console.log(`Country registry: ${registryIds.length} entries`);
+  console.log(`Spatial entities: ${overlaysMod.spatialEntities?.length ?? 0}`);
   console.log(`Errors:   ${errors.length}`);
   console.log(`Warnings: ${warnings.length}\n`);
 
