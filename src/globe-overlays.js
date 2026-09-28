@@ -110,7 +110,7 @@ export const spatialEntities = [
       },
       {
         year: 100,
-        label: 'Eastern Han (schematic)',
+        label: 'Eastern Han',
         approximation: 'schematic',
         regions: [
           { id: 'china-proper', name: 'China proper (approx.)', bbox: [102, 22, 122, 41] },
