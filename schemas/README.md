@@ -111,11 +111,11 @@ There is no separate `id` field today — uniqueness is `year` + `title`.
 }
 ```
 
-Seed data lives in `src/globe-overlays.js`. **PR C does not draw polygons on the globe** — named region refs + optional bbox only. Precise GeoJSON overlays are PR D.
+Seed data lives in `src/globe-overlays.js`. Schematic `REGION_RINGS` (and optional per-region `ring` / `bbox`) drive Globe.gl polygons in PR D — approximate only.
 
 ### Overlay snapshot
 
-Required: `year`, `approximation`, `regions` (non-empty). `label` optional. Regions are string ids or `{ id, name?, bbox? }` — not invented precise borders.
+Required: `year`, `approximation`, `regions` (non-empty). `label` optional. Regions are string ids or `{ id, name?, bbox?, ring? }`. Shared rings live in `REGION_RINGS` — schematic, not GIS-precise.
 
 ## What schema does *not* cover
 

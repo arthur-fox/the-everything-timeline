@@ -270,18 +270,23 @@ Shipped:
 - Globe UI: year scrubber drives a small “Overlays at …” panel listing active seed entities (still no polygon drawing). ✅
 - Deep link `?view=globe&year=117` still works. ✅
 
-#### PR D — First historical overlays
+#### PR D — First historical overlays — done (Day 13)
 
 Start with a small, visually meaningful set:
 
-- Roman Empire
-- Han/Tang/Ming/Qing China
-- Mongol Empire
-- Islamic Caliphates
-- Ottoman Empire
-- British Empire
-- Spanish Empire
-- Inca Empire
+- Roman Empire ✅ schematic Med / Italy / Near East rings
+- Han China ✅ china-proper (+ earlier north/central/tarim rings)
+- Mongol Empire ✅ steppe / China / Persia rings
+- Islamic Caliphates ✅ Abbasid Mesopotamia–Egypt–Persia rings
+- Inca Empire ✅ Andes / Peru rings
+- Ottoman / British / Spanish — deferred (not in Day 12 seed set)
+
+Shipped:
+
+- `REGION_RINGS` schematic GeoJSON rings + `getOverlayPolygonFeatures(year)` in `src/globe-overlays.js`. ✅
+- Globe.gl `polygonsData` updates in place on year scrub (no full remount). ✅
+- Overlay panel stays in sync; UI copy clarifies shapes are approximate. ✅
+- Schema/validation accept optional `ring`; shared rings validated. ✅
 
 #### PR E — Timeline integration
 
@@ -402,6 +407,7 @@ A sensible near-term sequence:
 8. Globe view shell. ✅ Day 10
 9. Interactive globe prototype. ✅ Day 11
 10. Historical overlay data model (PR C). ✅ Day 12
-11. First historical overlays on the globe (PR D).
+11. First historical overlays on the globe (PR D). ✅ Day 13
+12. Timeline ↔ globe integration (PR E).
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

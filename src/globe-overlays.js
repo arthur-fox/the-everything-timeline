@@ -1,9 +1,8 @@
 /**
  * Historical overlay spatial entities (Phase 4 / PR C).
  *
- * Foundational seed data only — named region references + optional bbox
- * placeholders. Precise empire polygons are deferred to PR D.
- * Overlays are approximate; do not invent exact ancient borders.
+ * Spatial entities + schematic region rings for Globe polygons (PR C + PR D).
+ * Rings are intentionally rough — not GIS-accurate ancient borders.
  */
 
 /** @typedef {'empire' | 'civilization' | 'state' | 'other'} SpatialEntityType */
@@ -219,6 +218,179 @@ export const spatialEntities = [
     ],
   },
 ];
+
+/**
+ * Schematic region rings for PR D — intentionally rough [lng, lat] GeoJSON order.
+ * Closed rings (first point repeated at end). Not GIS-accurate borders.
+ */
+export const REGION_RINGS = {
+  // --- Roman / Mediterranean ---
+  italy: [
+    [8.2, 44.0], [9.5, 45.8], [12.5, 46.5], [13.8, 45.6], [12.4, 43.8],
+    [15.0, 42.0], [16.5, 41.0], [18.3, 40.2], [17.2, 38.9], [15.5, 38.0],
+    [13.0, 37.5], [12.5, 38.2], [14.0, 40.5], [12.0, 41.8], [10.5, 42.8],
+    [8.5, 43.5], [8.2, 44.0],
+  ],
+  mediterranean: [
+    [-9.5, 36.0], [-8.0, 43.5], [-1.0, 48.5], [5.0, 51.0], [12.0, 54.0],
+    [20.0, 52.0], [28.0, 48.0], [36.0, 46.0], [42.0, 43.0], [44.0, 38.0],
+    [42.0, 32.0], [36.0, 28.0], [30.0, 25.0], [20.0, 26.0], [10.0, 30.0],
+    [3.0, 32.0], [-5.0, 34.0], [-9.5, 36.0],
+  ],
+  'near-east': [
+    [34.0, 31.0], [35.5, 37.0], [38.0, 41.0], [44.0, 40.0], [48.0, 37.0],
+    [46.0, 32.0], [42.0, 30.0], [38.0, 29.5], [34.0, 31.0],
+  ],
+
+  // --- China / Silk Road ---
+  'north-china': [
+    [105, 34], [110, 41], [118, 42], [122, 40], [121, 35], [115, 32], [108, 33], [105, 34],
+  ],
+  'central-china': [
+    [102, 26], [108, 34], [118, 34], [120, 28], [116, 24], [108, 24], [102, 26],
+  ],
+  'china-proper': [
+    [100, 22], [103, 32], [108, 40], [115, 42], [122, 41], [122, 30],
+    [120, 24], [112, 21], [105, 22], [100, 22],
+  ],
+  tarim: [
+    [75, 37], [80, 42], [92, 43], [95, 40], [92, 36], [82, 36], [75, 37],
+  ],
+
+  // --- Mongol ---
+  mongolia: [
+    [87, 44], [95, 50], [112, 52], [120, 50], [118, 44], [105, 42], [92, 42], [87, 44],
+  ],
+  'central-asia': [
+    [50, 36], [55, 46], [70, 48], [80, 45], [78, 38], [65, 35], [55, 35], [50, 36],
+  ],
+  'eurasian-steppe': [
+    [30, 42], [40, 50], [70, 55], [100, 55], [130, 52], [135, 45],
+    [120, 38], [90, 36], [60, 35], [40, 38], [30, 42],
+  ],
+  persia: [
+    [44, 26], [46, 38], [55, 40], [62, 37], [60, 28], [52, 25], [44, 26],
+  ],
+
+  // --- Abbasid ---
+  mesopotamia: [
+    [38.5, 30.5], [40, 36], [46, 37], [48, 33], [46, 30], [42, 30], [38.5, 30.5],
+  ],
+  levant: [
+    [34, 30.5], [35, 36.5], [39, 37], [42, 34], [40, 31], [36, 30], [34, 30.5],
+  ],
+  egypt: [
+    [25, 22], [28, 31.5], [34, 31.5], [35, 28], [33, 22], [29, 22], [25, 22],
+  ],
+
+  // --- Inca ---
+  andes: [
+    [-81, -18], [-79, -5], [-77, 1], [-72, 2], [-68, -5], [-69, -15],
+    [-72, -22], [-78, -20], [-81, -18],
+  ],
+  peru: [
+    [-80, -16], [-78, -6], [-74, -3], [-69, -8], [-70, -17], [-76, -18], [-80, -16],
+  ],
+};
+
+/** Convert bbox [west,south,east,north] to a closed GeoJSON ring [lng,lat][]. */
+export function bboxToRing(bbox) {
+  if (!Array.isArray(bbox) || bbox.length !== 4) return null;
+  const [w, s, e, n] = bbox.map(Number);
+  if ([w, s, e, n].some((v) => !Number.isFinite(v))) return null;
+  return [
+    [w, s],
+    [e, s],
+    [e, n],
+    [w, n],
+    [w, s],
+  ];
+}
+
+function ensureClosed(ring) {
+  if (!ring || ring.length < 3) return null;
+  const out = ring.map(([lng, lat]) => [Number(lng), Number(lat)]);
+  const [fLng, fLat] = out[0];
+  const [lLng, lLat] = out[out.length - 1];
+  if (fLng !== lLng || fLat !== lLat) out.push([fLng, fLat]);
+  return out.length >= 4 ? out : null;
+}
+
+/**
+ * Resolve a region ref to a closed [lng,lat] ring (schematic).
+ * Prefer REGION_RINGS / inline ring, then bbox rectangle.
+ */
+export function resolveRegionRing(region) {
+  if (region == null) return null;
+  if (typeof region === 'string') {
+    return ensureClosed(REGION_RINGS[region] || null);
+  }
+  if (typeof region !== 'object') return null;
+  if (Array.isArray(region.ring)) return ensureClosed(region.ring);
+  if (REGION_RINGS[region.id]) return ensureClosed(REGION_RINGS[region.id]);
+  if (region.bbox) return ensureClosed(bboxToRing(region.bbox));
+  return null;
+}
+
+/**
+ * Build Globe.gl polygon features for entities active near `year`.
+ * Uses the nearest overlay snapshot for geometry even when a keyYear wins activation.
+ * @returns {object[]} GeoJSON-like features with color/name props for Globe.gl accessors
+ */
+export function getOverlayPolygonFeatures(year, entities = spatialEntities) {
+  const active = getActiveOverlaysAtYear(year, entities);
+  const features = [];
+
+  for (const { entity, overlay: activeOverlay } of active) {
+    // Prefer the overlay that activated; else nearest overlay for geometry
+    let overlay = activeOverlay;
+    if (!overlay && entity.overlays?.length) {
+      let best = entity.overlays[0];
+      let bestDist = Math.abs(best.year - year);
+      for (const o of entity.overlays) {
+        const d = Math.abs(o.year - year);
+        if (d < bestDist) {
+          best = o;
+          bestDist = d;
+        }
+      }
+      overlay = best;
+    }
+    if (!overlay?.regions?.length) continue;
+
+    for (const region of overlay.regions) {
+      const ring = resolveRegionRing(region);
+      if (!ring) continue;
+      const regionId = typeof region === 'string' ? region : region.id;
+      const regionName = typeof region === 'string' ? region : (region.name || region.id);
+      features.push({
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: [ring],
+        },
+        // Flat props for Globe.gl accessors (also mirrored under properties)
+        entityId: entity.id,
+        name: entity.name,
+        regionId,
+        regionName,
+        color: entity.color,
+        approximation: overlay.approximation || 'rough',
+        overlayYear: overlay.year,
+        properties: {
+          entityId: entity.id,
+          name: entity.name,
+          regionId,
+          regionName,
+          color: entity.color,
+          approximation: overlay.approximation || 'rough',
+        },
+      });
+    }
+  }
+
+  return features;
+}
 
 /** Years within this window of an overlay/keyYear count as “active” for the scrubber list. */
 export const OVERLAY_ACTIVE_WINDOW = 80;
