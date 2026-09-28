@@ -3005,9 +3005,12 @@ let globeYear = 117;
 
 const GLOBE_YEAR_CAPTIONS = [
   { year: -500, text: 'Around 500 BCE — Classical poleis, Persian Empire, and Axial Age thought across Eurasia (approximate).' },
-  { year: 117, text: 'Around 117 CE — Roman Empire near its greatest extent under Trajan (approximate).' },
-  { year: 800, text: 'Around 800 CE — Carolingian, Abbasid, and Tang worlds at high water (approximate).' },
-  { year: 1492, text: '1492 CE — Oceanic contact accelerates; empires and trade networks begin a global rewiring (approximate).' },
+  { year: 117, text: 'Around 117 CE — Rome, Han, Parthia, and Kushan spheres across Eurasia (approximate).' },
+  { year: 800, text: 'Around 800 CE — Carolingian, Abbasid, Byzantine, Tang, and Khmer worlds (approximate).' },
+  { year: 1279, text: 'Around 1279 CE — Mongol peak with Song, Delhi, and Mali neighbours on the map (approximate).' },
+  { year: 1492, text: '1492 CE — Iberia at contact; Aztec, Inca, Ming, and Ottoman worlds still dominate their regions (approximate).' },
+  { year: 1700, text: 'Around 1700 CE — Ottoman, Mughal, Qing, Spanish, Russian, and early British reach (approximate).' },
+  { year: 1900, text: 'Around 1900 CE — British, Russian, Qing, and late Ottoman empires on a crowded globe (approximate).' },
   { year: 1914, text: '1914 CE — Industrial empires on the eve of World War I (approximate).' },
   { year: 2025, text: '2025 CE — Today’s political map — future overlays will still be approximate for earlier eras.' },
 ];

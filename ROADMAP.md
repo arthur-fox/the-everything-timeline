@@ -279,7 +279,7 @@ Start with a small, visually meaningful set:
 - Mongol Empire ✅ steppe / China / Persia rings
 - Islamic Caliphates ✅ Abbasid Mesopotamia–Egypt–Persia rings
 - Inca Empire ✅ Andes / Peru rings
-- Ottoman / British / Spanish — deferred (not in Day 12 seed set)
+- Ottoman / British / Spanish — deferred in Day 12 seed; added in Day 14 density pass ✅
 
 Shipped:
 
@@ -288,7 +288,16 @@ Shipped:
 - Overlay panel stays in sync; UI copy clarifies shapes are approximate. ✅
 - Schema/validation accept optional `ring`; shared rings validated. ✅
 
-#### PR E — Timeline integration
+#### Day 14 — Overlay polish (render fix + denser seed) — done
+
+User feedback after PR D:
+
+- **Z-fighting fix:** polygons hug the sphere — `polygonAltitude(0.005)`, translucent `MeshBasicMaterial` caps with `depthWrite: false` + polygonOffset, invisible side materials (no extruded walls), stroke kept for edge read. ✅
+- **Denser empires:** ~24 schematic entities so key years (117, 800, 1279, 1492, 1700, 1900) light several continents — Parthia, Kushan, Maurya, Gupta, Byzantine, Frankish/Carolingian, Tang, Song, Mali, Khmer, Delhi Sultanate, Ottoman, Spanish, Aztec, Ming, Mughal, Qing, Russian, British (+ prior five). ✅
+- Presets/captions expanded (1700, 1900). ✅
+- Timeline tap integration still deferred to **PR E**.
+
+#### PR E — Timeline integration (next)
 
 - Selecting a year updates the globe overlays.
 - Tapping a region opens details.
@@ -408,6 +417,7 @@ A sensible near-term sequence:
 9. Interactive globe prototype. ✅ Day 11
 10. Historical overlay data model (PR C). ✅ Day 12
 11. First historical overlays on the globe (PR D). ✅ Day 13
-12. Timeline ↔ globe integration (PR E).
+12. Overlay polish — z-fight fix + denser empires (Day 14). ✅
+13. Timeline ↔ globe integration (PR E).
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

@@ -1,7 +1,7 @@
 /**
- * Historical overlay spatial entities (Phase 4 / PR C).
+ * Historical overlay spatial entities (Phase 4 / PR C + Day 14 density).
  *
- * Spatial entities + schematic region rings for Globe polygons (PR C + PR D).
+ * Spatial entities + schematic region rings for Globe polygons.
  * Rings are intentionally rough — not GIS-accurate ancient borders.
  */
 
@@ -122,37 +122,231 @@ export const spatialEntities = [
     ],
   },
   {
-    id: 'mongol-empire',
-    name: 'Mongol Empire',
-    color: '#7C3AED',
+    id: 'parthian-empire',
+    name: 'Parthian Empire',
+    color: '#B45309',
     type: 'empire',
     description:
-      'Largest contiguous land empire in history, founded by Genghis Khan; linked East and West along the Silk Road.',
-    keyYears: [1206, 1279, 1368],
+      'Iranian empire controlling the Iranian plateau and Mesopotamia; Rome’s great eastern rival.',
+    keyYears: [-247, 50, 224],
     overlays: [
       {
-        year: 1227,
-        label: 'At Genghis Khan’s death',
-        approximation: 'rough',
+        year: 50,
+        label: 'Parthia vs Rome (approx.)',
+        approximation: 'schematic',
         regions: [
-          { id: 'mongolia', name: 'Mongolia / steppe core', bbox: [87, 42, 120, 52] },
-          { id: 'central-asia', name: 'Central Asia', bbox: [50, 35, 80, 48] },
+          { id: 'persia', name: 'Iranian plateau' },
+          { id: 'mesopotamia', name: 'Mesopotamia fringe' },
+          { id: 'parthia-east', name: 'Eastern Parthia', bbox: [55, 30, 70, 40] },
         ],
       },
       {
-        year: 1279,
-        label: 'Yuan peak under Kublai',
-        approximation: 'rough',
+        year: 150,
+        label: 'Later Parthian period',
+        approximation: 'schematic',
         regions: [
-          { id: 'eurasian-steppe', name: 'Eurasian steppe belt', bbox: [30, 35, 135, 55] },
-          { id: 'china-proper', name: 'China under Yuan', bbox: [100, 20, 125, 42] },
-          { id: 'persia', name: 'Ilkhanate Persia', bbox: [44, 25, 65, 40] },
+          { id: 'persia', name: 'Iranian plateau' },
+          { id: 'mesopotamia', name: 'Mesopotamia fringe' },
         ],
       },
     ],
-    timelineItemIds: ['mongol-empire', 'mongol-conquests'],
+    timelineItemIds: ['parthian'],
     sources: [
-      { title: 'Wikipedia — Mongol Empire', url: 'https://en.wikipedia.org/wiki/Mongol_Empire' },
+      { title: 'Wikipedia — Parthian Empire', url: 'https://en.wikipedia.org/wiki/Parthian_Empire' },
+    ],
+  },
+  {
+    id: 'kushan-empire',
+    name: 'Kushan Empire',
+    color: '#A855F7',
+    type: 'empire',
+    description:
+      'Central Asian / North Indian empire linking Silk Road trade between China, Iran, and the Gangetic plain.',
+    keyYears: [30, 100, 230],
+    overlays: [
+      {
+        year: 100,
+        label: 'Kushan high period',
+        approximation: 'schematic',
+        regions: [
+          { id: 'kushan-core', name: 'Bactria–Gandhara', bbox: [65, 30, 78, 40] },
+          { id: 'north-india', name: 'Northwest India fringe', bbox: [70, 24, 82, 34] },
+        ],
+      },
+    ],
+    timelineItemIds: ['kushan'],
+    sources: [
+      { title: 'Wikipedia — Kushan Empire', url: 'https://en.wikipedia.org/wiki/Kushan_Empire' },
+    ],
+  },
+  {
+    id: 'maurya-empire',
+    name: 'Maurya Empire',
+    color: '#16A34A',
+    type: 'empire',
+    description:
+      'Early Indian empire that, under Ashoka, controlled much of the subcontinent.',
+    keyYears: [-322, -250, -185],
+    overlays: [
+      {
+        year: -250,
+        label: 'Ashokan Maurya (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'india-north', name: 'Gangetic / north India', bbox: [72, 20, 90, 32] },
+          { id: 'india-deccan', name: 'Deccan fringe', bbox: [74, 12, 85, 22] },
+        ],
+      },
+    ],
+    timelineItemIds: ['maurya'],
+    sources: [
+      { title: 'Wikipedia — Maurya Empire', url: 'https://en.wikipedia.org/wiki/Maurya_Empire' },
+    ],
+  },
+  {
+    id: 'gupta-empire',
+    name: 'Gupta Empire',
+    color: '#22C55E',
+    type: 'empire',
+    description:
+      'Classical Indian empire often associated with a “golden age” of science, art, and literature.',
+    keyYears: [320, 450, 550],
+    overlays: [
+      {
+        year: 450,
+        label: 'Gupta high water (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'india-north', name: 'North India', bbox: [72, 20, 90, 32] },
+          { id: 'india-central', name: 'Central India', bbox: [74, 16, 88, 26] },
+        ],
+      },
+    ],
+    timelineItemIds: ['gupta'],
+    sources: [
+      { title: 'Wikipedia — Gupta Empire', url: 'https://en.wikipedia.org/wiki/Gupta_Empire' },
+    ],
+  },
+  {
+    id: 'byzantine-empire',
+    name: 'Byzantine Empire',
+    color: '#2563EB',
+    type: 'empire',
+    description:
+      'Eastern Roman continuity centered on Constantinople; endured through medieval centuries.',
+    keyYears: [395, 565, 800, 1453],
+    overlays: [
+      {
+        year: 565,
+        label: 'Justinianic reconquest (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'byzantine-core', name: 'Balkans / Anatolia', bbox: [20, 35, 42, 46] },
+          { id: 'egypt', name: 'Egypt (briefly)' },
+          { id: 'italy', name: 'Italy fringe' },
+        ],
+      },
+      {
+        year: 800,
+        label: 'Middle Byzantine world',
+        approximation: 'schematic',
+        regions: [
+          { id: 'byzantine-core', name: 'Balkans / Anatolia', bbox: [22, 36, 42, 45] },
+          { id: 'levant', name: 'Levant fringe' },
+        ],
+      },
+      {
+        year: 1025,
+        label: 'Macedonian apex (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'byzantine-core', name: 'Balkans / Anatolia', bbox: [19, 35, 42, 46] },
+        ],
+      },
+    ],
+    timelineItemIds: ['byzantine'],
+    sources: [
+      { title: 'Wikipedia — Byzantine Empire', url: 'https://en.wikipedia.org/wiki/Byzantine_Empire' },
+    ],
+  },
+  {
+    id: 'frankish-empire',
+    name: 'Carolingian / Frankish realm',
+    color: '#0EA5E9',
+    type: 'empire',
+    description:
+      'Frankish realm under Charlemagne covering much of Western and Central Europe.',
+    keyYears: [768, 800, 843],
+    overlays: [
+      {
+        year: 800,
+        label: 'Charlemagne crowned (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'frankish-west', name: 'Gaul / West Francia', bbox: [-5, 42, 8, 51] },
+          { id: 'frankish-east', name: 'East Francia / Germany', bbox: [5, 45, 18, 54] },
+          { id: 'italy', name: 'Northern Italy fringe' },
+        ],
+      },
+    ],
+    timelineItemIds: ['frankish'],
+    sources: [
+      { title: 'Wikipedia — Carolingian Empire', url: 'https://en.wikipedia.org/wiki/Carolingian_Empire' },
+    ],
+  },
+  {
+    id: 'tang-china',
+    name: 'Tang China',
+    color: '#EAB308',
+    type: 'empire',
+    description:
+      'Cosmopolitan Chinese empire of the early medieval period; capital Chang’an a hub of Eurasian exchange.',
+    keyYears: [618, 755, 907],
+    overlays: [
+      {
+        year: 750,
+        label: 'High Tang (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'china-proper', name: 'China proper' },
+          { id: 'tarim', name: 'Western Regions fringe' },
+          { id: 'tang-north', name: 'North China / steppe fringe', bbox: [100, 35, 125, 45] },
+        ],
+      },
+    ],
+    timelineItemIds: ['tang-dynasty'],
+    sources: [
+      { title: 'Wikipedia — Tang dynasty', url: 'https://en.wikipedia.org/wiki/Tang_dynasty' },
+    ],
+  },
+  {
+    id: 'song-china',
+    name: 'Song China',
+    color: '#F59E0B',
+    type: 'empire',
+    description:
+      'Song dynasty China — commercially advanced, later pressed by Jurchen and Mongol powers.',
+    keyYears: [960, 1127, 1279],
+    overlays: [
+      {
+        year: 1100,
+        label: 'Northern Song (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'china-proper', name: 'China proper', bbox: [102, 22, 122, 41] },
+        ],
+      },
+      {
+        year: 1200,
+        label: 'Southern Song (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'south-china', name: 'South China', bbox: [105, 20, 122, 33] },
+        ],
+      },
+    ],
+    sources: [
+      { title: 'Wikipedia — Song dynasty', url: 'https://en.wikipedia.org/wiki/Song_dynasty' },
     ],
   },
   {
@@ -194,6 +388,222 @@ export const spatialEntities = [
     ],
   },
   {
+    id: 'mali-empire',
+    name: 'Mali Empire',
+    color: '#D97706',
+    type: 'empire',
+    description:
+      'West African empire famed for gold, scholarship (Timbuktu), and the pilgrimage of Mansa Musa.',
+    keyYears: [1235, 1324, 1460],
+    overlays: [
+      {
+        year: 1324,
+        label: 'Mansa Musa era (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'west-africa-sahel', name: 'Sahel / Niger bend', bbox: [-12, 10, 4, 20] },
+        ],
+      },
+    ],
+    timelineItemIds: ['mali-empire'],
+    sources: [
+      { title: 'Wikipedia — Mali Empire', url: 'https://en.wikipedia.org/wiki/Mali_Empire' },
+    ],
+  },
+  {
+    id: 'khmer-empire',
+    name: 'Khmer Empire',
+    color: '#F97316',
+    type: 'empire',
+    description:
+      'Mainland Southeast Asian empire centered on Angkor; hydraulic cities and temple complexes.',
+    keyYears: [802, 1150, 1431],
+    overlays: [
+      {
+        year: 1150,
+        label: 'Angkor high period (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'mainland-sea', name: 'Mainland SE Asia', bbox: [100, 10, 110, 18] },
+        ],
+      },
+    ],
+    timelineItemIds: ['khmer'],
+    sources: [
+      { title: 'Wikipedia — Khmer Empire', url: 'https://en.wikipedia.org/wiki/Khmer_Empire' },
+    ],
+  },
+  {
+    id: 'mongol-empire',
+    name: 'Mongol Empire',
+    color: '#7C3AED',
+    type: 'empire',
+    description:
+      'Largest contiguous land empire in history, founded by Genghis Khan; linked East and West along the Silk Road.',
+    keyYears: [1206, 1279, 1368],
+    overlays: [
+      {
+        year: 1227,
+        label: 'At Genghis Khan’s death',
+        approximation: 'rough',
+        regions: [
+          { id: 'mongolia', name: 'Mongolia / steppe core', bbox: [87, 42, 120, 52] },
+          { id: 'central-asia', name: 'Central Asia', bbox: [50, 35, 80, 48] },
+        ],
+      },
+      {
+        year: 1279,
+        label: 'Yuan peak under Kublai',
+        approximation: 'rough',
+        regions: [
+          { id: 'eurasian-steppe', name: 'Eurasian steppe belt', bbox: [30, 35, 135, 55] },
+          { id: 'china-proper', name: 'China under Yuan', bbox: [100, 20, 125, 42] },
+          { id: 'persia', name: 'Ilkhanate Persia', bbox: [44, 25, 65, 40] },
+        ],
+      },
+    ],
+    timelineItemIds: ['mongol-empire', 'mongol-conquests'],
+    sources: [
+      { title: 'Wikipedia — Mongol Empire', url: 'https://en.wikipedia.org/wiki/Mongol_Empire' },
+    ],
+  },
+  {
+    id: 'delhi-sultanate',
+    name: 'Delhi Sultanate',
+    color: '#84CC16',
+    type: 'state',
+    description:
+      'Series of Muslim dynasties ruling large parts of the Indian subcontinent from Delhi.',
+    keyYears: [1206, 1290, 1398],
+    overlays: [
+      {
+        year: 1300,
+        label: 'Delhi Sultanate extent (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'india-north', name: 'North India' },
+          { id: 'india-central', name: 'Central India fringe' },
+        ],
+      },
+    ],
+    timelineItemIds: ['delhi-sultanate'],
+    sources: [
+      { title: 'Wikipedia — Delhi Sultanate', url: 'https://en.wikipedia.org/wiki/Delhi_Sultanate' },
+    ],
+  },
+  {
+    id: 'ottoman-empire',
+    name: 'Ottoman Empire',
+    color: '#991B1B',
+    type: 'empire',
+    description:
+      'Turkish empire spanning southeastern Europe, Anatolia, and much of the eastern Mediterranean.',
+    keyYears: [1453, 1520, 1683, 1914],
+    overlays: [
+      {
+        year: 1520,
+        label: 'Early modern Ottoman peak approach',
+        approximation: 'schematic',
+        regions: [
+          { id: 'anatolia-balkans', name: 'Anatolia / Balkans', bbox: [18, 35, 45, 46] },
+          { id: 'levant', name: 'Levant' },
+          { id: 'egypt', name: 'Egypt' },
+        ],
+      },
+      {
+        year: 1683,
+        label: 'Ottoman high water (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'anatolia-balkans', name: 'Anatolia / Balkans', bbox: [15, 34, 48, 48] },
+          { id: 'levant', name: 'Levant' },
+          { id: 'egypt', name: 'Egypt' },
+          { id: 'maghreb-east', name: 'Eastern Maghreb', bbox: [5, 30, 25, 37] },
+        ],
+      },
+      {
+        year: 1900,
+        label: 'Late Ottoman (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'anatolia-balkans', name: 'Anatolia / Balkans remnant', bbox: [26, 36, 45, 42] },
+          { id: 'levant', name: 'Levant' },
+        ],
+      },
+    ],
+    timelineItemIds: ['ottoman'],
+    sources: [
+      { title: 'Wikipedia — Ottoman Empire', url: 'https://en.wikipedia.org/wiki/Ottoman_Empire' },
+    ],
+  },
+  {
+    id: 'spanish-empire',
+    name: 'Spanish Empire',
+    color: '#EF4444',
+    type: 'empire',
+    description:
+      'Iberian oceanic empire with American viceroyalties and Pacific footholds after 1492.',
+    keyYears: [1492, 1550, 1700],
+    overlays: [
+      {
+        year: 1492,
+        label: 'Iberia at contact (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'iberia', name: 'Iberian Peninsula', bbox: [-10, 36, 4, 44] },
+        ],
+      },
+      {
+        year: 1550,
+        label: 'Spanish Americas (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'iberia', name: 'Iberia' },
+          { id: 'mesoamerica', name: 'New Spain / Mesoamerica', bbox: [-110, 14, -86, 28] },
+          { id: 'andes', name: 'Andean corridor' },
+        ],
+      },
+      {
+        year: 1700,
+        label: 'Bourbon-era Spanish world (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'iberia', name: 'Iberia' },
+          { id: 'mesoamerica', name: 'New Spain' },
+          { id: 'andes', name: 'Andes / Peru' },
+          { id: 'southern-cone', name: 'Southern Cone fringe', bbox: [-75, -40, -55, -20] },
+        ],
+      },
+    ],
+    timelineItemIds: ['spanish-empire'],
+    sources: [
+      { title: 'Wikipedia — Spanish Empire', url: 'https://en.wikipedia.org/wiki/Spanish_Empire' },
+    ],
+  },
+  {
+    id: 'aztec-empire',
+    name: 'Aztec Empire',
+    color: '#C026D3',
+    type: 'empire',
+    description:
+      'Mesoamerican tributary empire centered on Tenochtitlan in the Valley of Mexico.',
+    keyYears: [1428, 1519, 1521],
+    overlays: [
+      {
+        year: 1519,
+        label: 'Triple Alliance peak (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'valley-mexico', name: 'Valley of Mexico / central Mexico', bbox: [-102, 16, -94, 22] },
+        ],
+      },
+    ],
+    timelineItemIds: ['aztec'],
+    sources: [
+      { title: 'Wikipedia — Aztec Empire', url: 'https://en.wikipedia.org/wiki/Aztec_Empire' },
+    ],
+  },
+  {
     id: 'inca-empire',
     name: 'Inca Empire',
     color: '#EA580C',
@@ -217,10 +627,207 @@ export const spatialEntities = [
       { title: 'Wikipedia — Inca Empire', url: 'https://en.wikipedia.org/wiki/Inca_Empire' },
     ],
   },
+  {
+    id: 'ming-china',
+    name: 'Ming China',
+    color: '#FACC15',
+    type: 'empire',
+    description:
+      'Ming dynasty restored Han Chinese rule after the Yuan; maritime voyages then inward turn.',
+    keyYears: [1368, 1420, 1644],
+    overlays: [
+      {
+        year: 1420,
+        label: 'Early Ming (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'china-proper', name: 'China proper' },
+        ],
+      },
+      {
+        year: 1550,
+        label: 'Mid–late Ming',
+        approximation: 'schematic',
+        regions: [
+          { id: 'china-proper', name: 'China proper' },
+        ],
+      },
+    ],
+    timelineItemIds: ['ming-dynasty'],
+    sources: [
+      { title: 'Wikipedia — Ming dynasty', url: 'https://en.wikipedia.org/wiki/Ming_dynasty' },
+    ],
+  },
+  {
+    id: 'mughal-empire',
+    name: 'Mughal Empire',
+    color: '#65A30D',
+    type: 'empire',
+    description:
+      'Early modern Indian empire blending Persianate court culture with the subcontinent’s diversity.',
+    keyYears: [1526, 1605, 1707],
+    overlays: [
+      {
+        year: 1605,
+        label: 'Akbar–Jahangir era (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'india-north', name: 'North India' },
+          { id: 'india-central', name: 'Central India' },
+          { id: 'india-deccan', name: 'Deccan fringe' },
+        ],
+      },
+      {
+        year: 1700,
+        label: 'Aurangzeb-era extent (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'india-north', name: 'North India' },
+          { id: 'india-central', name: 'Central India' },
+          { id: 'india-deccan', name: 'Deccan' },
+          { id: 'india-south', name: 'South India fringe', bbox: [74, 8, 80, 16] },
+        ],
+      },
+    ],
+    timelineItemIds: ['mughal'],
+    sources: [
+      { title: 'Wikipedia — Mughal Empire', url: 'https://en.wikipedia.org/wiki/Mughal_Empire' },
+    ],
+  },
+  {
+    id: 'qing-china',
+    name: 'Qing China',
+    color: '#E11D48',
+    type: 'empire',
+    description:
+      'Manchu-led Qing empire — China’s last imperial dynasty, with vast Inner Asian frontiers.',
+    keyYears: [1644, 1750, 1911],
+    overlays: [
+      {
+        year: 1750,
+        label: 'High Qing (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'china-proper', name: 'China proper' },
+          { id: 'tarim', name: 'Xinjiang / Tarim' },
+          { id: 'mongolia', name: 'Mongolia fringe' },
+          { id: 'manchuria', name: 'Manchuria', bbox: [120, 40, 135, 50] },
+        ],
+      },
+      {
+        year: 1900,
+        label: 'Late Qing (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'china-proper', name: 'China proper' },
+          { id: 'manchuria', name: 'Manchuria' },
+        ],
+      },
+    ],
+    timelineItemIds: ['qing-dynasty'],
+    sources: [
+      { title: 'Wikipedia — Qing dynasty', url: 'https://en.wikipedia.org/wiki/Qing_dynasty' },
+    ],
+  },
+  {
+    id: 'russian-empire',
+    name: 'Russian Empire',
+    color: '#1D4ED8',
+    type: 'empire',
+    description:
+      'Eurasian land empire expanding from Muscovy across Siberia to the Pacific and into Central Asia.',
+    keyYears: [1721, 1800, 1914],
+    overlays: [
+      {
+        year: 1700,
+        label: 'Petrine Russia (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'russia-european', name: 'European Russia', bbox: [28, 48, 60, 68] },
+          { id: 'siberia-west', name: 'Western Siberia', bbox: [60, 50, 90, 68] },
+        ],
+      },
+      {
+        year: 1850,
+        label: 'Mid-imperial Russia',
+        approximation: 'schematic',
+        regions: [
+          { id: 'russia-european', name: 'European Russia' },
+          { id: 'siberia-belt', name: 'Siberian belt', bbox: [60, 50, 140, 70] },
+          { id: 'central-asia', name: 'Central Asia fringe' },
+        ],
+      },
+      {
+        year: 1914,
+        label: 'Russian Empire on the eve of WWI',
+        approximation: 'schematic',
+        regions: [
+          { id: 'russia-european', name: 'European Russia' },
+          { id: 'siberia-belt', name: 'Siberia' },
+          { id: 'central-asia', name: 'Central Asia' },
+        ],
+      },
+    ],
+    timelineItemIds: ['russian-empire'],
+    sources: [
+      { title: 'Wikipedia — Russian Empire', url: 'https://en.wikipedia.org/wiki/Russian_Empire' },
+    ],
+  },
+  {
+    id: 'british-empire',
+    name: 'British Empire',
+    color: '#BE123C',
+    type: 'empire',
+    description:
+      'Oceanic empire with settler colonies, Indian Raj, and African/Asian possessions at its Victorian peak.',
+    keyYears: [1700, 1815, 1900, 1920],
+    overlays: [
+      {
+        year: 1700,
+        label: 'Early British Atlantic (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'british-isles', name: 'British Isles', bbox: [-8, 50, 2, 59] },
+          { id: 'east-north-america', name: 'Eastern North America fringe', bbox: [-80, 30, -60, 48] },
+        ],
+      },
+      {
+        year: 1850,
+        label: 'Victorian expansion (schematic)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'british-isles', name: 'British Isles' },
+          { id: 'india-north', name: 'India (Raj core)' },
+          { id: 'india-deccan', name: 'India Deccan' },
+          { id: 'australia-east', name: 'Eastern Australia', bbox: [140, -38, 154, -12] },
+          { id: 'south-africa', name: 'South Africa fringe', bbox: [16, -35, 32, -22] },
+        ],
+      },
+      {
+        year: 1900,
+        label: 'British peak (approx.)',
+        approximation: 'schematic',
+        regions: [
+          { id: 'british-isles', name: 'British Isles' },
+          { id: 'india-north', name: 'India' },
+          { id: 'india-deccan', name: 'India Deccan' },
+          { id: 'india-south', name: 'South India' },
+          { id: 'australia-east', name: 'Australia east' },
+          { id: 'canada-east', name: 'Eastern Canada', bbox: [-80, 42, -55, 55] },
+          { id: 'egypt', name: 'Egypt (occupation)' },
+          { id: 'south-africa', name: 'South Africa' },
+        ],
+      },
+    ],
+    timelineItemIds: ['british-empire', 'british-raj'],
+    sources: [
+      { title: 'Wikipedia — British Empire', url: 'https://en.wikipedia.org/wiki/British_Empire' },
+    ],
+  },
 ];
 
 /**
- * Schematic region rings for PR D — intentionally rough [lng, lat] GeoJSON order.
+ * Schematic region rings — intentionally rough [lng, lat] GeoJSON order.
  * Closed rings (first point repeated at end). Not GIS-accurate borders.
  */
 export const REGION_RINGS = {
@@ -253,11 +860,43 @@ export const REGION_RINGS = {
     [100, 22], [103, 32], [108, 40], [115, 42], [122, 41], [122, 30],
     [120, 24], [112, 21], [105, 22], [100, 22],
   ],
+  'south-china': [
+    [105, 20], [108, 30], [118, 32], [122, 28], [120, 21], [112, 20], [105, 20],
+  ],
+  'tang-north': [
+    [100, 36], [108, 44], [122, 45], [125, 40], [118, 36], [108, 35], [100, 36],
+  ],
   tarim: [
     [75, 37], [80, 42], [92, 43], [95, 40], [92, 36], [82, 36], [75, 37],
   ],
+  manchuria: [
+    [120, 40], [122, 48], [132, 50], [135, 46], [130, 40], [122, 40], [120, 40],
+  ],
 
-  // --- Mongol ---
+  // --- Parthia / India ---
+  'parthia-east': [
+    [55, 32], [58, 39], [68, 40], [70, 35], [65, 30], [58, 30], [55, 32],
+  ],
+  'kushan-core': [
+    [65, 32], [68, 39], [76, 40], [78, 35], [74, 30], [68, 30], [65, 32],
+  ],
+  'north-india': [
+    [70, 26], [72, 33], [80, 34], [88, 30], [86, 24], [78, 22], [72, 24], [70, 26],
+  ],
+  'india-north': [
+    [72, 22], [74, 32], [86, 32], [90, 28], [88, 22], [80, 20], [74, 20], [72, 22],
+  ],
+  'india-central': [
+    [74, 18], [76, 26], [86, 26], [88, 20], [84, 16], [78, 16], [74, 18],
+  ],
+  'india-deccan': [
+    [74, 14], [76, 22], [84, 22], [85, 16], [80, 12], [76, 12], [74, 14],
+  ],
+  'india-south': [
+    [74, 8], [76, 15], [80, 16], [80, 10], [78, 8], [74, 8],
+  ],
+
+  // --- Mongol / Central Asia ---
   mongolia: [
     [87, 44], [95, 50], [112, 52], [120, 50], [118, 44], [105, 42], [92, 42], [87, 44],
   ],
@@ -272,7 +911,7 @@ export const REGION_RINGS = {
     [44, 26], [46, 38], [55, 40], [62, 37], [60, 28], [52, 25], [44, 26],
   ],
 
-  // --- Abbasid ---
+  // --- Abbasid / Near East ---
   mesopotamia: [
     [38.5, 30.5], [40, 36], [46, 37], [48, 33], [46, 30], [42, 30], [38.5, 30.5],
   ],
@@ -282,14 +921,77 @@ export const REGION_RINGS = {
   egypt: [
     [25, 22], [28, 31.5], [34, 31.5], [35, 28], [33, 22], [29, 22], [25, 22],
   ],
+  'maghreb-east': [
+    [5, 30], [8, 36], [20, 37], [25, 33], [22, 30], [10, 30], [5, 30],
+  ],
 
-  // --- Inca ---
+  // --- Byzantine / Frankish ---
+  'byzantine-core': [
+    [20, 36], [22, 44], [30, 46], [40, 42], [42, 36], [35, 35], [26, 35], [20, 36],
+  ],
+  'frankish-west': [
+    [-5, 43], [-4, 50], [4, 51], [8, 48], [6, 43], [0, 42], [-5, 43],
+  ],
+  'frankish-east': [
+    [5, 46], [8, 53], [16, 54], [18, 50], [14, 46], [8, 45], [5, 46],
+  ],
+  'anatolia-balkans': [
+    [18, 36], [20, 45], [30, 46], [42, 42], [45, 36], [38, 35], [26, 35], [18, 36],
+  ],
+
+  // --- Africa / SE Asia ---
+  'west-africa-sahel': [
+    [-12, 12], [-10, 18], [0, 20], [4, 16], [2, 11], [-6, 10], [-12, 12],
+  ],
+  'mainland-sea': [
+    [100, 11], [102, 17], [108, 18], [110, 14], [107, 10], [102, 10], [100, 11],
+  ],
+  'south-africa': [
+    [16, -34], [18, -24], [30, -22], [32, -28], [28, -35], [20, -35], [16, -34],
+  ],
+
+  // --- Americas ---
   andes: [
     [-81, -18], [-79, -5], [-77, 1], [-72, 2], [-68, -5], [-69, -15],
     [-72, -22], [-78, -20], [-81, -18],
   ],
   peru: [
     [-80, -16], [-78, -6], [-74, -3], [-69, -8], [-70, -17], [-76, -18], [-80, -16],
+  ],
+  mesoamerica: [
+    [-110, 16], [-108, 26], [-96, 28], [-86, 22], [-90, 14], [-100, 14], [-110, 16],
+  ],
+  'valley-mexico': [
+    [-102, 17], [-100, 21], [-96, 22], [-94, 19], [-96, 16], [-100, 16], [-102, 17],
+  ],
+  'southern-cone': [
+    [-75, -38], [-72, -22], [-58, -20], [-55, -32], [-62, -40], [-72, -40], [-75, -38],
+  ],
+  'east-north-america': [
+    [-80, 32], [-78, 46], [-65, 48], [-60, 40], [-70, 30], [-78, 30], [-80, 32],
+  ],
+  'canada-east': [
+    [-80, 44], [-78, 54], [-60, 55], [-55, 48], [-62, 42], [-75, 42], [-80, 44],
+  ],
+
+  // --- Iberia / Britain / Russia / Australia ---
+  iberia: [
+    [-10, 37], [-9, 43], [-2, 44], [3, 42], [2, 37], [-5, 36], [-10, 37],
+  ],
+  'british-isles': [
+    [-8, 51], [-7, 58], [-2, 59], [2, 56], [1, 51], [-3, 50], [-8, 51],
+  ],
+  'russia-european': [
+    [28, 50], [30, 66], [50, 68], [60, 62], [55, 50], [40, 48], [28, 50],
+  ],
+  'siberia-west': [
+    [60, 52], [62, 66], [88, 68], [90, 56], [78, 50], [65, 50], [60, 52],
+  ],
+  'siberia-belt': [
+    [60, 52], [70, 68], [110, 70], [140, 66], [135, 52], [100, 50], [70, 50], [60, 52],
+  ],
+  'australia-east': [
+    [140, -36], [142, -16], [152, -12], [154, -28], [150, -38], [144, -38], [140, -36],
   ],
 };
 
