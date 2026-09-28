@@ -1,9 +1,13 @@
 /**
- * Historical overlay spatial entities (Phase 4 / PR C + Day 14–17 density).
+ * Historical overlay spatial entities (Phase 4 / PR C + Day 14–18).
+ * Day 18: activation clamped to linked timeline lifespan + overlay keyframe span.
  *
  * Spatial entities + schematic region rings for Globe polygons.
  * Rings are intentionally rough — not GIS-accurate ancient borders.
  */
+
+import { civilisations } from './civilisations.js';
+import { warsItems } from './wars.js';
 
 /** @typedef {'empire' | 'civilization' | 'state' | 'other'} SpatialEntityType */
 /** @typedef {'rough' | 'simplified' | 'schematic'} ApproximationLevel */
@@ -1598,8 +1602,60 @@ export function getOverlayPolygonFeatures(year, entities = spatialEntities) {
   return features;
 }
 
-/** Years within this window of an overlay/keyYear count as “active” for the scrubber list. */
-export const OVERLAY_ACTIVE_WINDOW = 80;
+/** Soft edge (years) past first/last overlay keyframe. Not a ±80 sticky window. */
+export const OVERLAY_EDGE_GRACE = 15;
+
+/**
+ * @deprecated Day 18 — was ±80 sticky activation; now an alias of OVERLAY_EDGE_GRACE.
+ * Do not use as a “keep empire on” radius past death.
+ */
+export const OVERLAY_ACTIVE_WINDOW = OVERLAY_EDGE_GRACE;
+
+/** @type {Map<string, { id: string, start?: number, end?: number }>} */
+const timelineItemById = new Map();
+for (const item of civilisations) timelineItemById.set(item.id, item);
+for (const item of warsItems) timelineItemById.set(item.id, item);
+
+/**
+ * Inclusive [start, end] years when an entity may appear on the globe.
+ * Intersection of:
+ *   1) linked timeline item lifespan (union of timelineItemIds start/end), when any resolve
+ *   2) [firstOverlay − grace, lastOverlay + grace]
+ * So empires dissolve near their last keyframe / civ end — not ±80 years later.
+ *
+ * @param {SpatialEntity} entity
+ * @returns {{ start: number, end: number }}
+ */
+export function getEntityLifespan(entity) {
+  let start = -Infinity;
+  let end = Infinity;
+
+  const overlayYears = (entity?.overlays || [])
+    .map((o) => Number(o?.year))
+    .filter((y) => Number.isFinite(y));
+  if (overlayYears.length) {
+    start = Math.min(...overlayYears) - OVERLAY_EDGE_GRACE;
+    end = Math.max(...overlayYears) + OVERLAY_EDGE_GRACE;
+  }
+
+  const ids = entity?.timelineItemIds || [];
+  let tStart = Infinity;
+  let tEnd = -Infinity;
+  let linked = false;
+  for (const id of ids) {
+    const item = timelineItemById.get(id);
+    if (!item) continue;
+    linked = true;
+    if (Number.isFinite(item.start)) tStart = Math.min(tStart, item.start);
+    if (Number.isFinite(item.end)) tEnd = Math.max(tEnd, item.end);
+  }
+  if (linked && Number.isFinite(tStart) && Number.isFinite(tEnd)) {
+    start = Math.max(start, tStart);
+    end = Math.min(end, tEnd);
+  }
+
+  return { start, end };
+}
 
 /**
  * Format a CE/BCE year for display.
@@ -1614,7 +1670,8 @@ export function formatOverlayYear(year) {
 }
 
 /**
- * Entities whose nearest overlay (or keyYear) is within OVERLAY_ACTIVE_WINDOW of `year`.
+ * Entities whose lifespan includes `year` (timeline ∩ overlay keyframe span ± grace).
+ * Nearest overlay snapshot supplies label/geometry — no morphing yet (PR F).
  * @param {number} year
  * @param {SpatialEntity[]} [entities]
  * @returns {{ entity: SpatialEntity, overlay: OverlaySnapshot|null, distance: number }[]}
@@ -1625,9 +1682,11 @@ export function getActiveOverlaysAtYear(year, entities = spatialEntities) {
 
   const results = [];
   for (const entity of entities) {
+    const { start, end } = getEntityLifespan(entity);
+    if (y < start || y > end) continue;
+
     let bestOverlay = null;
     let bestDist = Infinity;
-
     for (const overlay of entity.overlays || []) {
       const d = Math.abs(overlay.year - y);
       if (d < bestDist) {
@@ -1636,18 +1695,7 @@ export function getActiveOverlaysAtYear(year, entities = spatialEntities) {
       }
     }
 
-    // A closer keyYear alone still activates the entity (without overlay label).
-    for (const keyYear of entity.keyYears || []) {
-      const d = Math.abs(keyYear - y);
-      if (d < bestDist) {
-        bestDist = d;
-        bestOverlay = null;
-      }
-    }
-
-    if (bestDist <= OVERLAY_ACTIVE_WINDOW) {
-      results.push({ entity, overlay: bestOverlay, distance: bestDist });
-    }
+    results.push({ entity, overlay: bestOverlay, distance: bestDist });
   }
 
   results.sort((a, b) => a.distance - b.distance || a.entity.name.localeCompare(b.entity.name));

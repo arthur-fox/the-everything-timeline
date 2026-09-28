@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "npm run validate && vite build",
     "preview": "vite preview",
-    "validate": "node scripts/validate-data.js",
+    "validate": "node scripts/validate-data.js && node scripts/check-overlay-lifespan.js",
     "validate:strict": "node scripts/validate-data.js --strict",
     "validate:schema": "node scripts/validate-data.js"
   },
