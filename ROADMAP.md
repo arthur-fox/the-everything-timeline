@@ -343,7 +343,7 @@ User scrubbed 3000–1200 BCE and found nothing — keep the −3000 scrubber ra
 - Presets **2500 BCE** / **2000 BCE** (+ captions). Scrubber min stays −3000. ✅
 - Lifespan clamps respected — early years have real overlay keyframes, not orphan keyYears. ✅
 - **Mobile globe polish:** phone layout prioritises canvas height (~42–50vh), collapses lede/note, scrollable overlays, horizontal preset chips, touch-action + resize settle so drag-rotate works. ✅
-- Living/morphing borders (**PR F**) still the next major globe phase; **PR E** still listed.
+- Living/morphing borders (**PR F**) started Day 20; Day 21 densified hero keyframes. **PR E** still secondary.
 
 #### Day 20 — Living borders: morph between overlay keyframes (PR F slice 1) — done
 
@@ -357,9 +357,23 @@ Arthur’s vision: shapes that **grow, stretch, deform and reform** until they d
 
 **Follow-ups (later PR F slices):** denser mid-keyframes where morph looks stiff; better fragment/split for distant colonies; true multi-polygon topology / ocean gaps; optional easing curves.
 
+#### Day 21 — Living borders polish: denser non-rect keyframes (PR F slice 2) — done
+
+Addresses Day 20 follow-ups: morphs mostly *scaled* because footprints were axis-aligned boxes, and sparse keyframes (e.g. Ottoman 1520→1683→1900) made scrubbing feel stiff.
+
+- **Hero empires densified** with mid-year overlay snapshots + inline multi-vertex `ring`s (not bbox quads):
+  - **Ottoman:** 1453, 1520, **1600**, 1683, **1800**, 1900 — evolving `anatolia-balkans` crescent + Levant/Egypt/Maghreb.
+  - **Roman:** −27, **50**, 117, **200**, 395 — Mediterranean basin silhouette stretches Britain↔Near East.
+  - **Mongol:** 1227, **1241**, 1279, **1300** — steppe belt deforms westward then pinches.
+  - **British:** 1700, **1780**, 1850, 1900, **1920** — Atlantic→India foothold→Victorian→interwar fragments.
+- Morph path now uses dense ring lerp (vertex count > 4) so outlines **deform** while scrubbing, not only scale corners. ✅
+- **Softer appear/disappear:** `OVERLAY_EDGE_GRACE` 15→20; `lifespanEdgeFactor` uses smoothstep; gentler edge shrink floor. ✅
+- Validate extended for hero keyframe counts, non-rect rings, soft edge factor. ✅
+- Fragment/split for distant colonies left for a later PR F slice (British already multi-region fade-in).
+
 #### PR F — Living / morphing borders (continued)
 
-Remaining investment after Day 20’s first morph slice — still schematic / honest, not GIS-perfect.
+Remaining after Day 21: fragment/split for distant colonies; true multi-polygon topology / ocean gaps; optional easing curves. Still schematic / honest, not GIS-perfect.
 
 #### PR E — Timeline integration (still needed; secondary to living borders)
 
@@ -488,7 +502,8 @@ A sensible near-term sequence:
 16. Clamp globe overlay lifespans (Day 18). ✅
 17. Early Bronze Age globe fill — 3000–1200 BCE (Day 19). ✅
 18. Living borders — morph between overlay keyframes (Day 20 / PR F slice 1). ✅
-19. Living borders polish — denser keyframes, fragment/split (PR F continued).
-20. Timeline ↔ globe integration (PR E).
+19. Living borders polish — denser non-rect keyframes + softer edges (Day 21 / PR F slice 2). ✅
+20. Living borders — fragment/split distant colonies (PR F continued).
+21. Timeline ↔ globe integration (PR E) — still secondary to remaining PR F polish.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
