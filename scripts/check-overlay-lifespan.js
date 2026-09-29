@@ -2,6 +2,7 @@
  * Day 18–22 — sanity checks for globe overlay lifespan + morphing.
  * Day 21: denser hero keyframes + non-rect rings + softer edge fades.
  * Day 22: colony fragment/split + higher overlay opacity.
+ * Day 23: denser overlay coverage — rise→peak→decline for thin empires.
  */
 import {
   getActiveOverlaysAtYear,
@@ -270,6 +271,55 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   const aus = midAus.find((p) => p.regionId === 'australia-east');
   assert(!!aus, 'British australia foothold fades in before 1780');
   assert(aus.opacity < maxOp * 0.95, `fade-in australia opacity ${aus.opacity.toFixed(3)} < full ${maxOp.toFixed(3)}`);
+}
+
+
+// Day 23 — denser overlay coverage (Aztec/Inca + former peak-only empires)
+{
+  const aztec = spatialEntities.find((e) => e.id === 'aztec-empire');
+  const inca = spatialEntities.find((e) => e.id === 'inca-empire');
+  assert(!!aztec && (aztec.overlays || []).length >= 3, `Aztec has ≥3 overlays (got ${aztec?.overlays?.length})`);
+  assert(!!inca && (inca.overlays || []).length >= 3, `Inca has ≥3 overlays (got ${inca?.overlays?.length})`);
+  assert(aztec.overlays.some((o) => o.year === 1428), 'Aztec has 1428 Triple Alliance keyframe');
+  assert(aztec.overlays.some((o) => o.year === 1519), 'Aztec keeps 1519 peak');
+  assert(inca.overlays.some((o) => o.year === 1438), 'Inca has 1438 Pachacuti keyframe');
+  assert(inca.overlays.some((o) => o.year === 1527), 'Inca keeps 1527 late extent');
+
+  assert(idsAt(1470).has('aztec-empire'), 'Aztec ON at 1470 (before Spanish contact)');
+  assert(idsAt(1470).has('inca-empire'), 'Inca ON at 1470 (before Spanish contact)');
+  assert(idsAt(1519).has('aztec-empire'), 'Aztec ON at 1519');
+
+  const densified = [
+    'aztec-empire', 'inca-empire', 'kushan-empire', 'maurya-empire', 'gupta-empire',
+    'frankish-empire', 'tang-china', 'mali-empire', 'khmer-empire', 'delhi-sultanate',
+    'achaemenid-empire', 'classical-greece', 'umayyad-caliphate', 'safavid-empire',
+    'songhai-empire', 'majapahit-empire',
+  ];
+  for (const id of densified) {
+    const ent = spatialEntities.find((e) => e.id === id);
+    assert(!!ent, `${id} exists`);
+    assert((ent.overlays || []).length >= 3, `${id} densified to ≥3 overlays (got ${ent.overlays?.length})`);
+  }
+
+  // Inca spine fragments: separate region ids along Andes at late extent
+  const incaLate = inca.overlays.find((o) => o.year === 1527);
+  const incaIds = (incaLate?.regions || []).map((r) => (typeof r === 'string' ? r : r.id));
+  for (const rid of ['peru', 'andes-north', 'andes-south']) {
+    assert(incaIds.includes(rid), `Inca 1527 has spine fragment ${rid}`);
+  }
+
+  // Soft warn: entities still under 3 overlays (data backlog; not a hard fail)
+  const thin = spatialEntities.filter((e) => (e.overlays || []).length < 3);
+  if (thin.length) {
+    console.log(
+      `note: ${thin.length} entit${thin.length === 1 ? 'y' : 'ies'} still have <3 overlays: ` +
+        thin.map((e) => `${e.id}(${e.overlays.length})`).join(', '),
+    );
+  }
+
+  // No single-keyframe empires left after Day 23 pass
+  const singles = spatialEntities.filter((e) => (e.overlays || []).length === 1);
+  assert(singles.length === 0, `no single-keyframe entities remain (got ${singles.map((e) => e.id).join(', ')})`);
 }
 
 if (failed) {
