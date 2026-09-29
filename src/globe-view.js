@@ -1,9 +1,8 @@
 /**
- * Interactive Globe.gl earth (Phase 4 PR B) + historical polygons (PR D/Day 14).
+ * Interactive Globe.gl earth (Phase 4) + historical polygons + Day 20 living-border morph.
  * Mounted only while Globe mode is active; disposed on leave.
  */
 
-import { MeshBasicMaterial, DoubleSide } from 'three';
 import { getOverlayPolygonFeatures } from './globe-overlays.js';
 
 const EARTH_DAY =
@@ -16,8 +15,6 @@ let resizeObserver = null;
 let onControlsStart = null;
 let mounted = false;
 let currentPolygonYear = null;
-const materialCache = new Map();
-
 function isCoarsePointer() {
   try {
     return window.matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;
@@ -55,45 +52,25 @@ function parseHex(hex) {
   return n;
 }
 
-/** Flat translucent cap — depthWrite off + polygonOffset to hug the sphere without z-fighting. */
-function capMaterialFor(hex) {
-  const key = String(hex || '#888888');
-  if (materialCache.has(key)) return materialCache.get(key);
-  const mat = new MeshBasicMaterial({
-    color: parseHex(key),
-    transparent: true,
-    opacity: 0.4,
-    depthWrite: false,
-    depthTest: true,
-    side: DoubleSide,
-  });
-  mat.polygonOffset = true;
-  mat.polygonOffsetFactor = -2;
-  mat.polygonOffsetUnits = -2;
-  materialCache.set(key, mat);
-  return mat;
+function hexToRgba(hex, opacity) {
+  const n = parseHex(hex);
+  const r = (n >> 16) & 255;
+  const g = (n >> 8) & 255;
+  const b = n & 255;
+  const op = Math.max(0.05, Math.min(0.45, Number(opacity) || 0.28));
+  return `rgba(${r},${g},${b},${op})`;
 }
-
-const INVISIBLE_SIDE = (() => {
-  const mat = new MeshBasicMaterial({
-    transparent: true,
-    opacity: 0,
-    depthWrite: false,
-    depthTest: false,
-  });
-  mat.colorWrite = false;
-  return mat;
-})();
 
 function applyPolygonLayer() {
   if (!globe) return;
+  // Use Globe.gl colour accessors (not custom MeshBasicMaterial) — custom DoubleSide/
+  // FrontSide caps contributed to planet-wide washes with spherical triangulation.
   globe
     .polygonGeoJsonGeometry('geometry')
-    // Clamp to surface: tiny altitude, no visible side walls, cap materials that don't fight the globe.
-    .polygonAltitude(0.005)
-    .polygonCapMaterial((d) => capMaterialFor(d.color || d.properties?.color))
-    .polygonSideMaterial(() => INVISIBLE_SIDE)
-    .polygonStrokeColor(() => 'rgba(255, 255, 255, 0.55)')
+    .polygonAltitude(0.006)
+    .polygonCapColor((d) => hexToRgba(d.color || d.properties?.color, d.opacity ?? d.properties?.opacity))
+    .polygonSideColor(() => 'rgba(0,0,0,0)')
+    .polygonStrokeColor(() => 'rgba(255, 255, 255, 0.4)')
     .polygonsTransitionDuration(0);
 }
 
@@ -268,15 +245,6 @@ export function destroyGlobe() {
     }
     globe = null;
   }
-
-  for (const mat of materialCache.values()) {
-    try {
-      mat.dispose();
-    } catch (_) {
-      // ignore
-    }
-  }
-  materialCache.clear();
 
   if (hostEl) {
     hostEl.innerHTML = '';

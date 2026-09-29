@@ -2,6 +2,7 @@
  * Historical overlay spatial entities (Phase 4 / PR C + Day 14–18).
  * Day 18: activation clamped to linked timeline lifespan + overlay keyframe span.
  * Day 19: early Bronze Age fill (Mesopotamia, early Egypt, Shang, Phoenicia, Olmec, Kush).
+ * Day 20: living borders — morph rings between overlay keyframes + soft lifespan dissolve.
  *
  * Spatial entities + schematic region rings for Globe polygons.
  * Rings are intentionally rough — not GIS-accurate ancient borders.
@@ -9,6 +10,7 @@
 
 import { civilisations } from './civilisations.js';
 import { warsItems } from './wars.js';
+import { morphEntityAtYear, ensureClockwise } from './globe-morph.js';
 
 /** @typedef {'empire' | 'civilization' | 'state' | 'other'} SpatialEntityType */
 /** @typedef {'rough' | 'simplified' | 'schematic'} ApproximationLevel */
@@ -1757,11 +1759,12 @@ export function bboxToRing(bbox) {
   if (!Array.isArray(bbox) || bbox.length !== 4) return null;
   const [w, s, e, n] = bbox.map(Number);
   if ([w, s, e, n].some((v) => !Number.isFinite(v))) return null;
+  // Clockwise in lng/lat (matches REGION_RINGS / Globe.gl caps)
   return [
     [w, s],
-    [e, s],
-    [e, n],
     [w, n],
+    [e, n],
+    [e, s],
     [w, s],
   ];
 }
@@ -1777,72 +1780,71 @@ function ensureClosed(ring) {
 
 /**
  * Resolve a region ref to a closed [lng,lat] ring (schematic).
- * Prefer REGION_RINGS / inline ring, then bbox rectangle.
+ * Prefer inline ring, then per-snapshot bbox (so keyframes can morph), then REGION_RINGS.
  */
 export function resolveRegionRing(region) {
   if (region == null) return null;
+  let ring = null;
   if (typeof region === 'string') {
-    return ensureClosed(REGION_RINGS[region] || null);
+    ring = ensureClosed(REGION_RINGS[region] || null);
+  } else if (typeof region === 'object') {
+    if (Array.isArray(region.ring)) ring = ensureClosed(region.ring);
+    // Day 20: honour snapshot bbox before shared named rings so empires visibly grow/shrink.
+    else if (region.bbox) ring = ensureClosed(bboxToRing(region.bbox));
+    else if (REGION_RINGS[region.id]) ring = ensureClosed(REGION_RINGS[region.id]);
   }
-  if (typeof region !== 'object') return null;
-  if (Array.isArray(region.ring)) return ensureClosed(region.ring);
-  if (REGION_RINGS[region.id]) return ensureClosed(REGION_RINGS[region.id]);
-  if (region.bbox) return ensureClosed(bboxToRing(region.bbox));
-  return null;
+  // Critical: Globe.gl wants CW exteriors; planar-CCW (bbox) washes the planet.
+  return ensureClockwise(ring);
 }
 
 /**
- * Build Globe.gl polygon features for entities active near `year`.
- * Uses the nearest overlay snapshot for geometry even when a keyYear wins activation.
- * @returns {object[]} GeoJSON-like features with color/name props for Globe.gl accessors
+ * Build Globe.gl polygon features for entities active at `year`.
+ * Day 20: morph region rings between bracketing overlay keyframes; soft dissolve at lifespan edges.
+ * @returns {object[]} GeoJSON-like features with color/opacity props for Globe.gl accessors
  */
 export function getOverlayPolygonFeatures(year, entities = spatialEntities) {
-  const active = getActiveOverlaysAtYear(year, entities);
+  const y = Math.round(Number(year));
+  if (!Number.isFinite(y)) return [];
+
+  const active = getActiveOverlaysAtYear(y, entities);
   const features = [];
 
-  for (const { entity, overlay: activeOverlay } of active) {
-    // Prefer the overlay that activated; else nearest overlay for geometry
-    let overlay = activeOverlay;
-    if (!overlay && entity.overlays?.length) {
-      let best = entity.overlays[0];
-      let bestDist = Math.abs(best.year - year);
-      for (const o of entity.overlays) {
-        const d = Math.abs(o.year - year);
-        if (d < bestDist) {
-          best = o;
-          bestDist = d;
-        }
-      }
-      overlay = best;
-    }
-    if (!overlay?.regions?.length) continue;
+  for (const { entity, overlay: nearestOverlay } of active) {
+    const lifespan = getEntityLifespan(entity);
+    const morphed = morphEntityAtYear(
+      entity,
+      y,
+      resolveRegionRing,
+      lifespan,
+      OVERLAY_EDGE_GRACE,
+    );
+    if (!morphed.length) continue;
 
-    for (const region of overlay.regions) {
-      const ring = resolveRegionRing(region);
-      if (!ring) continue;
-      const regionId = typeof region === 'string' ? region : region.id;
-      const regionName = typeof region === 'string' ? region : (region.name || region.id);
+    for (const part of morphed) {
       features.push({
         type: 'Feature',
         geometry: {
           type: 'Polygon',
-          coordinates: [ring],
+          coordinates: [part.ring],
         },
-        // Flat props for Globe.gl accessors (also mirrored under properties)
         entityId: entity.id,
         name: entity.name,
-        regionId,
-        regionName,
+        regionId: part.regionId,
+        regionName: part.regionName,
         color: entity.color,
-        approximation: overlay.approximation || 'rough',
-        overlayYear: overlay.year,
+        opacity: part.opacity,
+        approximation: part.approximation || nearestOverlay?.approximation || 'rough',
+        overlayYear: y,
+        morphT: part.morphT,
         properties: {
           entityId: entity.id,
           name: entity.name,
-          regionId,
-          regionName,
+          regionId: part.regionId,
+          regionName: part.regionName,
           color: entity.color,
-          approximation: overlay.approximation || 'rough',
+          opacity: part.opacity,
+          approximation: part.approximation || nearestOverlay?.approximation || 'rough',
+          morphT: part.morphT,
         },
       });
     }
@@ -1920,7 +1922,7 @@ export function formatOverlayYear(year) {
 
 /**
  * Entities whose lifespan includes `year` (timeline ∩ overlay keyframe span ± grace).
- * Nearest overlay snapshot supplies label/geometry — no morphing yet (PR F).
+ * Nearest overlay supplies sidebar label; polygon geometry morphs in getOverlayPolygonFeatures (Day 20).
  * @param {number} year
  * @param {SpatialEntity[]} [entities]
  * @returns {{ entity: SpatialEntity, overlay: OverlaySnapshot|null, distance: number }[]}
