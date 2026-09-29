@@ -343,7 +343,7 @@ User scrubbed 3000–1200 BCE and found nothing — keep the −3000 scrubber ra
 - Presets **2500 BCE** / **2000 BCE** (+ captions). Scrubber min stays −3000. ✅
 - Lifespan clamps respected — early years have real overlay keyframes, not orphan keyYears. ✅
 - **Mobile globe polish:** phone layout prioritises canvas height (~42–50vh), collapses lede/note, scrollable overlays, horizontal preset chips, touch-action + resize settle so drag-rotate works. ✅
-- Living/morphing borders (**PR F**) started Day 20; Day 21 densified hero keyframes. **PR E** still secondary.
+- Living/morphing borders (**PR F**) started Day 20; Day 21 densified hero keyframes; Day 22 colony fragment/split. **PR E** still secondary.
 
 #### Day 20 — Living borders: morph between overlay keyframes (PR F slice 1) — done
 
@@ -371,9 +371,22 @@ Addresses Day 20 follow-ups: morphs mostly *scaled* because footprints were axis
 - Validate extended for hero keyframe counts, non-rect rings, soft edge factor. ✅
 - Fragment/split for distant colonies left for a later PR F slice (British already multi-region fade-in).
 
+#### Day 22 — Living borders: colony fragment/split + opacity (PR F slice 3) — done
+
+Distant possessions must stay **separate region ids** so scrubbing never stretches one polygon across oceans (same id → lerp; id only in next → fade in; only in prev → fade out).
+
+- **Opacity bump:** overlay `baseOpacity` 0.28 → **0.43** (land still visible); `globe-view` rgba clamp aligned. No Day 20 planet-tint / custom DoubleSide materials. ✅
+- **British:** Caribbean fragment + Australia mid-keyframe foothold (1780) so Victorian colonies do not hard-pop; 1850/1900/1920 stay multi-region (Isles / India / Australia / South Africa / Canada / Caribbean / Egypt). ✅
+- **Spanish:** densified 1492 → 1550 → 1700 → **1800** with Iberia, New Spain, Andes, Southern Cone, Caribbean, Philippines as separate multi-vertex rings. ✅
+- **Portuguese:** 1500 → **1600** → 1700 with Iberia, Brazil, West Africa, Angola, Goa fringe as separate ids. ✅
+- **Dutch / French:** multi-vertex rings; Cape / Caribbean / Indochina stay distinct from metro cores (no ocean-spanning morph). ✅
+- Softer smoothstep fade-in for newly appearing distant regions. ✅
+- Validate extended for fragment counts, per-region span caps, opacity band. ✅
+- True multi-polygon topology / ocean gaps (GIS holes) still deferred; **PR E** still secondary.
+
 #### PR F — Living / morphing borders (continued)
 
-Remaining after Day 21: fragment/split for distant colonies; true multi-polygon topology / ocean gaps; optional easing curves. Still schematic / honest, not GIS-perfect.
+Remaining after Day 22: true multi-polygon topology / ocean gaps; optional easing curves. Still schematic / honest, not GIS-perfect.
 
 #### PR E — Timeline integration (still needed; secondary to living borders)
 
@@ -503,7 +516,7 @@ A sensible near-term sequence:
 17. Early Bronze Age globe fill — 3000–1200 BCE (Day 19). ✅
 18. Living borders — morph between overlay keyframes (Day 20 / PR F slice 1). ✅
 19. Living borders polish — denser non-rect keyframes + softer edges (Day 21 / PR F slice 2). ✅
-20. Living borders — fragment/split distant colonies (PR F continued).
+20. Living borders — fragment/split distant colonies (Day 22 / PR F slice 3). ✅
 21. Timeline ↔ globe integration (PR E) — still secondary to remaining PR F polish.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

@@ -57,7 +57,7 @@ function hexToRgba(hex, opacity) {
   const r = (n >> 16) & 255;
   const g = (n >> 8) & 255;
   const b = n & 255;
-  const op = Math.max(0.05, Math.min(0.45, Number(opacity) || 0.28));
+  const op = Math.max(0.05, Math.min(0.55, Number(opacity) || 0.43));
   return `rgba(${r},${g},${b},${op})`;
 }
 

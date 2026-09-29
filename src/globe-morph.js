@@ -1,6 +1,7 @@
 /**
  * Day 20 / PR F slice 1 — schematic ring morphing between overlay keyframes.
  * Day 21 — denser non-rect keyframes (data) + smoothstep lifespan edge fades.
+ * Day 22 — higher base opacity + softer fade-in for newly appearing colony fragments.
  * Resample → lerp lng/lat (antimeridian-aware). Unmatched regions fade via scale-to-centroid.
  */
 
@@ -255,7 +256,7 @@ export function morphEntityAtYear(entity, year, resolveRing, lifespan, edgeGrace
   if (!prev && !next) return [];
 
   const approximation = (t < 0.5 ? prev : next)?.approximation || prev?.approximation || 'schematic';
-  const baseOpacity = 0.28;
+  const baseOpacity = 0.43;
 
   /** @type {Map<string, { name: string, ring: [number,number][] }>} */
   const prevMap = new Map();
@@ -289,15 +290,24 @@ export function morphEntityAtYear(entity, year, resolveRing, lifespan, edgeGrace
         a.ring.every((p, i) => p[0] === b.ring[i][0] && p[1] === b.ring[i][1]);
       ring = same ? ensureClockwise(a.ring) : lerpRings(a.ring, b.ring, t);
     } else if (b && !a) {
-      // Fade in: grow from small toward full as t → 1 (no dense resample)
-      const grown = scaleRingTowardCentroid(ensureClockwise(b.ring), Math.max(0.12, t));
+      // Fade in: grow from small toward full as t → 1 (no dense resample).
+      // Day 22: smoothstep so distant colony fragments ease in softer than linear.
+      const fadeIn = smoothstep01(t);
+      const grown = scaleRingTowardCentroid(
+        ensureClockwise(b.ring),
+        Math.max(0.12, 0.15 + 0.85 * fadeIn),
+      );
       ring = grown;
-      regionOpacity = baseOpacity * Math.max(0.2, t);
+      regionOpacity = baseOpacity * Math.max(0.15, fadeIn);
     } else if (a && !b) {
-      // Fade out: shrink as t → 1
-      const shrink = scaleRingTowardCentroid(ensureClockwise(a.ring), Math.max(0.12, 1 - t));
+      // Fade out: shrink as t → 1 (smoothstep soften)
+      const fadeOut = smoothstep01(1 - t);
+      const shrink = scaleRingTowardCentroid(
+        ensureClockwise(a.ring),
+        Math.max(0.12, 0.15 + 0.85 * fadeOut),
+      );
       ring = shrink;
-      regionOpacity = baseOpacity * Math.max(0.2, 1 - t);
+      regionOpacity = baseOpacity * Math.max(0.15, fadeOut);
     }
 
     if (!ring) continue;
