@@ -1,5 +1,5 @@
 /**
- * Interactive Globe.gl earth (Phase 4 PR B) + historical polygons (PR D/Day 14).
+ * Interactive Globe.gl earth (Phase 4) + historical polygons + Day 20 living-border morph.
  * Mounted only while Globe mode is active; disposed on leave.
  */
 
@@ -56,13 +56,14 @@ function parseHex(hex) {
 }
 
 /** Flat translucent cap — depthWrite off + polygonOffset to hug the sphere without z-fighting. */
-function capMaterialFor(hex) {
-  const key = String(hex || '#888888');
+function capMaterialFor(hex, opacity = 0.42) {
+  const op = Math.max(0.02, Math.min(0.85, Number(opacity) || 0.42));
+  const key = `${String(hex || '#888888')}|${op.toFixed(3)}`;
   if (materialCache.has(key)) return materialCache.get(key);
   const mat = new MeshBasicMaterial({
-    color: parseHex(key),
+    color: parseHex(key.split('|')[0]),
     transparent: true,
-    opacity: 0.4,
+    opacity: op,
     depthWrite: false,
     depthTest: true,
     side: DoubleSide,
@@ -91,7 +92,7 @@ function applyPolygonLayer() {
     .polygonGeoJsonGeometry('geometry')
     // Clamp to surface: tiny altitude, no visible side walls, cap materials that don't fight the globe.
     .polygonAltitude(0.005)
-    .polygonCapMaterial((d) => capMaterialFor(d.color || d.properties?.color))
+    .polygonCapMaterial((d) => capMaterialFor(d.color || d.properties?.color, d.opacity ?? d.properties?.opacity))
     .polygonSideMaterial(() => INVISIBLE_SIDE)
     .polygonStrokeColor(() => 'rgba(255, 255, 255, 0.55)')
     .polygonsTransitionDuration(0);

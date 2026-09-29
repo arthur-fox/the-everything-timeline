@@ -345,20 +345,21 @@ User scrubbed 3000–1200 BCE and found nothing — keep the −3000 scrubber ra
 - **Mobile globe polish:** phone layout prioritises canvas height (~42–50vh), collapses lede/note, scrollable overlays, horizontal preset chips, touch-action + resize settle so drag-rotate works. ✅
 - Living/morphing borders (**PR F**) still the next major globe phase; **PR E** still listed.
 
-#### PR F — Living / morphing borders (next major globe investment)
+#### Day 20 — Living borders: morph between overlay keyframes (PR F slice 1) — done
 
-Arthur’s vision for the globe flagship:
+Arthur’s vision: shapes that **grow, stretch, deform and reform** until they dissolve — not sit-then-vanish blobs.
 
-> Shapes should feel alive — amorphous regions that **grow, stretch, deform and reform** through the years until they dissolve and disappear. Not static blobs that sit on the map and then vanish.
+- Keyframe interpolation: bracketing overlay snapshots → resample rings → lerp lng/lat (antimeridian-aware). ✅
+- Match regions by `id`; unmatched regions fade in/out via scale-to-centroid. ✅
+- Soft dissolve in the Day 18 lifespan grace band (opacity + shrink). ✅
+- Per-snapshot `bbox` preferred over shared `REGION_RINGS` so growth is visible. ✅
+- `src/globe-morph.js` + morph checks in validate. Ottoman visibly grows 1520→1683 and fades near end. ✅
 
-Direction (still schematic / honest, not GIS-perfect):
+**Follow-ups (later PR F slices):** denser mid-keyframes where morph looks stiff; better fragment/split for distant colonies; true multi-polygon topology / ocean gaps; optional easing curves.
 
-- Treat today’s overlay snapshots as **keyframes**
-- Interpolate / morph region rings between keyframes while scrubbing
-- Soft dissolve at the end of an entity’s lifespan (builds on Day 18 clamps)
-- Grow and stretch as power expands; shrink and fragment as it contracts
+#### PR F — Living / morphing borders (continued)
 
-This is the larger next globe phase. Ship in slices after lifespan behaviour feels right.
+Remaining investment after Day 20’s first morph slice — still schematic / honest, not GIS-perfect.
 
 #### PR E — Timeline integration (still needed; secondary to living borders)
 
@@ -486,7 +487,8 @@ A sensible near-term sequence:
 15. Denser globe overlays — ancient + colonial pass (Day 17). ✅
 16. Clamp globe overlay lifespans (Day 18). ✅
 17. Early Bronze Age globe fill — 3000–1200 BCE (Day 19). ✅
-18. Living / morphing borders — grow, stretch, dissolve (PR F).
-19. Timeline ↔ globe integration (PR E).
+18. Living borders — morph between overlay keyframes (Day 20 / PR F slice 1). ✅
+19. Living borders polish — denser keyframes, fragment/split (PR F continued).
+20. Timeline ↔ globe integration (PR E).
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

@@ -1,13 +1,18 @@
 /**
- * Day 18 — sanity checks for globe overlay lifespan clamping.
- * Ensures empires dissolve near last keyframe / civ end (not ±80 sticky).
+ * Day 18–20 — sanity checks for globe overlay lifespan + morphing.
  */
 import {
   getActiveOverlaysAtYear,
   getEntityLifespan,
+  getOverlayPolygonFeatures,
   spatialEntities,
   OVERLAY_EDGE_GRACE,
 } from '../src/globe-overlays.js';
+import {
+  lerpRings,
+  MORPH_RING_SAMPLES,
+  findBracketingOverlays,
+} from '../src/globe-morph.js';
 
 let failed = 0;
 function assert(cond, msg) {
@@ -42,7 +47,6 @@ assert(!idsAt(1980).has('british-empire'), 'British OFF at 1980 (last keyframe 1
 assert(idsAt(1900).has('british-empire'), 'British ON at 1900');
 assert(idsAt(1900).has('qing-china'), 'Qing ON at 1900');
 
-
 assert(idsAt(-3000).has('mesopotamia'), 'Mesopotamia ON at −3000');
 assert(idsAt(-3000).has('ancient-egypt'), 'Egypt ON at −3000');
 assert(idsAt(-2500).size >= 2, `−2500 has ≥2 overlays (got ${idsAt(-2500).size})`);
@@ -51,8 +55,54 @@ assert(idsAt(-1500).size >= 4, `−1500 has ≥4 overlays (got ${idsAt(-1500).si
 
 assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500).size})`);
 
+// Day 20 morph
+{
+  const a = [[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]];
+  const b = [[0, 0], [20, 0], [20, 20], [0, 20], [0, 0]];
+  const mid = lerpRings(a, b, 0.5);
+  assert(!!mid && mid.length === MORPH_RING_SAMPLES + 1, `lerp ring vertex count ${mid?.length}`);
+  assert(Math.abs(mid[Math.floor(MORPH_RING_SAMPLES / 4)][0] - 15) < 0.01, 'lerp mid lng ~15');
+}
+
+{
+  const br = findBracketingOverlays(ott.overlays, 1600);
+  assert(br.prev?.year === 1520 && br.next?.year === 1683, 'Ottoman brackets 1520–1683 at 1600');
+  assert(br.t > 0.4 && br.t < 0.6, `Ottoman t~0.5 at 1600 (got ${br.t})`);
+
+  function totalBBoxArea(year) {
+    return getOverlayPolygonFeatures(year)
+      .filter((f) => f.entityId === 'ottoman-empire')
+      .reduce((sum, f) => {
+        const ring = f.geometry.coordinates[0];
+        let minX = Infinity;
+        let maxX = -Infinity;
+        let minY = Infinity;
+        let maxY = -Infinity;
+        for (const [x, y] of ring) {
+          minX = Math.min(minX, x);
+          maxX = Math.max(maxX, x);
+          minY = Math.min(minY, y);
+          maxY = Math.max(maxY, y);
+        }
+        return sum + (maxX - minX) * (maxY - minY);
+      }, 0);
+  }
+  const a1520 = totalBBoxArea(1520);
+  const a1600 = totalBBoxArea(1600);
+  const a1683 = totalBBoxArea(1683);
+  assert(a1600 > a1520, `Ottoman grows 1520→1600 (${a1520.toFixed(0)}→${a1600.toFixed(0)})`);
+  assert(a1683 > a1600, `Ottoman grows 1600→1683 (${a1600.toFixed(0)}→${a1683.toFixed(0)})`);
+
+  const fade = getOverlayPolygonFeatures(1910).filter((f) => f.entityId === 'ottoman-empire');
+  assert(fade.length > 0 && fade.every((f) => f.opacity < 0.3), 'Ottoman soft-fades near lifespan end');
+  assert(
+    getOverlayPolygonFeatures(1980).every((f) => f.entityId !== 'ottoman-empire'),
+    'Ottoman morph OFF at 1980',
+  );
+}
+
 if (failed) {
-  console.error(`\n${failed} lifespan check(s) failed`);
+  console.error(`\n${failed} lifespan/morph check(s) failed`);
   process.exit(1);
 }
-console.log(`\nLifespan checks passed (${spatialEntities.length} entities, grace=${OVERLAY_EDGE_GRACE}).`);
+console.log(`\nLifespan + morph checks passed (${spatialEntities.length} entities, grace=${OVERLAY_EDGE_GRACE}).`);
