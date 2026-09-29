@@ -384,9 +384,21 @@ Distant possessions must stay **separate region ids** so scrubbing never stretch
 - Validate extended for fragment counts, per-region span caps, opacity band. ✅
 - True multi-polygon topology / ocean gaps (GIS holes) still deferred; **PR E** still secondary.
 
+
+#### Day 23 — Denser overlay coverage (rise → peak → decline) — done
+
+User feedback after Day 22: morphing looks good but **data is thin** — famous empires with a single late “peak” keyframe (Aztec 1519, Inca 1527) pop in right before conquest. This pass densifies overlay snapshots so scrubbing shows rise → peak → decline where historically sensible.
+
+- **Aztec:** 1428 (Triple Alliance founding) → 1475 (expansion + tributary fringe) → 1519 (peak) → 1521 (brief fall). Multi-vertex Valley of Mexico + `aztec-tributary` rings. ✅
+- **Inca:** 1438 (Pachacuti / early Tawantinsuyu) → 1475 → 1495 (Andean spine) → 1527 (late extent). Separate `peru` / `andes-north` / `andes-south` region ids so morph deforms along the corridor (not one ocean-tall bbox). ✅
+- **Batch densify** all 16 former single-keyframe empires to ≥3 overlay years: kushan, maurya, gupta, frankish, tang-china, mali, khmer, delhi-sultanate, achaemenid, classical-greece, umayyad, safavid, songhai, majapahit (+ aztec/inca). ✅
+- Schematic multi-vertex rings preferred; colors / ids / `timelineItemIds` unchanged. Lifespan clamp respected. ✅
+- Validate extended: Aztec+Inca ≥3 keyframes + active at 1470; warn on entities with <3 overlays. ✅
+- Remaining thin notables (2 keyframes): Ming, Qing, Mughal, Abbasid, Song, Sassanid, Parthian, HRE, Carthage, Dutch, French colonial, Meiji, Shang, Phoenicia, Olmec, Kush — backlog for a later densify pass. **PR E** still secondary.
+
 #### PR F — Living / morphing borders (continued)
 
-Remaining after Day 22: true multi-polygon topology / ocean gaps; optional easing curves. Still schematic / honest, not GIS-perfect.
+Remaining after Day 23: optional densify of remaining 2-keyframe entities; true multi-polygon topology / ocean gaps; optional easing curves. Still schematic / honest, not GIS-perfect.
 
 #### PR E — Timeline integration (still needed; secondary to living borders)
 
@@ -517,6 +529,7 @@ A sensible near-term sequence:
 18. Living borders — morph between overlay keyframes (Day 20 / PR F slice 1). ✅
 19. Living borders polish — denser non-rect keyframes + softer edges (Day 21 / PR F slice 2). ✅
 20. Living borders — fragment/split distant colonies (Day 22 / PR F slice 3). ✅
-21. Timeline ↔ globe integration (PR E) — still secondary to remaining PR F polish.
+21. Denser overlay coverage — Aztec/Inca rise + thin empires (Day 23). ✅
+22. Timeline ↔ globe integration (PR E) — still secondary to remaining PR F polish / densify backlog.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

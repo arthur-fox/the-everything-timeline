@@ -5,6 +5,7 @@
  * Day 20: living borders — morph rings between overlay keyframes + soft lifespan dissolve.
  * Day 21: denser non-rectangular keyframes for hero empires + softer lifespan edge fades.
  * Day 22: colony fragment/split — distant possessions as separate region ids (no ocean-spanning morph).
+ * Day 23: denser overlay coverage — rise→peak→decline keyframes for thin / peak-only empires.
  *
  * Spatial entities + schematic region rings for Globe polygons.
  * Rings are intentionally rough — not GIS-accurate ancient borders.
@@ -276,15 +277,62 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Central Asian / North Indian empire linking Silk Road trade between China, Iran, and the Gangetic plain.',
-    keyYears: [30, 100, 230],
+    keyYears: [50, 100, 200],
     overlays: [
+      {
+        year: 50,
+        label: 'Early Kushan (Bactria–Gandhara)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'kushan-core',
+            name: 'Bactria–Gandhara',
+            ring: [
+              [66, 32], [68, 37], [73, 38], [75, 35], [73, 31], [68, 31], [66, 32],
+            ],
+          },
+        ],
+      },
       {
         year: 100,
         label: 'Kushan high period',
         approximation: 'schematic',
         regions: [
-          { id: 'kushan-core', name: 'Bactria–Gandhara', bbox: [65, 30, 78, 40] },
-          { id: 'north-india', name: 'Northwest India fringe', bbox: [70, 24, 82, 34] },
+          {
+            id: 'kushan-core',
+            name: 'Bactria–Gandhara',
+            ring: [
+              [65, 32], [68, 39], [76, 40], [78, 35], [74, 30], [68, 30], [65, 32],
+            ],
+          },
+          {
+            id: 'north-india',
+            name: 'Northwest India fringe',
+            ring: [
+              [70, 26], [72, 33], [80, 34], [84, 30], [80, 24], [74, 24], [70, 26],
+            ],
+          },
+        ],
+      },
+      {
+        year: 200,
+        label: 'Late Kushan',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'kushan-core',
+            name: 'Bactria–Gandhara',
+            ring: [
+              [66, 32], [69, 38], [75, 38], [76, 34], [73, 30], [68, 30], [66, 32],
+            ],
+          },
+          {
+            id: 'north-india',
+            name: 'Northwest India fringe',
+            ring: [
+              [71, 26], [73, 32], [80, 32], [82, 28], [78, 24], [73, 24], [71, 26],
+            ],
+          },
         ],
       },
     ],
@@ -300,15 +348,62 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Early Indian empire that, under Ashoka, controlled much of the subcontinent.',
-    keyYears: [-322, -250, -185],
+    keyYears: [-322, -300, -250, -200],
     overlays: [
+      {
+        year: -300,
+        label: 'Early Maurya (Magadha core)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'india-north',
+            name: 'Gangetic / Magadha core',
+            ring: [
+              [78, 22], [80, 28], [88, 28], [90, 24], [86, 20], [80, 20], [78, 22],
+            ],
+          },
+        ],
+      },
       {
         year: -250,
         label: 'Ashokan Maurya (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'india-north', name: 'Gangetic / north India', bbox: [72, 20, 90, 32] },
-          { id: 'india-deccan', name: 'Deccan fringe', bbox: [74, 12, 85, 22] },
+          {
+            id: 'india-north',
+            name: 'Gangetic / north India',
+            ring: [
+              [72, 22], [74, 32], [86, 32], [90, 28], [88, 22], [80, 20], [74, 20], [72, 22],
+            ],
+          },
+          {
+            id: 'india-deccan',
+            name: 'Deccan fringe',
+            ring: [
+              [74, 14], [76, 22], [84, 22], [85, 16], [80, 12], [76, 12], [74, 14],
+            ],
+          },
+        ],
+      },
+      {
+        year: -200,
+        label: 'Late Maurya contraction',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'india-north',
+            name: 'Gangetic / north India',
+            ring: [
+              [76, 22], [78, 30], [88, 30], [90, 26], [86, 22], [80, 20], [76, 22],
+            ],
+          },
+          {
+            id: 'india-deccan',
+            name: 'Deccan fringe',
+            ring: [
+              [75, 16], [77, 22], [83, 22], [84, 17], [80, 14], [76, 14], [75, 16],
+            ],
+          },
         ],
       },
     ],
@@ -324,15 +419,62 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Classical Indian empire often associated with a “golden age” of science, art, and literature.',
-    keyYears: [320, 450, 550],
+    keyYears: [320, 350, 450, 520],
     overlays: [
+      {
+        year: 350,
+        label: 'Early Gupta rise',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'india-north',
+            name: 'North India core',
+            ring: [
+              [78, 22], [80, 30], [88, 30], [90, 26], [86, 22], [80, 20], [78, 22],
+            ],
+          },
+        ],
+      },
       {
         year: 450,
         label: 'Gupta high water (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'india-north', name: 'North India', bbox: [72, 20, 90, 32] },
-          { id: 'india-central', name: 'Central India', bbox: [74, 16, 88, 26] },
+          {
+            id: 'india-north',
+            name: 'North India',
+            ring: [
+              [72, 22], [74, 32], [86, 32], [90, 28], [88, 22], [80, 20], [74, 20], [72, 22],
+            ],
+          },
+          {
+            id: 'india-central',
+            name: 'Central India',
+            ring: [
+              [74, 18], [76, 26], [86, 26], [88, 20], [84, 16], [78, 16], [74, 18],
+            ],
+          },
+        ],
+      },
+      {
+        year: 520,
+        label: 'Late Gupta',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'india-north',
+            name: 'North India',
+            ring: [
+              [76, 22], [78, 30], [88, 30], [90, 26], [86, 22], [80, 20], [76, 22],
+            ],
+          },
+          {
+            id: 'india-central',
+            name: 'Central India fringe',
+            ring: [
+              [76, 18], [78, 24], [84, 24], [85, 20], [82, 17], [78, 17], [76, 18],
+            ],
+          },
         ],
       },
     ],
@@ -390,16 +532,69 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Frankish realm under Charlemagne covering much of Western and Central Europe.',
-    keyYears: [768, 800, 843],
+    keyYears: [700, 800, 843],
     overlays: [
+      {
+        year: 700,
+        label: 'Merovingian / early Carolingian Gaul',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'frankish-west',
+            name: 'Gaul / West Francia',
+            ring: [
+              [-2, 44], [-1, 49], [4, 50], [7, 48], [5, 44], [1, 43], [-2, 44],
+            ],
+          },
+        ],
+      },
       {
         year: 800,
         label: 'Charlemagne crowned (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'frankish-west', name: 'Gaul / West Francia', bbox: [-5, 42, 8, 51] },
-          { id: 'frankish-east', name: 'East Francia / Germany', bbox: [5, 45, 18, 54] },
-          { id: 'italy', name: 'Northern Italy fringe' },
+          {
+            id: 'frankish-west',
+            name: 'Gaul / West Francia',
+            ring: [
+              [-5, 43], [-4, 50], [4, 51], [8, 48], [6, 43], [0, 42], [-5, 43],
+            ],
+          },
+          {
+            id: 'frankish-east',
+            name: 'East Francia / Germany',
+            ring: [
+              [5, 46], [8, 53], [16, 54], [18, 50], [14, 46], [8, 45], [5, 46],
+            ],
+          },
+          {
+            id: 'italy',
+            name: 'Northern Italy fringe',
+            ring: [
+              [7.5, 44.0], [9.0, 46.0], [12.0, 46.2], [13.0, 45.0], [11.5, 44.0], [8.5, 43.5], [7.5, 44.0],
+            ],
+          },
+        ],
+      },
+      {
+        year: 843,
+        label: 'Treaty of Verdun (partition edge)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'frankish-west',
+            name: 'West Francia',
+            ring: [
+              [-5, 43], [-4, 50], [3, 51], [6, 48], [4, 43], [-1, 42], [-5, 43],
+            ],
+          },
+          {
+            id: 'frankish-east',
+            name: 'East Francia',
+            ring: [
+              [6, 46], [9, 53], [15, 54], [17, 50], [13, 46], [8, 45], [6, 46],
+            ],
+          },
         ],
       },
     ],
@@ -415,16 +610,70 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Cosmopolitan Chinese empire of the early medieval period; capital Chang’an a hub of Eurasian exchange.',
-    keyYears: [618, 755, 907],
+    keyYears: [618, 650, 750, 850],
     overlays: [
+      {
+        year: 650,
+        label: 'Early Tang consolidation',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'china-proper',
+            name: 'China proper',
+            ring: [
+              [102, 24], [105, 34], [112, 40], [120, 40], [120, 28], [114, 23], [105, 23], [102, 24],
+            ],
+          },
+        ],
+      },
       {
         year: 750,
         label: 'High Tang (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'china-proper', name: 'China proper' },
-          { id: 'tarim', name: 'Western Regions fringe' },
-          { id: 'tang-north', name: 'North China / steppe fringe', bbox: [100, 35, 125, 45] },
+          {
+            id: 'china-proper',
+            name: 'China proper',
+            ring: [
+              [100, 22], [103, 32], [108, 40], [115, 42], [122, 41], [122, 30],
+              [120, 24], [112, 21], [105, 22], [100, 22],
+            ],
+          },
+          {
+            id: 'tarim',
+            name: 'Western Regions fringe',
+            ring: [
+              [75, 37], [80, 42], [92, 43], [95, 40], [92, 36], [82, 36], [75, 37],
+            ],
+          },
+          {
+            id: 'tang-north',
+            name: 'North China / steppe fringe',
+            ring: [
+              [100, 36], [108, 44], [122, 45], [125, 40], [118, 36], [108, 35], [100, 36],
+            ],
+          },
+        ],
+      },
+      {
+        year: 850,
+        label: 'Late Tang contraction',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'china-proper',
+            name: 'China proper',
+            ring: [
+              [102, 23], [105, 33], [112, 40], [120, 40], [120, 28], [114, 23], [105, 22], [102, 23],
+            ],
+          },
+          {
+            id: 'tang-north',
+            name: 'North China fringe',
+            ring: [
+              [105, 36], [110, 42], [120, 42], [122, 38], [116, 36], [108, 35], [105, 36],
+            ],
+          },
         ],
       },
     ],
@@ -509,14 +758,48 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'West African empire famed for gold, scholarship (Timbuktu), and the pilgrimage of Mansa Musa.',
-    keyYears: [1235, 1324, 1460],
+    keyYears: [1235, 1250, 1324, 1400],
     overlays: [
+      {
+        year: 1250,
+        label: 'Early Mali (Niger bend)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'west-africa-sahel',
+            name: 'Sahel / Niger bend core',
+            ring: [
+              [-10, 12], [-8, 16], [-2, 17], [0, 14], [-2, 11], [-7, 11], [-10, 12],
+            ],
+          },
+        ],
+      },
       {
         year: 1324,
         label: 'Mansa Musa era (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'west-africa-sahel', name: 'Sahel / Niger bend', bbox: [-12, 10, 4, 20] },
+          {
+            id: 'west-africa-sahel',
+            name: 'Sahel / Niger bend',
+            ring: [
+              [-12, 12], [-10, 18], [0, 20], [4, 16], [2, 11], [-6, 10], [-12, 12],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1400,
+        label: 'Late Mali',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'west-africa-sahel',
+            name: 'Sahel / Niger bend',
+            ring: [
+              [-11, 12], [-9, 17], [-1, 18], [2, 15], [0, 11], [-6, 10], [-11, 12],
+            ],
+          },
         ],
       },
     ],
@@ -532,14 +815,48 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Mainland Southeast Asian empire centered on Angkor; hydraulic cities and temple complexes.',
-    keyYears: [802, 1150, 1431],
+    keyYears: [802, 900, 1150, 1300],
     overlays: [
+      {
+        year: 900,
+        label: 'Early Angkor rise',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'mainland-sea',
+            name: 'Angkor / Cambodia core',
+            ring: [
+              [102, 12], [103, 15], [106, 15.5], [107, 13], [105, 11.5], [103, 11.5], [102, 12],
+            ],
+          },
+        ],
+      },
       {
         year: 1150,
         label: 'Angkor high period (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'mainland-sea', name: 'Mainland SE Asia', bbox: [100, 10, 110, 18] },
+          {
+            id: 'mainland-sea',
+            name: 'Mainland SE Asia',
+            ring: [
+              [100, 11], [102, 17], [108, 18], [110, 14], [107, 10], [102, 10], [100, 11],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1300,
+        label: 'Late Khmer',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'mainland-sea',
+            name: 'Mainland SE Asia',
+            ring: [
+              [101, 11], [103, 16], [107, 16.5], [108, 13], [106, 10.5], [102, 10.5], [101, 11],
+            ],
+          },
         ],
       },
     ],
@@ -687,15 +1004,62 @@ export const spatialEntities = [
     type: 'state',
     description:
       'Series of Muslim dynasties ruling large parts of the Indian subcontinent from Delhi.',
-    keyYears: [1206, 1290, 1398],
+    keyYears: [1206, 1230, 1300, 1400],
     overlays: [
+      {
+        year: 1230,
+        label: 'Early Delhi Sultanate',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'india-north',
+            name: 'North India core',
+            ring: [
+              [74, 24], [76, 30], [82, 30], [84, 26], [80, 22], [76, 22], [74, 24],
+            ],
+          },
+        ],
+      },
       {
         year: 1300,
         label: 'Delhi Sultanate extent (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'india-north', name: 'North India' },
-          { id: 'india-central', name: 'Central India fringe' },
+          {
+            id: 'india-north',
+            name: 'North India',
+            ring: [
+              [72, 22], [74, 32], [86, 32], [90, 28], [88, 22], [80, 20], [74, 20], [72, 22],
+            ],
+          },
+          {
+            id: 'india-central',
+            name: 'Central India fringe',
+            ring: [
+              [74, 18], [76, 26], [86, 26], [88, 20], [84, 16], [78, 16], [74, 18],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1400,
+        label: 'Post-Timur Delhi world',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'india-north',
+            name: 'North India',
+            ring: [
+              [74, 22], [76, 30], [84, 30], [86, 26], [82, 22], [76, 21], [74, 22],
+            ],
+          },
+          {
+            id: 'india-central',
+            name: 'Central India fringe',
+            ring: [
+              [75, 18], [77, 24], [84, 24], [85, 20], [82, 17], [77, 17], [75, 18],
+            ],
+          },
         ],
       },
     ],
@@ -1074,14 +1438,82 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Mesoamerican tributary empire centered on Tenochtitlan in the Valley of Mexico.',
-    keyYears: [1428, 1519, 1521],
+    keyYears: [1428, 1475, 1519, 1521],
     overlays: [
+      {
+        year: 1428,
+        label: 'Triple Alliance founding',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'valley-mexico',
+            name: 'Valley of Mexico core',
+            ring: [
+              [-99.8, 19.0], [-99.5, 19.8], [-98.7, 20.0], [-98.2, 19.5],
+              [-98.4, 18.8], [-99.2, 18.6], [-99.8, 19.0],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1475,
+        label: 'Mid Triple Alliance expansion',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'valley-mexico',
+            name: 'Valley of Mexico',
+            ring: [
+              [-101.0, 18.2], [-100.2, 20.5], [-98.5, 21.2], [-97.2, 20.2],
+              [-97.5, 18.5], [-98.8, 17.6], [-100.2, 17.8], [-101.0, 18.2],
+            ],
+          },
+          {
+            id: 'aztec-tributary',
+            name: 'Tributary fringe (schematic)',
+            ring: [
+              [-100.5, 16.5], [-99.5, 18.0], [-97.5, 18.5], [-96.0, 17.5],
+              [-96.5, 15.8], [-98.5, 15.5], [-100.0, 16.0], [-100.5, 16.5],
+            ],
+          },
+        ],
+      },
       {
         year: 1519,
         label: 'Triple Alliance peak (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'valley-mexico', name: 'Valley of Mexico / central Mexico', bbox: [-102, 16, -94, 22] },
+          {
+            id: 'valley-mexico',
+            name: 'Valley of Mexico / central Mexico',
+            ring: [
+              [-102.0, 17.0], [-100.5, 21.0], [-97.5, 22.0], [-94.5, 20.0],
+              [-94.8, 17.0], [-97.0, 15.8], [-100.0, 15.8], [-102.0, 17.0],
+            ],
+          },
+          {
+            id: 'aztec-tributary',
+            name: 'Gulf / Pacific tributary fringe',
+            ring: [
+              [-101.5, 16.0], [-99.0, 18.2], [-96.0, 19.0], [-94.0, 17.5],
+              [-94.5, 15.5], [-97.5, 14.8], [-100.5, 15.0], [-101.5, 16.0],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1521,
+        label: 'Fall of Tenochtitlan (brief)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'valley-mexico',
+            name: 'Valley remnant',
+            ring: [
+              [-99.9, 19.0], [-99.6, 19.7], [-98.9, 19.8], [-98.5, 19.3],
+              [-98.7, 18.8], [-99.4, 18.7], [-99.9, 19.0],
+            ],
+          },
         ],
       },
     ],
@@ -1097,15 +1529,114 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Andean empire stretching along the western spine of South America before Spanish conquest.',
-    keyYears: [1438, 1527, 1533],
+    keyYears: [1438, 1475, 1495, 1527],
     overlays: [
+      {
+        year: 1438,
+        label: 'Pachacuti / early Tawantinsuyu',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'peru',
+            name: 'Cusco / Peru highlands core',
+            ring: [
+              [-73.5, -14.5], [-72.8, -12.5], [-71.2, -12.0], [-70.5, -13.5],
+              [-71.0, -15.0], [-72.5, -15.2], [-73.5, -14.5],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1475,
+        label: 'Andean expansion under Topa Inca',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'peru',
+            name: 'Peru highlands',
+            ring: [
+              [-79.0, -16.0], [-77.5, -8.0], [-74.0, -5.5], [-70.5, -9.0],
+              [-71.0, -16.5], [-75.5, -17.5], [-79.0, -16.0],
+            ],
+          },
+          {
+            id: 'andes-north',
+            name: 'Northern Andes fringe (Ecuador)',
+            ring: [
+              [-80.5, -4.0], [-79.5, 0.5], [-77.0, 1.5], [-75.5, -1.0],
+              [-76.5, -4.5], [-78.5, -5.0], [-80.5, -4.0],
+            ],
+          },
+          {
+            id: 'andes-south',
+            name: 'Southern Andes fringe (Bolivia)',
+            ring: [
+              [-72.0, -18.0], [-70.5, -15.5], [-67.5, -16.0], [-66.5, -19.5],
+              [-68.5, -21.0], [-71.0, -20.0], [-72.0, -18.0],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1495,
+        label: 'Huayna Capac Andean spine',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'peru',
+            name: 'Peru highlands',
+            ring: [
+              [-80.0, -17.0], [-78.0, -6.0], [-74.0, -3.5], [-69.5, -8.0],
+              [-70.0, -17.5], [-75.5, -18.5], [-80.0, -17.0],
+            ],
+          },
+          {
+            id: 'andes-north',
+            name: 'Northern Andes (Ecuador / S. Colombia)',
+            ring: [
+              [-81.0, -3.5], [-79.5, 1.5], [-76.5, 2.5], [-74.5, -0.5],
+              [-76.0, -4.5], [-78.5, -5.0], [-81.0, -3.5],
+            ],
+          },
+          {
+            id: 'andes-south',
+            name: 'Southern Andes (Bolivia / N. Chile)',
+            ring: [
+              [-73.0, -18.5], [-70.5, -15.0], [-67.0, -15.5], [-66.0, -20.5],
+              [-68.0, -22.5], [-71.5, -21.5], [-73.0, -18.5],
+            ],
+          },
+        ],
+      },
       {
         year: 1527,
         label: 'Late Inca extent (approx.)',
-        approximation: 'rough',
+        approximation: 'schematic',
         regions: [
-          { id: 'andes', name: 'Andean corridor', bbox: [-81, -22, -68, 2] },
-          { id: 'peru', name: 'Peru highlands', bbox: [-80, -18, -69, -3] },
+          {
+            id: 'peru',
+            name: 'Peru highlands',
+            ring: [
+              [-80.5, -17.5], [-78.5, -5.5], [-74.0, -2.5], [-69.0, -7.5],
+              [-69.5, -18.0], [-76.0, -19.0], [-80.5, -17.5],
+            ],
+          },
+          {
+            id: 'andes-north',
+            name: 'Northern Andes corridor',
+            ring: [
+              [-81.5, -3.0], [-80.0, 2.0], [-76.0, 2.8], [-74.0, -0.5],
+              [-75.5, -4.5], [-78.5, -5.0], [-81.5, -3.0],
+            ],
+          },
+          {
+            id: 'andes-south',
+            name: 'Southern Andes corridor',
+            ring: [
+              [-73.5, -19.0], [-71.0, -14.5], [-66.5, -15.0], [-65.5, -21.0],
+              [-68.0, -23.0], [-72.0, -22.0], [-73.5, -19.0],
+            ],
+          },
         ],
       },
     ],
@@ -1552,18 +2083,104 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'First true superpower of the ancient Near East — schematic core from Anatolia and Egypt to the Iranian plateau.',
-    keyYears: [-550, -500, -330],
+    keyYears: [-550, -540, -500, -400],
     overlays: [
+      {
+        year: -540,
+        label: 'Cyrus–Cambyses rise',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'persia',
+            name: 'Iranian plateau',
+            ring: [
+              [46, 28], [48, 36], [56, 38], [60, 34], [58, 28], [52, 26], [46, 28],
+            ],
+          },
+          {
+            id: 'mesopotamia',
+            name: 'Mesopotamia',
+            ring: [
+              [38.5, 30.5], [40, 36], [46, 37], [48, 33], [46, 30], [42, 30], [38.5, 30.5],
+            ],
+          },
+        ],
+      },
       {
         year: -500,
         label: 'Height under Darius',
         approximation: 'schematic',
         regions: [
-          { id: 'persia', name: 'Iranian plateau' },
-          { id: 'mesopotamia', name: 'Mesopotamia' },
-          { id: 'levant', name: 'Levant' },
-          { id: 'egypt', name: 'Egypt' },
-          { id: 'anatolia', name: 'Anatolia', bbox: [26, 36, 44, 42] },
+          {
+            id: 'persia',
+            name: 'Iranian plateau',
+            ring: [
+              [44, 26], [46, 38], [55, 40], [62, 37], [60, 28], [52, 25], [44, 26],
+            ],
+          },
+          {
+            id: 'mesopotamia',
+            name: 'Mesopotamia',
+            ring: [
+              [38.5, 30.5], [40, 36], [46, 37], [48, 33], [46, 30], [42, 30], [38.5, 30.5],
+            ],
+          },
+          {
+            id: 'levant',
+            name: 'Levant',
+            ring: [
+              [34, 30.5], [35, 36.5], [39, 37], [42, 34], [40, 31], [36, 30], [34, 30.5],
+            ],
+          },
+          {
+            id: 'egypt',
+            name: 'Egypt',
+            ring: [
+              [25, 22], [28, 31.5], [34, 31.5], [35, 28], [33, 22], [29, 22], [25, 22],
+            ],
+          },
+          {
+            id: 'anatolia',
+            name: 'Anatolia',
+            ring: [
+              [26, 36], [28, 42], [36, 42], [44, 40], [42, 36], [35, 35], [28, 35], [26, 36],
+            ],
+          },
+        ],
+      },
+      {
+        year: -400,
+        label: 'Late Achaemenid',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'persia',
+            name: 'Iranian plateau',
+            ring: [
+              [44, 26], [46, 38], [55, 40], [60, 36], [58, 28], [52, 25], [44, 26],
+            ],
+          },
+          {
+            id: 'mesopotamia',
+            name: 'Mesopotamia',
+            ring: [
+              [38.5, 30.5], [40, 36], [46, 37], [48, 33], [46, 30], [42, 30], [38.5, 30.5],
+            ],
+          },
+          {
+            id: 'levant',
+            name: 'Levant',
+            ring: [
+              [34, 30.5], [35, 36], [39, 36.5], [41, 33], [39, 31], [36, 30], [34, 30.5],
+            ],
+          },
+          {
+            id: 'anatolia',
+            name: 'Anatolia',
+            ring: [
+              [27, 36], [29, 41], [36, 41], [42, 39], [40, 36], [34, 35], [28, 35], [27, 36],
+            ],
+          },
         ],
       },
     ],
@@ -1646,14 +2263,48 @@ export const spatialEntities = [
     type: 'civilization',
     description:
       'City-state world of the Aegean and southern Balkans — schematic cultural-political core, not a unitary empire.',
-    keyYears: [-480, -450, -323, -146],
+    keyYears: [-480, -450, -350],
     overlays: [
+      {
+        year: -480,
+        label: 'Persian Wars era',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'greece',
+            name: 'Greece / Aegean',
+            ring: [
+              [20, 36], [21, 40], [24, 41], [26, 39], [25, 36], [22, 35.5], [20, 36],
+            ],
+          },
+        ],
+      },
       {
         year: -450,
         label: 'Classical Aegean',
         approximation: 'schematic',
         regions: [
-          { id: 'greece', name: 'Greece / Aegean', bbox: [19, 35, 28, 42] },
+          {
+            id: 'greece',
+            name: 'Greece / Aegean',
+            ring: [
+              [19, 36], [20, 41], [24, 42], [28, 41], [27, 36], [24, 35], [21, 35], [19, 36],
+            ],
+          },
+        ],
+      },
+      {
+        year: -350,
+        label: 'Late Classical / Macedonian rise',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'greece',
+            name: 'Greece / Aegean',
+            ring: [
+              [19, 36], [20, 41.5], [24, 42.5], [28, 41], [27, 36], [24, 35], [21, 35], [19, 36],
+            ],
+          },
         ],
       },
     ],
@@ -1738,19 +2389,125 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Early Islamic caliphate spanning Iberia to Central Asia — schematic Maghreb–Near East–Iberia arc.',
-    keyYears: [661, 711, 750],
+    keyYears: [661, 680, 720, 740],
     overlays: [
+      {
+        year: 680,
+        label: 'Early Umayyad (Near East core)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'levant',
+            name: 'Levant / Syria',
+            ring: [
+              [34, 30.5], [35, 36.5], [39, 37], [42, 34], [40, 31], [36, 30], [34, 30.5],
+            ],
+          },
+          {
+            id: 'egypt',
+            name: 'Egypt',
+            ring: [
+              [25, 22], [28, 31.5], [34, 31.5], [35, 28], [33, 22], [29, 22], [25, 22],
+            ],
+          },
+          {
+            id: 'mesopotamia',
+            name: 'Mesopotamia',
+            ring: [
+              [38.5, 30.5], [40, 36], [46, 37], [48, 33], [46, 30], [42, 30], [38.5, 30.5],
+            ],
+          },
+        ],
+      },
       {
         year: 720,
         label: 'Umayyad extent',
         approximation: 'schematic',
         regions: [
-          { id: 'iberia', name: 'Al-Andalus / Iberia' },
-          { id: 'maghreb-east', name: 'Maghreb' },
-          { id: 'egypt', name: 'Egypt' },
-          { id: 'levant', name: 'Levant' },
-          { id: 'mesopotamia', name: 'Mesopotamia' },
-          { id: 'persia', name: 'Iran fringe' },
+          {
+            id: 'iberia',
+            name: 'Al-Andalus / Iberia',
+            ring: [
+              [-10, 37], [-9, 43], [-2, 44], [3, 42], [2, 37], [-5, 36], [-10, 37],
+            ],
+          },
+          {
+            id: 'maghreb-east',
+            name: 'Maghreb',
+            ring: [
+              [5, 30], [8, 36], [20, 37], [25, 33], [22, 30], [10, 30], [5, 30],
+            ],
+          },
+          {
+            id: 'egypt',
+            name: 'Egypt',
+            ring: [
+              [25, 22], [28, 31.5], [34, 31.5], [35, 28], [33, 22], [29, 22], [25, 22],
+            ],
+          },
+          {
+            id: 'levant',
+            name: 'Levant',
+            ring: [
+              [34, 30.5], [35, 36.5], [39, 37], [42, 34], [40, 31], [36, 30], [34, 30.5],
+            ],
+          },
+          {
+            id: 'mesopotamia',
+            name: 'Mesopotamia',
+            ring: [
+              [38.5, 30.5], [40, 36], [46, 37], [48, 33], [46, 30], [42, 30], [38.5, 30.5],
+            ],
+          },
+          {
+            id: 'persia',
+            name: 'Iran fringe',
+            ring: [
+              [44, 26], [46, 38], [55, 40], [62, 37], [60, 28], [52, 25], [44, 26],
+            ],
+          },
+        ],
+      },
+      {
+        year: 740,
+        label: 'Late Umayyad (pre-Abbasid)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'iberia',
+            name: 'Al-Andalus / Iberia',
+            ring: [
+              [-10, 37], [-9, 43], [-2, 44], [3, 42], [2, 37], [-5, 36], [-10, 37],
+            ],
+          },
+          {
+            id: 'maghreb-east',
+            name: 'Maghreb',
+            ring: [
+              [5, 30], [8, 36], [18, 36], [22, 33], [18, 30], [10, 30], [5, 30],
+            ],
+          },
+          {
+            id: 'egypt',
+            name: 'Egypt',
+            ring: [
+              [25, 22], [28, 31.5], [34, 31.5], [35, 28], [33, 22], [29, 22], [25, 22],
+            ],
+          },
+          {
+            id: 'levant',
+            name: 'Levant',
+            ring: [
+              [34, 30.5], [35, 36.5], [39, 37], [42, 34], [40, 31], [36, 30], [34, 30.5],
+            ],
+          },
+          {
+            id: 'mesopotamia',
+            name: 'Mesopotamia',
+            ring: [
+              [38.5, 30.5], [40, 36], [46, 37], [48, 33], [46, 30], [42, 30], [38.5, 30.5],
+            ],
+          },
         ],
       },
     ],
@@ -2098,16 +2855,69 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Early modern Iranian empire that shaped Shiʿa identity — schematic Persia core.',
-    keyYears: [1501, 1587, 1629, 1736],
+    keyYears: [1501, 1520, 1620, 1700],
     overlays: [
+      {
+        year: 1520,
+        label: 'Early Safavid Persia',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'persia',
+            name: 'Iran / Persia',
+            ring: [
+              [46, 28], [48, 36], [56, 38], [60, 34], [58, 28], [52, 26], [46, 28],
+            ],
+          },
+        ],
+      },
       {
         year: 1620,
         label: 'Safavid golden age',
         approximation: 'schematic',
         regions: [
-          { id: 'persia', name: 'Iran / Persia' },
-          { id: 'mesopotamia', name: 'Mesopotamia fringe' },
-          { id: 'caucasus-south', name: 'South Caucasus fringe', bbox: [43, 38, 50, 43] },
+          {
+            id: 'persia',
+            name: 'Iran / Persia',
+            ring: [
+              [44, 26], [46, 38], [55, 40], [62, 37], [60, 28], [52, 25], [44, 26],
+            ],
+          },
+          {
+            id: 'mesopotamia',
+            name: 'Mesopotamia fringe',
+            ring: [
+              [40, 31], [42, 35], [46, 36], [48, 33], [46, 30], [42, 30], [40, 31],
+            ],
+          },
+          {
+            id: 'caucasus-south',
+            name: 'South Caucasus fringe',
+            ring: [
+              [43, 39], [44, 42.5], [49, 42], [50, 39], [47, 38], [43, 39],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1700,
+        label: 'Late Safavid',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'persia',
+            name: 'Iran / Persia',
+            ring: [
+              [45, 27], [47, 37], [55, 39], [60, 35], [58, 28], [52, 26], [45, 27],
+            ],
+          },
+          {
+            id: 'caucasus-south',
+            name: 'South Caucasus fringe',
+            ring: [
+              [44, 39], [45, 42], [49, 41.5], [49.5, 39], [47, 38], [44, 39],
+            ],
+          },
         ],
       },
     ],
@@ -2171,15 +2981,62 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'West African Sahel empire succeeding Mali along the Niger bend — schematic Sahel core.',
-    keyYears: [1430, 1500, 1591],
+    keyYears: [1430, 1460, 1500, 1550],
     overlays: [
+      {
+        year: 1460,
+        label: 'Early Songhai rise',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'west-africa-sahel',
+            name: 'Sahel / Niger bend core',
+            ring: [
+              [-6, 13], [-4, 17], [2, 18], [4, 15], [2, 12], [-4, 12], [-6, 13],
+            ],
+          },
+        ],
+      },
       {
         year: 1500,
         label: 'Songhai height',
         approximation: 'schematic',
         regions: [
-          { id: 'west-africa-sahel', name: 'Sahel / Niger bend' },
-          { id: 'west-africa-coast', name: 'Gulf of Guinea fringe' },
+          {
+            id: 'west-africa-sahel',
+            name: 'Sahel / Niger bend',
+            ring: [
+              [-12, 12], [-10, 18], [0, 20], [4, 16], [2, 11], [-6, 10], [-12, 12],
+            ],
+          },
+          {
+            id: 'west-africa-coast',
+            name: 'Gulf of Guinea fringe',
+            ring: [
+              [-5, 6], [-3, 12], [2, 12], [3, 8], [0, 5], [-4, 5], [-5, 6],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1550,
+        label: 'Late Songhai',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'west-africa-sahel',
+            name: 'Sahel / Niger bend',
+            ring: [
+              [-10, 12], [-8, 17], [1, 18], [3, 15], [1, 11], [-6, 11], [-10, 12],
+            ],
+          },
+          {
+            id: 'west-africa-coast',
+            name: 'Gulf of Guinea fringe',
+            ring: [
+              [-4, 7], [-2, 12], [2, 12], [2.5, 8], [0, 6], [-3, 6], [-4, 7],
+            ],
+          },
         ],
       },
     ],
@@ -2195,15 +3052,62 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Maritime Southeast Asian empire centered on Java — schematic archipelago core.',
-    keyYears: [1293, 1350, 1527],
+    keyYears: [1293, 1300, 1350, 1450],
     overlays: [
+      {
+        year: 1300,
+        label: 'Early Majapahit (Java core)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'java-bali',
+            name: 'Java / Bali',
+            ring: [
+              [106, -8.2], [107, -6.0], [114, -5.5], [115, -8.0], [112, -8.8], [107, -8.8], [106, -8.2],
+            ],
+          },
+        ],
+      },
       {
         year: 1350,
         label: 'Majapahit thalassocracy',
         approximation: 'schematic',
         regions: [
-          { id: 'java-bali', name: 'Java / Bali' },
-          { id: 'sumatra-south', name: 'Southern Sumatra fringe', bbox: [100, -6, 106, 2] },
+          {
+            id: 'java-bali',
+            name: 'Java / Bali',
+            ring: [
+              [105, -8.5], [106, -5.5], [115, -5], [116, -8], [112, -9], [106, -9], [105, -8.5],
+            ],
+          },
+          {
+            id: 'sumatra-south',
+            name: 'Southern Sumatra fringe',
+            ring: [
+              [100, -5], [102, 1], [106, 2], [105, -4], [102, -6], [100, -5],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1450,
+        label: 'Late Majapahit',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'java-bali',
+            name: 'Java / Bali',
+            ring: [
+              [106, -8.3], [107, -5.8], [114, -5.5], [115, -8.0], [111, -8.8], [107, -8.8], [106, -8.3],
+            ],
+          },
+          {
+            id: 'sumatra-south',
+            name: 'Southern Sumatra fringe',
+            ring: [
+              [101, -4], [103, 0], [106, 1], [105, -3.5], [103, -5], [101, -4],
+            ],
+          },
         ],
       },
     ],
@@ -2560,6 +3464,16 @@ export const REGION_RINGS = {
   ],
   peru: [
     [-80, -16], [-78, -6], [-74, -3], [-69, -8], [-70, -17], [-76, -18], [-80, -16],
+  ],
+  // Day 23 — Inca spine fragments + Aztec tributary fringe
+  'andes-north': [
+    [-81, -4], [-79.5, 1.5], [-76, 2.5], [-74.5, -1], [-76.5, -4.5], [-79, -5], [-81, -4],
+  ],
+  'andes-south': [
+    [-73, -18.5], [-70.5, -15], [-66.5, -15.5], [-65.5, -21], [-68.5, -22.5], [-72, -21.5], [-73, -18.5],
+  ],
+  'aztec-tributary': [
+    [-101.5, 16], [-99, 18.2], [-96, 19], [-94, 17.5], [-94.5, 15.5], [-97.5, 14.8], [-100.5, 15], [-101.5, 16],
   ],
   mesoamerica: [
     [-110, 16], [-108, 26], [-96, 28], [-86, 22], [-90, 14], [-100, 14], [-110, 16],
