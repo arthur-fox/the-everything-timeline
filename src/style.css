@@ -1247,25 +1247,44 @@ body.compare-active .bookmarks-toggle {
 @media (max-width: 780px) {
   .globe-stage {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    overflow: visible;
+    grid-template-rows: minmax(44vh, 1fr) auto;
+    gap: 12px;
+    overflow: hidden;
   }
 
   .globe-canvas-host {
     grid-column: 1;
     grid-row: 1;
-    height: 48vh;
+    min-height: 44vh;
+    height: auto;
     max-height: none;
+    touch-action: none;
   }
 
   .globe-copy {
     grid-column: 1;
     grid-row: 2;
-    overflow: visible;
+    max-height: min(38vh, 320px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .globe-overlay-list {
-    max-height: min(36vh, 280px);
+    max-height: min(28vh, 220px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .globe-year-presets {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .globe-year-preset {
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
 }
 
@@ -1922,6 +1941,12 @@ body.globe-active .filters-toggle {
   background-clip: text;
 }
 
+.globe-copy-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .globe-lede {
   margin: 0;
   color: var(--text);
@@ -2122,16 +2147,32 @@ body.globe-active .filters-toggle {
 }
 
 @media (max-width: 640px) {
+  /* Keep globe usable: canvas first, compact copy, scrubber pinned */
+  body.globe-active {
+    overflow: hidden;
+  }
+
+  body.globe-active #app {
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+  }
+
   .globe-view {
-    padding: 8px 12px calc(12px + env(safe-area-inset-bottom, 0px));
-    gap: 10px;
+    padding: 6px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+    gap: 8px;
+    min-height: 0;
+    overflow: hidden;
   }
 
   .globe-stage {
+    flex: 1 1 auto;
+    min-height: 0;
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    gap: 16px;
-    overflow: visible;
+    grid-template-rows: minmax(42vh, 1fr) auto;
+    gap: 8px;
+    overflow: hidden;
+    padding: 0;
   }
 
   .globe-canvas-host {
@@ -2139,50 +2180,107 @@ body.globe-active .filters-toggle {
     grid-row: 1;
     width: 100%;
     min-height: 42vh;
-    height: 46vh;
+    height: auto;
     max-height: none;
     border-radius: 14px;
+    /* Host owns gestures — page must not scroll-steal drag */
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
   }
 
   .globe-copy {
     grid-column: 1;
     grid-row: 2;
-    overflow: visible;
+    padding: 10px 12px;
+    gap: 8px;
+    max-height: min(34vh, 280px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .globe-overlay-list {
-    max-height: none;
-  }
-
-  .globe-hint {
-    text-align: center;
+  .globe-copy-intro {
+    display: none; /* collapse lede/note on phones — caption + overlays stay */
   }
 
   .globe-title {
-    font-size: 1.25rem;
-    text-align: center;
+    font-size: 1.05rem;
+    text-align: left;
+    margin: 0;
   }
 
-  .globe-lede,
-  .globe-note {
-    font-size: 0.84rem;
+  .globe-hint {
+    text-align: left;
+    font-size: 0.7rem;
   }
 
-  .globe-year-label {
-    font-size: 1.2rem;
-  }
-
-  .globe-year-preset {
-    min-height: 36px;
-    padding: 8px 12px;
-  }
-
-  .globe-year-slider {
-    min-height: 44px;
+  .globe-year-caption {
+    font-size: 0.78rem;
+    line-height: 1.35;
+    padding: 8px 10px;
   }
 
   .globe-overlay-panel {
     margin-top: 0;
+    gap: 6px;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .globe-overlay-panel-heading {
+    font-size: 0.65rem;
+  }
+
+  .globe-overlay-list {
+    max-height: min(18vh, 160px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .globe-overlay-item {
+    padding: 6px 0;
+  }
+
+  .globe-scrubber {
+    flex-shrink: 0;
+    padding: 8px 10px 8px;
+    border-radius: 14px;
+  }
+
+  .globe-year-label {
+    font-size: 1.1rem;
+  }
+
+  .globe-year-slider {
+    min-height: 44px;
+    height: 44px;
+    touch-action: pan-x;
+  }
+
+  .globe-year-ticks {
+    margin-bottom: 6px;
+    font-size: 0.65rem;
+  }
+
+  .globe-year-presets {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 6px;
+    padding-bottom: 2px;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+
+  .globe-year-preset {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 8px 12px;
+    white-space: nowrap;
   }
 }
 /* --- Starfield background --- */

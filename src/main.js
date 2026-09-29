@@ -3004,6 +3004,8 @@ const GLOBE_YEAR_MAX = 2025;
 let globeYear = 117;
 
 const GLOBE_YEAR_CAPTIONS = [
+  { year: -2500, text: 'Around 2500 BCE — Early Bronze Age: Sumerian cities and Old Kingdom Egypt on the Nile (approximate).' },
+  { year: -2000, text: 'Around 2000 BCE — Middle Kingdom Egypt and Mesopotamian city worlds (approximate).' },
   { year: -500, text: 'Around 500 BCE — Classical poleis, Persian Empire, and Axial Age thought across Eurasia (approximate).' },
   { year: 117, text: 'Around 117 CE — Rome, Han, Parthia, and Kushan spheres across Eurasia (approximate).' },
   { year: 800, text: 'Around 800 CE — Carolingian, Abbasid, Byzantine, Tang, and Khmer worlds (approximate).' },

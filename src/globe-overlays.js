@@ -1,6 +1,7 @@
 /**
  * Historical overlay spatial entities (Phase 4 / PR C + Day 14–18).
  * Day 18: activation clamped to linked timeline lifespan + overlay keyframe span.
+ * Day 19: early Bronze Age fill (Mesopotamia, early Egypt, Shang, Phoenicia, Olmec, Kush).
  *
  * Spatial entities + schematic region rings for Globe polygons.
  * Rings are intentionally rough — not GIS-accurate ancient borders.
@@ -865,8 +866,43 @@ export const spatialEntities = [
     type: 'civilization',
     description:
       'Nile-valley civilisation across Old, Middle, and New Kingdoms — schematic river-core influence.',
-    keyYears: [-2500, -1250, -500, -30],
+    keyYears: [-3000, -2686, -2500, -2000, -1500, -1250, -500, -30],
     overlays: [
+      {
+        year: -3000,
+        label: 'Early Dynastic Nile',
+        approximation: 'schematic',
+        regions: [
+          { id: 'egypt', name: 'Nile / Egypt' },
+        ],
+      },
+      {
+        year: -2500,
+        label: 'Old Kingdom Nile core',
+        approximation: 'schematic',
+        regions: [
+          { id: 'egypt', name: 'Nile / Egypt' },
+        ],
+      },
+      {
+        year: -2000,
+        label: 'Middle Kingdom',
+        approximation: 'schematic',
+        regions: [
+          { id: 'egypt', name: 'Nile / Egypt' },
+          { id: 'nile-upper', name: 'Upper Nile fringe' },
+        ],
+      },
+      {
+        year: -1500,
+        label: 'New Kingdom rise',
+        approximation: 'schematic',
+        regions: [
+          { id: 'egypt', name: 'Nile / Egypt' },
+          { id: 'nile-upper', name: 'Upper Nile fringe' },
+          { id: 'levant', name: 'Levant fringe' },
+        ],
+      },
       {
         year: -1250,
         label: 'New Kingdom core',
@@ -1180,14 +1216,30 @@ export const spatialEntities = [
     type: 'civilization',
     description:
       'Mesoamerican civilisation of the Yucatán and highlands — schematic Classic-period core.',
-    keyYears: [-500, 250, 800, 1500],
+    keyYears: [-2000, -1500, -500, 250, 800, 1500],
     overlays: [
+      {
+        year: -2000,
+        label: 'Archaic / early Maya fringe',
+        approximation: 'schematic',
+        regions: [
+          { id: 'yucatan', name: 'Yucatán / Maya lowlands', bbox: [-92, 14, -86, 22] },
+        ],
+      },
+      {
+        year: -1500,
+        label: 'Early Preclassic Maya',
+        approximation: 'schematic',
+        regions: [
+          { id: 'yucatan', name: 'Yucatán / Maya lowlands' },
+        ],
+      },
       {
         year: -500,
         label: 'Preclassic Maya fringe',
         approximation: 'schematic',
         regions: [
-          { id: 'yucatan', name: 'Yucatán / Maya lowlands', bbox: [-92, 14, -86, 22] },
+          { id: 'yucatan', name: 'Yucatán / Maya lowlands' },
         ],
       },
       {
@@ -1286,6 +1338,186 @@ export const spatialEntities = [
     timelineItemIds: ['meiji-japan'],
     sources: [
       { title: 'Wikipedia — Empire of Japan', url: 'https://en.wikipedia.org/wiki/Empire_of_Japan' },
+    ],
+  },
+
+  // --- Day 19: early Bronze Age fill (3000–1200 BCE) ---
+  {
+    id: 'mesopotamia',
+    name: 'Mesopotamia',
+    color: '#0F766E',
+    type: 'civilization',
+    description:
+      'Cradle of urban civilisation between the Tigris and Euphrates — schematic Sumer / Akkad / Babylon cores (not precise dynastic borders).',
+    keyYears: [-3500, -3000, -2500, -1800, -1200, -539],
+    overlays: [
+      {
+        year: -3000,
+        label: 'Early Sumerian cities',
+        approximation: 'schematic',
+        regions: [
+          { id: 'lower-mesopotamia', name: 'Lower Mesopotamia', bbox: [44, 30, 48, 34] },
+        ],
+      },
+      {
+        year: -2500,
+        label: 'Early Dynastic Sumer',
+        approximation: 'schematic',
+        regions: [
+          { id: 'lower-mesopotamia', name: 'Lower Mesopotamia' },
+          { id: 'mesopotamia', name: 'Mesopotamia basin' },
+        ],
+      },
+      {
+        year: -1800,
+        label: 'Old Babylonian world',
+        approximation: 'schematic',
+        regions: [
+          { id: 'mesopotamia', name: 'Mesopotamia' },
+          { id: 'levant', name: 'Fertile Crescent fringe' },
+        ],
+      },
+      {
+        year: -1200,
+        label: 'Late Bronze Mesopotamia',
+        approximation: 'schematic',
+        regions: [
+          { id: 'mesopotamia', name: 'Mesopotamia' },
+          { id: 'near-east', name: 'Near East fringe' },
+        ],
+      },
+    ],
+    timelineItemIds: ['mesopotamia'],
+    sources: [
+      { title: 'Wikipedia — Mesopotamia', url: 'https://en.wikipedia.org/wiki/Mesopotamia' },
+    ],
+  },
+  {
+    id: 'shang-china',
+    name: 'Shang Dynasty',
+    color: '#7C2D12',
+    type: 'empire',
+    description:
+      'Bronze Age Chinese dynasty on the Yellow River plain — schematic north-China core.',
+    keyYears: [-1600, -1400, -1200, -1046],
+    overlays: [
+      {
+        year: -1500,
+        label: 'Shang Yellow River core',
+        approximation: 'schematic',
+        regions: [
+          { id: 'north-china', name: 'North China plain' },
+          { id: 'yellow-river-core', name: 'Yellow River core', bbox: [108, 32, 118, 40] },
+        ],
+      },
+      {
+        year: -1200,
+        label: 'Late Shang',
+        approximation: 'schematic',
+        regions: [
+          { id: 'north-china', name: 'North China plain' },
+        ],
+      },
+    ],
+    timelineItemIds: ['ancient-china-shang'],
+    sources: [
+      { title: 'Wikipedia — Shang dynasty', url: 'https://en.wikipedia.org/wiki/Shang_dynasty' },
+    ],
+  },
+  {
+    id: 'phoenicia',
+    name: 'Phoenicia',
+    color: '#0369A1',
+    type: 'civilization',
+    description:
+      'Levantine seafaring city-states — schematic coastal strip (Tyre–Sidon–Byblos), not a unitary empire.',
+    keyYears: [-1500, -1200, -800, -300],
+    overlays: [
+      {
+        year: -1500,
+        label: 'Late Bronze Levant coast',
+        approximation: 'schematic',
+        regions: [
+          { id: 'phoenician-coast', name: 'Phoenician coast', bbox: [34.5, 32.5, 36.5, 35.5] },
+          { id: 'levant', name: 'Levant fringe' },
+        ],
+      },
+      {
+        year: -1000,
+        label: 'Iron Age Phoenician cities',
+        approximation: 'schematic',
+        regions: [
+          { id: 'phoenician-coast', name: 'Phoenician coast' },
+        ],
+      },
+    ],
+    timelineItemIds: ['phoenicia'],
+    sources: [
+      { title: 'Wikipedia — Phoenicia', url: 'https://en.wikipedia.org/wiki/Phoenicia' },
+    ],
+  },
+  {
+    id: 'olmec',
+    name: 'Olmec Civilisation',
+    color: '#854D0E',
+    type: 'civilization',
+    description:
+      'Formative Mesoamerican culture of the Gulf lowlands — schematic Olmec heartland.',
+    keyYears: [-1500, -1200, -900, -400],
+    overlays: [
+      {
+        year: -1500,
+        label: 'Early Olmec heartland',
+        approximation: 'schematic',
+        regions: [
+          { id: 'olmec-heartland', name: 'Gulf Olmec heartland', bbox: [-96, 16, -92, 20] },
+        ],
+      },
+      {
+        year: -900,
+        label: 'Olmec florescence',
+        approximation: 'schematic',
+        regions: [
+          { id: 'olmec-heartland', name: 'Gulf Olmec heartland' },
+          { id: 'mesoamerica', name: 'Mesoamerica fringe' },
+        ],
+      },
+    ],
+    timelineItemIds: ['olmec'],
+    sources: [
+      { title: 'Wikipedia — Olmec', url: 'https://en.wikipedia.org/wiki/Olmec' },
+    ],
+  },
+  {
+    id: 'kush',
+    name: 'Kingdom of Kush',
+    color: '#166534',
+    type: 'empire',
+    description:
+      'Nubian kingdom south of Egypt — schematic Upper Nile / Nubia core near the end of the Bronze Age window.',
+    keyYears: [-1070, -750, -590, 350],
+    overlays: [
+      {
+        year: -1000,
+        label: 'Early Kush / Nubia',
+        approximation: 'schematic',
+        regions: [
+          { id: 'nubia', name: 'Nubia / Upper Nile', bbox: [30, 12, 36, 22] },
+        ],
+      },
+      {
+        year: -700,
+        label: 'Napatan Kush',
+        approximation: 'schematic',
+        regions: [
+          { id: 'nubia', name: 'Nubia / Upper Nile' },
+          { id: 'egypt', name: 'Egypt fringe' },
+        ],
+      },
+    ],
+    timelineItemIds: ['kush'],
+    sources: [
+      { title: 'Wikipedia — Kingdom of Kush', url: 'https://en.wikipedia.org/wiki/Kingdom_of_Kush' },
     ],
   },
 ];
@@ -1500,6 +1732,23 @@ export const REGION_RINGS = {
   ],
   'korea-peninsula': [
     [124, 34], [126, 42], [130, 43], [129, 35], [127, 33], [124, 34],
+  ],
+
+  // --- Day 19 early Bronze Age rings ---
+  'lower-mesopotamia': [
+    [44, 30.5], [45, 33.5], [48, 34], [48, 31], [46, 30], [44, 30.5],
+  ],
+  'yellow-river-core': [
+    [108, 33], [110, 39], [116, 40], [118, 36], [115, 32], [110, 32], [108, 33],
+  ],
+  'phoenician-coast': [
+    [34.6, 32.8], [34.8, 35.2], [36.2, 35.4], [36.0, 33.0], [35.2, 32.6], [34.6, 32.8],
+  ],
+  'olmec-heartland': [
+    [-96, 16.5], [-95.5, 19.5], [-92.5, 20], [-92, 17], [-94, 16], [-96, 16.5],
+  ],
+  nubia: [
+    [30, 13], [31, 21], [35, 22], [36, 16], [34, 12], [31, 12], [30, 13],
   ],
 };
 

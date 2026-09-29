@@ -42,6 +42,13 @@ assert(!idsAt(1980).has('british-empire'), 'British OFF at 1980 (last keyframe 1
 assert(idsAt(1900).has('british-empire'), 'British ON at 1900');
 assert(idsAt(1900).has('qing-china'), 'Qing ON at 1900');
 
+
+assert(idsAt(-3000).has('mesopotamia'), 'Mesopotamia ON at −3000');
+assert(idsAt(-3000).has('ancient-egypt'), 'Egypt ON at −3000');
+assert(idsAt(-2500).size >= 2, `−2500 has ≥2 overlays (got ${idsAt(-2500).size})`);
+assert(idsAt(-2000).size >= 2, `−2000 has ≥3 overlays (got ${idsAt(-2000).size})`);
+assert(idsAt(-1500).size >= 4, `−1500 has ≥4 overlays (got ${idsAt(-1500).size})`);
+
 assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500).size})`);
 
 if (failed) {
