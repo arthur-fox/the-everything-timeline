@@ -3,6 +3,7 @@
  * Day 18: activation clamped to linked timeline lifespan + overlay keyframe span.
  * Day 19: early Bronze Age fill (Mesopotamia, early Egypt, Shang, Phoenicia, Olmec, Kush).
  * Day 20: living borders — morph rings between overlay keyframes + soft lifespan dissolve.
+ * Day 21: denser non-rectangular keyframes for hero empires + softer lifespan edge fades.
  *
  * Spatial entities + schematic region rings for Globe polygons.
  * Rings are intentionally rough — not GIS-accurate ancient borders.
@@ -20,6 +21,7 @@ import { morphEntityAtYear, ensureClockwise } from './globe-morph.js';
  * @property {string} id
  * @property {string} [name]
  * @property {[number, number, number, number]} [bbox] west,south,east,north degrees
+ * @property {[number, number][]} [ring] closed schematic polygon [lng,lat] (preferred for morph deform)
  */
 
 /**
@@ -52,15 +54,58 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'A major Mediterranean empire centered on Rome. At its height under Trajan it spanned three continents.',
-    keyYears: [-27, 117, 395, 476],
+    keyYears: [-27, 50, 117, 200, 395, 476],
     overlays: [
       {
         year: -27,
         label: 'Principate begins (Augustus)',
-        approximation: 'rough',
+        approximation: 'schematic',
         regions: [
-          { id: 'italy', name: 'Italy', bbox: [6.5, 36.5, 18.5, 47] },
-          { id: 'mediterranean', name: 'Mediterranean basin', bbox: [-10, 30, 37, 46] },
+          {
+            id: 'italy',
+            name: 'Italy',
+            ring: [
+              [8.2, 44.0], [9.5, 45.8], [12.5, 46.5], [13.8, 45.6], [12.4, 43.8],
+              [15.0, 42.0], [16.5, 41.0], [18.3, 40.2], [17.2, 38.9], [15.5, 38.0],
+              [13.0, 37.5], [12.5, 38.2], [14.0, 40.5], [12.0, 41.8], [10.5, 42.8],
+              [8.5, 43.5], [8.2, 44.0],
+            ],
+          },
+          {
+            id: 'mediterranean',
+            name: 'Mediterranean basin',
+            // Early: Italy-centric + Spain / N. Africa fringe (non-rect)
+            ring: [
+              [-9, 36], [-8, 42], [-1, 43], [4, 44], [10, 45], [14, 44],
+              [16, 40], [15, 36], [12, 33], [5, 32], [-2, 33], [-8, 35], [-9, 36],
+            ],
+          },
+        ],
+      },
+      {
+        year: 50,
+        label: 'Claudian expansion (approx.)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'italy',
+            name: 'Italy',
+            ring: [
+              [8.2, 44.0], [9.5, 45.8], [12.5, 46.5], [13.8, 45.6], [12.4, 43.8],
+              [15.0, 42.0], [16.5, 41.0], [18.3, 40.2], [17.2, 38.9], [15.5, 38.0],
+              [13.0, 37.5], [12.5, 38.2], [14.0, 40.5], [12.0, 41.8], [10.5, 42.8],
+              [8.5, 43.5], [8.2, 44.0],
+            ],
+          },
+          {
+            id: 'mediterranean',
+            name: 'Mediterranean basin',
+            // Stretch into Gaul, Britain fringe, deeper N. Africa
+            ring: [
+              [-9.5, 35], [-8, 44], [-4, 50], [2, 51], [8, 50], [14, 48],
+              [18, 45], [20, 42], [18, 36], [14, 32], [6, 30], [-2, 32], [-8, 34], [-9.5, 35],
+            ],
+          },
         ],
       },
       {
@@ -68,9 +113,61 @@ export const spatialEntities = [
         label: 'Height under Trajan',
         approximation: 'rough',
         regions: [
-          { id: 'mediterranean', name: 'Mediterranean basin', bbox: [-10, 24, 45, 56] },
-          { id: 'italy', name: 'Italy' },
-          { id: 'near-east', name: 'Near East fringe', bbox: [35, 30, 48, 42] },
+          {
+            id: 'mediterranean',
+            name: 'Mediterranean basin',
+            // Peak: Britain → Near East, deep into Balkans / N. Africa
+            ring: [
+              [-9, 36], [-8, 44], [-4, 52], [2, 56], [10, 54], [18, 50],
+              [26, 48], [34, 46], [40, 42], [42, 36], [40, 30], [34, 26],
+              [26, 24], [16, 26], [6, 28], [-2, 32], [-8, 35], [-9, 36],
+            ],
+          },
+          {
+            id: 'italy',
+            name: 'Italy',
+            ring: [
+              [8.2, 44.0], [9.5, 45.8], [12.5, 46.5], [13.8, 45.6], [12.4, 43.8],
+              [15.0, 42.0], [16.5, 41.0], [18.3, 40.2], [17.2, 38.9], [15.5, 38.0],
+              [13.0, 37.5], [12.5, 38.2], [14.0, 40.5], [12.0, 41.8], [10.5, 42.8],
+              [8.5, 43.5], [8.2, 44.0],
+            ],
+          },
+          {
+            id: 'near-east',
+            name: 'Near East fringe',
+            ring: [
+              [34, 31], [35.5, 37], [38, 41], [44, 40], [48, 37],
+              [46, 32], [42, 30], [38, 29.5], [34, 31],
+            ],
+          },
+        ],
+      },
+      {
+        year: 200,
+        label: 'Severan high (approx.)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'mediterranean',
+            name: 'Mediterranean basin',
+            // Slight Mesopotamia pull-back; Britain + Africa still held
+            ring: [
+              [-9, 36], [-8, 44], [-4, 52], [2, 55], [10, 53], [18, 49],
+              [26, 47], [34, 45], [38, 40], [40, 34], [36, 28], [28, 25],
+              [18, 26], [8, 28], [0, 32], [-6, 34], [-9, 36],
+            ],
+          },
+          {
+            id: 'italy',
+            name: 'Italy',
+            ring: [
+              [8.2, 44.0], [9.5, 45.8], [12.5, 46.5], [13.8, 45.6], [12.4, 43.8],
+              [15.0, 42.0], [16.5, 41.0], [18.3, 40.2], [17.2, 38.9], [15.5, 38.0],
+              [13.0, 37.5], [12.5, 38.2], [14.0, 40.5], [12.0, 41.8], [10.5, 42.8],
+              [8.5, 43.5], [8.2, 44.0],
+            ],
+          },
         ],
       },
       {
@@ -78,7 +175,16 @@ export const spatialEntities = [
         label: 'East–West division',
         approximation: 'schematic',
         regions: [
-          { id: 'mediterranean', name: 'Mediterranean basin', bbox: [-10, 30, 40, 48] },
+          {
+            id: 'mediterranean',
+            name: 'Mediterranean basin',
+            // Split-era: still broad but truncated north & east
+            ring: [
+              [-9, 36], [-7, 42], [-1, 46], [6, 48], [14, 47], [22, 45],
+              [30, 43], [36, 40], [38, 34], [34, 30], [26, 28], [16, 30],
+              [6, 32], [-2, 34], [-9, 36],
+            ],
+          },
         ],
       },
     ],
@@ -448,15 +554,61 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Largest contiguous land empire in history, founded by Genghis Khan; linked East and West along the Silk Road.',
-    keyYears: [1206, 1279, 1368],
+    keyYears: [1206, 1227, 1241, 1279, 1300, 1368],
     overlays: [
       {
         year: 1227,
         label: 'At Genghis Khan’s death',
-        approximation: 'rough',
+        approximation: 'schematic',
         regions: [
-          { id: 'mongolia', name: 'Mongolia / steppe core', bbox: [87, 42, 120, 52] },
-          { id: 'central-asia', name: 'Central Asia', bbox: [50, 35, 80, 48] },
+          {
+            id: 'mongolia',
+            name: 'Mongolia / steppe core',
+            ring: [
+              [87, 44], [95, 50], [112, 52], [120, 50], [118, 44],
+              [105, 42], [92, 42], [87, 44],
+            ],
+          },
+          {
+            id: 'central-asia',
+            name: 'Central Asia',
+            ring: [
+              [50, 36], [55, 46], [70, 48], [80, 45], [78, 38],
+              [65, 35], [55, 35], [50, 36],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1241,
+        label: 'Westward surge (Ögedei era)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'mongolia',
+            name: 'Mongolia / steppe core',
+            ring: [
+              [85, 42], [92, 50], [110, 53], [122, 51], [120, 44],
+              [108, 40], [95, 40], [85, 42],
+            ],
+          },
+          {
+            id: 'central-asia',
+            name: 'Central Asia',
+            // Stretched west toward Caspian / Rus fringe
+            ring: [
+              [40, 38], [48, 48], [62, 52], [78, 50], [82, 42],
+              [75, 36], [58, 34], [45, 35], [40, 38],
+            ],
+          },
+          {
+            id: 'eurasian-steppe',
+            name: 'Pontic–Caspian fringe',
+            ring: [
+              [28, 44], [35, 52], [50, 54], [58, 50], [55, 42],
+              [42, 40], [30, 42], [28, 44],
+            ],
+          },
         ],
       },
       {
@@ -464,9 +616,61 @@ export const spatialEntities = [
         label: 'Yuan peak under Kublai',
         approximation: 'rough',
         regions: [
-          { id: 'eurasian-steppe', name: 'Eurasian steppe belt', bbox: [30, 35, 135, 55] },
-          { id: 'china-proper', name: 'China under Yuan', bbox: [100, 20, 125, 42] },
-          { id: 'persia', name: 'Ilkhanate Persia', bbox: [44, 25, 65, 40] },
+          {
+            id: 'eurasian-steppe',
+            name: 'Eurasian steppe belt',
+            // Broad belt — non-rect so morph deforms, not only scales
+            ring: [
+              [30, 42], [40, 50], [70, 55], [100, 55], [130, 52], [135, 45],
+              [120, 38], [90, 36], [60, 35], [40, 38], [30, 42],
+            ],
+          },
+          {
+            id: 'china-proper',
+            name: 'China under Yuan',
+            ring: [
+              [100, 22], [103, 32], [108, 40], [115, 42], [122, 41], [122, 30],
+              [120, 24], [112, 21], [105, 22], [100, 22],
+            ],
+          },
+          {
+            id: 'persia',
+            name: 'Ilkhanate Persia',
+            ring: [
+              [44, 26], [46, 38], [55, 40], [62, 37], [60, 28], [52, 25], [44, 26],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1300,
+        label: 'Khanates still vast (approx.)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'eurasian-steppe',
+            name: 'Eurasian steppe belt',
+            // Slightly pinched / fragmented look vs 1279 peak
+            ring: [
+              [32, 40], [42, 48], [72, 53], [100, 53], [128, 50], [132, 44],
+              [118, 36], [88, 34], [58, 34], [40, 36], [32, 40],
+            ],
+          },
+          {
+            id: 'china-proper',
+            name: 'China under Yuan',
+            ring: [
+              [102, 22], [105, 32], [110, 40], [118, 42], [122, 40], [122, 28],
+              [118, 23], [110, 21], [104, 22], [102, 22],
+            ],
+          },
+          {
+            id: 'persia',
+            name: 'Ilkhanate Persia',
+            ring: [
+              [44, 27], [47, 37], [56, 39], [62, 35], [58, 27], [50, 25], [44, 27],
+            ],
+          },
         ],
       },
     ],
@@ -506,16 +710,89 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Turkish empire spanning southeastern Europe, Anatolia, and much of the eastern Mediterranean.',
-    keyYears: [1453, 1520, 1683, 1914],
+    keyYears: [1453, 1520, 1600, 1683, 1800, 1900, 1914],
     overlays: [
+      {
+        year: 1453,
+        label: 'After Constantinople',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'anatolia-balkans',
+            name: 'Anatolia / Balkans',
+            // Compact: Anatolia + Thrace / southern Balkans
+            ring: [
+              [26, 36], [27, 41], [29, 42.5], [33, 42], [38, 41], [42, 39],
+              [43, 36], [38, 35], [30, 35], [26, 36],
+            ],
+          },
+        ],
+      },
       {
         year: 1520,
         label: 'Early modern Ottoman peak approach',
         approximation: 'schematic',
         regions: [
-          { id: 'anatolia-balkans', name: 'Anatolia / Balkans', bbox: [18, 35, 45, 46] },
-          { id: 'levant', name: 'Levant' },
-          { id: 'egypt', name: 'Egypt' },
+          {
+            id: 'anatolia-balkans',
+            name: 'Anatolia / Balkans',
+            // Crescent: deeper Balkans, still Anatolia-heavy
+            ring: [
+              [19, 36], [20, 43], [26, 45], [30, 45], [36, 43], [42, 41],
+              [45, 37], [42, 35], [35, 34], [26, 35], [19, 36],
+            ],
+          },
+          {
+            id: 'levant',
+            name: 'Levant',
+            ring: [
+              [34, 30.5], [35, 36.5], [39, 37], [42, 34], [40, 31], [36, 30], [34, 30.5],
+            ],
+          },
+          {
+            id: 'egypt',
+            name: 'Egypt',
+            ring: [
+              [25, 22], [28, 31.5], [34, 31.5], [35, 28], [33, 22], [29, 22], [25, 22],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1600,
+        label: 'Mid expansion (approx.)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'anatolia-balkans',
+            name: 'Anatolia / Balkans',
+            // Push into Hungary / north Balkans — silhouette stretches NW
+            ring: [
+              [16, 35], [17, 44], [22, 47], [28, 47], [35, 44], [43, 42],
+              [47, 38], [45, 34], [36, 34], [26, 34], [18, 35], [16, 35],
+            ],
+          },
+          {
+            id: 'levant',
+            name: 'Levant',
+            ring: [
+              [34, 30], [35, 37], [40, 37.5], [43, 34], [41, 30.5], [36, 29.5], [34, 30],
+            ],
+          },
+          {
+            id: 'egypt',
+            name: 'Egypt',
+            ring: [
+              [24, 22], [27, 31.5], [34, 31.8], [35.5, 28], [33, 21.5], [28, 21.5], [24, 22],
+            ],
+          },
+          {
+            id: 'maghreb-east',
+            name: 'Eastern Maghreb fringe',
+            ring: [
+              [8, 30], [10, 35], [18, 36], [22, 33], [18, 30], [10, 30], [8, 30],
+            ],
+          },
         ],
       },
       {
@@ -523,10 +800,66 @@ export const spatialEntities = [
         label: 'Ottoman high water',
         approximation: 'schematic',
         regions: [
-          { id: 'anatolia-balkans', name: 'Anatolia / Balkans', bbox: [15, 34, 48, 48] },
-          { id: 'levant', name: 'Levant' },
-          { id: 'egypt', name: 'Egypt' },
-          { id: 'maghreb-east', name: 'Eastern Maghreb', bbox: [5, 30, 25, 37] },
+          {
+            id: 'anatolia-balkans',
+            name: 'Anatolia / Balkans',
+            // Peak footprint — widest NW reach before Vienna turn
+            ring: [
+              [15, 34], [16, 45], [22, 48], [30, 48], [38, 45], [45, 42],
+              [48, 37], [46, 34], [38, 34], [26, 34], [18, 34], [15, 34],
+            ],
+          },
+          {
+            id: 'levant',
+            name: 'Levant',
+            ring: [
+              [34, 30.5], [35, 36.5], [39, 37], [42, 34], [40, 31], [36, 30], [34, 30.5],
+            ],
+          },
+          {
+            id: 'egypt',
+            name: 'Egypt',
+            ring: [
+              [25, 22], [28, 31.5], [34, 31.5], [35, 28], [33, 22], [29, 22], [25, 22],
+            ],
+          },
+          {
+            id: 'maghreb-east',
+            name: 'Eastern Maghreb',
+            ring: [
+              [5, 30], [8, 36], [20, 37], [25, 33], [22, 30], [10, 30], [5, 30],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1800,
+        label: 'Post-peak contraction',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'anatolia-balkans',
+            name: 'Anatolia / Balkans',
+            // Balkans shrinking from the NW; Anatolia still solid
+            ring: [
+              [22, 36], [23, 43], [28, 44], [35, 43], [42, 41], [45, 37],
+              [43, 35], [35, 35], [26, 35], [22, 36],
+            ],
+          },
+          {
+            id: 'levant',
+            name: 'Levant',
+            ring: [
+              [34, 30.5], [35, 36], [39, 36.5], [41, 33.5], [39, 30.5], [35.5, 30], [34, 30.5],
+            ],
+          },
+          {
+            id: 'egypt',
+            name: 'Egypt',
+            ring: [
+              [25, 22], [28, 31], [33.5, 31], [34.5, 27.5], [32, 22], [28, 22], [25, 22],
+            ],
+          },
         ],
       },
       {
@@ -534,8 +867,22 @@ export const spatialEntities = [
         label: 'Late Ottoman (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'anatolia-balkans', name: 'Anatolia / Balkans remnant', bbox: [26, 36, 45, 42] },
-          { id: 'levant', name: 'Levant' },
+          {
+            id: 'anatolia-balkans',
+            name: 'Anatolia / Balkans remnant',
+            // Mostly Anatolia + thin European toehold
+            ring: [
+              [26, 36], [27, 40], [29, 41.5], [32, 41], [38, 41], [42, 39],
+              [44, 36], [40, 35], [32, 35], [26, 36],
+            ],
+          },
+          {
+            id: 'levant',
+            name: 'Levant',
+            ring: [
+              [34, 30.5], [35, 36.5], [39, 37], [42, 34], [40, 31], [36, 30], [34, 30.5],
+            ],
+          },
         ],
       },
     ],
@@ -788,15 +1135,63 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Oceanic empire with settler colonies, Indian Raj, and African/Asian possessions at its Victorian peak.',
-    keyYears: [1700, 1815, 1900, 1920],
+    keyYears: [1700, 1780, 1850, 1900, 1920],
     overlays: [
       {
         year: 1700,
         label: 'Early British Atlantic',
         approximation: 'schematic',
         regions: [
-          { id: 'british-isles', name: 'British Isles', bbox: [-8, 50, 2, 59] },
-          { id: 'east-north-america', name: 'Eastern North America fringe', bbox: [-80, 30, -60, 48] },
+          {
+            id: 'british-isles',
+            name: 'British Isles',
+            ring: [
+              [-8, 51], [-7, 58], [-2, 59], [2, 56], [1, 51], [-3, 50], [-8, 51],
+            ],
+          },
+          {
+            id: 'east-north-america',
+            name: 'Eastern North America fringe',
+            ring: [
+              [-80, 32], [-78, 46], [-65, 48], [-60, 40], [-70, 30], [-78, 30], [-80, 32],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1780,
+        label: 'Atlantic + India foothold',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'british-isles',
+            name: 'British Isles',
+            ring: [
+              [-8, 51], [-7, 58], [-2, 59], [2, 56], [1, 51], [-3, 50], [-8, 51],
+            ],
+          },
+          {
+            id: 'east-north-america',
+            name: 'Eastern North America fringe',
+            // Pre-/post-revolution coastal strip — slightly pinched vs 1700
+            ring: [
+              [-78, 31], [-76, 44], [-68, 46], [-62, 38], [-68, 30], [-76, 30], [-78, 31],
+            ],
+          },
+          {
+            id: 'canada-east',
+            name: 'Eastern Canada',
+            ring: [
+              [-80, 44], [-78, 54], [-62, 54], [-56, 48], [-64, 43], [-76, 43], [-80, 44],
+            ],
+          },
+          {
+            id: 'india-north',
+            name: 'India (Bengal / Company core)',
+            ring: [
+              [78, 20], [80, 28], [88, 28], [90, 24], [86, 20], [80, 19], [78, 20],
+            ],
+          },
         ],
       },
       {
@@ -804,11 +1199,48 @@ export const spatialEntities = [
         label: 'Victorian expansion',
         approximation: 'schematic',
         regions: [
-          { id: 'british-isles', name: 'British Isles' },
-          { id: 'india-north', name: 'India (Raj core)' },
-          { id: 'india-deccan', name: 'India Deccan' },
-          { id: 'australia-east', name: 'Eastern Australia', bbox: [140, -38, 154, -12] },
-          { id: 'south-africa', name: 'South Africa fringe', bbox: [16, -35, 32, -22] },
+          {
+            id: 'british-isles',
+            name: 'British Isles',
+            ring: [
+              [-8, 51], [-7, 58], [-2, 59], [2, 56], [1, 51], [-3, 50], [-8, 51],
+            ],
+          },
+          {
+            id: 'india-north',
+            name: 'India (Raj core)',
+            ring: [
+              [72, 22], [74, 32], [86, 32], [90, 28], [88, 22], [80, 20], [74, 20], [72, 22],
+            ],
+          },
+          {
+            id: 'india-deccan',
+            name: 'India Deccan',
+            ring: [
+              [74, 14], [76, 22], [84, 22], [85, 16], [80, 12], [76, 12], [74, 14],
+            ],
+          },
+          {
+            id: 'australia-east',
+            name: 'Eastern Australia',
+            ring: [
+              [140, -36], [142, -16], [152, -12], [154, -28], [150, -38], [144, -38], [140, -36],
+            ],
+          },
+          {
+            id: 'south-africa',
+            name: 'South Africa fringe',
+            ring: [
+              [16, -34], [18, -24], [30, -22], [32, -28], [28, -35], [20, -35], [16, -34],
+            ],
+          },
+          {
+            id: 'canada-east',
+            name: 'Eastern Canada',
+            ring: [
+              [-80, 44], [-78, 54], [-60, 55], [-55, 48], [-62, 42], [-75, 42], [-80, 44],
+            ],
+          },
         ],
       },
       {
@@ -816,14 +1248,125 @@ export const spatialEntities = [
         label: 'British peak (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'british-isles', name: 'British Isles' },
-          { id: 'india-north', name: 'India' },
-          { id: 'india-deccan', name: 'India Deccan' },
-          { id: 'india-south', name: 'South India' },
-          { id: 'australia-east', name: 'Australia east' },
-          { id: 'canada-east', name: 'Eastern Canada', bbox: [-80, 42, -55, 55] },
-          { id: 'egypt', name: 'Egypt (occupation)' },
-          { id: 'south-africa', name: 'South Africa' },
+          {
+            id: 'british-isles',
+            name: 'British Isles',
+            ring: [
+              [-8, 51], [-7, 58], [-2, 59], [2, 56], [1, 51], [-3, 50], [-8, 51],
+            ],
+          },
+          {
+            id: 'india-north',
+            name: 'India',
+            ring: [
+              [72, 22], [74, 32], [86, 32], [90, 28], [88, 22], [80, 20], [74, 20], [72, 22],
+            ],
+          },
+          {
+            id: 'india-deccan',
+            name: 'India Deccan',
+            ring: [
+              [74, 14], [76, 22], [84, 22], [85, 16], [80, 12], [76, 12], [74, 14],
+            ],
+          },
+          {
+            id: 'india-south',
+            name: 'South India',
+            ring: [
+              [74, 8], [76, 15], [80, 16], [80, 10], [78, 8], [74, 8],
+            ],
+          },
+          {
+            id: 'australia-east',
+            name: 'Australia east',
+            ring: [
+              [140, -36], [142, -16], [152, -12], [154, -28], [150, -38], [144, -38], [140, -36],
+            ],
+          },
+          {
+            id: 'canada-east',
+            name: 'Eastern Canada',
+            ring: [
+              [-80, 44], [-78, 54], [-60, 55], [-55, 48], [-62, 42], [-75, 42], [-80, 44],
+            ],
+          },
+          {
+            id: 'egypt',
+            name: 'Egypt (occupation)',
+            ring: [
+              [25, 22], [28, 31.5], [34, 31.5], [35, 28], [33, 22], [29, 22], [25, 22],
+            ],
+          },
+          {
+            id: 'south-africa',
+            name: 'South Africa',
+            ring: [
+              [16, -34], [18, -24], [30, -22], [32, -28], [28, -35], [20, -35], [16, -34],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1920,
+        label: 'Interwar peak extent (approx.)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'british-isles',
+            name: 'British Isles',
+            ring: [
+              [-8, 51], [-7, 58], [-2, 59], [2, 56], [1, 51], [-3, 50], [-8, 51],
+            ],
+          },
+          {
+            id: 'india-north',
+            name: 'India',
+            ring: [
+              [70, 22], [72, 33], [86, 33], [92, 28], [90, 22], [80, 19], [72, 20], [70, 22],
+            ],
+          },
+          {
+            id: 'india-deccan',
+            name: 'India Deccan',
+            ring: [
+              [74, 14], [76, 22], [84, 22], [85, 16], [80, 12], [76, 12], [74, 14],
+            ],
+          },
+          {
+            id: 'india-south',
+            name: 'South India',
+            ring: [
+              [74, 8], [76, 15], [80, 16], [80, 10], [78, 8], [74, 8],
+            ],
+          },
+          {
+            id: 'australia-east',
+            name: 'Australia east',
+            ring: [
+              [140, -36], [142, -16], [152, -12], [154, -28], [150, -38], [144, -38], [140, -36],
+            ],
+          },
+          {
+            id: 'canada-east',
+            name: 'Eastern Canada',
+            ring: [
+              [-80, 44], [-78, 54], [-60, 55], [-55, 48], [-62, 42], [-75, 42], [-80, 44],
+            ],
+          },
+          {
+            id: 'egypt',
+            name: 'Egypt / Near East mandate fringe',
+            ring: [
+              [25, 22], [28, 31.5], [34, 31.5], [36, 30], [34, 24], [29, 22], [25, 22],
+            ],
+          },
+          {
+            id: 'south-africa',
+            name: 'South Africa',
+            ring: [
+              [16, -34], [18, -24], [30, -22], [32, -28], [28, -35], [20, -35], [16, -34],
+            ],
+          },
         ],
       },
     ],
@@ -1853,8 +2396,8 @@ export function getOverlayPolygonFeatures(year, entities = spatialEntities) {
   return features;
 }
 
-/** Soft edge (years) past first/last overlay keyframe. Not a ±80 sticky window. */
-export const OVERLAY_EDGE_GRACE = 15;
+/** Soft edge (years) past first/last overlay keyframe. Day 21: 20y for gentler appear/disappear. */
+export const OVERLAY_EDGE_GRACE = 20;
 
 /**
  * @deprecated Day 18 — was ±80 sticky activation; now an alias of OVERLAY_EDGE_GRACE.

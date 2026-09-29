@@ -1,5 +1,6 @@
 /**
  * Day 20 / PR F slice 1 — schematic ring morphing between overlay keyframes.
+ * Day 21 — denser non-rect keyframes (data) + smoothstep lifespan edge fades.
  * Resample → lerp lng/lat (antimeridian-aware). Unmatched regions fade via scale-to-centroid.
  */
 
@@ -208,20 +209,27 @@ export function findBracketingOverlays(overlays, year) {
   return { prev: last, next: last, t: 1 };
 }
 
+/** Smoothstep (Hermite) — gentler appear/disappear than linear ramps. */
+export function smoothstep01(t) {
+  const x = Math.max(0, Math.min(1, Number(t)));
+  return x * x * (3 - 2 * x);
+}
+
 /**
  * Soft lifespan edge factor in [0,1] — fades across `grace` years at start/end.
+ * Day 21: smoothstep easing so cast pops are less abrupt than linear ramps.
  * @param {number} year
  * @param {{ start: number, end: number }} lifespan
  * @param {number} grace
  */
 export function lifespanEdgeFactor(year, lifespan, grace) {
-  const g = Math.max(1, Number(grace) || 15);
+  const g = Math.max(1, Number(grace) || 20);
   const { start, end } = lifespan;
   if (!(Number.isFinite(start) && Number.isFinite(end))) return 1;
   if (year < start || year > end) return 0;
   let f = 1;
-  if (year < start + g) f = Math.min(f, (year - start) / g);
-  if (year > end - g) f = Math.min(f, (end - year) / g);
+  if (year < start + g) f = Math.min(f, smoothstep01((year - start) / g));
+  if (year > end - g) f = Math.min(f, smoothstep01((end - year) / g));
   return Math.max(0, Math.min(1, f));
 }
 
@@ -294,8 +302,8 @@ export function morphEntityAtYear(entity, year, resolveRing, lifespan, edgeGrace
 
     if (!ring) continue;
 
-    // Soft dissolve near lifespan edges (shrink + fade)
-    const edgeScale = 0.55 + 0.45 * edge;
+    // Soft dissolve near lifespan edges (shrink + fade) — Day 21: gentler shrink floor
+    const edgeScale = 0.4 + 0.6 * edge;
     if (edge < 0.999) {
       ring = scaleRingTowardCentroid(ring, edgeScale);
     }

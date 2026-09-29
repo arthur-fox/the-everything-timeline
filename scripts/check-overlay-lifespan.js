@@ -1,5 +1,6 @@
 /**
- * Day 18–20 — sanity checks for globe overlay lifespan + morphing.
+ * Day 18–21 — sanity checks for globe overlay lifespan + morphing.
+ * Day 21: denser hero keyframes + non-rect rings + softer edge fades.
  */
 import {
   getActiveOverlaysAtYear,
@@ -7,11 +8,14 @@ import {
   getOverlayPolygonFeatures,
   spatialEntities,
   OVERLAY_EDGE_GRACE,
+  resolveRegionRing,
 } from '../src/globe-overlays.js';
 import {
   lerpRings,
   MORPH_RING_SAMPLES,
   findBracketingOverlays,
+  lifespanEdgeFactor,
+  smoothstep01,
 } from '../src/globe-morph.js';
 
 let failed = 0;
@@ -42,7 +46,7 @@ assert(!idsAt(1980).has('ottoman-empire'), 'Ottoman OFF at 1980');
 
 assert(!idsAt(1980).has('qing-china'), 'Qing OFF at 1980');
 assert(!idsAt(1980).has('russian-empire'), 'Russian OFF at 1980');
-assert(!idsAt(1980).has('british-empire'), 'British OFF at 1980 (last keyframe 1900)');
+assert(!idsAt(1980).has('british-empire'), 'British OFF at 1980 (last keyframe 1920)');
 
 assert(idsAt(1900).has('british-empire'), 'British ON at 1900');
 assert(idsAt(1900).has('qing-china'), 'Qing ON at 1900');
@@ -68,9 +72,13 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
 }
 
 {
-  const br = findBracketingOverlays(ott.overlays, 1600);
-  assert(br.prev?.year === 1520 && br.next?.year === 1683, 'Ottoman brackets 1520–1683 at 1600');
-  assert(br.t > 0.4 && br.t < 0.6, `Ottoman t~0.5 at 1600 (got ${br.t})`);
+  // Day 21 denser keyframes: 1600 is now a snapshot (not mid-lerp between 1520–1683)
+  assert(ott.overlays.some((o) => o.year === 1600), 'Ottoman has keyframe at 1600');
+  const brAt = findBracketingOverlays(ott.overlays, 1600);
+  assert(brAt.next?.year === 1600 && brAt.t === 1, 'Ottoman at 1600 lands on keyframe (t=1)');
+  const brMid = findBracketingOverlays(ott.overlays, 1560);
+  assert(brMid.prev?.year === 1520 && brMid.next?.year === 1600, 'Ottoman brackets 1520–1600 at 1560');
+  assert(brMid.t > 0.4 && brMid.t < 0.6, `Ottoman t~0.5 at 1560 (got ${brMid.t})`);
 
   function totalBBoxArea(year) {
     return getOverlayPolygonFeatures(year)
@@ -135,6 +143,51 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
     const span = Math.max(maxX - minX, maxY - minY);
     assert(span < 120, `${f.entityId}/${f.regionId} span ${span.toFixed(1)} < 120°`);
   }
+}
+
+
+// Day 21 — denser non-rect hero keyframes + soft edge
+{
+  assert(Math.abs(smoothstep01(0) - 0) < 1e-9, 'smoothstep(0)=0');
+  assert(Math.abs(smoothstep01(1) - 1) < 1e-9, 'smoothstep(1)=1');
+  assert(smoothstep01(0.5) > 0.49 && smoothstep01(0.5) < 0.51, 'smoothstep(0.5)~0.5');
+  // Mid-ramp is gentler than linear near the tips (derivative 0 at 0/1)
+  assert(smoothstep01(0.1) < 0.1, `smoothstep(0.1)=${smoothstep01(0.1)} < 0.1 (soft tip)`);
+
+  const heroes = ['ottoman-empire', 'roman-empire', 'mongol-empire', 'british-empire'];
+  for (const id of heroes) {
+    const ent = spatialEntities.find((e) => e.id === id);
+    assert(!!ent, `${id} exists`);
+    assert((ent.overlays || []).length >= 4, `${id} has ≥4 overlay keyframes (got ${ent.overlays?.length})`);
+
+    let nonRect = 0;
+    for (const ov of ent.overlays || []) {
+      for (const region of ov.regions || []) {
+        if (typeof region !== 'object') continue;
+        const ring = resolveRegionRing(region);
+        if (!ring) continue;
+        const verts = ring.length - 1; // open count
+        if (verts > 4) nonRect += 1;
+      }
+    }
+    assert(nonRect >= 3, `${id} has ≥3 non-rect rings (got ${nonRect})`);
+  }
+
+  // Ottoman core morph deforms (not only scales): mid ring between 1520–1600 differs in vertex path
+  const ott = spatialEntities.find((e) => e.id === 'ottoman-empire');
+  const o1520 = ott.overlays.find((o) => o.year === 1520);
+  const o1600 = ott.overlays.find((o) => o.year === 1600);
+  const rA = resolveRegionRing(o1520.regions.find((r) => r.id === 'anatolia-balkans'));
+  const rB = resolveRegionRing(o1600.regions.find((r) => r.id === 'anatolia-balkans'));
+  assert(rA && rB && rA.length > 5 && rB.length > 5, 'Ottoman anatolia-balkans rings are multi-vertex');
+  const mid = lerpRings(rA, rB, 0.5);
+  assert(!!mid && mid.length > 5, 'Ottoman mid morph ring is dense (not 4-corner bbox)');
+
+  // Soft edge: near lifespan start, factor is between 0 and 1 (not a hard pop)
+  const life = getEntityLifespan(ott);
+  const nearStart = life.start + Math.max(2, Math.floor(OVERLAY_EDGE_GRACE * 0.25));
+  const edge = lifespanEdgeFactor(nearStart, life, OVERLAY_EDGE_GRACE);
+  assert(edge > 0 && edge < 1, `Ottoman edge factor soft at ${nearStart} (got ${edge})`);
 }
 
 if (failed) {
