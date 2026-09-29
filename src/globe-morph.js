@@ -138,11 +138,35 @@ export function lerpLng(a, b, t) {
  * @param {number} t
  * @param {number} [samples]
  */
+/**
+ * Lerp two closed rings. Prefer corner lerp for simple quads (bboxes) —
+ * dense perimeter resampling was producing Globe.gl complement fills (planet wash).
+ */
 export function lerpRings(ringA, ringB, t, samples = MORPH_RING_SAMPLES) {
+  const tt = Math.max(0, Math.min(1, t));
+  if (tt <= 0.001) return ensureClockwise(ringA);
+  if (tt >= 0.999) return ensureClockwise(ringB);
+
+  const openA = (ringA || []).slice(0, -1);
+  const openB = (ringB || []).slice(0, -1);
+  // Simple quad / bbox path: lerp the 4 corners in order (after CW normalize)
+  const aCw = ensureClockwise(ringA);
+  const bCw = ensureClockwise(ringB);
+  if (aCw && bCw && aCw.length === 5 && bCw.length === 5) {
+    const out = [];
+    for (let i = 0; i < 4; i += 1) {
+      out.push([
+        lerpLng(aCw[i][0], bCw[i][0], tt),
+        aCw[i][1] + (bCw[i][1] - aCw[i][1]) * tt,
+      ]);
+    }
+    out.push([out[0][0], out[0][1]]);
+    return ensureClockwise(out);
+  }
+
   const a = resampleRing(ringA, samples);
   const b = resampleRing(ringB, samples);
-  if (!a || !b) return a || b;
-  const tt = Math.max(0, Math.min(1, t));
+  if (!a || !b) return ensureClockwise(a || b);
   const out = [];
   for (let i = 0; i < samples; i += 1) {
     out.push([
@@ -251,17 +275,21 @@ export function morphEntityAtYear(entity, year, resolveRing, lifespan, edgeGrace
     let regionOpacity = baseOpacity;
 
     if (a && b) {
-      ring = lerpRings(a.ring, b.ring, t);
+      // Identical geometry (shared REGION_RINGS) — no morph, avoid resample artifacts
+      const same =
+        a.ring.length === b.ring.length &&
+        a.ring.every((p, i) => p[0] === b.ring[i][0] && p[1] === b.ring[i][1]);
+      ring = same ? ensureClockwise(a.ring) : lerpRings(a.ring, b.ring, t);
     } else if (b && !a) {
-      // Fade in: grow from small toward full as t → 1
-      const grown = scaleRingTowardCentroid(resampleRing(b.ring), Math.max(0.08, t));
+      // Fade in: grow from small toward full as t → 1 (no dense resample)
+      const grown = scaleRingTowardCentroid(ensureClockwise(b.ring), Math.max(0.12, t));
       ring = grown;
-      regionOpacity = baseOpacity * Math.max(0.15, t);
+      regionOpacity = baseOpacity * Math.max(0.2, t);
     } else if (a && !b) {
       // Fade out: shrink as t → 1
-      const shrink = scaleRingTowardCentroid(resampleRing(a.ring), Math.max(0.08, 1 - t));
+      const shrink = scaleRingTowardCentroid(ensureClockwise(a.ring), Math.max(0.12, 1 - t));
       ring = shrink;
-      regionOpacity = baseOpacity * Math.max(0.15, 1 - t);
+      regionOpacity = baseOpacity * Math.max(0.2, 1 - t);
     }
 
     if (!ring) continue;
