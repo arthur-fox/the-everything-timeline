@@ -1,6 +1,7 @@
 /**
- * Day 18–21 — sanity checks for globe overlay lifespan + morphing.
+ * Day 18–22 — sanity checks for globe overlay lifespan + morphing.
  * Day 21: denser hero keyframes + non-rect rings + softer edge fades.
+ * Day 22: colony fragment/split + higher overlay opacity.
  */
 import {
   getActiveOverlaysAtYear,
@@ -16,6 +17,7 @@ import {
   findBracketingOverlays,
   lifespanEdgeFactor,
   smoothstep01,
+  morphEntityAtYear,
 } from '../src/globe-morph.js';
 
 let failed = 0;
@@ -188,6 +190,86 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   const nearStart = life.start + Math.max(2, Math.floor(OVERLAY_EDGE_GRACE * 0.25));
   const edge = lifespanEdgeFactor(nearStart, life, OVERLAY_EDGE_GRACE);
   assert(edge > 0 && edge < 1, `Ottoman edge factor soft at ${nearStart} (got ${edge})`);
+}
+
+
+// Day 22 — colony fragment/split + opacity bump
+{
+  const brit = spatialEntities.find((e) => e.id === 'british-empire');
+  const parts1850 = morphEntityAtYear(brit, 1850, resolveRegionRing, getEntityLifespan(brit), OVERLAY_EDGE_GRACE);
+  assert(parts1850.length > 0, 'British morphs at 1850');
+  const maxOp = Math.max(...parts1850.map((p) => p.opacity));
+  assert(maxOp >= 0.40 && maxOp <= 0.50, `British base opacity ~0.42–0.45 (got max ${maxOp.toFixed(3)})`);
+
+  function regionIds(entityId, year) {
+    return getOverlayPolygonFeatures(year)
+      .filter((f) => f.entityId === entityId)
+      .map((f) => f.regionId);
+  }
+  function assertNoOceanSpan(entityId, year, maxSpan = 55) {
+    const feats = getOverlayPolygonFeatures(year).filter((f) => f.entityId === entityId);
+    for (const f of feats) {
+      const ring = f.geometry.coordinates[0];
+      let minX = Infinity;
+      let maxX = -Infinity;
+      let minY = Infinity;
+      let maxY = -Infinity;
+      for (const [x, y] of ring) {
+        minX = Math.min(minX, x);
+        maxX = Math.max(maxX, x);
+        minY = Math.min(minY, y);
+        maxY = Math.max(maxY, y);
+      }
+      const span = Math.max(maxX - minX, maxY - minY);
+      assert(
+        span < maxSpan,
+        `${entityId}@${year} ${f.regionId} span ${span.toFixed(1)} < ${maxSpan}° (no ocean-spanning blob)`,
+      );
+    }
+  }
+
+  const b1850 = regionIds('british-empire', 1850);
+  for (const id of ['british-isles', 'india-north', 'australia-east', 'south-africa', 'canada-east', 'caribbean']) {
+    assert(b1850.includes(id), `British 1850 has fragment ${id}`);
+  }
+  assert(new Set(b1850).size >= 6, `British 1850 has ≥6 region ids (got ${new Set(b1850).size})`);
+  assertNoOceanSpan('british-empire', 1850, 55);
+  assertNoOceanSpan('british-empire', 1920, 55);
+  const b1920 = regionIds('british-empire', 1920);
+  assert(new Set(b1920).size >= 7, `British 1920 stays fragmented (≥7 ids, got ${new Set(b1920).size})`);
+
+  const sp = spatialEntities.find((e) => e.id === 'spanish-empire');
+  assert((sp.overlays || []).length >= 4, `Spanish has ≥4 keyframes (got ${sp.overlays?.length})`);
+  assert(sp.overlays.some((o) => o.year === 1550), 'Spanish has 1550 keyframe');
+  assert(sp.overlays.some((o) => o.year === 1800), 'Spanish has 1800 contraction keyframe');
+  const s1550 = regionIds('spanish-empire', 1550);
+  for (const id of ['iberia', 'new-spain', 'andes', 'caribbean', 'philippines']) {
+    assert(s1550.includes(id), `Spanish 1550 has fragment ${id}`);
+  }
+  assertNoOceanSpan('spanish-empire', 1550, 55);
+  assertNoOceanSpan('spanish-empire', 1700, 55);
+
+  const pt = spatialEntities.find((e) => e.id === 'portuguese-empire');
+  assert((pt.overlays || []).length >= 3, `Portuguese has ≥3 keyframes (got ${pt.overlays?.length})`);
+  const p1700 = regionIds('portuguese-empire', 1700);
+  for (const id of ['iberia', 'brazil-coast', 'west-africa-coast', 'goa-fringe']) {
+    assert(p1700.includes(id), `Portuguese 1700 has fragment ${id}`);
+  }
+  assertNoOceanSpan('portuguese-empire', 1700, 55);
+
+  assertNoOceanSpan('dutch-republic', 1700, 55);
+  assertNoOceanSpan('french-colonial', 1700, 55);
+  assertNoOceanSpan('french-colonial', 1914, 55);
+  const fr1700 = regionIds('french-colonial', 1700);
+  assert(
+    fr1700.includes('canada-east') && fr1700.includes('frankish-west'),
+    'French 1700 keeps metro + New France separate',
+  );
+
+  const midAus = morphEntityAtYear(brit, 1740, resolveRegionRing, getEntityLifespan(brit), OVERLAY_EDGE_GRACE);
+  const aus = midAus.find((p) => p.regionId === 'australia-east');
+  assert(!!aus, 'British australia foothold fades in before 1780');
+  assert(aus.opacity < maxOp * 0.95, `fade-in australia opacity ${aus.opacity.toFixed(3)} < full ${maxOp.toFixed(3)}`);
 }
 
 if (failed) {

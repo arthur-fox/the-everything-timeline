@@ -4,6 +4,7 @@
  * Day 19: early Bronze Age fill (Mesopotamia, early Egypt, Shang, Phoenicia, Olmec, Kush).
  * Day 20: living borders — morph rings between overlay keyframes + soft lifespan dissolve.
  * Day 21: denser non-rectangular keyframes for hero empires + softer lifespan edge fades.
+ * Day 22: colony fragment/split — distant possessions as separate region ids (no ocean-spanning morph).
  *
  * Spatial entities + schematic region rings for Globe polygons.
  * Rings are intentionally rough — not GIS-accurate ancient borders.
@@ -898,24 +899,67 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Iberian oceanic empire with American viceroyalties and Pacific footholds after 1492.',
-    keyYears: [1492, 1550, 1700],
+    keyYears: [1492, 1550, 1700, 1800],
     overlays: [
       {
         year: 1492,
         label: 'Iberia at contact (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'iberia', name: 'Iberian Peninsula', bbox: [-10, 36, 4, 44] },
+          {
+            id: 'iberia',
+            name: 'Iberian Peninsula',
+            ring: [
+              [-9.5, 36.5], [-9.2, 42.5], [-6.5, 43.8], [-2.0, 43.5], [1.5, 42.2],
+              [3.0, 41.5], [2.5, 38.5], [-0.5, 36.8], [-5.0, 36.0], [-8.5, 36.2], [-9.5, 36.5],
+            ],
+          },
         ],
       },
       {
         year: 1550,
-        label: 'Spanish Americas',
+        label: 'Spanish Americas + Pacific footholds',
         approximation: 'schematic',
         regions: [
-          { id: 'iberia', name: 'Iberia' },
-          { id: 'mesoamerica', name: 'New Spain / Mesoamerica', bbox: [-110, 14, -86, 28] },
-          { id: 'andes', name: 'Andean corridor' },
+          {
+            id: 'iberia',
+            name: 'Iberia',
+            ring: [
+              [-9.5, 36.5], [-9.2, 42.5], [-6.5, 43.8], [-2.0, 43.5], [1.5, 42.2],
+              [3.0, 41.5], [2.5, 38.5], [-0.5, 36.8], [-5.0, 36.0], [-8.5, 36.2], [-9.5, 36.5],
+            ],
+          },
+          {
+            id: 'new-spain',
+            name: 'New Spain / Mesoamerica',
+            ring: [
+              [-110, 16], [-108, 26], [-100, 28], [-92, 26], [-86, 22],
+              [-88, 15], [-96, 14], [-104, 15], [-110, 16],
+            ],
+          },
+          {
+            id: 'andes',
+            name: 'Andean corridor',
+            ring: [
+              [-81, -18], [-79, -5], [-77, 1], [-72, 2], [-68, -5],
+              [-69, -15], [-72, -22], [-78, -20], [-81, -18],
+            ],
+          },
+          {
+            id: 'caribbean',
+            name: 'Caribbean / Antilles',
+            ring: [
+              [-85, 17], [-82, 23], [-74, 23], [-68, 20], [-66, 17],
+              [-70, 14], [-78, 15], [-85, 17],
+            ],
+          },
+          {
+            id: 'philippines',
+            name: 'Philippines foothold',
+            ring: [
+              [119, 6], [120, 14], [124, 16], [126, 12], [125, 7], [122, 5], [119, 6],
+            ],
+          },
         ],
       },
       {
@@ -923,10 +967,98 @@ export const spatialEntities = [
         label: 'Bourbon-era Spanish world',
         approximation: 'schematic',
         regions: [
-          { id: 'iberia', name: 'Iberia' },
-          { id: 'mesoamerica', name: 'New Spain' },
-          { id: 'andes', name: 'Andes / Peru' },
-          { id: 'southern-cone', name: 'Southern Cone fringe', bbox: [-75, -40, -55, -20] },
+          {
+            id: 'iberia',
+            name: 'Iberia',
+            ring: [
+              [-9.5, 36.5], [-9.2, 42.5], [-6.5, 43.8], [-2.0, 43.5], [1.5, 42.2],
+              [3.0, 41.5], [2.5, 38.5], [-0.5, 36.8], [-5.0, 36.0], [-8.5, 36.2], [-9.5, 36.5],
+            ],
+          },
+          {
+            id: 'new-spain',
+            name: 'New Spain',
+            ring: [
+              [-112, 18], [-110, 30], [-100, 32], [-90, 28], [-86, 22],
+              [-88, 14], [-98, 14], [-108, 16], [-112, 18],
+            ],
+          },
+          {
+            id: 'andes',
+            name: 'Andes / Peru',
+            ring: [
+              [-81, -20], [-79, -6], [-76, 2], [-70, 3], [-67, -6],
+              [-68, -18], [-72, -24], [-78, -22], [-81, -20],
+            ],
+          },
+          {
+            id: 'southern-cone',
+            name: 'Southern Cone fringe',
+            ring: [
+              [-75, -38], [-72, -22], [-62, -20], [-55, -28], [-58, -38],
+              [-66, -42], [-72, -40], [-75, -38],
+            ],
+          },
+          {
+            id: 'caribbean',
+            name: 'Caribbean',
+            ring: [
+              [-85, 17], [-82, 23], [-74, 23], [-68, 20], [-66, 17],
+              [-70, 14], [-78, 15], [-85, 17],
+            ],
+          },
+          {
+            id: 'philippines',
+            name: 'Philippines',
+            ring: [
+              [118, 5], [120, 15], [125, 18], [127, 12], [126, 6], [122, 4], [118, 5],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1800,
+        label: 'Late Spanish America (pre-independence contraction)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'iberia',
+            name: 'Iberia',
+            ring: [
+              [-9.5, 36.5], [-9.2, 42.5], [-6.5, 43.8], [-2.0, 43.5], [1.5, 42.2],
+              [3.0, 41.5], [2.5, 38.5], [-0.5, 36.8], [-5.0, 36.0], [-8.5, 36.2], [-9.5, 36.5],
+            ],
+          },
+          {
+            id: 'new-spain',
+            name: 'New Spain (contracting)',
+            ring: [
+              [-110, 16], [-108, 26], [-98, 28], [-90, 24], [-86, 20],
+              [-90, 14], [-100, 14], [-108, 15], [-110, 16],
+            ],
+          },
+          {
+            id: 'andes',
+            name: 'Andes / Peru',
+            ring: [
+              [-80, -18], [-78, -6], [-74, 0], [-70, 1], [-68, -8],
+              [-70, -18], [-74, -22], [-78, -20], [-80, -18],
+            ],
+          },
+          {
+            id: 'caribbean',
+            name: 'Caribbean remnants',
+            ring: [
+              [-82, 18], [-80, 22], [-74, 22], [-70, 19], [-72, 16], [-78, 16], [-82, 18],
+            ],
+          },
+          {
+            id: 'philippines',
+            name: 'Philippines',
+            ring: [
+              [119, 6], [120, 14], [124, 16], [126, 12], [125, 7], [122, 5], [119, 6],
+            ],
+          },
         ],
       },
     ],
@@ -1192,6 +1324,21 @@ export const spatialEntities = [
               [78, 20], [80, 28], [88, 28], [90, 24], [86, 20], [80, 19], [78, 20],
             ],
           },
+          {
+            id: 'australia-east',
+            name: 'NSW / Botany Bay foothold',
+            // Small mid-keyframe so 1850 eastern Australia does not hard-pop
+            ring: [
+              [148, -36], [149, -32], [152, -32], [153, -35], [151, -37], [148, -36],
+            ],
+          },
+          {
+            id: 'caribbean',
+            name: 'Caribbean fringe',
+            ring: [
+              [-78, 17], [-77, 22], [-70, 22], [-62, 18], [-64, 13], [-72, 14], [-78, 17],
+            ],
+          },
         ],
       },
       {
@@ -1239,6 +1386,13 @@ export const spatialEntities = [
             name: 'Eastern Canada',
             ring: [
               [-80, 44], [-78, 54], [-60, 55], [-55, 48], [-62, 42], [-75, 42], [-80, 44],
+            ],
+          },
+          {
+            id: 'caribbean',
+            name: 'Caribbean',
+            ring: [
+              [-80, 16], [-78, 23], [-70, 23], [-61, 18], [-62, 12], [-72, 13], [-80, 16],
             ],
           },
         ],
@@ -1304,6 +1458,13 @@ export const spatialEntities = [
               [16, -34], [18, -24], [30, -22], [32, -28], [28, -35], [20, -35], [16, -34],
             ],
           },
+          {
+            id: 'caribbean',
+            name: 'Caribbean',
+            ring: [
+              [-80, 16], [-78, 23], [-70, 23], [-61, 18], [-62, 12], [-72, 13], [-80, 16],
+            ],
+          },
         ],
       },
       {
@@ -1365,6 +1526,13 @@ export const spatialEntities = [
             name: 'South Africa',
             ring: [
               [16, -34], [18, -24], [30, -22], [32, -28], [28, -35], [20, -35], [16, -34],
+            ],
+          },
+          {
+            id: 'caribbean',
+            name: 'Caribbean',
+            ring: [
+              [-80, 16], [-78, 23], [-70, 23], [-61, 18], [-62, 12], [-72, 13], [-80, 16],
             ],
           },
         ],
@@ -1631,26 +1799,128 @@ export const spatialEntities = [
     type: 'empire',
     description:
       'Early modern oceanic empire — schematic Iberian home plus Brazilian and African footholds.',
-    keyYears: [1415, 1500, 1700, 1822],
+    keyYears: [1415, 1500, 1600, 1700, 1822],
     overlays: [
       {
         year: 1500,
         label: 'Age of Discovery',
         approximation: 'schematic',
         regions: [
-          { id: 'iberia', name: 'Portugal / Iberia west' },
-          { id: 'brazil-coast', name: 'Brazilian coast', bbox: [-50, -25, -35, -5] },
-          { id: 'west-africa-coast', name: 'West African forts', bbox: [-18, 4, -5, 15] },
+          {
+            id: 'iberia',
+            name: 'Portugal / Iberia west',
+            ring: [
+              [-9.5, 37.0], [-9.2, 42.0], [-7.5, 42.2], [-6.2, 41.5], [-6.5, 39.5],
+              [-7.5, 37.0], [-8.8, 36.8], [-9.5, 37.0],
+            ],
+          },
+          {
+            id: 'brazil-coast',
+            name: 'Brazilian coast',
+            ring: [
+              [-48, -24], [-46, -12], [-40, -8], [-35, -12], [-38, -22], [-44, -25], [-48, -24],
+            ],
+          },
+          {
+            id: 'west-africa-coast',
+            name: 'West African forts',
+            ring: [
+              [-18, 5], [-16, 14], [-10, 15], [-5, 10], [-8, 4], [-14, 4], [-18, 5],
+            ],
+          },
+          {
+            id: 'goa-fringe',
+            name: 'Goa / India fringe',
+            ring: [
+              [72.5, 14.5], [73.0, 16.5], [74.5, 16.2], [74.8, 14.8], [73.8, 14.0], [72.5, 14.5],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1600,
+        label: 'Atlantic + Indian Ocean footholds',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'iberia',
+            name: 'Portugal',
+            ring: [
+              [-9.5, 37.0], [-9.2, 42.0], [-7.5, 42.2], [-6.2, 41.5], [-6.5, 39.5],
+              [-7.5, 37.0], [-8.8, 36.8], [-9.5, 37.0],
+            ],
+          },
+          {
+            id: 'brazil-coast',
+            name: 'Brazil coast',
+            ring: [
+              [-50, -25], [-48, -10], [-40, -5], [-35, -12], [-38, -24], [-46, -26], [-50, -25],
+            ],
+          },
+          {
+            id: 'west-africa-coast',
+            name: 'West Africa fringe',
+            ring: [
+              [-18, 5], [-16, 14], [-8, 15], [-5, 8], [-8, 4], [-14, 4], [-18, 5],
+            ],
+          },
+          {
+            id: 'angola-coast',
+            name: 'Angola foothold',
+            ring: [
+              [12, -18], [13, -10], [16, -8], [17, -14], [15, -18], [12, -18],
+            ],
+          },
+          {
+            id: 'goa-fringe',
+            name: 'Goa / India fringe',
+            ring: [
+              [72.2, 14.2], [72.8, 17.0], [75.0, 16.8], [75.2, 14.5], [73.5, 13.8], [72.2, 14.2],
+            ],
+          },
         ],
       },
       {
         year: 1700,
-        label: 'Brazil & Atlantic',
+        label: 'Brazil & Atlantic peak',
         approximation: 'schematic',
         regions: [
-          { id: 'iberia', name: 'Portugal' },
-          { id: 'brazil-coast', name: 'Brazil' },
-          { id: 'west-africa-coast', name: 'West Africa fringe' },
+          {
+            id: 'iberia',
+            name: 'Portugal',
+            ring: [
+              [-9.5, 37.0], [-9.2, 42.0], [-7.5, 42.2], [-6.2, 41.5], [-6.5, 39.5],
+              [-7.5, 37.0], [-8.8, 36.8], [-9.5, 37.0],
+            ],
+          },
+          {
+            id: 'brazil-coast',
+            name: 'Brazil',
+            ring: [
+              [-52, -28], [-50, -8], [-42, -2], [-35, -8], [-36, -22], [-44, -30], [-52, -28],
+            ],
+          },
+          {
+            id: 'west-africa-coast',
+            name: 'West Africa fringe',
+            ring: [
+              [-18, 5], [-16, 14], [-8, 15], [-5, 8], [-8, 4], [-14, 4], [-18, 5],
+            ],
+          },
+          {
+            id: 'angola-coast',
+            name: 'Angola',
+            ring: [
+              [11, -18], [12, -9], [16, -8], [18, -14], [16, -18], [11, -18],
+            ],
+          },
+          {
+            id: 'goa-fringe',
+            name: 'Goa / India fringe',
+            ring: [
+              [72.2, 14.2], [72.8, 17.0], [75.0, 16.8], [75.2, 14.5], [73.5, 13.8], [72.2, 14.2],
+            ],
+          },
         ],
       },
     ],
@@ -1673,8 +1943,29 @@ export const spatialEntities = [
         label: 'Dutch Golden Age',
         approximation: 'schematic',
         regions: [
-          { id: 'low-countries', name: 'Low Countries', bbox: [3, 50, 8, 54] },
-          { id: 'java-bali', name: 'East Indies / Java', bbox: [105, -9, 116, -5] },
+          {
+            id: 'low-countries',
+            name: 'Low Countries',
+            ring: [
+              [3.2, 50.5], [3.5, 53.5], [5.5, 53.8], [7.2, 53.5], [7.5, 51.0],
+              [5.5, 50.2], [3.2, 50.5],
+            ],
+          },
+          {
+            id: 'java-bali',
+            name: 'East Indies / Java',
+            ring: [
+              [105, -8.5], [106, -5.5], [112, -5.2], [116, -6], [115, -8.5],
+              [110, -9], [106, -9], [105, -8.5],
+            ],
+          },
+          {
+            id: 'south-africa',
+            name: 'Cape foothold',
+            ring: [
+              [17, -35], [18, -32], [22, -32], [23, -34], [20, -35.5], [17, -35],
+            ],
+          },
         ],
       },
       {
@@ -1682,9 +1973,29 @@ export const spatialEntities = [
         label: 'VOC peak',
         approximation: 'schematic',
         regions: [
-          { id: 'low-countries', name: 'Low Countries' },
-          { id: 'java-bali', name: 'Java / Spice Islands fringe' },
-          { id: 'south-africa', name: 'Cape fringe' },
+          {
+            id: 'low-countries',
+            name: 'Low Countries',
+            ring: [
+              [3.2, 50.5], [3.5, 53.5], [5.5, 53.8], [7.2, 53.5], [7.5, 51.0],
+              [5.5, 50.2], [3.2, 50.5],
+            ],
+          },
+          {
+            id: 'java-bali',
+            name: 'Java / Spice Islands fringe',
+            ring: [
+              [105, -8.5], [106, -5.5], [112, -5.0], [116, -5.5], [116, -8],
+              [112, -9], [106, -9], [105, -8.5],
+            ],
+          },
+          {
+            id: 'south-africa',
+            name: 'Cape fringe',
+            ring: [
+              [16, -35], [18, -31], [24, -30], [26, -33], [22, -35.5], [18, -35.5], [16, -35],
+            ],
+          },
         ],
       },
     ],
@@ -1707,9 +2018,35 @@ export const spatialEntities = [
         label: 'First colonial empire',
         approximation: 'schematic',
         regions: [
-          { id: 'frankish-west', name: 'Metropolitan France' },
-          { id: 'canada-east', name: 'New France fringe' },
-          { id: 'west-africa-coast', name: 'West Africa fringe' },
+          {
+            id: 'frankish-west',
+            name: 'Metropolitan France',
+            ring: [
+              [-5, 43], [-4, 50], [0, 51], [4, 50.5], [6, 47], [5, 43.5],
+              [1, 42.5], [-3, 43], [-5, 43],
+            ],
+          },
+          {
+            id: 'canada-east',
+            name: 'New France fringe',
+            ring: [
+              [-78, 44], [-76, 52], [-64, 52], [-58, 48], [-64, 44], [-74, 43], [-78, 44],
+            ],
+          },
+          {
+            id: 'caribbean',
+            name: 'Caribbean footholds',
+            ring: [
+              [-62, 14], [-61.5, 16.5], [-60.5, 16.2], [-60.8, 14.2], [-62, 14],
+            ],
+          },
+          {
+            id: 'west-africa-coast',
+            name: 'West Africa fringe',
+            ring: [
+              [-18, 5], [-16, 14], [-10, 15], [-5, 10], [-8, 4], [-14, 4], [-18, 5],
+            ],
+          },
         ],
       },
       {
@@ -1717,10 +2054,35 @@ export const spatialEntities = [
         label: 'Second colonial empire',
         approximation: 'schematic',
         regions: [
-          { id: 'frankish-west', name: 'France' },
-          { id: 'maghreb-east', name: 'Maghreb' },
-          { id: 'west-africa-sahel', name: 'West Africa Sahel' },
-          { id: 'mainland-sea', name: 'Indochina fringe' },
+          {
+            id: 'frankish-west',
+            name: 'France',
+            ring: [
+              [-5, 43], [-4, 50], [0, 51], [4, 50.5], [6, 47], [5, 43.5],
+              [1, 42.5], [-3, 43], [-5, 43],
+            ],
+          },
+          {
+            id: 'maghreb-east',
+            name: 'Maghreb',
+            ring: [
+              [-8, 30], [-6, 36], [4, 37], [10, 35], [8, 30], [0, 29], [-8, 30],
+            ],
+          },
+          {
+            id: 'west-africa-sahel',
+            name: 'West Africa Sahel',
+            ring: [
+              [-16, 10], [-14, 18], [-4, 20], [4, 16], [2, 10], [-8, 8], [-16, 10],
+            ],
+          },
+          {
+            id: 'mainland-sea',
+            name: 'Indochina fringe',
+            ring: [
+              [102, 10], [104, 18], [108, 18], [110, 14], [108, 9], [104, 9], [102, 10],
+            ],
+          },
         ],
       },
     ],
@@ -2233,6 +2595,21 @@ export const REGION_RINGS = {
   ],
   'australia-east': [
     [140, -36], [142, -16], [152, -12], [154, -28], [150, -38], [144, -38], [140, -36],
+  ],
+  caribbean: [
+    [-80, 16], [-78, 23], [-70, 23], [-61, 18], [-62, 12], [-72, 13], [-80, 16],
+  ],
+  philippines: [
+    [119, 6], [120, 14], [124, 16], [126, 12], [125, 7], [122, 5], [119, 6],
+  ],
+  'goa-fringe': [
+    [72.5, 14.5], [73.0, 16.5], [74.5, 16.2], [74.8, 14.8], [73.8, 14.0], [72.5, 14.5],
+  ],
+  'angola-coast': [
+    [12, -18], [13, -10], [16, -8], [17, -14], [15, -18], [12, -18],
+  ],
+  'new-spain': [
+    [-110, 16], [-108, 26], [-100, 28], [-92, 26], [-86, 22], [-88, 15], [-96, 14], [-104, 15], [-110, 16],
   ],
 
   // --- Day 17 densification rings ---
