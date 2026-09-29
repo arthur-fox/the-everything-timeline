@@ -10,7 +10,7 @@
 
 import { civilisations } from './civilisations.js';
 import { warsItems } from './wars.js';
-import { morphEntityAtYear } from './globe-morph.js';
+import { morphEntityAtYear, ensureCounterClockwise } from './globe-morph.js';
 
 /** @typedef {'empire' | 'civilization' | 'state' | 'other'} SpatialEntityType */
 /** @typedef {'rough' | 'simplified' | 'schematic'} ApproximationLevel */
@@ -1783,15 +1783,17 @@ function ensureClosed(ring) {
  */
 export function resolveRegionRing(region) {
   if (region == null) return null;
+  let ring = null;
   if (typeof region === 'string') {
-    return ensureClosed(REGION_RINGS[region] || null);
+    ring = ensureClosed(REGION_RINGS[region] || null);
+  } else if (typeof region === 'object') {
+    if (Array.isArray(region.ring)) ring = ensureClosed(region.ring);
+    // Day 20: honour snapshot bbox before shared named rings so empires visibly grow/shrink.
+    else if (region.bbox) ring = ensureClosed(bboxToRing(region.bbox));
+    else if (REGION_RINGS[region.id]) ring = ensureClosed(REGION_RINGS[region.id]);
   }
-  if (typeof region !== 'object') return null;
-  if (Array.isArray(region.ring)) return ensureClosed(region.ring);
-  // Day 20: honour snapshot bbox before shared named rings so empires visibly grow/shrink.
-  if (region.bbox) return ensureClosed(bboxToRing(region.bbox));
-  if (REGION_RINGS[region.id]) return ensureClosed(REGION_RINGS[region.id]);
-  return null;
+  // Critical: CW exteriors fill the globe complement (planet-wide wash).
+  return ensureCounterClockwise(ring);
 }
 
 /**

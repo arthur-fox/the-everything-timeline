@@ -7,6 +7,38 @@
 export const MORPH_RING_SAMPLES = 48;
 
 /**
+ * Signed area of a closed ring (positive ⇒ counter-clockwise in lng/lat plane).
+ * GeoJSON exterior rings must be CCW; CW exteriors often fill the *complement*
+ * on the globe (planet-wide colour wash).
+ * @param {[number, number][]} ring
+ */
+export function ringSignedArea(ring) {
+  if (!ring || ring.length < 4) return 0;
+  let a = 0;
+  for (let i = 0; i < ring.length - 1; i += 1) {
+    a += ring[i][0] * ring[i + 1][1] - ring[i + 1][0] * ring[i][1];
+  }
+  return a / 2;
+}
+
+/**
+ * Ensure exterior ring is counter-clockwise (GeoJSON / Globe.gl safe).
+ * @param {[number, number][]} ring
+ * @returns {[number, number][]|null}
+ */
+export function ensureCounterClockwise(ring) {
+  if (!ring || ring.length < 4) return null;
+  const closed = ring.slice();
+  const [fLng, fLat] = closed[0];
+  const [lLng, lLat] = closed[closed.length - 1];
+  if (fLng !== lLng || fLat !== lLat) closed.push([fLng, fLat]);
+  if (ringSignedArea(closed) >= 0) return closed;
+  const open = closed.slice(0, -1).reverse();
+  open.push([open[0][0], open[0][1]]);
+  return open;
+}
+
+/**
  * Cumulative perimeter lengths for open polyline (no closing edge).
  * @param {[number, number][]} pts
  */
@@ -50,7 +82,7 @@ export function resampleRing(ring, sampleCount = MORPH_RING_SAMPLES) {
     out.push([a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u]);
   }
   out.push([out[0][0], out[0][1]]);
-  return out;
+  return ensureCounterClockwise(out);
 }
 
 /** @param {[number, number][]} ring */
@@ -80,7 +112,7 @@ export function scaleRingTowardCentroid(ring, factor) {
   ]);
   if (!open.length) return null;
   open.push([open[0][0], open[0][1]]);
-  return open;
+  return ensureCounterClockwise(open);
 }
 
 /** Shortest-path lerp for longitude across ±180. */
@@ -114,7 +146,7 @@ export function lerpRings(ringA, ringB, t, samples = MORPH_RING_SAMPLES) {
     ]);
   }
   out.push([out[0][0], out[0][1]]);
-  return out;
+  return ensureCounterClockwise(out);
 }
 
 /**
@@ -186,7 +218,7 @@ export function morphEntityAtYear(entity, year, resolveRing, lifespan, edgeGrace
   if (!prev && !next) return [];
 
   const approximation = (t < 0.5 ? prev : next)?.approximation || prev?.approximation || 'schematic';
-  const baseOpacity = 0.42;
+  const baseOpacity = 0.28;
 
   /** @type {Map<string, { name: string, ring: [number,number][] }>} */
   const prevMap = new Map();
@@ -236,10 +268,12 @@ export function morphEntityAtYear(entity, year, resolveRing, lifespan, edgeGrace
     }
     regionOpacity *= edge;
 
+    const safeRing = ensureCounterClockwise(ring);
+    if (!safeRing) continue;
     out.push({
       regionId: id,
       regionName: (b || a).name,
-      ring,
+      ring: safeRing,
       opacity: regionOpacity,
       morphT: t,
       approximation,

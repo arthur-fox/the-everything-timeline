@@ -101,6 +101,38 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   );
 }
 
+
+{
+  const feats = getOverlayPolygonFeatures(1683);
+  assert(feats.length > 0, '1683 has features');
+  let bad = 0;
+  for (const f of feats) {
+    const ring = f.geometry.coordinates[0];
+    let a = 0;
+    for (let i = 0; i < ring.length - 1; i += 1) {
+      a += ring[i][0] * ring[i + 1][1] - ring[i + 1][0] * ring[i][1];
+    }
+    if (a < 0) bad += 1;
+  }
+  assert(bad === 0, `all 1683 rings CCW (bad=${bad})`);
+  // No planet-scale span — schematic empires stay regional
+  for (const f of feats) {
+    const ring = f.geometry.coordinates[0];
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+    for (const [x, y] of ring) {
+      minX = Math.min(minX, x);
+      maxX = Math.max(maxX, x);
+      minY = Math.min(minY, y);
+      maxY = Math.max(maxY, y);
+    }
+    const span = Math.max(maxX - minX, maxY - minY);
+    assert(span < 120, `${f.entityId}/${f.regionId} span ${span.toFixed(1)} < 120°`);
+  }
+}
+
 if (failed) {
   console.error(`\n${failed} lifespan/morph check(s) failed`);
   process.exit(1);

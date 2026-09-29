@@ -3,7 +3,7 @@
  * Mounted only while Globe mode is active; disposed on leave.
  */
 
-import { MeshBasicMaterial, DoubleSide } from 'three';
+import { MeshBasicMaterial, FrontSide } from 'three';
 import { getOverlayPolygonFeatures } from './globe-overlays.js';
 
 const EARTH_DAY =
@@ -55,9 +55,12 @@ function parseHex(hex) {
   return n;
 }
 
-/** Flat translucent cap — depthWrite off + polygonOffset to hug the sphere without z-fighting. */
-function capMaterialFor(hex, opacity = 0.42) {
-  const op = Math.max(0.02, Math.min(0.85, Number(opacity) || 0.42));
+/**
+ * Flat translucent cap — FrontSide only (DoubleSide + transparent painted the far
+ * hemisphere and amplified CW-complement fills into a planet-wide wash).
+ */
+function capMaterialFor(hex, opacity = 0.28) {
+  const op = Math.max(0.04, Math.min(0.55, Number(opacity) || 0.28));
   const key = `${String(hex || '#888888')}|${op.toFixed(3)}`;
   if (materialCache.has(key)) return materialCache.get(key);
   const mat = new MeshBasicMaterial({
@@ -66,11 +69,11 @@ function capMaterialFor(hex, opacity = 0.42) {
     opacity: op,
     depthWrite: false,
     depthTest: true,
-    side: DoubleSide,
+    side: FrontSide,
   });
   mat.polygonOffset = true;
-  mat.polygonOffsetFactor = -2;
-  mat.polygonOffsetUnits = -2;
+  mat.polygonOffsetFactor = -1;
+  mat.polygonOffsetUnits = -1;
   materialCache.set(key, mat);
   return mat;
 }
@@ -94,7 +97,7 @@ function applyPolygonLayer() {
     .polygonAltitude(0.005)
     .polygonCapMaterial((d) => capMaterialFor(d.color || d.properties?.color, d.opacity ?? d.properties?.opacity))
     .polygonSideMaterial(() => INVISIBLE_SIDE)
-    .polygonStrokeColor(() => 'rgba(255, 255, 255, 0.55)')
+    .polygonStrokeColor(() => 'rgba(255, 255, 255, 0.35)')
     .polygonsTransitionDuration(0);
 }
 
