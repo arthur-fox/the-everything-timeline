@@ -10,7 +10,7 @@
 
 import { civilisations } from './civilisations.js';
 import { warsItems } from './wars.js';
-import { morphEntityAtYear, ensureCounterClockwise } from './globe-morph.js';
+import { morphEntityAtYear, ensureClockwise } from './globe-morph.js';
 
 /** @typedef {'empire' | 'civilization' | 'state' | 'other'} SpatialEntityType */
 /** @typedef {'rough' | 'simplified' | 'schematic'} ApproximationLevel */
@@ -1759,11 +1759,12 @@ export function bboxToRing(bbox) {
   if (!Array.isArray(bbox) || bbox.length !== 4) return null;
   const [w, s, e, n] = bbox.map(Number);
   if ([w, s, e, n].some((v) => !Number.isFinite(v))) return null;
+  // Clockwise in lng/lat (matches REGION_RINGS / Globe.gl caps)
   return [
     [w, s],
-    [e, s],
-    [e, n],
     [w, n],
+    [e, n],
+    [e, s],
     [w, s],
   ];
 }
@@ -1792,8 +1793,8 @@ export function resolveRegionRing(region) {
     else if (region.bbox) ring = ensureClosed(bboxToRing(region.bbox));
     else if (REGION_RINGS[region.id]) ring = ensureClosed(REGION_RINGS[region.id]);
   }
-  // Critical: CW exteriors fill the globe complement (planet-wide wash).
-  return ensureCounterClockwise(ring);
+  // Critical: Globe.gl wants CW exteriors; planar-CCW (bbox) washes the planet.
+  return ensureClockwise(ring);
 }
 
 /**

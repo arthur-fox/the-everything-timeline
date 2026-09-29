@@ -8,8 +8,6 @@ export const MORPH_RING_SAMPLES = 48;
 
 /**
  * Signed area of a closed ring (positive ⇒ counter-clockwise in lng/lat plane).
- * GeoJSON exterior rings must be CCW; CW exteriors often fill the *complement*
- * on the globe (planet-wide colour wash).
  * @param {[number, number][]} ring
  */
 export function ringSignedArea(ring) {
@@ -22,20 +20,27 @@ export function ringSignedArea(ring) {
 }
 
 /**
- * Ensure exterior ring is counter-clockwise (GeoJSON / Globe.gl safe).
+ * Globe.gl / three-globe spherical caps expect **clockwise** lng/lat exteriors
+ * (all authored REGION_RINGS are CW). Planar-CCW rings (e.g. bboxToRing) fill
+ * the complement → planet-wide colour wash. Force CW before render.
  * @param {[number, number][]} ring
  * @returns {[number, number][]|null}
  */
-export function ensureCounterClockwise(ring) {
+export function ensureClockwise(ring) {
   if (!ring || ring.length < 4) return null;
   const closed = ring.slice();
   const [fLng, fLat] = closed[0];
   const [lLng, lLat] = closed[closed.length - 1];
   if (fLng !== lLng || fLat !== lLat) closed.push([fLng, fLat]);
-  if (ringSignedArea(closed) >= 0) return closed;
+  if (ringSignedArea(closed) <= 0) return closed; // already CW or zero
   const open = closed.slice(0, -1).reverse();
   open.push([open[0][0], open[0][1]]);
   return open;
+}
+
+/** @deprecated use ensureClockwise — kept as alias during Day 20 fix */
+export function ensureCounterClockwise(ring) {
+  return ensureClockwise(ring);
 }
 
 /**
@@ -82,7 +87,7 @@ export function resampleRing(ring, sampleCount = MORPH_RING_SAMPLES) {
     out.push([a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u]);
   }
   out.push([out[0][0], out[0][1]]);
-  return ensureCounterClockwise(out);
+  return ensureClockwise(out);
 }
 
 /** @param {[number, number][]} ring */
@@ -112,7 +117,7 @@ export function scaleRingTowardCentroid(ring, factor) {
   ]);
   if (!open.length) return null;
   open.push([open[0][0], open[0][1]]);
-  return ensureCounterClockwise(open);
+  return ensureClockwise(open);
 }
 
 /** Shortest-path lerp for longitude across ±180. */
@@ -146,7 +151,7 @@ export function lerpRings(ringA, ringB, t, samples = MORPH_RING_SAMPLES) {
     ]);
   }
   out.push([out[0][0], out[0][1]]);
-  return ensureCounterClockwise(out);
+  return ensureClockwise(out);
 }
 
 /**
@@ -268,7 +273,7 @@ export function morphEntityAtYear(entity, year, resolveRing, lifespan, edgeGrace
     }
     regionOpacity *= edge;
 
-    const safeRing = ensureCounterClockwise(ring);
+    const safeRing = ensureClockwise(ring);
     if (!safeRing) continue;
     out.push({
       regionId: id,

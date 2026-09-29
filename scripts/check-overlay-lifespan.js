@@ -57,11 +57,14 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
 
 // Day 20 morph
 {
-  const a = [[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]];
-  const b = [[0, 0], [20, 0], [20, 20], [0, 20], [0, 0]];
+  // CW unit squares (Globe.gl winding)
+  const a = [[0, 0], [0, 10], [10, 10], [10, 0], [0, 0]];
+  const b = [[0, 0], [0, 20], [20, 20], [20, 0], [0, 0]];
   const mid = lerpRings(a, b, 0.5);
   assert(!!mid && mid.length === MORPH_RING_SAMPLES + 1, `lerp ring vertex count ${mid?.length}`);
-  assert(Math.abs(mid[Math.floor(MORPH_RING_SAMPLES / 4)][0] - 15) < 0.01, 'lerp mid lng ~15');
+  const xs = mid.slice(0, -1).map((p) => p[0]);
+  const maxX = Math.max(...xs);
+  assert(Math.abs(maxX - 15) < 0.05, `lerp mid extent maxX~15 (got ${maxX})`);
 }
 
 {
@@ -112,9 +115,10 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
     for (let i = 0; i < ring.length - 1; i += 1) {
       a += ring[i][0] * ring[i + 1][1] - ring[i + 1][0] * ring[i][1];
     }
-    if (a < 0) bad += 1;
+    // Globe.gl: clockwise exteriors (negative planar signed area)
+    if (a > 0) bad += 1;
   }
-  assert(bad === 0, `all 1683 rings CCW (bad=${bad})`);
+  assert(bad === 0, `all 1683 rings CW for Globe.gl (bad CCW=${bad})`);
   // No planet-scale span — schematic empires stay regional
   for (const f of feats) {
     const ring = f.geometry.coordinates[0];
