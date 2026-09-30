@@ -3,6 +3,7 @@
  * Day 21: denser hero keyframes + non-rect rings + softer edge fades.
  * Day 22: colony fragment/split + higher overlay opacity.
  * Day 23: denser overlay coverage — rise→peak→decline for thin empires.
+ * Day 24: densify remaining 2-keyframe notables to ≥3 overlays.
  */
 import {
   getActiveOverlaysAtYear,
@@ -320,6 +321,75 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   // No single-keyframe empires left after Day 23 pass
   const singles = spatialEntities.filter((e) => (e.overlays || []).length === 1);
   assert(singles.length === 0, `no single-keyframe entities remain (got ${singles.map((e) => e.id).join(', ')})`);
+}
+
+
+// Day 24 — densify remaining 2-keyframe notables (Day 23 backlog)
+{
+  const day24 = [
+    'ming-china', 'qing-china', 'mughal-empire', 'abbasid-caliphate', 'song-china',
+    'sassanid-empire', 'parthian-empire', 'holy-roman-empire', 'carthage',
+    'dutch-republic', 'french-colonial', 'meiji-japan', 'shang-china',
+    'phoenicia', 'olmec', 'kush',
+  ];
+  for (const id of day24) {
+    const ent = spatialEntities.find((e) => e.id === id);
+    assert(!!ent, `${id} exists`);
+    assert((ent.overlays || []).length >= 3, `${id} densified to ≥3 overlays (got ${ent.overlays?.length})`);
+  }
+
+  // Spot-check rise / mid / late years for a few notables
+  const ming = spatialEntities.find((e) => e.id === 'ming-china');
+  assert(ming.overlays.some((o) => o.year === 1380), 'Ming has 1380 early consolidation');
+  assert(ming.overlays.some((o) => o.year === 1420), 'Ming keeps 1420 Yongle-era');
+  assert(ming.overlays.some((o) => o.year === 1550), 'Ming keeps 1550 mid–late');
+
+  const qing = spatialEntities.find((e) => e.id === 'qing-china');
+  assert(qing.overlays.some((o) => o.year === 1680), 'Qing has 1680 early Kangxi-era');
+  assert(qing.overlays.some((o) => o.year === 1750), 'Qing keeps 1750 High Qing');
+  assert(idsAt(1700).has('qing-china'), 'Qing ON at 1700 (between early and High Qing)');
+
+  const mughal = spatialEntities.find((e) => e.id === 'mughal-empire');
+  assert(mughal.overlays.some((o) => o.year === 1560), 'Mughal has 1560 Akbar rise');
+  assert(idsAt(1580).has('mughal-empire'), 'Mughal ON at 1580');
+
+  const abbasid = spatialEntities.find((e) => e.id === 'abbasid-caliphate');
+  assert(abbasid.overlays.some((o) => o.year === 760), 'Abbasid has 760 early Baghdad era');
+  assert(idsAt(780).has('abbasid-caliphate'), 'Abbasid ON at 780');
+
+  const french = spatialEntities.find((e) => e.id === 'french-colonial');
+  assert(french.overlays.some((o) => o.year === 1830), 'French has 1830 mid colonial keyframe');
+  assertNoOceanSpanLocal('french-colonial', 1830, 55);
+  assertNoOceanSpanLocal('dutch-republic', 1600, 55);
+  assertNoOceanSpanLocal('meiji-japan', 1905, 55);
+
+  // Soft warn only if anything somehow still under 3 (should be empty after Day 24)
+  const thin = spatialEntities.filter((e) => (e.overlays || []).length < 3);
+  if (thin.length) {
+    console.log(
+      `note: ${thin.length} entit${thin.length === 1 ? 'y' : 'ies'} still have <3 overlays: ` +
+        thin.map((e) => `${e.id}(${e.overlays.length})`).join(', '),
+    );
+  } else {
+    console.log('ok: no entities remain under 3 overlay keyframes');
+  }
+
+  function assertNoOceanSpanLocal(entityId, year, maxSpan = 55) {
+    const feats = getOverlayPolygonFeatures(year).filter((f) => f.entityId === entityId);
+    for (const f of feats) {
+      const ring = f.geometry.coordinates[0];
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      for (const [x, y] of ring) {
+        minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+        minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+      }
+      const span = Math.max(maxX - minX, maxY - minY);
+      assert(
+        span < maxSpan,
+        `${entityId}@${year} ${f.regionId} span ${span.toFixed(1)} < ${maxSpan}° (no ocean-spanning blob)`,
+      );
+    }
+  }
 }
 
 if (failed) {

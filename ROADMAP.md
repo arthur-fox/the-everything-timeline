@@ -394,11 +394,21 @@ User feedback after Day 22: morphing looks good but **data is thin** — famous 
 - **Batch densify** all 16 former single-keyframe empires to ≥3 overlay years: kushan, maurya, gupta, frankish, tang-china, mali, khmer, delhi-sultanate, achaemenid, classical-greece, umayyad, safavid, songhai, majapahit (+ aztec/inca). ✅
 - Schematic multi-vertex rings preferred; colors / ids / `timelineItemIds` unchanged. Lifespan clamp respected. ✅
 - Validate extended: Aztec+Inca ≥3 keyframes + active at 1470; warn on entities with <3 overlays. ✅
-- Remaining thin notables (2 keyframes): Ming, Qing, Mughal, Abbasid, Song, Sassanid, Parthian, HRE, Carthage, Dutch, French colonial, Meiji, Shang, Phoenicia, Olmec, Kush — backlog for a later densify pass. **PR E** still secondary.
+- Remaining thin notables (2 keyframes): Ming, Qing, Mughal, Abbasid, Song, Sassanid, Parthian, HRE, Carthage, Dutch, French colonial, Meiji, Shang, Phoenicia, Olmec, Kush — backlog for a later densify pass. **PR E** still secondary. → **Done Day 24.**
+
+#### Day 24 — Densify remaining 2-keyframe globe overlays (PR F densify backlog) — done
+
+Finish the Day 23 remainder list so every notable polity/civilisation on the globe has ≥3 overlay snapshots (rise → mid/peak → late) and morph has something to deform.
+
+- **All 16 former 2-keyframe entities** densified to ≥3 overlays: Ming, Qing, Mughal, Abbasid, Song, Sassanid, Parthian, HRE, Carthage, Dutch, French colonial, Meiji (Imperial Japan), Shang, Phoenicia, Olmec, Kush. ✅
+- Schematic multi-vertex rings where helpful; distant fragments keep separate region ids (Dutch Cape/Java, French metro/colonies, Meiji home/Korea/Manchuria — no ocean-spanning morph). ✅
+- Example scrub years: Ming 1380→1420→1550; Qing 1680→1750→1900; Mughal 1560→1605→1700; Abbasid 760→800→900; French 1700→1830→1914; Meiji 1875→1905→1914. ✅
+- Validate: hard ≥3 for the Day 24 id list + spot-check years; soft note if any entity somehow still <3 (should be empty). Aztec/Inca Day 23 checks kept. ✅
+- Colors / entity ids / `timelineItemIds` unchanged. Lifespan clamps respected. ✅
 
 #### PR F — Living / morphing borders (continued)
 
-Remaining after Day 23: optional densify of remaining 2-keyframe entities; true multi-polygon topology / ocean gaps; optional easing curves. Still schematic / honest, not GIS-perfect.
+Remaining after Day 24: true multi-polygon topology / ocean gaps; optional easing curves; further mid-keyframes only where morph still looks stiff. Overlay keyframe densify backlog for the Day 23 remainder list is **done**. Still schematic / honest, not GIS-perfect. **PR E** (timeline↔globe) is the suggested next product slice.
 
 #### PR E — Timeline integration (still needed; secondary to living borders)
 
@@ -530,6 +540,7 @@ A sensible near-term sequence:
 19. Living borders polish — denser non-rect keyframes + softer edges (Day 21 / PR F slice 2). ✅
 20. Living borders — fragment/split distant colonies (Day 22 / PR F slice 3). ✅
 21. Denser overlay coverage — Aztec/Inca rise + thin empires (Day 23). ✅
-22. Timeline ↔ globe integration (PR E) — still secondary to remaining PR F polish / densify backlog.
+22. Densify remaining 2-keyframe globe overlays (Day 24 / PR F densify backlog). ✅
+23. Timeline ↔ globe integration (PR E) — suggested next (PR F densify backlog cleared; topology/easing still optional later).
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

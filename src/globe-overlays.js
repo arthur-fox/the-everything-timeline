@@ -246,13 +246,52 @@ export const spatialEntities = [
     keyYears: [-247, 50, 224],
     overlays: [
       {
+        year: -50,
+        label: 'Early Parthian plateau',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'persia',
+            name: 'Iranian plateau core',
+            ring: [
+              [48, 28], [50, 36], [58, 38], [60, 32], [56, 27], [50, 26], [48, 28],
+            ],
+          },
+          {
+            id: 'parthia-east',
+            name: 'Eastern Parthia',
+            ring: [
+              [58, 32], [60, 38], [68, 39], [68, 34], [64, 30], [58, 30], [58, 32],
+            ],
+          },
+        ],
+      },
+      {
         year: 50,
         label: 'Parthia vs Rome (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'persia', name: 'Iranian plateau' },
-          { id: 'mesopotamia', name: 'Mesopotamia fringe' },
-          { id: 'parthia-east', name: 'Eastern Parthia', bbox: [55, 30, 70, 40] },
+          {
+            id: 'persia',
+            name: 'Iranian plateau',
+            ring: [
+              [44, 26], [46, 38], [55, 40], [62, 37], [60, 28], [52, 25], [44, 26],
+            ],
+          },
+          {
+            id: 'mesopotamia',
+            name: 'Mesopotamia fringe',
+            ring: [
+              [38.5, 30.5], [40, 36], [46, 37], [48, 33], [46, 30], [42, 30], [38.5, 30.5],
+            ],
+          },
+          {
+            id: 'parthia-east',
+            name: 'Eastern Parthia',
+            ring: [
+              [55, 32], [58, 39], [68, 40], [70, 35], [65, 30], [58, 30], [55, 32],
+            ],
+          },
         ],
       },
       {
@@ -260,8 +299,20 @@ export const spatialEntities = [
         label: 'Later Parthian period',
         approximation: 'schematic',
         regions: [
-          { id: 'persia', name: 'Iranian plateau' },
-          { id: 'mesopotamia', name: 'Mesopotamia fringe' },
+          {
+            id: 'persia',
+            name: 'Iranian plateau',
+            ring: [
+              [46, 27], [48, 37], [56, 39], [60, 35], [58, 28], [52, 26], [46, 27],
+            ],
+          },
+          {
+            id: 'mesopotamia',
+            name: 'Mesopotamia fringe',
+            ring: [
+              [39, 31], [41, 35], [46, 36], [47, 33], [45, 30.5], [41, 30.5], [39, 31],
+            ],
+          },
         ],
       },
     ],
@@ -692,11 +743,33 @@ export const spatialEntities = [
     keyYears: [960, 1127, 1279],
     overlays: [
       {
+        year: 1000,
+        label: 'Early Northern Song',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'china-proper',
+            name: 'China proper (Northern Song core)',
+            ring: [
+              [105, 24], [108, 34], [115, 40], [120, 38], [120, 28],
+              [116, 23], [110, 22], [105, 24],
+            ],
+          },
+        ],
+      },
+      {
         year: 1100,
         label: 'Northern Song (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'china-proper', name: 'China proper', bbox: [102, 22, 122, 41] },
+          {
+            id: 'china-proper',
+            name: 'China proper',
+            ring: [
+              [102, 22], [103, 32], [108, 40], [115, 42], [122, 41], [122, 30],
+              [120, 24], [112, 21], [105, 22], [102, 22],
+            ],
+          },
         ],
       },
       {
@@ -704,7 +777,13 @@ export const spatialEntities = [
         label: 'Southern Song (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'south-china', name: 'South China', bbox: [105, 20, 122, 33] },
+          {
+            id: 'south-china',
+            name: 'South China',
+            ring: [
+              [105, 20], [108, 30], [118, 32], [122, 28], [120, 21], [112, 20], [105, 20],
+            ],
+          },
         ],
       },
     ],
@@ -723,14 +802,66 @@ export const spatialEntities = [
     keyYears: [750, 800, 1258],
     overlays: [
       {
+        year: 760,
+        label: 'Early Abbasid (Baghdad founding era)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'mesopotamia',
+            name: 'Mesopotamia',
+            ring: [
+              [38.5, 30.5], [40, 36], [46, 37], [48, 33], [46, 30], [42, 30], [38.5, 30.5],
+            ],
+          },
+          {
+            id: 'levant',
+            name: 'Levant',
+            ring: [
+              [34, 30.5], [35, 36.5], [39, 37], [42, 34], [40, 31], [36, 30], [34, 30.5],
+            ],
+          },
+          {
+            id: 'persia',
+            name: 'Iran / Persia',
+            ring: [
+              [46, 27], [48, 36], [56, 38], [58, 32], [54, 26], [48, 25], [46, 27],
+            ],
+          },
+        ],
+      },
+      {
         year: 800,
         label: 'High Abbasid period',
         approximation: 'rough',
         regions: [
-          { id: 'mesopotamia', name: 'Mesopotamia', bbox: [38, 30, 48, 37] },
-          { id: 'levant', name: 'Levant', bbox: [34, 30, 42, 37] },
-          { id: 'egypt', name: 'Egypt', bbox: [25, 22, 35, 32] },
-          { id: 'persia', name: 'Iran / Persia', bbox: [44, 25, 62, 40] },
+          {
+            id: 'mesopotamia',
+            name: 'Mesopotamia',
+            ring: [
+              [38.5, 30.5], [40, 36], [46, 37], [48, 33], [46, 30], [42, 30], [38.5, 30.5],
+            ],
+          },
+          {
+            id: 'levant',
+            name: 'Levant',
+            ring: [
+              [34, 30.5], [35, 36.5], [39, 37], [42, 34], [40, 31], [36, 30], [34, 30.5],
+            ],
+          },
+          {
+            id: 'egypt',
+            name: 'Egypt',
+            ring: [
+              [25, 22], [28, 31.5], [34, 31.5], [35, 28], [33, 22], [29, 22], [25, 22],
+            ],
+          },
+          {
+            id: 'persia',
+            name: 'Iran / Persia',
+            ring: [
+              [44, 25], [46, 38], [55, 40], [62, 37], [60, 28], [52, 25], [44, 25],
+            ],
+          },
         ],
       },
       {
@@ -738,8 +869,20 @@ export const spatialEntities = [
         label: 'Fragmenting caliphal world',
         approximation: 'schematic',
         regions: [
-          { id: 'mesopotamia', name: 'Mesopotamia', bbox: [38, 30, 48, 37] },
-          { id: 'persia', name: 'Iran / Persia', bbox: [44, 25, 62, 40] },
+          {
+            id: 'mesopotamia',
+            name: 'Mesopotamia',
+            ring: [
+              [38.5, 30.5], [40, 36], [46, 37], [48, 33], [46, 30], [42, 30], [38.5, 30.5],
+            ],
+          },
+          {
+            id: 'persia',
+            name: 'Iran / Persia',
+            ring: [
+              [44, 25], [46, 38], [55, 40], [62, 37], [60, 28], [52, 25], [44, 25],
+            ],
+          },
         ],
       },
     ],
@@ -1655,11 +1798,33 @@ export const spatialEntities = [
     keyYears: [1368, 1420, 1644],
     overlays: [
       {
-        year: 1420,
-        label: 'Early Ming (approx.)',
+        year: 1380,
+        label: 'Early Ming consolidation',
         approximation: 'schematic',
         regions: [
-          { id: 'china-proper', name: 'China proper' },
+          {
+            id: 'china-proper',
+            name: 'China proper (early Ming)',
+            ring: [
+              [105, 23], [108, 33], [114, 40], [120, 39], [120, 28],
+              [116, 23], [110, 22], [105, 23],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1420,
+        label: 'Early Ming (Yongle era approx.)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'china-proper',
+            name: 'China proper',
+            ring: [
+              [100, 22], [103, 32], [108, 40], [115, 42], [122, 41], [122, 30],
+              [120, 24], [112, 21], [105, 22], [100, 22],
+            ],
+          },
         ],
       },
       {
@@ -1667,7 +1832,14 @@ export const spatialEntities = [
         label: 'Mid–late Ming',
         approximation: 'schematic',
         regions: [
-          { id: 'china-proper', name: 'China proper' },
+          {
+            id: 'china-proper',
+            name: 'China proper',
+            ring: [
+              [102, 22], [104, 33], [110, 41], [118, 42], [122, 40], [122, 28],
+              [118, 22], [110, 21], [104, 22], [102, 22],
+            ],
+          },
         ],
       },
     ],
@@ -1686,13 +1858,52 @@ export const spatialEntities = [
     keyYears: [1526, 1605, 1707],
     overlays: [
       {
+        year: 1560,
+        label: 'Early Akbar consolidation',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'india-north',
+            name: 'North India / Hindustan',
+            ring: [
+              [74, 24], [76, 30], [84, 30], [86, 26], [82, 22], [76, 22], [74, 24],
+            ],
+          },
+          {
+            id: 'india-central',
+            name: 'Central India fringe',
+            ring: [
+              [76, 20], [78, 25], [84, 25], [85, 21], [82, 18], [78, 18], [76, 20],
+            ],
+          },
+        ],
+      },
+      {
         year: 1605,
         label: 'Akbar–Jahangir era (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'india-north', name: 'North India' },
-          { id: 'india-central', name: 'Central India' },
-          { id: 'india-deccan', name: 'Deccan fringe' },
+          {
+            id: 'india-north',
+            name: 'North India',
+            ring: [
+              [72, 22], [74, 32], [86, 32], [90, 28], [88, 22], [80, 20], [74, 20], [72, 22],
+            ],
+          },
+          {
+            id: 'india-central',
+            name: 'Central India',
+            ring: [
+              [74, 18], [76, 26], [86, 26], [88, 20], [84, 16], [78, 16], [74, 18],
+            ],
+          },
+          {
+            id: 'india-deccan',
+            name: 'Deccan fringe',
+            ring: [
+              [74, 14], [76, 22], [84, 22], [85, 16], [80, 12], [76, 12], [74, 14],
+            ],
+          },
         ],
       },
       {
@@ -1700,10 +1911,34 @@ export const spatialEntities = [
         label: 'Aurangzeb-era extent',
         approximation: 'schematic',
         regions: [
-          { id: 'india-north', name: 'North India' },
-          { id: 'india-central', name: 'Central India' },
-          { id: 'india-deccan', name: 'Deccan' },
-          { id: 'india-south', name: 'South India fringe', bbox: [74, 8, 80, 16] },
+          {
+            id: 'india-north',
+            name: 'North India',
+            ring: [
+              [72, 22], [74, 32], [86, 32], [90, 28], [88, 22], [80, 20], [74, 20], [72, 22],
+            ],
+          },
+          {
+            id: 'india-central',
+            name: 'Central India',
+            ring: [
+              [74, 18], [76, 26], [86, 26], [88, 20], [84, 16], [78, 16], [74, 18],
+            ],
+          },
+          {
+            id: 'india-deccan',
+            name: 'Deccan',
+            ring: [
+              [73, 13], [75, 22], [84, 22], [86, 15], [80, 11], [75, 11], [73, 13],
+            ],
+          },
+          {
+            id: 'india-south',
+            name: 'South India fringe',
+            ring: [
+              [74, 8], [76, 15], [80, 16], [80, 10], [78, 8], [74, 8],
+            ],
+          },
         ],
       },
     ],
@@ -1722,14 +1957,61 @@ export const spatialEntities = [
     keyYears: [1644, 1750, 1911],
     overlays: [
       {
+        year: 1680,
+        label: 'Early Qing (Kangxi era approx.)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'china-proper',
+            name: 'China proper',
+            ring: [
+              [100, 22], [103, 32], [108, 40], [115, 42], [122, 41], [122, 30],
+              [120, 24], [112, 21], [105, 22], [100, 22],
+            ],
+          },
+          {
+            id: 'manchuria',
+            name: 'Manchuria',
+            ring: [
+              [120, 40], [122, 48], [132, 50], [135, 46], [130, 40], [122, 40], [120, 40],
+            ],
+          },
+        ],
+      },
+      {
         year: 1750,
         label: 'High Qing (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'china-proper', name: 'China proper' },
-          { id: 'tarim', name: 'Xinjiang / Tarim' },
-          { id: 'mongolia', name: 'Mongolia fringe' },
-          { id: 'manchuria', name: 'Manchuria', bbox: [120, 40, 135, 50] },
+          {
+            id: 'china-proper',
+            name: 'China proper',
+            ring: [
+              [100, 22], [103, 32], [108, 40], [115, 42], [122, 41], [122, 30],
+              [120, 24], [112, 21], [105, 22], [100, 22],
+            ],
+          },
+          {
+            id: 'tarim',
+            name: 'Xinjiang / Tarim',
+            ring: [
+              [75, 37], [80, 42], [92, 43], [95, 40], [92, 36], [82, 36], [75, 37],
+            ],
+          },
+          {
+            id: 'mongolia',
+            name: 'Mongolia fringe',
+            ring: [
+              [87, 44], [95, 50], [112, 52], [120, 50], [118, 44], [105, 42], [92, 42], [87, 44],
+            ],
+          },
+          {
+            id: 'manchuria',
+            name: 'Manchuria',
+            ring: [
+              [120, 40], [122, 48], [132, 50], [135, 46], [130, 40], [122, 40], [120, 40],
+            ],
+          },
         ],
       },
       {
@@ -1737,8 +2019,21 @@ export const spatialEntities = [
         label: 'Late Qing (approx.)',
         approximation: 'schematic',
         regions: [
-          { id: 'china-proper', name: 'China proper' },
-          { id: 'manchuria', name: 'Manchuria' },
+          {
+            id: 'china-proper',
+            name: 'China proper',
+            ring: [
+              [102, 22], [104, 33], [110, 41], [118, 42], [122, 40], [122, 28],
+              [118, 22], [110, 21], [104, 22], [102, 22],
+            ],
+          },
+          {
+            id: 'manchuria',
+            name: 'Manchuria',
+            ring: [
+              [120, 40], [122, 48], [132, 50], [135, 46], [130, 40], [122, 40], [120, 40],
+            ],
+          },
         ],
       },
     ],
@@ -2323,12 +2618,38 @@ export const spatialEntities = [
     keyYears: [-814, -500, -264, -146],
     overlays: [
       {
+        year: -700,
+        label: 'Early Carthage / Maghreb core',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'carthage-core',
+            name: 'Carthage / Tunisia',
+            ring: [
+              [8, 33], [9, 37.5], [12, 38], [11, 33], [9, 32], [8, 33],
+            ],
+          },
+        ],
+      },
+      {
         year: -500,
         label: 'Punic western Med',
         approximation: 'schematic',
         regions: [
-          { id: 'carthage-core', name: 'Carthage / Tunisia', bbox: [8, 32, 12, 38] },
-          { id: 'maghreb-east', name: 'Eastern Maghreb fringe' },
+          {
+            id: 'carthage-core',
+            name: 'Carthage / Tunisia',
+            ring: [
+              [8, 33], [9, 37.5], [12, 38], [11, 33], [9, 32], [8, 33],
+            ],
+          },
+          {
+            id: 'maghreb-east',
+            name: 'Eastern Maghreb fringe',
+            ring: [
+              [5, 30], [8, 36], [20, 37], [25, 33], [22, 30], [10, 30], [5, 30],
+            ],
+          },
         ],
       },
       {
@@ -2336,8 +2657,20 @@ export const spatialEntities = [
         label: 'Before Second Punic War',
         approximation: 'schematic',
         regions: [
-          { id: 'carthage-core', name: 'Carthage / Tunisia' },
-          { id: 'iberia', name: 'Iberian fringe' },
+          {
+            id: 'carthage-core',
+            name: 'Carthage / Tunisia',
+            ring: [
+              [8, 33], [9, 37.5], [12, 38], [11, 33], [9, 32], [8, 33],
+            ],
+          },
+          {
+            id: 'iberia',
+            name: 'Iberian fringe',
+            ring: [
+              [-10, 37], [-9, 43], [-2, 44], [3, 42], [2, 37], [-5, 36], [-10, 37],
+            ],
+          },
         ],
       },
     ],
@@ -2356,13 +2689,52 @@ export const spatialEntities = [
     keyYears: [224, 400, 620, 651],
     overlays: [
       {
+        year: 260,
+        label: 'Early Sassanid (Shapur era approx.)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'persia',
+            name: 'Iranian plateau',
+            ring: [
+              [46, 27], [48, 37], [56, 39], [60, 34], [56, 27], [50, 25], [46, 27],
+            ],
+          },
+          {
+            id: 'mesopotamia',
+            name: 'Mesopotamia',
+            ring: [
+              [38.5, 30.5], [40, 36], [46, 37], [48, 33], [46, 30], [42, 30], [38.5, 30.5],
+            ],
+          },
+        ],
+      },
+      {
         year: 400,
         label: 'Sassanid high',
         approximation: 'schematic',
         regions: [
-          { id: 'persia', name: 'Iranian plateau' },
-          { id: 'mesopotamia', name: 'Mesopotamia' },
-          { id: 'parthia-east', name: 'Eastern fringe' },
+          {
+            id: 'persia',
+            name: 'Iranian plateau',
+            ring: [
+              [44, 26], [46, 38], [55, 40], [62, 37], [60, 28], [52, 25], [44, 26],
+            ],
+          },
+          {
+            id: 'mesopotamia',
+            name: 'Mesopotamia',
+            ring: [
+              [38.5, 30.5], [40, 36], [46, 37], [48, 33], [46, 30], [42, 30], [38.5, 30.5],
+            ],
+          },
+          {
+            id: 'parthia-east',
+            name: 'Eastern fringe',
+            ring: [
+              [55, 32], [58, 39], [68, 40], [70, 35], [65, 30], [58, 30], [55, 32],
+            ],
+          },
         ],
       },
       {
@@ -2370,10 +2742,34 @@ export const spatialEntities = [
         label: 'Late Sassanid',
         approximation: 'schematic',
         regions: [
-          { id: 'persia', name: 'Iranian plateau' },
-          { id: 'mesopotamia', name: 'Mesopotamia' },
-          { id: 'levant', name: 'Levant fringe' },
-          { id: 'egypt', name: 'Egypt (briefly)' },
+          {
+            id: 'persia',
+            name: 'Iranian plateau',
+            ring: [
+              [44, 26], [46, 38], [55, 40], [62, 37], [60, 28], [52, 25], [44, 26],
+            ],
+          },
+          {
+            id: 'mesopotamia',
+            name: 'Mesopotamia',
+            ring: [
+              [38.5, 30.5], [40, 36], [46, 37], [48, 33], [46, 30], [42, 30], [38.5, 30.5],
+            ],
+          },
+          {
+            id: 'levant',
+            name: 'Levant fringe',
+            ring: [
+              [34, 30.5], [35, 36.5], [39, 37], [42, 34], [40, 31], [36, 30], [34, 30.5],
+            ],
+          },
+          {
+            id: 'egypt',
+            name: 'Egypt (briefly)',
+            ring: [
+              [25, 22], [28, 31.5], [34, 31.5], [35, 28], [33, 22], [29, 22], [25, 22],
+            ],
+          },
         ],
       },
     ],
@@ -2526,12 +2922,39 @@ export const spatialEntities = [
     keyYears: [962, 1050, 1250, 1550],
     overlays: [
       {
+        year: 980,
+        label: 'Ottonian core',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'central-europe-hre',
+            name: 'German lands (Ottonian)',
+            ring: [
+              [6, 47], [8, 53], [14, 54], [16, 50], [14, 47], [10, 46], [6, 47],
+            ],
+          },
+        ],
+      },
+      {
         year: 1050,
         label: 'Ottonian–Salian core',
         approximation: 'schematic',
         regions: [
-          { id: 'central-europe-hre', name: 'German lands', bbox: [5, 45, 18, 55] },
-          { id: 'italy', name: 'Northern Italy fringe' },
+          {
+            id: 'central-europe-hre',
+            name: 'German lands',
+            ring: [
+              [5, 46], [7, 54], [15, 55], [18, 50], [16, 46], [10, 45], [5, 46],
+            ],
+          },
+          {
+            id: 'italy',
+            name: 'Northern Italy fringe',
+            ring: [
+              [8.2, 44.0], [9.5, 45.8], [12.5, 46.5], [13.8, 45.6], [12.4, 43.8],
+              [11.0, 43.0], [9.0, 43.2], [8.2, 44.0],
+            ],
+          },
         ],
       },
       {
@@ -2539,8 +2962,20 @@ export const spatialEntities = [
         label: 'High medieval HRE',
         approximation: 'schematic',
         regions: [
-          { id: 'central-europe-hre', name: 'German lands' },
-          { id: 'frankish-east', name: 'East Francia fringe' },
+          {
+            id: 'central-europe-hre',
+            name: 'German lands',
+            ring: [
+              [5, 46], [7, 54], [15, 55], [18, 50], [16, 46], [10, 45], [5, 46],
+            ],
+          },
+          {
+            id: 'frankish-east',
+            name: 'East Francia fringe',
+            ring: [
+              [5, 46], [8, 53], [16, 54], [18, 50], [14, 46], [8, 45], [5, 46],
+            ],
+          },
         ],
       },
     ],
@@ -2696,6 +3131,29 @@ export const spatialEntities = [
     keyYears: [1581, 1650, 1700, 1795],
     overlays: [
       {
+        year: 1600,
+        label: 'Early VOC era',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'low-countries',
+            name: 'Low Countries',
+            ring: [
+              [3.2, 50.5], [3.5, 53.5], [5.5, 53.8], [7.2, 53.5], [7.5, 51.0],
+              [5.5, 50.2], [3.2, 50.5],
+            ],
+          },
+          {
+            id: 'java-bali',
+            name: 'Java foothold',
+            ring: [
+              [105.5, -8.2], [106.5, -6], [111, -5.8], [112, -7.5], [110, -8.5],
+              [107, -8.5], [105.5, -8.2],
+            ],
+          },
+        ],
+      },
+      {
         year: 1650,
         label: 'Dutch Golden Age',
         approximation: 'schematic',
@@ -2795,6 +3253,42 @@ export const spatialEntities = [
             name: 'Caribbean footholds',
             ring: [
               [-62, 14], [-61.5, 16.5], [-60.5, 16.2], [-60.8, 14.2], [-62, 14],
+            ],
+          },
+          {
+            id: 'west-africa-coast',
+            name: 'West Africa fringe',
+            ring: [
+              [-18, 5], [-16, 14], [-10, 15], [-5, 10], [-8, 4], [-14, 4], [-18, 5],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1830,
+        label: 'Mid colonial transition (Algeria era)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'frankish-west',
+            name: 'France',
+            ring: [
+              [-5, 43], [-4, 50], [0, 51], [4, 50.5], [6, 47], [5, 43.5],
+              [1, 42.5], [-3, 43], [-5, 43],
+            ],
+          },
+          {
+            id: 'caribbean',
+            name: 'Caribbean footholds',
+            ring: [
+              [-62, 14], [-61.5, 16.5], [-60.5, 16.2], [-60.8, 14.2], [-62, 14],
+            ],
+          },
+          {
+            id: 'maghreb-east',
+            name: 'Algeria / Maghreb fringe',
+            ring: [
+              [-8, 30], [-6, 36], [4, 37], [10, 35], [8, 30], [0, 29], [-8, 30],
             ],
           },
           {
@@ -3126,13 +3620,45 @@ export const spatialEntities = [
     keyYears: [1868, 1905, 1914, 1945],
     overlays: [
       {
+        year: 1875,
+        label: 'Early Meiji home islands',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'japan-honshu',
+            name: 'Japanese home islands',
+            ring: [
+              [129, 31], [131, 42], [141, 46], [146, 43], [142, 35], [136, 33], [131, 30], [129, 31],
+            ],
+          },
+        ],
+      },
+      {
         year: 1905,
         label: 'After Russo-Japanese War',
         approximation: 'schematic',
         regions: [
-          { id: 'japan-honshu', name: 'Japanese home islands', bbox: [129, 30, 146, 46] },
-          { id: 'korea-peninsula', name: 'Korea (protectorate fringe)', bbox: [124, 33, 130, 43] },
-          { id: 'manchuria', name: 'Manchuria fringe' },
+          {
+            id: 'japan-honshu',
+            name: 'Japanese home islands',
+            ring: [
+              [129, 31], [131, 42], [141, 46], [146, 43], [142, 35], [136, 33], [131, 30], [129, 31],
+            ],
+          },
+          {
+            id: 'korea-peninsula',
+            name: 'Korea (protectorate fringe)',
+            ring: [
+              [124, 34], [126, 42], [130, 43], [129, 35], [127, 33], [124, 34],
+            ],
+          },
+          {
+            id: 'manchuria',
+            name: 'Manchuria fringe',
+            ring: [
+              [120, 40], [122, 48], [132, 50], [135, 46], [130, 40], [122, 40], [120, 40],
+            ],
+          },
         ],
       },
       {
@@ -3140,9 +3666,27 @@ export const spatialEntities = [
         label: 'Early 20th-century empire',
         approximation: 'schematic',
         regions: [
-          { id: 'japan-honshu', name: 'Home islands' },
-          { id: 'korea-peninsula', name: 'Korea' },
-          { id: 'manchuria', name: 'Manchuria fringe' },
+          {
+            id: 'japan-honshu',
+            name: 'Home islands',
+            ring: [
+              [129, 31], [131, 42], [141, 46], [146, 43], [142, 35], [136, 33], [131, 30], [129, 31],
+            ],
+          },
+          {
+            id: 'korea-peninsula',
+            name: 'Korea',
+            ring: [
+              [124, 34], [126, 42], [130, 43], [129, 35], [127, 33], [124, 34],
+            ],
+          },
+          {
+            id: 'manchuria',
+            name: 'Manchuria fringe',
+            ring: [
+              [120, 40], [122, 48], [132, 50], [135, 46], [130, 40], [122, 40], [120, 40],
+            ],
+          },
         ],
       },
     ],
@@ -3213,12 +3757,38 @@ export const spatialEntities = [
     keyYears: [-1600, -1400, -1200, -1046],
     overlays: [
       {
-        year: -1500,
-        label: 'Shang Yellow River core',
+        year: -1550,
+        label: 'Early Shang Yellow River',
         approximation: 'schematic',
         regions: [
-          { id: 'north-china', name: 'North China plain' },
-          { id: 'yellow-river-core', name: 'Yellow River core', bbox: [108, 32, 118, 40] },
+          {
+            id: 'yellow-river-core',
+            name: 'Yellow River core',
+            ring: [
+              [110, 33], [111, 38], [115, 39], [116, 35], [114, 32], [111, 32], [110, 33],
+            ],
+          },
+        ],
+      },
+      {
+        year: -1400,
+        label: 'Shang Yellow River expansion',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'north-china',
+            name: 'North China plain',
+            ring: [
+              [105, 34], [110, 41], [118, 42], [122, 40], [121, 35], [115, 32], [108, 33], [105, 34],
+            ],
+          },
+          {
+            id: 'yellow-river-core',
+            name: 'Yellow River core',
+            ring: [
+              [108, 33], [110, 39], [116, 40], [118, 36], [115, 32], [110, 32], [108, 33],
+            ],
+          },
         ],
       },
       {
@@ -3226,7 +3796,13 @@ export const spatialEntities = [
         label: 'Late Shang',
         approximation: 'schematic',
         regions: [
-          { id: 'north-china', name: 'North China plain' },
+          {
+            id: 'north-china',
+            name: 'North China plain',
+            ring: [
+              [106, 34], [110, 40], [118, 41], [121, 38], [120, 34], [114, 32], [108, 33], [106, 34],
+            ],
+          },
         ],
       },
     ],
@@ -3249,8 +3825,34 @@ export const spatialEntities = [
         label: 'Late Bronze Levant coast',
         approximation: 'schematic',
         regions: [
-          { id: 'phoenician-coast', name: 'Phoenician coast', bbox: [34.5, 32.5, 36.5, 35.5] },
-          { id: 'levant', name: 'Levant fringe' },
+          {
+            id: 'phoenician-coast',
+            name: 'Phoenician coast',
+            ring: [
+              [34.6, 32.8], [34.8, 35.2], [36.2, 35.4], [36.0, 33.0], [35.2, 32.6], [34.6, 32.8],
+            ],
+          },
+          {
+            id: 'levant',
+            name: 'Levant fringe',
+            ring: [
+              [34, 30.5], [35, 36.5], [39, 37], [42, 34], [40, 31], [36, 30], [34, 30.5],
+            ],
+          },
+        ],
+      },
+      {
+        year: -1200,
+        label: 'Late Bronze–Iron transition',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'phoenician-coast',
+            name: 'Phoenician coast',
+            ring: [
+              [34.5, 32.6], [34.7, 35.3], [36.3, 35.5], [36.1, 32.9], [35.1, 32.5], [34.5, 32.6],
+            ],
+          },
         ],
       },
       {
@@ -3258,7 +3860,13 @@ export const spatialEntities = [
         label: 'Iron Age Phoenician cities',
         approximation: 'schematic',
         regions: [
-          { id: 'phoenician-coast', name: 'Phoenician coast' },
+          {
+            id: 'phoenician-coast',
+            name: 'Phoenician coast',
+            ring: [
+              [34.6, 32.8], [34.8, 35.2], [36.2, 35.4], [36.0, 33.0], [35.2, 32.6], [34.6, 32.8],
+            ],
+          },
         ],
       },
     ],
@@ -3281,7 +3889,34 @@ export const spatialEntities = [
         label: 'Early Olmec heartland',
         approximation: 'schematic',
         regions: [
-          { id: 'olmec-heartland', name: 'Gulf Olmec heartland', bbox: [-96, 16, -92, 20] },
+          {
+            id: 'olmec-heartland',
+            name: 'Gulf Olmec heartland',
+            ring: [
+              [-96, 16.5], [-95.5, 19.5], [-92.5, 20], [-92, 17], [-94, 16], [-96, 16.5],
+            ],
+          },
+        ],
+      },
+      {
+        year: -1200,
+        label: 'Olmec mid expansion',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'olmec-heartland',
+            name: 'Gulf Olmec heartland',
+            ring: [
+              [-96.5, 16], [-95.5, 20], [-92, 20.5], [-91.5, 17], [-93.5, 15.5], [-96.5, 16],
+            ],
+          },
+          {
+            id: 'mesoamerica',
+            name: 'Mesoamerica fringe',
+            ring: [
+              [-100, 16], [-98, 22], [-92, 23], [-88, 18], [-92, 15], [-98, 15], [-100, 16],
+            ],
+          },
         ],
       },
       {
@@ -3289,8 +3924,20 @@ export const spatialEntities = [
         label: 'Olmec florescence',
         approximation: 'schematic',
         regions: [
-          { id: 'olmec-heartland', name: 'Gulf Olmec heartland' },
-          { id: 'mesoamerica', name: 'Mesoamerica fringe' },
+          {
+            id: 'olmec-heartland',
+            name: 'Gulf Olmec heartland',
+            ring: [
+              [-96, 16.5], [-95.5, 19.5], [-92.5, 20], [-92, 17], [-94, 16], [-96, 16.5],
+            ],
+          },
+          {
+            id: 'mesoamerica',
+            name: 'Mesoamerica fringe',
+            ring: [
+              [-110, 16], [-108, 26], [-96, 28], [-86, 22], [-90, 14], [-100, 14], [-110, 16],
+            ],
+          },
         ],
       },
     ],
@@ -3313,7 +3960,27 @@ export const spatialEntities = [
         label: 'Early Kush / Nubia',
         approximation: 'schematic',
         regions: [
-          { id: 'nubia', name: 'Nubia / Upper Nile', bbox: [30, 12, 36, 22] },
+          {
+            id: 'nubia',
+            name: 'Nubia / Upper Nile',
+            ring: [
+              [30, 13], [31, 21], [35, 22], [36, 16], [34, 12], [31, 12], [30, 13],
+            ],
+          },
+        ],
+      },
+      {
+        year: -850,
+        label: 'Napatan Kush rise',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'nubia',
+            name: 'Nubia / Upper Nile',
+            ring: [
+              [30, 12], [31, 22], [36, 23], [37, 16], [34, 11], [31, 11], [30, 12],
+            ],
+          },
         ],
       },
       {
@@ -3321,8 +3988,20 @@ export const spatialEntities = [
         label: 'Napatan Kush',
         approximation: 'schematic',
         regions: [
-          { id: 'nubia', name: 'Nubia / Upper Nile' },
-          { id: 'egypt', name: 'Egypt fringe' },
+          {
+            id: 'nubia',
+            name: 'Nubia / Upper Nile',
+            ring: [
+              [30, 13], [31, 21], [35, 22], [36, 16], [34, 12], [31, 12], [30, 13],
+            ],
+          },
+          {
+            id: 'egypt',
+            name: 'Egypt fringe',
+            ring: [
+              [25, 22], [28, 31.5], [34, 31.5], [35, 28], [33, 22], [29, 22], [25, 22],
+            ],
+          },
         ],
       },
     ],
