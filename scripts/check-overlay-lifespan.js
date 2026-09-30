@@ -4,6 +4,7 @@
  * Day 22: colony fragment/split + higher overlay opacity.
  * Day 23: denser overlay coverage — rise→peak→decline for thin empires.
  * Day 24: densify remaining 2-keyframe notables to ≥3 overlays.
+ * Day 25: every timeline civilisation has ≥1 overlay entity; 27 new polity fills.
  */
 import {
   getActiveOverlaysAtYear,
@@ -13,6 +14,7 @@ import {
   OVERLAY_EDGE_GRACE,
   resolveRegionRing,
 } from '../src/globe-overlays.js';
+import { civilisations } from '../src/civilisations.js';
 import {
   lerpRings,
   MORPH_RING_SAMPLES,
@@ -391,6 +393,102 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
     }
   }
 }
+
+
+// Day 25 — every timeline civilisation linked; 27 missing polity fills
+{
+  const linked = new Set();
+  for (const e of spatialEntities) {
+    for (const id of e.timelineItemIds || []) linked.add(id);
+  }
+  const missing = civilisations.filter((c) => !linked.has(c.id)).map((c) => c.id);
+  assert(missing.length === 0, `every timeline civ has ≥1 overlay link (missing: ${missing.join(', ') || 'none'})`);
+
+  const day25 = [
+    'zhou-china', 'seleucid-empire', 'qin-china', 'axum', 'ghana-empire-ov', 'chola-empire',
+    'srivijaya', 'venice', 'heian-japan', 'viking-age', 'mississippian', 'kievan-rus',
+    'toltec', 'goryeo', 'khwarezmia', 'great-zimbabwe', 'kamakura-muromachi', 'ethiopian-empire',
+    'timurid', 'kongo', 'joseon', 'colonial-americas', 'tokugawa', 'maratha-empire',
+    'sikh-empire', 'zulu', 'austro-hungarian',
+  ];
+  const expectedLinks = {
+    'zhou-china': 'ancient-china-zhou',
+    'seleucid-empire': 'seleucid',
+    'qin-china': 'qin-dynasty',
+    'axum': 'axum',
+    'ghana-empire-ov': 'ghana-empire',
+    'chola-empire': 'chola',
+    'srivijaya': 'srivijaya',
+    'venice': 'venice',
+    'heian-japan': 'heian-japan',
+    'viking-age': 'viking-age',
+    'mississippian': 'mississippian',
+    'kievan-rus': 'kievan-rus',
+    'toltec': 'toltec',
+    'goryeo': 'goryeo',
+    'khwarezmia': 'khwarezmia',
+    'great-zimbabwe': 'great-zimbabwe',
+    'kamakura-muromachi': 'kamakura-muromachi',
+    'ethiopian-empire': 'ethiopian-empire',
+    'timurid': 'timurid',
+    'kongo': 'kongo',
+    'joseon': 'joseon',
+    'colonial-americas': 'colonial-americas',
+    'tokugawa': 'tokugawa',
+    'maratha-empire': 'maratha',
+    'sikh-empire': 'sikh-empire',
+    'zulu': 'zulu',
+    'austro-hungarian': 'austro-hungarian',
+  };
+  for (const id of day25) {
+    const ent = spatialEntities.find((e) => e.id === id);
+    assert(!!ent, `Day 25 entity ${id} exists`);
+    assert((ent.overlays || []).length >= 3, `${id} has ≥3 overlays (got ${ent.overlays?.length})`);
+    assert(
+      (ent.timelineItemIds || []).includes(expectedLinks[id]),
+      `${id} links timelineItemIds ${expectedLinks[id]}`,
+    );
+  }
+
+  // Easy-test years covering Axum, Mississippian, Zhou, Venice, Zulu
+  assert(idsAt(400).has('axum'), 'Axum ON at 400');
+  assert(idsAt(1100).has('mississippian'), 'Mississippian ON at 1100');
+  assert(idsAt(-850).has('zhou-china'), 'Zhou ON at −850');
+  assert(idsAt(1200).has('venice'), 'Venice ON at 1200');
+  assert(idsAt(1850).has('zulu'), 'Zulu ON at 1850');
+
+  // Viking / colonial fragment rules — no ocean-spanning blob
+  function assertNoOceanSpanLocal(entityId, year, maxSpan = 55) {
+    const feats = getOverlayPolygonFeatures(year).filter((f) => f.entityId === entityId);
+    for (const f of feats) {
+      const ring = f.geometry.coordinates[0];
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      for (const [x, y] of ring) {
+        minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+        minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+      }
+      const span = Math.max(maxX - minX, maxY - minY);
+      assert(
+        span < maxSpan,
+        `${entityId}@${year} ${f.regionId} span ${span.toFixed(1)} < ${maxSpan}° (no ocean-spanning blob)`,
+      );
+    }
+  }
+  const viking900 = getOverlayPolygonFeatures(900).filter((f) => f.entityId === 'viking-age');
+  const vikingIds = new Set(viking900.map((f) => f.regionId));
+  assert(vikingIds.has('scandinavia'), 'Viking 900 has Scandinavia');
+  assert(vikingIds.size >= 3, `Viking 900 has ≥3 region ids (got ${vikingIds.size})`);
+  assertNoOceanSpanLocal('viking-age', 900, 55);
+
+  const col1700 = getOverlayPolygonFeatures(1700).filter((f) => f.entityId === 'colonial-americas');
+  const colIds = new Set(col1700.map((f) => f.regionId));
+  assert(colIds.size >= 4, `Colonial Americas 1700 has ≥4 region ids (got ${colIds.size})`);
+  assertNoOceanSpanLocal('colonial-americas', 1700, 55);
+  assertNoOceanSpanLocal('colonial-americas', 1520, 55);
+
+  assert(spatialEntities.length >= 71, `≥71 overlay entities after Day 25 (got ${spatialEntities.length})`);
+}
+
 
 if (failed) {
   console.error(`\n${failed} lifespan/morph check(s) failed`);
