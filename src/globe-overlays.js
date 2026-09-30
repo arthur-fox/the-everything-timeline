@@ -6,6 +6,8 @@
  * Day 21: denser non-rectangular keyframes for hero empires + softer lifespan edge fades.
  * Day 22: colony fragment/split — distant possessions as separate region ids (no ocean-spanning morph).
  * Day 23: denser overlay coverage — rise→peak→decline keyframes for thin / peak-only empires.
+ * Day 24: densify remaining 2-keyframe notables to ≥3 overlays.
+ * Day 25: fill remaining timeline civilisations on the globe (27 polity overlays; people/presence later).
  *
  * Spatial entities + schematic region rings for Globe polygons.
  * Rings are intentionally rough — not GIS-accurate ancient borders.
@@ -4008,6 +4010,2175 @@ export const spatialEntities = [
     timelineItemIds: ['kush'],
     sources: [
       { title: 'Wikipedia — Kingdom of Kush', url: 'https://en.wikipedia.org/wiki/Kingdom_of_Kush' },
+    ],
+  },
+  {
+    id: 'zhou-china',
+    name: 'Zhou Dynasty',
+    color: '#0284C7',
+    type: 'empire',
+    description:
+      'Longest Chinese dynasty — schematic Yellow River / north-China core (Western Zhou to Eastern Zhou / Warring States fringe).',
+    keyYears: [-1046, -900, -771, -500, -256],
+    overlays: [
+      {
+        year: -1040,
+        label: 'Western Zhou Yellow River',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'yellow-river-core',
+            name: 'Yellow River core',
+            ring: [
+              [107, 33], [109, 38], [114, 39], [116, 35], [113, 32], [109, 32],
+              [107, 33]
+            ],
+          },
+        ],
+      },
+      {
+        year: -850,
+        label: 'Western Zhou mid',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'north-china',
+            name: 'North China plain',
+            ring: [
+              [105, 33], [109, 40], [117, 41], [120, 37], [118, 33], [112, 31],
+              [107, 32], [105, 33]
+            ],
+          },
+          {
+            id: 'yellow-river-core',
+            name: 'Yellow River core',
+            ring: [
+              [107, 33], [109, 38], [114, 39], [116, 35], [113, 32], [109, 32],
+              [107, 33]
+            ],
+          },
+        ],
+      },
+      {
+        year: -500,
+        label: 'Eastern Zhou / Warring States fringe',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'north-china',
+            name: 'North China plain',
+            ring: [
+              [104, 32], [108, 41], [118, 42], [122, 38], [120, 32], [112, 30],
+              [106, 31], [104, 32]
+            ],
+          },
+          {
+            id: 'central-china',
+            name: 'Central China fringe',
+            ring: [
+              [108, 28], [110, 34], [116, 34], [118, 29], [114, 26], [109, 27],
+              [108, 28]
+            ],
+          },
+        ],
+      },
+      {
+        year: -270,
+        label: 'Late Zhou contraction',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'yellow-river-core',
+            name: 'Yellow River remnant',
+            ring: [
+              [108, 33], [110, 37], [114, 38], [115, 34], [112, 32], [109, 32],
+              [108, 33]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['ancient-china-zhou'],
+    sources: [
+      { title: 'Wikipedia — Zhou Dynasty', url: 'https://en.wikipedia.org/wiki/Zhou_dynasty' },
+    ],
+  },
+  {
+    id: 'seleucid-empire',
+    name: 'Seleucid Empire',
+    color: '#7C3AED',
+    type: 'empire',
+    description:
+      'Hellenistic successor state from Anatolia toward Iran — schematic Near East / Mesopotamia core (not full Alexandrian reach).',
+    keyYears: [-312, -280, -200, -100, -63],
+    overlays: [
+      {
+        year: -300,
+        label: 'Early Seleucid Near East',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'syria-mesopotamia',
+            name: 'Syria–Mesopotamia',
+            ring: [
+              [35, 32], [37, 38], [44, 37], [48, 34], [46, 30], [40, 30],
+              [36, 31], [35, 32]
+            ],
+          },
+          {
+            id: 'anatolia-east',
+            name: 'Eastern Anatolia fringe',
+            ring: [
+              [35, 37], [37, 40], [42, 40], [43, 37], [40, 36], [36, 36],
+              [35, 37]
+            ],
+          },
+        ],
+      },
+      {
+        year: -250,
+        label: 'Seleucid peak schematic',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'syria-mesopotamia',
+            name: 'Syria–Mesopotamia',
+            ring: [
+              [34, 31], [36, 39], [45, 38], [50, 35], [49, 30], [42, 29],
+              [36, 30], [34, 31]
+            ],
+          },
+          {
+            id: 'iran-west',
+            name: 'Western Iran fringe',
+            ring: [
+              [48, 30], [50, 36], [56, 36], [57, 32], [54, 29], [49, 29],
+              [48, 30]
+            ],
+          },
+          {
+            id: 'anatolia-east',
+            name: 'Eastern Anatolia fringe',
+            ring: [
+              [34, 37], [36, 41], [43, 41], [44, 37], [40, 35], [35, 36],
+              [34, 37]
+            ],
+          },
+        ],
+      },
+      {
+        year: -150,
+        label: 'Mid Seleucid contraction',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'syria-mesopotamia',
+            name: 'Syria–Mesopotamia',
+            ring: [
+              [35, 32], [37, 38], [44, 37], [47, 33], [45, 30], [39, 30],
+              [36, 31], [35, 32]
+            ],
+          },
+        ],
+      },
+      {
+        year: -80,
+        label: 'Late Seleucid Syria',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'syria-core',
+            name: 'Syria core',
+            ring: [
+              [35, 33], [36, 37], [40, 37], [41, 34], [39, 32], [36, 32],
+              [35, 33]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['seleucid'],
+    sources: [
+      { title: 'Wikipedia — Seleucid Empire', url: 'https://en.wikipedia.org/wiki/Seleucid_Empire' },
+    ],
+  },
+  {
+    id: 'qin-china',
+    name: 'Qin Dynasty',
+    color: '#B91C1C',
+    type: 'empire',
+    description:
+      'Brief unifier of China — schematic north-to-central China proper (short lifespan; three tight keyframes).',
+    keyYears: [-221, -214, -206],
+    overlays: [
+      {
+        year: -221,
+        label: 'Qin unification begins',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'qin-core',
+            name: 'Qin / Wei valley',
+            ring: [
+              [105, 33], [107, 37], [112, 37], [113, 33], [110, 31], [106, 32],
+              [105, 33]
+            ],
+          },
+        ],
+      },
+      {
+        year: -214,
+        label: 'Qin China proper',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'china-proper',
+            name: 'China proper schematic',
+            ring: [
+              [102, 23], [105, 34], [110, 41], [118, 41], [121, 34], [118, 24],
+              [110, 22], [104, 23], [102, 23]
+            ],
+          },
+          {
+            id: 'qin-core',
+            name: 'Qin heartland',
+            ring: [
+              [105, 32], [107, 37], [112, 37], [113, 33], [110, 31], [106, 31],
+              [105, 32]
+            ],
+          },
+        ],
+      },
+      {
+        year: -206,
+        label: 'Qin collapse',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'qin-core',
+            name: 'Qin remnant',
+            ring: [
+              [106, 33], [108, 36], [112, 36], [112, 33], [109, 32], [106, 32],
+              [106, 33]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['qin-dynasty'],
+    sources: [
+      { title: 'Wikipedia — Qin Dynasty', url: 'https://en.wikipedia.org/wiki/Qin_dynasty' },
+    ],
+  },
+  {
+    id: 'axum',
+    name: 'Kingdom of Axum',
+    color: '#0D9488',
+    type: 'empire',
+    description:
+      'Horn of Africa trading empire — schematic Ethiopian highlands / Red Sea fringe.',
+    keyYears: [100, 300, 500, 700, 940],
+    overlays: [
+      {
+        year: 120,
+        label: 'Early Axum highlands',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'axum-core',
+            name: 'Axum / Tigray core',
+            ring: [
+              [37, 12], [38, 16], [41, 16], [41, 13], [39, 11], [37, 12]
+            ],
+          },
+        ],
+      },
+      {
+        year: 400,
+        label: 'Axum peak Red Sea',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'axum-core',
+            name: 'Axum / Tigray core',
+            ring: [
+              [36, 11], [37, 16], [41, 17], [42, 13], [40, 10], [37, 11],
+              [36, 11]
+            ],
+          },
+          {
+            id: 'eritrea-coast',
+            name: 'Eritrea / Red Sea fringe',
+            ring: [
+              [38, 13], [39, 17], [43, 17], [44, 14], [42, 12], [39, 12],
+              [38, 13]
+            ],
+          },
+          {
+            id: 'horn-south',
+            name: 'Highland south fringe',
+            ring: [
+              [37, 8], [38, 12], [41, 12], [41, 8], [39, 7], [37, 8]
+            ],
+          },
+        ],
+      },
+      {
+        year: 700,
+        label: 'Late Axum contraction',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'axum-core',
+            name: 'Axum remnant',
+            ring: [
+              [37, 12], [38, 15], [40, 15], [40, 12], [38, 11], [37, 12]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['axum'],
+    sources: [
+      { title: 'Wikipedia — Kingdom of Axum', url: 'https://en.wikipedia.org/wiki/Kingdom_of_Aksum' },
+    ],
+  },
+  {
+    id: 'ghana-empire-ov',
+    name: 'Ghana Empire',
+    color: '#CD7F32',
+    type: 'empire',
+    description:
+      'West African Land of Gold — schematic Sahel / upper Senegal–Niger corridor (not modern Ghana).',
+    keyYears: [300, 600, 900, 1100, 1200],
+    overlays: [
+      {
+        year: 350,
+        label: 'Early Ghana / Wagadu',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'ghana-sahel',
+            name: 'Sahel Ghana core',
+            ring: [
+              [-12, 14], [-10, 18], [-4, 18], [-3, 15], [-6, 13], [-11, 13],
+              [-12, 14]
+            ],
+          },
+        ],
+      },
+      {
+        year: 800,
+        label: 'Ghana peak trade',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'ghana-sahel',
+            name: 'Sahel Ghana core',
+            ring: [
+              [-15, 13], [-12, 19], [-2, 19], [-1, 14], [-5, 12], [-13, 12],
+              [-15, 13]
+            ],
+          },
+          {
+            id: 'sahara-fringe',
+            name: 'Sahara trade fringe',
+            ring: [
+              [-10, 18], [-8, 22], [-2, 22], [-1, 18], [-5, 17], [-10, 17],
+              [-10, 18]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1100,
+        label: 'Late Ghana',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'ghana-sahel',
+            name: 'Sahel Ghana remnant',
+            ring: [
+              [-11, 14], [-9, 17], [-4, 17], [-4, 14], [-7, 13], [-11, 13],
+              [-11, 14]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['ghana-empire'],
+    sources: [
+      { title: 'Wikipedia — Ghana Empire', url: 'https://en.wikipedia.org/wiki/Ghana_Empire' },
+    ],
+  },
+  {
+    id: 'chola-empire',
+    name: 'Chola Dynasty',
+    color: '#DB2777',
+    type: 'empire',
+    description:
+      'South Indian maritime dynasty — schematic Tamil Nadu core + brief Sri Lanka / Coromandel footholds as separate ids.',
+    keyYears: [300, 850, 1000, 1200, 1279],
+    overlays: [
+      {
+        year: 350,
+        label: 'Early Chola Tamil core',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'tamil-core',
+            name: 'Tamil country',
+            ring: [
+              [77, 8], [78, 13], [80, 13], [80, 9], [79, 8], [77, 8]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1000,
+        label: 'Imperial Chola peak',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'tamil-core',
+            name: 'Tamil country',
+            ring: [
+              [76, 8], [77, 14], [81, 14], [81, 8], [79, 7], [76, 8]
+            ],
+          },
+          {
+            id: 'sri-lanka-north',
+            name: 'Northern Sri Lanka foothold',
+            ring: [
+              [79.5, 8], [80, 10], [81.5, 10], [81.5, 8.5], [80.5, 8], [79.5, 8]
+            ],
+          },
+          {
+            id: 'coromandel',
+            name: 'Coromandel coast',
+            ring: [
+              [79, 10], [80, 16], [83, 16], [83, 11], [81, 10], [79, 10]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1200,
+        label: 'Late Imperial Chola',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'tamil-core',
+            name: 'Tamil country',
+            ring: [
+              [77, 8], [78, 13], [80.5, 13], [80.5, 9], [79, 8], [77, 8]
+            ],
+          },
+          {
+            id: 'coromandel',
+            name: 'Coromandel coast',
+            ring: [
+              [79, 11], [80, 15], [82, 15], [82, 11], [80, 10], [79, 11]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['chola'],
+    sources: [
+      { title: 'Wikipedia — Chola Dynasty', url: 'https://en.wikipedia.org/wiki/Chola_dynasty' },
+    ],
+  },
+  {
+    id: 'srivijaya',
+    name: 'Srivijaya',
+    color: '#4338CA',
+    type: 'empire',
+    description:
+      'Sumatran maritime empire — schematic Palembang / Strait of Malacca core (island fragments, no ocean blob).',
+    keyYears: [650, 800, 1000, 1200, 1377],
+    overlays: [
+      {
+        year: 700,
+        label: 'Early Srivijaya Sumatra',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'sumatra-south',
+            name: 'South Sumatra',
+            ring: [
+              [102, -5], [103, 0], [106, 0], [106, -4], [104, -5.5], [102, -5]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1000,
+        label: 'Srivijaya Malacca peak',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'sumatra-south',
+            name: 'South Sumatra',
+            ring: [
+              [101, -5], [102, 1], [107, 1], [107, -4], [104, -6], [101, -5]
+            ],
+          },
+          {
+            id: 'malay-peninsula',
+            name: 'Malay Peninsula fringe',
+            ring: [
+              [100, 1], [101, 6], [104, 6], [104, 2], [102, 1], [100, 1]
+            ],
+          },
+          {
+            id: 'java-west-fringe',
+            name: 'West Java fringe',
+            ring: [
+              [105, -8], [106, -5], [109, -5], [109, -7], [107, -8], [105, -8]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1250,
+        label: 'Late Srivijaya contraction',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'sumatra-south',
+            name: 'South Sumatra remnant',
+            ring: [
+              [103, -4], [104, -1], [106, -1], [106, -3.5], [104, -4.5], [103, -4]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['srivijaya'],
+    sources: [
+      { title: 'Wikipedia — Srivijaya', url: 'https://en.wikipedia.org/wiki/Srivijaya' },
+    ],
+  },
+  {
+    id: 'venice',
+    name: 'Republic of Venice',
+    color: '#881337',
+    type: 'state',
+    description:
+      'Maritime republic — schematic Venetian lagoon / Adriatic + brief Levant / Aegean footholds as separate ids.',
+    keyYears: [697, 1000, 1204, 1500, 1797],
+    overlays: [
+      {
+        year: 800,
+        label: 'Early Venice lagoon',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'veneto',
+            name: 'Veneto / lagoon',
+            ring: [
+              [11.5, 44.5], [12, 46], [13.5, 46], [13.8, 44.8], [12.8, 44.2], [11.5, 44.5]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1200,
+        label: 'Venetian Adriatic peak',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'veneto',
+            name: 'Veneto / lagoon',
+            ring: [
+              [11, 44.2], [11.5, 46.2], [14, 46.2], [14.2, 44.5], [13, 43.8], [11, 44.2]
+            ],
+          },
+          {
+            id: 'dalmatia',
+            name: 'Dalmatian coast',
+            ring: [
+              [14, 42], [14.5, 45], [17, 45], [17.5, 42.5], [16, 41.5], [14, 42]
+            ],
+          },
+          {
+            id: 'crete-foothold',
+            name: 'Crete foothold',
+            ring: [
+              [23.5, 34.5], [24, 35.8], [26.5, 35.8], [26.5, 34.8], [25, 34.3], [23.5, 34.5]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1500,
+        label: 'High Renaissance Venice',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'veneto',
+            name: 'Veneto / lagoon',
+            ring: [
+              [11, 44.2], [11.5, 46.2], [14, 46.2], [14.2, 44.5], [13, 43.8], [11, 44.2]
+            ],
+          },
+          {
+            id: 'dalmatia',
+            name: 'Dalmatian coast',
+            ring: [
+              [14, 42], [14.5, 45], [17, 45], [17.5, 42.5], [16, 41.5], [14, 42]
+            ],
+          },
+          {
+            id: 'ionian-fringe',
+            name: 'Ionian fringe',
+            ring: [
+              [19, 37], [19.5, 40], [21.5, 40], [21.5, 37.5], [20.5, 36.8], [19, 37]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1750,
+        label: 'Late Venice contraction',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'veneto',
+            name: 'Veneto remnant',
+            ring: [
+              [11.8, 44.8], [12.2, 45.8], [13.5, 45.8], [13.6, 45], [12.8, 44.6], [11.8, 44.8]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['venice'],
+    sources: [
+      { title: 'Wikipedia — Republic of Venice', url: 'https://en.wikipedia.org/wiki/Republic_of_Venice' },
+    ],
+  },
+  {
+    id: 'heian-japan',
+    name: 'Nara & Heian Japan',
+    color: '#22C55E',
+    type: 'state',
+    description:
+      'Classical Japan — schematic Honshu court core (Nara–Kyoto); not a continental empire.',
+    keyYears: [710, 794, 1000, 1185],
+    overlays: [
+      {
+        year: 720,
+        label: 'Nara period core',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'kinai',
+            name: 'Kinai / Yamato',
+            ring: [
+              [135, 34], [135.5, 35.5], [136.8, 35.5], [136.8, 34.2], [136, 33.8], [135, 34]
+            ],
+          },
+        ],
+      },
+      {
+        year: 900,
+        label: 'Heian court Japan',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'kinai',
+            name: 'Kinai / Yamato',
+            ring: [
+              [134.5, 33.8], [135, 36], [137, 36], [137.2, 34], [136, 33.5], [134.5, 33.8]
+            ],
+          },
+          {
+            id: 'honshu-central',
+            name: 'Central Honshu',
+            ring: [
+              [135, 34], [136, 37], [140, 37], [140.5, 35], [139, 34], [136, 33.5],
+              [135, 34]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1100,
+        label: 'Late Heian',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'honshu-central',
+            name: 'Central Honshu',
+            ring: [
+              [134.5, 33.5], [135.5, 37], [140.5, 37.5], [141, 35], [139.5, 33.8], [136, 33],
+              [134.5, 33.5]
+            ],
+          },
+          {
+            id: 'kinai',
+            name: 'Kinai / Yamato',
+            ring: [
+              [134.8, 34], [135.3, 35.5], [136.8, 35.5], [136.8, 34], [136, 33.7], [134.8, 34]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['heian-japan'],
+    sources: [
+      { title: 'Wikipedia — Nara & Heian Japan', url: 'https://en.wikipedia.org/wiki/Heian_period' },
+    ],
+  },
+  {
+    id: 'viking-age',
+    name: 'Viking Age',
+    color: '#6D28D9',
+    type: 'civilization',
+    description:
+      'Norse world — Scandinavia core plus short-lived overseas footholds as separate region ids (not one Atlantic blob).',
+    keyYears: [793, 850, 950, 1000, 1066],
+    overlays: [
+      {
+        year: 800,
+        label: 'Early Viking Age Scandinavia',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'scandinavia',
+            name: 'Scandinavia core',
+            ring: [
+              [5, 55], [8, 64], [18, 65], [20, 58], [15, 55], [10, 54],
+              [5, 55]
+            ],
+          },
+        ],
+      },
+      {
+        year: 900,
+        label: 'Viking overseas footholds',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'scandinavia',
+            name: 'Scandinavia core',
+            ring: [
+              [4, 55], [7, 65], [19, 66], [21, 58], [16, 54], [9, 53],
+              [4, 55]
+            ],
+          },
+          {
+            id: 'danelaw',
+            name: 'Danelaw / England fringe',
+            ring: [
+              [-3, 52], [-2, 56], [1, 56], [1, 52.5], [-1, 51.5], [-3, 52]
+            ],
+          },
+          {
+            id: 'normandy',
+            name: 'Normandy foothold',
+            ring: [
+              [-2, 48.5], [-1.5, 50], [1.5, 50], [1.5, 48.8], [0, 48.2], [-2, 48.5]
+            ],
+          },
+          {
+            id: 'iceland',
+            name: 'Iceland settlement',
+            ring: [
+              [-24, 63], [-22, 66], [-14, 66], [-13, 64], [-18, 63], [-24, 63]
+            ],
+          },
+          {
+            id: 'dublin-fringe',
+            name: 'Dublin / Irish Sea fringe',
+            ring: [
+              [-8, 52], [-7, 54.5], [-5.5, 54.5], [-5.5, 52.5], [-6.5, 52], [-8, 52]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1000,
+        label: 'Late Viking / North Sea',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'scandinavia',
+            name: 'Scandinavia core',
+            ring: [
+              [5, 55], [8, 64], [18, 65], [20, 58], [15, 55], [10, 54],
+              [5, 55]
+            ],
+          },
+          {
+            id: 'danelaw',
+            name: 'England fringe',
+            ring: [
+              [-2, 52], [-1, 55.5], [1.5, 55.5], [1.5, 52.5], [0, 51.8], [-2, 52]
+            ],
+          },
+          {
+            id: 'iceland',
+            name: 'Iceland',
+            ring: [
+              [-24, 63], [-22, 66], [-14, 66], [-13, 64], [-18, 63], [-24, 63]
+            ],
+          },
+          {
+            id: 'normandy',
+            name: 'Normandy',
+            ring: [
+              [-2, 48.5], [-1.5, 50], [1.5, 50], [1.5, 48.8], [0, 48.2], [-2, 48.5]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1060,
+        label: 'End of Viking Age',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'scandinavia',
+            name: 'Scandinavia remnant',
+            ring: [
+              [6, 56], [9, 63], [17, 64], [18, 58], [14, 55], [8, 55],
+              [6, 56]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['viking-age'],
+    sources: [
+      { title: 'Wikipedia — Viking Age', url: 'https://en.wikipedia.org/wiki/Viking_Age' },
+    ],
+  },
+  {
+    id: 'mississippian',
+    name: 'Mississippian Culture',
+    color: '#EC4899',
+    type: 'civilization',
+    description:
+      'Eastern North American mound-building culture — schematic Mississippi / Ohio valleys (Cahokia core).',
+    keyYears: [800, 1000, 1200, 1400, 1600],
+    overlays: [
+      {
+        year: 850,
+        label: 'Early Mississippian',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'cahokia-core',
+            name: 'Cahokia / American Bottom',
+            ring: [
+              [-92, 37], [-91, 40], [-88, 40], [-88, 37.5], [-90, 36.5], [-92, 37]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1100,
+        label: 'Mississippian florescence',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'cahokia-core',
+            name: 'Cahokia core',
+            ring: [
+              [-92.5, 37], [-91, 40.5], [-87.5, 40.5], [-87.5, 37], [-90, 36], [-92.5, 37]
+            ],
+          },
+          {
+            id: 'ohio-valley',
+            name: 'Ohio Valley',
+            ring: [
+              [-88, 37], [-87, 41], [-81, 41], [-81, 37.5], [-84, 36.5], [-88, 37]
+            ],
+          },
+          {
+            id: 'lower-mississippi',
+            name: 'Lower Mississippi',
+            ring: [
+              [-92, 31], [-91, 36], [-88, 36], [-88, 31.5], [-90, 30.5], [-92, 31]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1400,
+        label: 'Late Mississippian',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'cahokia-core',
+            name: 'Cahokia remnant',
+            ring: [
+              [-91.5, 37.5], [-90.5, 39.5], [-88.5, 39.5], [-88.5, 37.5], [-90, 37], [-91.5, 37.5]
+            ],
+          },
+          {
+            id: 'lower-mississippi',
+            name: 'Lower Mississippi',
+            ring: [
+              [-92, 32], [-91, 36], [-88.5, 36], [-88.5, 32], [-90, 31], [-92, 32]
+            ],
+          },
+          {
+            id: 'southeast-mounds',
+            name: 'Southeast mound fringe',
+            ring: [
+              [-90, 32], [-89, 35], [-83, 35], [-83, 32], [-86, 31], [-90, 32]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['mississippian'],
+    sources: [
+      { title: 'Wikipedia — Mississippian Culture', url: 'https://en.wikipedia.org/wiki/Mississippian_culture' },
+    ],
+  },
+  {
+    id: 'kievan-rus',
+    name: 'Kievan Rus\'',
+    color: '#1E3A8A',
+    type: 'state',
+    description:
+      'East Slavic federation centred on Kyiv — schematic Dnieper / forest-steppe core.',
+    keyYears: [882, 980, 1050, 1169, 1240],
+    overlays: [
+      {
+        year: 900,
+        label: 'Early Kievan Rus',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'dnieper-core',
+            name: 'Dnieper / Kyiv core',
+            ring: [
+              [28, 48], [29, 52], [34, 52], [34, 48.5], [31, 47.5], [28, 48]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1050,
+        label: 'Kievan Rus peak',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'dnieper-core',
+            name: 'Dnieper / Kyiv core',
+            ring: [
+              [27, 47], [28, 53], [36, 53], [36, 47], [32, 46], [27, 47]
+            ],
+          },
+          {
+            id: 'novgorod-north',
+            name: 'Novgorod north',
+            ring: [
+              [30, 56], [31, 60], [36, 60], [36, 56.5], [33, 55.5], [30, 56]
+            ],
+          },
+          {
+            id: 'volga-fringe',
+            name: 'Upper Volga fringe',
+            ring: [
+              [36, 54], [37, 58], [42, 58], [42, 54.5], [39, 53.5], [36, 54]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1200,
+        label: 'Late Rus principalities',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'dnieper-core',
+            name: 'Dnieper remnant',
+            ring: [
+              [28, 48], [29, 51], [33, 51], [33, 48], [31, 47.5], [28, 48]
+            ],
+          },
+          {
+            id: 'novgorod-north',
+            name: 'Novgorod',
+            ring: [
+              [30, 56], [31, 59], [35, 59], [35, 56.5], [33, 55.5], [30, 56]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['kievan-rus'],
+    sources: [
+      { title: 'Wikipedia — Kievan Rus\'', url: 'https://en.wikipedia.org/wiki/Kievan_Rus%27' },
+    ],
+  },
+  {
+    id: 'toltec',
+    name: 'Toltec Empire',
+    color: '#A21CAF',
+    type: 'empire',
+    description:
+      'Militaristic Mesoamerica centred on Tula — schematic central Mexican highlands.',
+    keyYears: [900, 1000, 1100, 1168],
+    overlays: [
+      {
+        year: 920,
+        label: 'Early Toltec Tula',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'tula-core',
+            name: 'Tula / Hidalgo core',
+            ring: [
+              [-100, 19.5], [-99.5, 21.5], [-97.5, 21.5], [-97.5, 19.8], [-98.5, 19.2], [-100, 19.5]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1050,
+        label: 'Toltec peak',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'tula-core',
+            name: 'Tula core',
+            ring: [
+              [-100.5, 19], [-99.5, 22], [-97, 22], [-97, 19.5], [-98.5, 18.8], [-100.5, 19]
+            ],
+          },
+          {
+            id: 'central-mexico',
+            name: 'Central Mexico fringe',
+            ring: [
+              [-102, 18], [-101, 22.5], [-96, 22.5], [-96, 18.5], [-98, 17.5], [-102, 18]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1150,
+        label: 'Late Toltec',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'tula-core',
+            name: 'Tula remnant',
+            ring: [
+              [-100, 19.5], [-99.5, 21], [-98, 21], [-98, 19.5], [-99, 19.2], [-100, 19.5]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['toltec'],
+    sources: [
+      { title: 'Wikipedia — Toltec Empire', url: 'https://en.wikipedia.org/wiki/Toltec' },
+    ],
+  },
+  {
+    id: 'goryeo',
+    name: 'Goryeo Dynasty',
+    color: '#15803D',
+    type: 'empire',
+    description:
+      'Medieval Korea — schematic Korean peninsula core.',
+    keyYears: [918, 1000, 1200, 1392],
+    overlays: [
+      {
+        year: 940,
+        label: 'Early Goryeo',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'korea-peninsula',
+            name: 'Korean peninsula',
+            ring: [
+              [125, 34], [126, 40], [130, 41], [130, 36], [128, 34], [125, 34]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1100,
+        label: 'Goryeo mid',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'korea-peninsula',
+            name: 'Korean peninsula',
+            ring: [
+              [124.5, 33.5], [125.5, 41], [130.5, 42], [131, 36], [129, 33.5], [126, 33],
+              [124.5, 33.5]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1300,
+        label: 'Late Goryeo',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'korea-peninsula',
+            name: 'Korean peninsula',
+            ring: [
+              [125, 34], [126, 40], [130, 41], [130, 36], [128, 34], [125, 34]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['goryeo'],
+    sources: [
+      { title: 'Wikipedia — Goryeo Dynasty', url: 'https://en.wikipedia.org/wiki/Goryeo' },
+    ],
+  },
+  {
+    id: 'khwarezmia',
+    name: 'Khwarezmian Empire',
+    color: '#C026D3',
+    type: 'empire',
+    description:
+      'Persianate Central Asian empire — schematic Khwarezm / Transoxiana / eastern Iran (pre-Mongol).',
+    keyYears: [1077, 1150, 1210, 1231],
+    overlays: [
+      {
+        year: 1100,
+        label: 'Early Khwarezm',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'khwarezm-core',
+            name: 'Khwarezm oasis',
+            ring: [
+              [57, 38], [58, 43], [63, 43], [63, 39], [60, 37], [57, 38]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1200,
+        label: 'Khwarezmian peak',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'khwarezm-core',
+            name: 'Khwarezm',
+            ring: [
+              [56, 37], [57, 44], [64, 44], [65, 39], [62, 36], [57, 36],
+              [56, 37]
+            ],
+          },
+          {
+            id: 'transoxiana',
+            name: 'Transoxiana',
+            ring: [
+              [64, 38], [65, 43], [72, 43], [72, 39], [69, 37], [64, 38]
+            ],
+          },
+          {
+            id: 'iran-east',
+            name: 'Eastern Iran fringe',
+            ring: [
+              [55, 32], [56, 38], [63, 38], [63, 33], [60, 31], [55, 32]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1225,
+        label: 'Collapse under Mongols',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'khwarezm-core',
+            name: 'Khwarezm remnant',
+            ring: [
+              [58, 39], [59, 42], [62, 42], [62, 39.5], [60, 38.5], [58, 39]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['khwarezmia'],
+    sources: [
+      { title: 'Wikipedia — Khwarezmian Empire', url: 'https://en.wikipedia.org/wiki/Khwarazmian_Empire' },
+    ],
+  },
+  {
+    id: 'great-zimbabwe',
+    name: 'Great Zimbabwe',
+    color: '#9F1239',
+    type: 'state',
+    description:
+      'Medieval southern African stone city — schematic Zimbabwe plateau trade core.',
+    keyYears: [1100, 1250, 1400, 1450],
+    overlays: [
+      {
+        year: 1150,
+        label: 'Early Great Zimbabwe',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'zimbabwe-plateau',
+            name: 'Zimbabwe plateau',
+            ring: [
+              [28, -22], [29, -18], [33, -18], [33, -21], [31, -23], [28, -22]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1300,
+        label: 'Great Zimbabwe peak',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'zimbabwe-plateau',
+            name: 'Zimbabwe plateau',
+            ring: [
+              [27, -23], [28, -17], [34, -17], [34, -22], [31, -24], [27, -23]
+            ],
+          },
+          {
+            id: 'limpopo-fringe',
+            name: 'Limpopo fringe',
+            ring: [
+              [28, -24], [29, -21], [33, -21], [33, -24], [31, -25], [28, -24]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1420,
+        label: 'Late Great Zimbabwe',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'zimbabwe-plateau',
+            name: 'Zimbabwe remnant',
+            ring: [
+              [29, -21], [30, -18.5], [32.5, -18.5], [32.5, -21], [31, -22], [29, -21]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['great-zimbabwe'],
+    sources: [
+      { title: 'Wikipedia — Great Zimbabwe', url: 'https://en.wikipedia.org/wiki/Great_Zimbabwe' },
+    ],
+  },
+  {
+    id: 'kamakura-muromachi',
+    name: 'Kamakura & Muromachi Japan',
+    color: '#0891B2',
+    type: 'state',
+    description:
+      'Samurai Japan — schematic Honshu shogunal cores (Kamakura then Kyoto/Muromachi).',
+    keyYears: [1185, 1300, 1400, 1573],
+    overlays: [
+      {
+        year: 1200,
+        label: 'Kamakura bakufu',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'kanto',
+            name: 'Kanto / Kamakura',
+            ring: [
+              [138.5, 34.5], [139, 36.5], [141, 36.5], [141, 35], [140, 34.2], [138.5, 34.5]
+            ],
+          },
+          {
+            id: 'honshu-central',
+            name: 'Central Honshu',
+            ring: [
+              [135, 34], [136, 37], [140, 37], [140.5, 35], [138, 33.8], [135, 34]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1350,
+        label: 'Nanbokucho / early Muromachi',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'kinai',
+            name: 'Kyoto / Kinai',
+            ring: [
+              [134.5, 34], [135, 36], [137, 36], [137.2, 34.2], [136, 33.8], [134.5, 34]
+            ],
+          },
+          {
+            id: 'honshu-central',
+            name: 'Central Honshu',
+            ring: [
+              [134, 33.5], [135, 37.5], [141, 37.5], [141.5, 34.5], [139, 33], [135, 33],
+              [134, 33.5]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1500,
+        label: 'Late Muromachi / Sengoku fringe',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'honshu-central',
+            name: 'Honshu fragmented fringe',
+            ring: [
+              [133.5, 33], [134.5, 38], [141.5, 38], [142, 34.5], [139, 32.5], [135, 32.5],
+              [133.5, 33]
+            ],
+          },
+          {
+            id: 'kinai',
+            name: 'Kinai',
+            ring: [
+              [134.8, 34], [135.3, 35.5], [136.8, 35.5], [136.8, 34], [136, 33.7], [134.8, 34]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['kamakura-muromachi'],
+    sources: [
+      { title: 'Wikipedia — Kamakura & Muromachi Japan', url: 'https://en.wikipedia.org/wiki/Kamakura_period' },
+    ],
+  },
+  {
+    id: 'ethiopian-empire',
+    name: 'Ethiopian Empire',
+    color: '#4C1D95',
+    type: 'empire',
+    description:
+      'Solomonic Ethiopia — schematic highland core expanding then contracting in the Horn.',
+    keyYears: [1270, 1500, 1700, 1900, 1974],
+    overlays: [
+      {
+        year: 1300,
+        label: 'Early Solomonic highlands',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'ethiopian-highlands',
+            name: 'Ethiopian highlands',
+            ring: [
+              [36, 8], [37, 15], [41, 15], [41, 9], [39, 7], [36, 8]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1600,
+        label: 'Ethiopian Empire mid',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'ethiopian-highlands',
+            name: 'Ethiopian highlands',
+            ring: [
+              [35, 6], [36, 15], [42, 15], [42, 8], [39, 5], [35, 6]
+            ],
+          },
+          {
+            id: 'eritrea-fringe',
+            name: 'Northern fringe',
+            ring: [
+              [37, 13], [38, 17], [42, 17], [42, 14], [40, 12], [37, 13]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1880,
+        label: 'Late Ethiopian Empire',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'ethiopian-highlands',
+            name: 'Ethiopian highlands',
+            ring: [
+              [34, 5], [35, 15], [43, 15], [43, 7], [40, 4], [34, 5]
+            ],
+          },
+          {
+            id: 'ogaden-fringe',
+            name: 'Eastern fringe',
+            ring: [
+              [40, 6], [41, 11], [46, 11], [46, 7], [43, 5], [40, 6]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['ethiopian-empire'],
+    sources: [
+      { title: 'Wikipedia — Ethiopian Empire', url: 'https://en.wikipedia.org/wiki/Ethiopian_Empire' },
+    ],
+  },
+  {
+    id: 'timurid',
+    name: 'Timurid Empire',
+    color: '#BE123C',
+    type: 'empire',
+    description:
+      'Timur Central Asian empire — schematic Transoxiana / Iran / Afghanistan cores.',
+    keyYears: [1370, 1405, 1450, 1507],
+    overlays: [
+      {
+        year: 1380,
+        label: 'Early Timur Transoxiana',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'transoxiana',
+            name: 'Transoxiana',
+            ring: [
+              [64, 38], [65, 43], [72, 43], [72, 39], [69, 37], [64, 38]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1405,
+        label: 'Timurid peak (Timur death)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'transoxiana',
+            name: 'Transoxiana',
+            ring: [
+              [63, 37], [64, 44], [73, 44], [74, 39], [70, 36], [63, 37]
+            ],
+          },
+          {
+            id: 'iran-plateau',
+            name: 'Iran plateau',
+            ring: [
+              [48, 28], [50, 38], [62, 38], [62, 30], [56, 26], [48, 28]
+            ],
+          },
+          {
+            id: 'afghanistan',
+            name: 'Afghanistan core',
+            ring: [
+              [60, 30], [61, 37], [72, 37], [72, 31], [68, 29], [60, 30]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1480,
+        label: 'Late Timurid remnant',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'transoxiana',
+            name: 'Transoxiana remnant',
+            ring: [
+              [65, 38], [66, 42], [71, 42], [71, 39], [68, 37], [65, 38]
+            ],
+          },
+          {
+            id: 'afghanistan',
+            name: 'Afghanistan',
+            ring: [
+              [62, 31], [63, 36], [70, 36], [70, 32], [67, 30], [62, 31]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['timurid'],
+    sources: [
+      { title: 'Wikipedia — Timurid Empire', url: 'https://en.wikipedia.org/wiki/Timurid_Empire' },
+    ],
+  },
+  {
+    id: 'kongo',
+    name: 'Kingdom of Kongo',
+    color: '#78716C',
+    type: 'state',
+    description:
+      'Central African kingdom — schematic lower Congo / Angola north core.',
+    keyYears: [1390, 1500, 1700, 1914],
+    overlays: [
+      {
+        year: 1420,
+        label: 'Early Kongo',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'kongo-core',
+            name: 'Kongo heartland',
+            ring: [
+              [12, -7], [13, -3], [17, -3], [17, -6], [15, -8], [12, -7]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1600,
+        label: 'Kongo mid',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'kongo-core',
+            name: 'Kongo heartland',
+            ring: [
+              [11, -8], [12, -2], [18, -2], [18, -7], [15, -9], [11, -8]
+            ],
+          },
+          {
+            id: 'angola-north',
+            name: 'Northern Angola fringe',
+            ring: [
+              [12, -10], [13, -6], [17, -6], [17, -10], [15, -11], [12, -10]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1850,
+        label: 'Late Kongo remnant',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'kongo-core',
+            name: 'Kongo remnant',
+            ring: [
+              [13, -6], [14, -3], [16.5, -3], [16.5, -5.5], [15, -7], [13, -6]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['kongo'],
+    sources: [
+      { title: 'Wikipedia — Kingdom of Kongo', url: 'https://en.wikipedia.org/wiki/Kingdom_of_Kongo' },
+    ],
+  },
+  {
+    id: 'joseon',
+    name: 'Joseon Dynasty',
+    color: '#7E22CE',
+    type: 'empire',
+    description:
+      'Long-lived Korean dynasty — schematic Korean peninsula (Hangul / Confucian state).',
+    keyYears: [1392, 1500, 1700, 1897],
+    overlays: [
+      {
+        year: 1420,
+        label: 'Early Joseon',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'korea-peninsula',
+            name: 'Korean peninsula',
+            ring: [
+              [124.5, 33.5], [125.5, 41], [130.5, 42], [131, 36], [129, 33.5], [126, 33],
+              [124.5, 33.5]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1600,
+        label: 'Joseon mid',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'korea-peninsula',
+            name: 'Korean peninsula',
+            ring: [
+              [124.5, 33.5], [125.5, 41], [130.5, 42], [131, 36], [129, 33.5], [126, 33],
+              [124.5, 33.5]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1850,
+        label: 'Late Joseon',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'korea-peninsula',
+            name: 'Korean peninsula',
+            ring: [
+              [125, 34], [126, 40.5], [130.5, 41.5], [130.5, 36], [128.5, 34], [125, 34]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['joseon'],
+    sources: [
+      { title: 'Wikipedia — Joseon Dynasty', url: 'https://en.wikipedia.org/wiki/Joseon' },
+    ],
+  },
+  {
+    id: 'colonial-americas',
+    name: 'Colonial Americas',
+    color: '#F43F5E',
+    type: 'other',
+    description:
+      'European colonial footprints in the New World as separate regional patches (Iberian / British / French / Dutch) — no ocean-spanning single ring.',
+    keyYears: [1492, 1600, 1700, 1800, 1825],
+    overlays: [
+      {
+        year: 1520,
+        label: 'Early Iberian Americas',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'caribbean',
+            name: 'Caribbean',
+            ring: [
+              [-85, 12], [-84, 23], [-68, 24], [-62, 15], [-68, 12], [-80, 11],
+              [-85, 12]
+            ],
+          },
+          {
+            id: 'new-spain-core',
+            name: 'New Spain core',
+            ring: [
+              [-105, 16], [-104, 26], [-94, 26], [-93, 17], [-98, 15], [-105, 16]
+            ],
+          },
+          {
+            id: 'andes-coast',
+            name: 'Andean coast',
+            ring: [
+              [-80, -18], [-79, -5], [-72, -5], [-72, -16], [-76, -19], [-80, -18]
+            ],
+          },
+          {
+            id: 'brazil-coast',
+            name: 'Brazil coast',
+            ring: [
+              [-48, -25], [-47, -8], [-35, -8], [-35, -20], [-40, -26], [-48, -25]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1700,
+        label: 'Colonial Americas multi-power',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'caribbean',
+            name: 'Caribbean',
+            ring: [
+              [-85, 12], [-84, 23], [-68, 24], [-62, 15], [-68, 12], [-80, 11],
+              [-85, 12]
+            ],
+          },
+          {
+            id: 'new-spain-core',
+            name: 'New Spain',
+            ring: [
+              [-110, 16], [-108, 32], [-94, 32], [-92, 16], [-100, 14], [-110, 16]
+            ],
+          },
+          {
+            id: 'andes-coast',
+            name: 'Spanish Andes',
+            ring: [
+              [-80, -22], [-79, -2], [-70, -2], [-70, -20], [-75, -24], [-80, -22]
+            ],
+          },
+          {
+            id: 'brazil-coast',
+            name: 'Portuguese Brazil',
+            ring: [
+              [-52, -30], [-50, -2], [-35, -2], [-35, -22], [-42, -32], [-52, -30]
+            ],
+          },
+          {
+            id: 'british-atlantic',
+            name: 'British Atlantic seaboard',
+            ring: [
+              [-80, 32], [-79, 45], [-68, 45], [-68, 35], [-74, 31], [-80, 32]
+            ],
+          },
+          {
+            id: 'new-france',
+            name: 'New France / St Lawrence',
+            ring: [
+              [-80, 44], [-79, 50], [-68, 50], [-68, 45], [-74, 43], [-80, 44]
+            ],
+          },
+          {
+            id: 'dutch-guiana',
+            name: 'Dutch Guiana fringe',
+            ring: [
+              [-58, 4], [-57, 7], [-53, 7], [-53, 4.5], [-55, 3.5], [-58, 4]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1800,
+        label: 'Late colonial Americas',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'new-spain-core',
+            name: 'New Spain late',
+            ring: [
+              [-110, 16], [-108, 32], [-94, 32], [-92, 16], [-100, 14], [-110, 16]
+            ],
+          },
+          {
+            id: 'andes-coast',
+            name: 'Spanish Andes',
+            ring: [
+              [-80, -22], [-79, -5], [-70, -5], [-70, -20], [-75, -24], [-80, -22]
+            ],
+          },
+          {
+            id: 'brazil-coast',
+            name: 'Portuguese Brazil',
+            ring: [
+              [-52, -30], [-50, -5], [-35, -5], [-35, -22], [-42, -32], [-52, -30]
+            ],
+          },
+          {
+            id: 'british-atlantic',
+            name: 'British / US seaboard fringe',
+            ring: [
+              [-82, 30], [-81, 46], [-68, 46], [-68, 34], [-74, 29], [-82, 30]
+            ],
+          },
+          {
+            id: 'caribbean',
+            name: 'Caribbean',
+            ring: [
+              [-85, 12], [-84, 22], [-70, 22], [-62, 15], [-70, 12], [-80, 11],
+              [-85, 12]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['colonial-americas'],
+    sources: [
+      { title: 'Wikipedia — Colonial Americas', url: 'https://en.wikipedia.org/wiki/European_colonization_of_the_Americas' },
+    ],
+  },
+  {
+    id: 'tokugawa',
+    name: 'Tokugawa Shogunate',
+    color: '#818CF8',
+    type: 'state',
+    description:
+      'Edo Japan — schematic Japanese home islands under Tokugawa peace (no overseas empire).',
+    keyYears: [1603, 1700, 1800, 1868],
+    overlays: [
+      {
+        year: 1620,
+        label: 'Early Tokugawa',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'honshu',
+            name: 'Honshu',
+            ring: [
+              [131, 33], [132, 41], [141, 42], [142, 35], [139, 33], [134, 32],
+              [131, 33]
+            ],
+          },
+          {
+            id: 'kyushu',
+            name: 'Kyushu',
+            ring: [
+              [129.5, 31], [130, 34], [132, 34], [132, 31.5], [131, 30.5], [129.5, 31]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1750,
+        label: 'Mid Tokugawa',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'honshu',
+            name: 'Honshu',
+            ring: [
+              [130.5, 33], [131.5, 41.5], [141.5, 42], [142.5, 35], [139, 32.5], [134, 32],
+              [130.5, 33]
+            ],
+          },
+          {
+            id: 'kyushu',
+            name: 'Kyushu',
+            ring: [
+              [129.5, 31], [130, 34], [132, 34], [132, 31.5], [131, 30.5], [129.5, 31]
+            ],
+          },
+          {
+            id: 'shikoku',
+            name: 'Shikoku',
+            ring: [
+              [132, 33], [132.5, 34.5], [134.5, 34.5], [134.5, 33.2], [133.5, 32.8], [132, 33]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1850,
+        label: 'Late Tokugawa',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'honshu',
+            name: 'Honshu',
+            ring: [
+              [130.5, 33], [131.5, 41.5], [141.5, 42], [142.5, 35], [139, 32.5], [134, 32],
+              [130.5, 33]
+            ],
+          },
+          {
+            id: 'kyushu',
+            name: 'Kyushu',
+            ring: [
+              [129.5, 31], [130, 34], [132, 34], [132, 31.5], [131, 30.5], [129.5, 31]
+            ],
+          },
+          {
+            id: 'hokkaido-fringe',
+            name: 'Ezo / Hokkaido fringe',
+            ring: [
+              [140, 41.5], [141, 45.5], [146, 45.5], [146, 42], [143, 41], [140, 41.5]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['tokugawa'],
+    sources: [
+      { title: 'Wikipedia — Tokugawa Shogunate', url: 'https://en.wikipedia.org/wiki/Tokugawa_shogunate' },
+    ],
+  },
+  {
+    id: 'maratha-empire',
+    name: 'Maratha Empire',
+    color: '#84CC16',
+    type: 'empire',
+    description:
+      'Hindu confederacy challenging Mughal power — schematic Deccan / western India expanding north.',
+    keyYears: [1674, 1720, 1760, 1818],
+    overlays: [
+      {
+        year: 1680,
+        label: 'Early Maratha / Shivaji',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'deccan-west',
+            name: 'Western Deccan',
+            ring: [
+              [72, 16], [73, 21], [78, 21], [78, 17], [75, 15], [72, 16]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1750,
+        label: 'Maratha peak confederacy',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'deccan-west',
+            name: 'Western Deccan',
+            ring: [
+              [71, 15], [72, 22], [79, 22], [79, 16], [75, 14], [71, 15]
+            ],
+          },
+          {
+            id: 'malwa',
+            name: 'Malwa / central India',
+            ring: [
+              [74, 21], [75, 26], [80, 26], [80, 22], [77, 20], [74, 21]
+            ],
+          },
+          {
+            id: 'gujarat-fringe',
+            name: 'Gujarat fringe',
+            ring: [
+              [69, 20], [70, 24], [74, 24], [74, 21], [72, 19.5], [69, 20]
+            ],
+          },
+          {
+            id: 'north-india-fringe',
+            name: 'North India fringe',
+            ring: [
+              [75, 25], [76, 30], [82, 30], [82, 26], [78, 24], [75, 25]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1805,
+        label: 'Late Maratha contraction',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'deccan-west',
+            name: 'Deccan remnant',
+            ring: [
+              [72, 16], [73, 21], [78, 21], [78, 17], [75, 15], [72, 16]
+            ],
+          },
+          {
+            id: 'malwa',
+            name: 'Malwa',
+            ring: [
+              [75, 21], [76, 25], [79, 25], [79, 22], [77, 20.5], [75, 21]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['maratha'],
+    sources: [
+      { title: 'Wikipedia — Maratha Empire', url: 'https://en.wikipedia.org/wiki/Maratha_Confederacy' },
+    ],
+  },
+  {
+    id: 'sikh-empire',
+    name: 'Sikh Empire',
+    color: '#E879F9',
+    type: 'empire',
+    description:
+      'Punjab state under Ranjit Singh — schematic Punjab / northwest India foothills.',
+    keyYears: [1799, 1820, 1839, 1849],
+    overlays: [
+      {
+        year: 1805,
+        label: 'Early Sikh Punjab',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'punjab',
+            name: 'Punjab core',
+            ring: [
+              [71, 29], [72, 34], [77, 34], [77, 30], [74, 28.5], [71, 29]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1835,
+        label: 'Sikh Empire peak',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'punjab',
+            name: 'Punjab',
+            ring: [
+              [70, 28], [71, 34.5], [78, 34.5], [78, 29], [74, 27.5], [70, 28]
+            ],
+          },
+          {
+            id: 'kashmir-fringe',
+            name: 'Kashmir fringe',
+            ring: [
+              [73, 33], [74, 36], [78, 36], [78, 33.5], [76, 32.5], [73, 33]
+            ],
+          },
+          {
+            id: 'peshawar-fringe',
+            name: 'Peshawar fringe',
+            ring: [
+              [70, 33], [71, 35], [73.5, 35], [73.5, 33.5], [72, 32.8], [70, 33]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1848,
+        label: 'Sikh Empire late',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'punjab',
+            name: 'Punjab remnant',
+            ring: [
+              [71.5, 29.5], [72.5, 33.5], [76.5, 33.5], [76.5, 30], [74, 29], [71.5, 29.5]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['sikh-empire'],
+    sources: [
+      { title: 'Wikipedia — Sikh Empire', url: 'https://en.wikipedia.org/wiki/Sikh_Empire' },
+    ],
+  },
+  {
+    id: 'zulu',
+    name: 'Zulu Kingdom',
+    color: '#991B1B',
+    type: 'state',
+    description:
+      'Shaka Zulu kingdom — schematic KwaZulu-Natal heartland.',
+    keyYears: [1816, 1830, 1879, 1897],
+    overlays: [
+      {
+        year: 1820,
+        label: 'Early Zulu under Shaka',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'zululand',
+            name: 'Zululand',
+            ring: [
+              [30, -30], [30.5, -27], [33, -27], [33, -29.5], [31.5, -30.5], [30, -30]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1850,
+        label: 'Zulu mid',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'zululand',
+            name: 'Zululand',
+            ring: [
+              [29.5, -30.5], [30, -26.5], [33.5, -26.5], [33.5, -29.5], [31.5, -31], [29.5, -30.5]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1885,
+        label: 'Late Zulu after Anglo-Zulu War',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'zululand',
+            name: 'Zululand remnant',
+            ring: [
+              [30.5, -29.5], [31, -27.5], [32.5, -27.5], [32.5, -29], [31.5, -29.8], [30.5, -29.5]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['zulu'],
+    sources: [
+      { title: 'Wikipedia — Zulu Kingdom', url: 'https://en.wikipedia.org/wiki/Zulu_Kingdom' },
+    ],
+  },
+  {
+    id: 'austro-hungarian',
+    name: 'Austro-Hungarian Empire',
+    color: '#0EA5E9',
+    type: 'empire',
+    description:
+      'Dual monarchy in Central Europe — schematic Austria–Hungary / Bohemia / Galicia cores.',
+    keyYears: [1867, 1890, 1914, 1918],
+    overlays: [
+      {
+        year: 1870,
+        label: 'Early Dual Monarchy',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'austria-hungary-core',
+            name: 'Austria–Hungary core',
+            ring: [
+              [9, 45], [10, 51], [22, 51], [25, 45], [20, 44], [14, 44],
+              [9, 45]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1900,
+        label: 'Austro-Hungarian mid',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'austria-core',
+            name: 'Alpine / Austrian core',
+            ring: [
+              [9, 46], [10, 49], [17, 49], [17, 46.5], [14, 45.5], [9, 46]
+            ],
+          },
+          {
+            id: 'hungary-plain',
+            name: 'Hungarian plain',
+            ring: [
+              [16, 45], [17, 49], [23, 49], [25, 46], [22, 44.5], [16, 45]
+            ],
+          },
+          {
+            id: 'bohemia',
+            name: 'Bohemia',
+            ring: [
+              [12, 48.5], [13, 51], [17, 51], [17, 49], [15, 48], [12, 48.5]
+            ],
+          },
+          {
+            id: 'galicia',
+            name: 'Galicia fringe',
+            ring: [
+              [19, 48], [20, 51], [25, 51], [25, 48.5], [22, 47.5], [19, 48]
+            ],
+          },
+        ],
+      },
+      {
+        year: 1916,
+        label: 'Late Dual Monarchy (WWI)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'austria-core',
+            name: 'Austrian core',
+            ring: [
+              [9.5, 46], [10.5, 48.5], [16, 48.5], [16, 46.5], [13, 45.8], [9.5, 46]
+            ],
+          },
+          {
+            id: 'hungary-plain',
+            name: 'Hungarian plain',
+            ring: [
+              [16, 45.5], [17, 48.5], [23, 48.5], [24, 46], [21, 45], [16, 45.5]
+            ],
+          },
+          {
+            id: 'bohemia',
+            name: 'Bohemia',
+            ring: [
+              [12.5, 48.8], [13.5, 50.8], [16.5, 50.8], [16.5, 49], [15, 48.5], [12.5, 48.8]
+            ],
+          },
+        ],
+      },
+    ],
+    timelineItemIds: ['austro-hungarian'],
+    sources: [
+      { title: 'Wikipedia — Austro-Hungarian Empire', url: 'https://en.wikipedia.org/wiki/Austria-Hungary' },
     ],
   },
 ];

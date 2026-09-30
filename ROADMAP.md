@@ -406,9 +406,21 @@ Finish the Day 23 remainder list so every notable polity/civilisation on the glo
 - Validate: hard ≥3 for the Day 24 id list + spot-check years; soft note if any entity somehow still <3 (should be empty). Aztec/Inca Day 23 checks kept. ✅
 - Colors / entity ids / `timelineItemIds` unchanged. Lifespan clamps respected. ✅
 
+
+#### Day 25 — Globe overlays for remaining timeline civilisations — done
+
+Close the timeline↔globe **polity** gap: every civilisation in `civilisations.js` now has ≥1 overlay entity with matching `timelineItemIds` (27→0 missing).
+
+- Added **27 schematic overlay entities** (≥3 keyframes each, unique colours, multi-vertex rings): Zhou, Qin, Seleucid, Axum, Ghana, Chola, Srivijaya, Venice, Heian Japan, Viking Age, Mississippian, Kievan Rus', Toltec, Goryeo, Khwarezmia, Great Zimbabwe, Kamakura–Muromachi, Ethiopian Empire, Timurid, Kongo, Joseon, Colonial Americas, Tokugawa, Maratha, Sikh Empire, Zulu, Austro-Hungarian. ✅
+- **Colonial Americas** and **Viking Age** use separate region ids for overseas footholds (no ocean-spanning single ring). ✅
+- Validate: hard fail if any timeline civ lacks an overlay link; Day 25 entity list ≥3 overlays; easy-test years (Axum 400, Mississippian 1100, Zhou −850, Venice 1200, Zulu 1850). ✅
+- Still schematic / honest, not GIS. **Do not invent timelineItemIds** — exact civ `id`s only.
+
+**Human-atlas sequence (locked briefly):** (1) this polity fill ✅ (2) **people packs** — later (3) **human presence** layer — later planning pass. **PR E** (timeline↔globe deep sync) remains secondary until this polity gap closed (now closed).
+
 #### PR F — Living / morphing borders (continued)
 
-Remaining after Day 24: true multi-polygon topology / ocean gaps; optional easing curves; further mid-keyframes only where morph still looks stiff. Overlay keyframe densify backlog for the Day 23 remainder list is **done**. Still schematic / honest, not GIS-perfect. **PR E** (timeline↔globe) is the suggested next product slice.
+Remaining after Day 25: true multi-polygon topology / ocean gaps; optional easing curves; further mid-keyframes only where morph still looks stiff. Polity fill for all timeline civs is **done**. Still schematic / honest, not GIS-perfect. Next: people packs / presence (human atlas layers 2–3); **PR E** still secondary.
 
 #### PR E — Timeline integration (still needed; secondary to living borders)
 
@@ -541,6 +553,9 @@ A sensible near-term sequence:
 20. Living borders — fragment/split distant colonies (Day 22 / PR F slice 3). ✅
 21. Denser overlay coverage — Aztec/Inca rise + thin empires (Day 23). ✅
 22. Densify remaining 2-keyframe globe overlays (Day 24 / PR F densify backlog). ✅
-23. Timeline ↔ globe integration (PR E) — suggested next (PR F densify backlog cleared; topology/easing still optional later).
+23. Globe overlays for remaining timeline civilisations (Day 25 — polity gap closed). ✅
+24. People packs (human-atlas layer 2) — backlog.
+25. Human presence layer (human-atlas layer 3) — backlog / later planning pass.
+26. Timeline ↔ globe integration (PR E) — secondary until polity gap closed (now closed; still next product slice after people/presence planning).
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
