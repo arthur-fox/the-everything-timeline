@@ -418,9 +418,17 @@ Close the timeline↔globe **polity** gap: every civilisation in `civilisations.
 
 **Human-atlas sequence (locked briefly):** (1) this polity fill ✅ (2) **people packs** — later (3) **human presence** layer — later planning pass. **PR E** (timeline↔globe deep sync) remains secondary until this polity gap closed (now closed).
 
+#### Day 26 — Overlap polygon z-fight fix — done
+
+Denser overlays (71 entities) flickered where footprints overlapped — classic coplanar z-fighting between empire meshes (Day 14 only hugged polygons to the globe surface).
+
+- **Stable altitude offsets:** `polygonAltitude(d => …)` from a deterministic hash of `entityId::regionId` — base ~0.0045 + (hash % 48) × 0.00011 so coplanar meshes separate in depth without floating off the globe. Offsets do not jump while scrubbing. ✅
+- Softened white `polygonStrokeColor` (0.4 → 0.12) so edges do not shimmer on overlaps. ✅
+- Kept Globe.gl colour accessors (no custom DoubleSide MeshBasicMaterial — Day 20 planet-tint bug). Bump map stays off; `polygonsTransitionDuration(0)`. ✅
+
 #### PR F — Living / morphing borders (continued)
 
-Remaining after Day 25: true multi-polygon topology / ocean gaps; optional easing curves; further mid-keyframes only where morph still looks stiff. Polity fill for all timeline civs is **done**. Still schematic / honest, not GIS-perfect. Next: people packs / presence (human atlas layers 2–3); **PR E** still secondary.
+Remaining after Day 26: true multi-polygon topology / ocean gaps; optional easing curves; further mid-keyframes only where morph still looks stiff. Polity fill for all timeline civs is **done**. Still schematic / honest, not GIS-perfect. Next: people packs / presence (human atlas layers 2–3); **PR E** still secondary.
 
 #### PR E — Timeline integration (still needed; secondary to living borders)
 
@@ -554,8 +562,9 @@ A sensible near-term sequence:
 21. Denser overlay coverage — Aztec/Inca rise + thin empires (Day 23). ✅
 22. Densify remaining 2-keyframe globe overlays (Day 24 / PR F densify backlog). ✅
 23. Globe overlays for remaining timeline civilisations (Day 25 — polity gap closed). ✅
-24. People packs (human-atlas layer 2) — backlog.
-25. Human presence layer (human-atlas layer 3) — backlog / later planning pass.
-26. Timeline ↔ globe integration (PR E) — secondary until polity gap closed (now closed; still next product slice after people/presence planning).
+24. Overlap polygon z-fight fix — stable altitude offsets (Day 26). ✅
+25. People packs (human-atlas layer 2) — backlog.
+26. Human presence layer (human-atlas layer 3) — backlog / later planning pass.
+27. Timeline ↔ globe integration (PR E) — secondary until polity gap closed (now closed; still next product slice after people/presence planning).
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
