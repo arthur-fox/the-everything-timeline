@@ -70,7 +70,13 @@ function applyPolygonLayer() {
     .polygonAltitude(0.006)
     .polygonCapColor((d) => hexToRgba(d.color || d.properties?.color, d.opacity ?? d.properties?.opacity))
     .polygonSideColor(() => 'rgba(0,0,0,0)')
-    .polygonStrokeColor(() => 'rgba(255, 255, 255, 0.4)')
+    .polygonStrokeColor((d) => {
+      const t = d.entityType || d.properties?.entityType;
+      // People packs: slightly brighter dashed-feel edge (lighter alpha) vs polity fills
+      return t === 'people'
+        ? 'rgba(255, 255, 255, 0.55)'
+        : 'rgba(255, 255, 255, 0.4)';
+    })
     .polygonsTransitionDuration(0);
 }
 
