@@ -49,7 +49,12 @@ import { canadaItems, canadaCategories } from './countries/canada.js';
 import { argentinaItems, argentinaCategories } from './countries/argentina.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
 import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear } from './globe-view.js';
-import { getActiveOverlaysAtYear } from './globe-overlays.js';
+import {
+  getActiveOverlaysAtYear,
+  getOverlayLayerFilter,
+  setOverlayLayerFilter,
+  formatOverlayYear,
+} from './globe-overlays.js';
 
 // ============================================================
 // Country registry — add new countries here to scale to 190+
@@ -570,6 +575,8 @@ function syncDeepLinkUrl() {
 
     if (currentView === 'globe') {
       params.set('year', String(globeYear));
+      const layer = getOverlayLayerFilter();
+      if (layer && layer !== 'both') params.set('layer', layer);
     } else {
       const selectedId = getSelectedDeepLinkId();
       if (selectedId) {
@@ -769,8 +776,9 @@ function applyDeepLinkFromUrl() {
   const id = params.get('id');
   const year = params.get('year');
   const filtersRaw = params.get('filters');
+  const layerRaw = params.get('layer');
 
-  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '')) {
+  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '')) {
     updateActiveViewChrome();
     updateFiltersUI();
     return;
@@ -802,6 +810,11 @@ function applyDeepLinkFromUrl() {
     if (filtersRaw != null && filtersRaw !== '' && isSwimLaneView()) {
       const ids = filtersRaw.split(',').map(s => s.trim()).filter(Boolean);
       setFilterSelection(ids);
+    }
+
+    if (layerRaw != null && layerRaw !== '') {
+      setOverlayLayerFilter(layerRaw);
+      syncGlobeLayerToggleUI();
     }
 
     let focused = false;
@@ -3006,9 +3019,10 @@ let globeYear = 117;
 const GLOBE_YEAR_CAPTIONS = [
   { year: -2500, text: 'Around 2500 BCE — Early Bronze Age: Sumerian cities and Old Kingdom Egypt on the Nile (approximate).' },
   { year: -2000, text: 'Around 2000 BCE — Middle Kingdom Egypt and Mesopotamian city worlds (approximate).' },
-  { year: -500, text: 'Around 500 BCE — Classical poleis, Persian Empire, and Axial Age thought across Eurasia (approximate).' },
+  { year: -500, text: 'Around 500 BCE — Classical polities plus Celtic / Scythian / Amazigh people footprints (approximate).' },
   { year: 117, text: 'Around 117 CE — Rome, Han, Parthia, and Kushan spheres across Eurasia (approximate).' },
-  { year: 800, text: 'Around 800 CE — Carolingian, Abbasid, Byzantine, Tang, and Khmer worlds (approximate).' },
+  { year: 800, text: 'Around 800 CE — Carolingian, Abbasid, Byzantine, Tang worlds; Slavic / Bantu / Turkic / Polynesian peoples (approximate).' },
+  { year: 900, text: 'Around 900 CE — Peoples layer: Slavs, Ancestral Puebloans, Amazigh, Polynesian triangle footholds (approximate).' },
   { year: 1279, text: 'Around 1279 CE — Mongol peak with Song, Delhi, and Mali neighbours on the map (approximate).' },
   { year: 1492, text: '1492 CE — Iberia at contact; Aztec, Inca, Ming, and Ottoman worlds still dominate their regions (approximate).' },
   { year: 1700, text: 'Around 1700 CE — Ottoman, Mughal, Qing, Spanish, Russian, and early British reach (approximate).' },
@@ -3102,19 +3116,30 @@ function updateGlobeOverlayPanel() {
 
   for (const { entity, overlay } of active) {
     const li = document.createElement('li');
-    li.className = 'globe-overlay-item';
+    const isPeople = entity.type === 'people';
+    li.className = 'globe-overlay-item' + (isPeople ? ' is-people' : ' is-polity');
 
     const swatch = document.createElement('span');
-    swatch.className = 'globe-overlay-swatch';
+    swatch.className = 'globe-overlay-swatch' + (isPeople ? ' is-people' : '');
     swatch.style.background = entity.color;
     swatch.setAttribute('aria-hidden', 'true');
 
     const body = document.createElement('div');
     body.className = 'globe-overlay-item-body';
 
+    const nameRow = document.createElement('div');
+    nameRow.className = 'globe-overlay-item-name-row';
+
     const name = document.createElement('div');
     name.className = 'globe-overlay-item-name';
     name.textContent = entity.name;
+
+    const badge = document.createElement('span');
+    badge.className = 'globe-overlay-type-badge';
+    badge.textContent = isPeople ? 'People' : 'Polity';
+
+    nameRow.appendChild(name);
+    nameRow.appendChild(badge);
 
     const meta = document.createElement('div');
     meta.className = 'globe-overlay-item-meta';
@@ -3126,7 +3151,7 @@ function updateGlobeOverlayPanel() {
       meta.textContent = 'Key year nearby (no snapshot label)';
     }
 
-    body.appendChild(name);
+    body.appendChild(nameRow);
     body.appendChild(meta);
     li.appendChild(swatch);
     li.appendChild(body);
@@ -3169,6 +3194,26 @@ if (globeYearSlider) {
 document.querySelectorAll('.globe-year-preset').forEach((btn) => {
   btn.addEventListener('click', () => setGlobeYear(btn.dataset.year));
 });
+
+function syncGlobeLayerToggleUI() {
+  const active = getOverlayLayerFilter();
+  document.querySelectorAll('.globe-layer-btn').forEach((btn) => {
+    btn.classList.toggle('is-active', btn.dataset.layer === active);
+  });
+}
+
+function setGlobeOverlayLayer(layer, { syncUrl = true } = {}) {
+  setOverlayLayerFilter(layer);
+  syncGlobeLayerToggleUI();
+  updateGlobeOverlayPanel();
+  setGlobeOverlayYear(globeYear);
+  if (syncUrl && isGlobeView()) syncDeepLinkUrl();
+}
+
+document.querySelectorAll('.globe-layer-btn').forEach((btn) => {
+  btn.addEventListener('click', () => setGlobeOverlayLayer(btn.dataset.layer));
+});
+syncGlobeLayerToggleUI();
 
 document.addEventListener('visibilitychange', () => {
   if (!isGlobeView()) return;

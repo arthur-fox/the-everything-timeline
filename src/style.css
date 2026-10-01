@@ -2078,6 +2078,70 @@ body.globe-active .filters-toggle {
   gap: 10px;
 }
 
+/*.globe-layer-toggle — Day 27 people packs */
+.globe-layer-toggle {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text) 8%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+}
+
+.globe-layer-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 5px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+
+.globe-layer-btn:hover {
+  color: var(--text);
+}
+
+.globe-layer-btn.is-active {
+  background: color-mix(in srgb, var(--accent, #3b82f6) 22%, var(--bg));
+  color: var(--text);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent, #3b82f6) 35%, transparent);
+}
+
+.globe-overlay-item-name-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.globe-overlay-type-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+  background: color-mix(in srgb, var(--text) 5%, var(--bg));
+}
+
+.globe-overlay-item.is-people .globe-overlay-type-badge {
+  color: color-mix(in srgb, #06b6d4 70%, var(--text));
+  border-color: color-mix(in srgb, #06b6d4 35%, transparent);
+}
+
+.globe-overlay-swatch.is-people {
+  border-radius: 3px;
+}
+
 .globe-overlay-panel-heading {
   margin: 0;
   flex-shrink: 0;
