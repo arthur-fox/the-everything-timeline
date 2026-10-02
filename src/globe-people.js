@@ -1,17 +1,20 @@
 /**
- * Day 27 — People packs (human-atlas layer 2).
+ * Day 27–28 — People packs (human-atlas layer 2).
  *
  * Cultural / ethnolinguistic peoples that are not state polities.
  * Schematic spheres of presence — honest approximate footprints, not GIS.
  * Distant island / diaspora footholds stay separate region ids (no ocean blobs).
+ *
+ * Day 27: first pack (10). Day 28: second pack (~10) filling geographic gaps.
  */
 
 /**
  * @typedef {import('./globe-overlays.js').SpatialEntity} SpatialEntity
  */
 
-/** First people pack — 10 seeded groups. */
+/** People packs — Day 27 seed + Day 28 global-coverage expansion. */
 export const PEOPLE_PACK_IDS = [
+  // Day 27
   'celts',
   'germanic-peoples',
   'slavs',
@@ -22,6 +25,17 @@ export const PEOPLE_PACK_IDS = [
   'aboriginal-australian',
   'amazigh',
   'ancestral-puebloans',
+  // Day 28
+  'indo-aryan',
+  'dravidian-peoples',
+  'arab-peoples',
+  'sinitic-peoples',
+  'finno-ugric',
+  'khoisan-peoples',
+  'inuit-peoples',
+  'maya-peoples',
+  'andean-peoples',
+  'nilotic-peoples',
 ];
 
 /** @type {SpatialEntity[]} */
@@ -1090,4 +1104,994 @@ export const peopleEntities = [
       { title: 'Wikipedia — Ancestral Puebloans', url: 'https://en.wikipedia.org/wiki/Ancestral_Puebloans' },
     ],
   },
+
+  // —— Day 28 people pack 2 (global coverage) ——
+  {
+    id: 'indo-aryan',
+    name: 'Indo-Aryan peoples',
+    color: '#DC2626',
+    type: 'people',
+    description:
+      'Indo-Aryan–speaking peoples of South Asia — schematic Vedic-to-medieval cultural footprint (not a single kingdom).',
+    keyYears: [-1200, -400, 400, 1000],
+    overlays: [
+      {
+        year: -1200,
+        label: 'Early Indo-Aryan north (approx.)',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'indo-aryan-northwest',
+            name: 'Northwest / Indus-Saraswati fringe',
+            ring: [
+              [68, 28], [70, 34], [76, 34], [78, 30], [74, 26], [68, 27], [68, 28],
+            ],
+          },
+        ],
+      },
+      {
+        year: -400,
+        label: 'Wider Indo-Aryan north India',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'indo-aryan-gangetic',
+            name: 'Gangetic / north India',
+            ring: [
+              [72, 24], [74, 32], [84, 30], [88, 26], [86, 22], [78, 22], [72, 24],
+            ],
+          },
+          {
+            id: 'indo-aryan-northwest',
+            name: 'Northwest fringe',
+            ring: [
+              [66, 26], [68, 34], [74, 34], [76, 28], [72, 24], [66, 25], [66, 26],
+            ],
+          },
+        ],
+      },
+      {
+        year: 400,
+        label: 'Classical Indo-Aryan sphere',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'indo-aryan-gangetic',
+            name: 'North / central India',
+            ring: [
+              [72, 20], [74, 32], [86, 30], [90, 24], [86, 18], [78, 18], [72, 20],
+            ],
+          },
+          {
+            id: 'indo-aryan-deccan-fringe',
+            name: 'Deccan fringe',
+            ring: [
+              [74, 16], [76, 22], [82, 22], [84, 18], [80, 14], [74, 15], [74, 16],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1000,
+        label: 'Medieval Indo-Aryan zones',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'indo-aryan-gangetic',
+            name: 'North India',
+            ring: [
+              [70, 22], [72, 33], [88, 30], [92, 24], [88, 20], [76, 20], [70, 22],
+            ],
+          },
+          {
+            id: 'indo-aryan-deccan-fringe',
+            name: 'Central / Deccan fringe',
+            ring: [
+              [73, 15], [75, 24], [84, 24], [86, 18], [82, 14], [74, 14], [73, 15],
+            ],
+          },
+        ],
+      },
+    ],
+    sources: [
+      { title: 'Wikipedia — Indo-Aryan peoples', url: 'https://en.wikipedia.org/wiki/Indo-Aryan_peoples' },
+    ],
+  },
+  {
+    id: 'dravidian-peoples',
+    name: 'Dravidian peoples',
+    color: '#92400E',
+    type: 'people',
+    description:
+      'Dravidian-speaking peoples of South India — schematic peninsular cultural footprint (not Chola/Pandya polities alone).',
+    keyYears: [-800, 200, 800, 1400],
+    overlays: [
+      {
+        year: -800,
+        label: 'Early Dravidian south',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'dravidian-core',
+            name: 'South India core',
+            ring: [
+              [74, 8], [75, 16], [80, 16], [80, 10], [78, 8], [74, 8],
+            ],
+          },
+        ],
+      },
+      {
+        year: 200,
+        label: 'Classical Dravidian south',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'dravidian-core',
+            name: 'Tamil / Kerala / Andhra fringe',
+            ring: [
+              [74, 8], [75, 18], [82, 18], [82, 10], [80, 8], [74, 8],
+            ],
+          },
+        ],
+      },
+      {
+        year: 800,
+        label: 'Early medieval Dravidian zone',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'dravidian-core',
+            name: 'South India',
+            ring: [
+              [74, 8], [75, 20], [83, 20], [83, 11], [80, 8], [74, 8],
+            ],
+          },
+          {
+            id: 'dravidian-deccan',
+            name: 'Deccan fringe',
+            ring: [
+              [74, 16], [76, 22], [80, 22], [81, 18], [78, 15], [74, 16],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1400,
+        label: 'Late medieval Dravidian zone',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'dravidian-core',
+            name: 'South India',
+            ring: [
+              [74, 8], [75, 20], [83, 20], [83, 11], [80, 8], [74, 8],
+            ],
+          },
+          {
+            id: 'dravidian-deccan',
+            name: 'Deccan fringe',
+            ring: [
+              [74, 15], [76, 23], [81, 23], [82, 18], [78, 14], [74, 15],
+            ],
+          },
+        ],
+      },
+    ],
+    sources: [
+      { title: 'Wikipedia — Dravidian peoples', url: 'https://en.wikipedia.org/wiki/Dravidian_peoples' },
+    ],
+  },
+  {
+    id: 'arab-peoples',
+    name: 'Arab peoples',
+    color: '#155E75',
+    type: 'people',
+    description:
+      'Arabic-speaking / Arab cultural footprint — schematic peninsula then wider Middle East–North Africa presence (not a caliphate polity duplicate).',
+    keyYears: [-200, 650, 1000, 1400],
+    overlays: [
+      {
+        year: -200,
+        label: 'Arabian peninsula peoples',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'arab-peninsula',
+            name: 'Arabian peninsula',
+            ring: [
+              [34, 16], [36, 30], [48, 30], [56, 24], [54, 14], [42, 12], [34, 16],
+            ],
+          },
+        ],
+      },
+      {
+        year: 650,
+        label: 'Early Arabic cultural expansion',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'arab-peninsula',
+            name: 'Arabian peninsula',
+            ring: [
+              [34, 14], [36, 30], [50, 30], [58, 24], [56, 12], [42, 12], [34, 14],
+            ],
+          },
+          {
+            id: 'arab-levant-mesopotamia',
+            name: 'Levant / Mesopotamia',
+            ring: [
+              [34, 30], [36, 38], [48, 36], [48, 30], [42, 28], [34, 30],
+            ],
+          },
+          {
+            id: 'arab-egypt',
+            name: 'Egypt',
+            ring: [
+              [28, 22], [30, 32], [34, 32], [34, 24], [32, 22], [28, 22],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1000,
+        label: 'Medieval Arabic-speaking zones',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'arab-peninsula',
+            name: 'Arabian peninsula',
+            ring: [
+              [34, 14], [36, 30], [50, 30], [58, 24], [56, 12], [42, 12], [34, 14],
+            ],
+          },
+          {
+            id: 'arab-levant-mesopotamia',
+            name: 'Levant / Mesopotamia',
+            ring: [
+              [34, 30], [36, 38], [48, 36], [48, 30], [42, 28], [34, 30],
+            ],
+          },
+          {
+            id: 'arab-egypt',
+            name: 'Egypt',
+            ring: [
+              [28, 22], [30, 32], [34, 32], [34, 24], [32, 22], [28, 22],
+            ],
+          },
+          {
+            id: 'arab-maghreb',
+            name: 'Maghreb Arabic fringe',
+            ring: [
+              [-10, 30], [-8, 36], [10, 36], [12, 32], [4, 28], [-8, 28], [-10, 30],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1400,
+        label: 'Late medieval Arabic zones',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'arab-peninsula',
+            name: 'Arabian peninsula',
+            ring: [
+              [34, 14], [36, 30], [50, 30], [58, 24], [56, 12], [42, 12], [34, 14],
+            ],
+          },
+          {
+            id: 'arab-levant-mesopotamia',
+            name: 'Levant / Mesopotamia',
+            ring: [
+              [34, 30], [36, 38], [48, 36], [48, 30], [42, 28], [34, 30],
+            ],
+          },
+          {
+            id: 'arab-egypt',
+            name: 'Egypt',
+            ring: [
+              [28, 22], [30, 32], [34, 32], [34, 24], [32, 22], [28, 22],
+            ],
+          },
+          {
+            id: 'arab-maghreb',
+            name: 'Maghreb',
+            ring: [
+              [-12, 28], [-10, 36], [10, 36], [12, 32], [4, 26], [-8, 26], [-12, 28],
+            ],
+          },
+        ],
+      },
+    ],
+    sources: [
+      { title: 'Wikipedia — Arabs', url: 'https://en.wikipedia.org/wiki/Arabs' },
+    ],
+  },
+  {
+    id: 'sinitic-peoples',
+    name: 'Sinitic peoples',
+    color: '#FEF08A',
+    type: 'people',
+    description:
+      'Sinitic cultural sphere of East Asia — schematic Yellow River / China-proper presence distinct from Han/Qin/etc. polities.',
+    keyYears: [-800, 200, 800, 1400],
+    overlays: [
+      {
+        year: -800,
+        label: 'Early Sinitic core',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'sinitic-core',
+            name: 'Yellow River core',
+            ring: [
+              [108, 32], [110, 40], [118, 40], [120, 34], [116, 30], [108, 32],
+            ],
+          },
+        ],
+      },
+      {
+        year: 200,
+        label: 'Expanded Sinitic China proper',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'sinitic-core',
+            name: 'North China',
+            ring: [
+              [106, 30], [108, 42], [120, 42], [122, 34], [118, 28], [106, 30],
+            ],
+          },
+          {
+            id: 'sinitic-south',
+            name: 'Yangtze / south fringe',
+            ring: [
+              [108, 24], [110, 32], [120, 32], [122, 26], [116, 22], [108, 24],
+            ],
+          },
+        ],
+      },
+      {
+        year: 800,
+        label: 'Medieval Sinitic sphere',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'sinitic-core',
+            name: 'North China',
+            ring: [
+              [104, 30], [106, 42], [122, 42], [124, 34], [118, 28], [104, 30],
+            ],
+          },
+          {
+            id: 'sinitic-south',
+            name: 'South China',
+            ring: [
+              [106, 22], [108, 32], [122, 32], [122, 24], [116, 20], [106, 22],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1400,
+        label: 'Late medieval Sinitic presence',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'sinitic-core',
+            name: 'China proper north',
+            ring: [
+              [104, 30], [106, 42], [122, 42], [124, 34], [118, 28], [104, 30],
+            ],
+          },
+          {
+            id: 'sinitic-south',
+            name: 'China proper south',
+            ring: [
+              [105, 20], [108, 32], [122, 32], [122, 22], [116, 18], [105, 20],
+            ],
+          },
+        ],
+      },
+    ],
+    sources: [
+      { title: 'Wikipedia — Chinese people', url: 'https://en.wikipedia.org/wiki/Chinese_people' },
+    ],
+  },
+  {
+    id: 'finno-ugric',
+    name: 'Finno-Ugric peoples',
+    color: '#67E8F9',
+    type: 'people',
+    description:
+      'Finno-Ugric peoples — schematic Finnic, Uralic, and Hungarian footholds as separate regions (no Europe-spanning blob).',
+    keyYears: [-500, 500, 1000, 1500],
+    overlays: [
+      {
+        year: -500,
+        label: 'Early Finno-Ugric zones',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'finno-ugric-ural',
+            name: 'Ural / Volga fringe',
+            ring: [
+              [48, 54], [50, 62], [60, 62], [62, 56], [56, 52], [48, 54],
+            ],
+          },
+          {
+            id: 'finno-ugric-baltic',
+            name: 'Baltic Finnic fringe',
+            ring: [
+              [20, 58], [22, 66], [32, 66], [34, 60], [28, 56], [20, 58],
+            ],
+          },
+        ],
+      },
+      {
+        year: 500,
+        label: 'Early medieval Finno-Ugric',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'finno-ugric-ural',
+            name: 'Ural / Volga',
+            ring: [
+              [46, 52], [48, 62], [62, 62], [64, 54], [56, 50], [46, 52],
+            ],
+          },
+          {
+            id: 'finno-ugric-baltic',
+            name: 'Finland / Baltic',
+            ring: [
+              [20, 58], [22, 68], [34, 68], [34, 60], [28, 56], [20, 58],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1000,
+        label: 'Medieval Finno-Ugric + Magyars',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'finno-ugric-baltic',
+            name: 'Finland / Baltic',
+            ring: [
+              [20, 58], [22, 68], [34, 68], [34, 60], [28, 56], [20, 58],
+            ],
+          },
+          {
+            id: 'finno-ugric-ural',
+            name: 'Ural fringe',
+            ring: [
+              [48, 54], [50, 62], [60, 62], [62, 56], [56, 52], [48, 54],
+            ],
+          },
+          {
+            id: 'finno-ugric-hungary',
+            name: 'Carpathian Basin (Magyar)',
+            ring: [
+              [16, 45], [17, 49], [23, 49], [24, 46], [20, 44], [16, 45],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1500,
+        label: 'Late Finno-Ugric zones',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'finno-ugric-baltic',
+            name: 'Finland / Baltic',
+            ring: [
+              [20, 58], [22, 68], [34, 68], [34, 60], [28, 56], [20, 58],
+            ],
+          },
+          {
+            id: 'finno-ugric-hungary',
+            name: 'Hungary',
+            ring: [
+              [16, 45], [17, 49], [23, 49], [24, 46], [20, 44], [16, 45],
+            ],
+          },
+          {
+            id: 'finno-ugric-ural',
+            name: 'Ural fringe',
+            ring: [
+              [50, 56], [52, 64], [62, 64], [64, 58], [58, 54], [50, 56],
+            ],
+          },
+        ],
+      },
+    ],
+    sources: [
+      { title: 'Wikipedia — Finno-Ugric peoples', url: 'https://en.wikipedia.org/wiki/Finno-Ugric_peoples' },
+    ],
+  },
+  {
+    id: 'khoisan-peoples',
+    name: 'Khoisan peoples',
+    color: '#A3A3A3',
+    type: 'people',
+    description:
+      'Khoisan peoples of southern Africa — schematic Kalahari / Cape cultural footprint across deep time (not a state border).',
+    keyYears: [-2000, -500, 500, 1500],
+    overlays: [
+      {
+        year: -2000,
+        label: 'Deep-time southern Africa',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'khoisan-core',
+            name: 'Southern Africa core',
+            ring: [
+              [14, -34], [16, -22], [28, -22], [30, -32], [24, -35], [14, -34],
+            ],
+          },
+        ],
+      },
+      {
+        year: -500,
+        label: 'Kalahari / Cape zones',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'khoisan-kalahari',
+            name: 'Kalahari',
+            ring: [
+              [18, -28], [20, -20], [28, -20], [28, -28], [24, -30], [18, -28],
+            ],
+          },
+          {
+            id: 'khoisan-cape',
+            name: 'Cape fringe',
+            ring: [
+              [16, -35], [18, -30], [26, -30], [28, -34], [22, -36], [16, -35],
+            ],
+          },
+        ],
+      },
+      {
+        year: 500,
+        label: 'Early historic Khoisan zones',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'khoisan-kalahari',
+            name: 'Kalahari',
+            ring: [
+              [18, -28], [20, -20], [28, -20], [28, -28], [24, -30], [18, -28],
+            ],
+          },
+          {
+            id: 'khoisan-cape',
+            name: 'Cape',
+            ring: [
+              [16, -35], [18, -30], [26, -30], [28, -34], [22, -36], [16, -35],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1500,
+        label: 'Late precolonial Khoisan zones',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'khoisan-kalahari',
+            name: 'Kalahari',
+            ring: [
+              [18, -28], [20, -18], [28, -18], [28, -28], [24, -30], [18, -28],
+            ],
+          },
+          {
+            id: 'khoisan-cape',
+            name: 'Cape / Karoo fringe',
+            ring: [
+              [16, -35], [18, -29], [26, -29], [28, -34], [22, -36], [16, -35],
+            ],
+          },
+        ],
+      },
+    ],
+    sources: [
+      { title: 'Wikipedia — Khoisan', url: 'https://en.wikipedia.org/wiki/Khoisan' },
+    ],
+  },
+  {
+    id: 'inuit-peoples',
+    name: 'Inuit peoples',
+    color: '#E0F2FE',
+    type: 'people',
+    description:
+      'Inuit / Arctic peoples — schematic Alaska, Canadian Arctic, and Greenland footholds as separate regions (no ocean-spanning blob).',
+    keyYears: [-500, 500, 1200, 1700],
+    overlays: [
+      {
+        year: -500,
+        label: 'Early Arctic Inuit / paleo-Inuit fringe',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'inuit-alaska',
+            name: 'Alaska Arctic',
+            ring: [
+              [-168, 64], [-166, 72], [-148, 72], [-146, 66], [-156, 62], [-168, 64],
+            ],
+          },
+          {
+            id: 'inuit-canada',
+            name: 'Canadian Arctic fringe',
+            ring: [
+              [-120, 66], [-118, 74], [-90, 74], [-88, 68], [-100, 64], [-120, 66],
+            ],
+          },
+        ],
+      },
+      {
+        year: 500,
+        label: 'Expanded Arctic presence',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'inuit-alaska',
+            name: 'Alaska',
+            ring: [
+              [-170, 62], [-168, 72], [-146, 72], [-144, 64], [-156, 60], [-170, 62],
+            ],
+          },
+          {
+            id: 'inuit-canada',
+            name: 'Canadian Arctic',
+            ring: [
+              [-120, 66], [-118, 76], [-80, 76], [-78, 68], [-95, 64], [-120, 66],
+            ],
+          },
+          {
+            id: 'inuit-greenland',
+            name: 'Greenland fringe',
+            ring: [
+              [-54, 60], [-52, 72], [-40, 72], [-38, 62], [-46, 58], [-54, 60],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1200,
+        label: 'Thule / medieval Inuit zones',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'inuit-alaska',
+            name: 'Alaska',
+            ring: [
+              [-170, 62], [-168, 72], [-146, 72], [-144, 64], [-156, 60], [-170, 62],
+            ],
+          },
+          {
+            id: 'inuit-canada',
+            name: 'Canadian Arctic',
+            ring: [
+              [-120, 66], [-118, 76], [-80, 76], [-78, 68], [-95, 64], [-120, 66],
+            ],
+          },
+          {
+            id: 'inuit-greenland',
+            name: 'Greenland',
+            ring: [
+              [-54, 60], [-52, 74], [-38, 74], [-36, 62], [-46, 58], [-54, 60],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1700,
+        label: 'Historic Inuit zones',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'inuit-alaska',
+            name: 'Alaska',
+            ring: [
+              [-170, 62], [-168, 72], [-146, 72], [-144, 64], [-156, 60], [-170, 62],
+            ],
+          },
+          {
+            id: 'inuit-canada',
+            name: 'Canadian Arctic',
+            ring: [
+              [-120, 66], [-118, 76], [-80, 76], [-78, 68], [-95, 64], [-120, 66],
+            ],
+          },
+          {
+            id: 'inuit-greenland',
+            name: 'Greenland',
+            ring: [
+              [-54, 60], [-52, 74], [-38, 74], [-36, 62], [-46, 58], [-54, 60],
+            ],
+          },
+        ],
+      },
+    ],
+    sources: [
+      { title: 'Wikipedia — Inuit', url: 'https://en.wikipedia.org/wiki/Inuit' },
+    ],
+  },
+  {
+    id: 'maya-peoples',
+    name: 'Maya peoples',
+    color: '#3F6212',
+    type: 'people',
+    description:
+      'Maya ethnolinguistic peoples of Mesoamerica — schematic highland / lowland cultural footprint (distinct from Aztec polity overlays).',
+    keyYears: [-500, 250, 800, 1500],
+    overlays: [
+      {
+        year: -500,
+        label: 'Preclassic Maya zone',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'maya-core',
+            name: 'Maya lowlands / highlands',
+            ring: [
+              [-92, 14], [-91, 20], [-87, 20], [-87, 15], [-90, 14], [-92, 14],
+            ],
+          },
+        ],
+      },
+      {
+        year: 250,
+        label: 'Early Classic Maya',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'maya-lowlands',
+            name: 'Lowland Maya',
+            ring: [
+              [-92, 16], [-91, 21], [-87, 21], [-87, 16], [-90, 15], [-92, 16],
+            ],
+          },
+          {
+            id: 'maya-highlands',
+            name: 'Highland Maya',
+            ring: [
+              [-92.5, 14], [-91.5, 16.5], [-89, 16.5], [-89, 14.5], [-91, 13.8], [-92.5, 14],
+            ],
+          },
+        ],
+      },
+      {
+        year: 800,
+        label: 'Late Classic Maya',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'maya-lowlands',
+            name: 'Lowland Maya',
+            ring: [
+              [-92.5, 15.5], [-91.5, 21.5], [-86.5, 21.5], [-86.5, 16], [-90, 15], [-92.5, 15.5],
+            ],
+          },
+          {
+            id: 'maya-highlands',
+            name: 'Highland Maya',
+            ring: [
+              [-92.5, 14], [-91.5, 16.5], [-89, 16.5], [-89, 14.5], [-91, 13.8], [-92.5, 14],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1500,
+        label: 'Postclassic / contact-era Maya',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'maya-yucatan',
+            name: 'Yucatán',
+            ring: [
+              [-91, 18], [-90, 21.5], [-87, 21.5], [-87, 18.5], [-89.5, 17.5], [-91, 18],
+            ],
+          },
+          {
+            id: 'maya-highlands',
+            name: 'Highland Maya',
+            ring: [
+              [-92.5, 14], [-91.5, 16.5], [-89, 16.5], [-89, 14.5], [-91, 13.8], [-92.5, 14],
+            ],
+          },
+        ],
+      },
+    ],
+    sources: [
+      { title: 'Wikipedia — Maya peoples', url: 'https://en.wikipedia.org/wiki/Maya_peoples' },
+    ],
+  },
+  {
+    id: 'andean-peoples',
+    name: 'Andean peoples',
+    color: '#FB923C',
+    type: 'people',
+    description:
+      'Andean / Quechua cultural sphere — schematic highland + coastal footholds across the central Andes (broader than Inca polity alone).',
+    keyYears: [-500, 200, 800, 1400],
+    overlays: [
+      {
+        year: -500,
+        label: 'Early Andean cultural zone',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'andean-central',
+            name: 'Central Andes',
+            ring: [
+              [-78, -16], [-77, -8], [-70, -8], [-69, -14], [-72, -18], [-78, -16],
+            ],
+          },
+        ],
+      },
+      {
+        year: 200,
+        label: 'Expanded Andean presence',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'andean-central',
+            name: 'Central Andes',
+            ring: [
+              [-79, -18], [-78, -6], [-68, -6], [-68, -16], [-72, -20], [-79, -18],
+            ],
+          },
+          {
+            id: 'andean-coast',
+            name: 'Pacific coastal fringe',
+            ring: [
+              [-82, -16], [-81, -6], [-78, -6], [-78, -14], [-80, -18], [-82, -16],
+            ],
+          },
+        ],
+      },
+      {
+        year: 800,
+        label: 'Middle Horizon Andean sphere',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'andean-central',
+            name: 'Central Andes',
+            ring: [
+              [-79, -20], [-78, -4], [-66, -4], [-66, -18], [-72, -22], [-79, -20],
+            ],
+          },
+          {
+            id: 'andean-coast',
+            name: 'Coastal fringe',
+            ring: [
+              [-82, -18], [-81, -4], [-78, -4], [-78, -16], [-80, -20], [-82, -18],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1400,
+        label: 'Late Andean / Quechua sphere',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'andean-central',
+            name: 'Central / southern Andes',
+            ring: [
+              [-79, -22], [-78, -2], [-64, -2], [-64, -20], [-70, -24], [-79, -22],
+            ],
+          },
+          {
+            id: 'andean-coast',
+            name: 'Coastal fringe',
+            ring: [
+              [-82, -18], [-81, -2], [-78, -2], [-78, -16], [-80, -20], [-82, -18],
+            ],
+          },
+        ],
+      },
+    ],
+    sources: [
+      { title: 'Wikipedia — Andean civilizations', url: 'https://en.wikipedia.org/wiki/Andean_civilizations' },
+    ],
+  },
+  {
+    id: 'nilotic-peoples',
+    name: 'Nilotic peoples',
+    color: '#14532D',
+    type: 'people',
+    description:
+      'Nilotic peoples of East Africa — schematic Upper Nile / South Sudan / Kenya–Tanzania cultural footholds (not a single polity).',
+    keyYears: [-500, 200, 800, 1500],
+    overlays: [
+      {
+        year: -500,
+        label: 'Early Nilotic Upper Nile',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'nilotic-upper-nile',
+            name: 'Upper Nile',
+            ring: [
+              [28, 4], [30, 14], [36, 14], [36, 6], [32, 2], [28, 4],
+            ],
+          },
+        ],
+      },
+      {
+        year: 200,
+        label: 'Expanded Nilotic zones',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'nilotic-upper-nile',
+            name: 'Upper Nile / South Sudan',
+            ring: [
+              [26, 2], [28, 14], [36, 14], [38, 6], [32, 0], [26, 2],
+            ],
+          },
+          {
+            id: 'nilotic-rift',
+            name: 'Rift / Kenya fringe',
+            ring: [
+              [34, -2], [35, 6], [38, 6], [39, 0], [36, -4], [34, -2],
+            ],
+          },
+        ],
+      },
+      {
+        year: 800,
+        label: 'Medieval Nilotic East Africa',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'nilotic-upper-nile',
+            name: 'Upper Nile',
+            ring: [
+              [26, 2], [28, 14], [36, 14], [38, 6], [32, 0], [26, 2],
+            ],
+          },
+          {
+            id: 'nilotic-rift',
+            name: 'Kenya / Tanzania fringe',
+            ring: [
+              [33, -6], [34, 4], [39, 4], [40, -2], [36, -8], [33, -6],
+            ],
+          },
+        ],
+      },
+      {
+        year: 1500,
+        label: 'Late Nilotic zones',
+        approximation: 'schematic',
+        regions: [
+          {
+            id: 'nilotic-upper-nile',
+            name: 'Upper Nile',
+            ring: [
+              [26, 2], [28, 14], [36, 14], [38, 6], [32, 0], [26, 2],
+            ],
+          },
+          {
+            id: 'nilotic-rift',
+            name: 'East African Rift fringe',
+            ring: [
+              [33, -8], [34, 4], [39, 4], [40, -4], [36, -10], [33, -8],
+            ],
+          },
+        ],
+      },
+    ],
+    sources: [
+      { title: 'Wikipedia — Nilotic peoples', url: 'https://en.wikipedia.org/wiki/Nilotic_peoples' },
+    ],
+  },
+
 ];
