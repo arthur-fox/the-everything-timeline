@@ -5,12 +5,21 @@
  * Day 23: denser overlay coverage — rise→peak→decline for thin empires.
  * Day 24: densify remaining 2-keyframe notables to ≥3 overlays.
  * Day 25: every timeline civilisation has ≥1 overlay entity; 27 new polity fills.
+ * Day 27: first people pack (human-atlas layer 2) — type people overlays + layer filter.
+ * Day 28: second people pack — global ethnolinguistic coverage (~20 people total).
+ * Day 29: human presence layer (human-atlas layer 3) — inhabited-footprint overlays + Presence filter.
  */
 import {
   getActiveOverlaysAtYear,
   getEntityLifespan,
   getOverlayPolygonFeatures,
   spatialEntities,
+  peopleEntities,
+  PEOPLE_PACK_IDS,
+  presenceEntities,
+  PRESENCE_PACK_IDS,
+  setOverlayLayerFilter,
+  entitiesForLayer,
   OVERLAY_EDGE_GRACE,
   resolveRegionRing,
 } from '../src/globe-overlays.js';
@@ -487,6 +496,226 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assertNoOceanSpanLocal('colonial-americas', 1520, 55);
 
   assert(spatialEntities.length >= 71, `≥71 overlay entities after Day 25 (got ${spatialEntities.length})`);
+}
+
+// Day 27 — people packs (human-atlas layer 2)
+{
+  assert(peopleEntities.length === PEOPLE_PACK_IDS.length, `peopleEntities length matches PEOPLE_PACK_IDS (${peopleEntities.length})`);
+  assert(peopleEntities.length >= 10, `≥10 people-pack entities (got ${peopleEntities.length})`);
+
+  const polityColors = new Set(
+    spatialEntities
+      .filter((e) => e.type !== 'people' && e.type !== 'presence')
+      .map((e) => e.color.toLowerCase()),
+  );
+  const peopleColors = new Set();
+  for (const id of PEOPLE_PACK_IDS) {
+    const ent = spatialEntities.find((e) => e.id === id);
+    assert(!!ent, `people pack entity ${id} exists in spatialEntities`);
+    assert(ent?.type === 'people', `${id} has type people`);
+    assert((ent?.overlays || []).length >= 3, `${id} has ≥3 overlays (got ${ent?.overlays?.length})`);
+    const c = String(ent.color || '').toLowerCase();
+    assert(!polityColors.has(c), `${id} color ${c} does not collide with polity colors`);
+    assert(!peopleColors.has(c), `${id} color ${c} unique within people pack`);
+    peopleColors.add(c);
+    // No invented timeline links required — people packs are cultural, not civ ids
+    for (const tid of ent.timelineItemIds || []) {
+      assert(false, `${id} should not invent timelineItemIds (found ${tid})`);
+    }
+  }
+
+  // Layer filter
+  setOverlayLayerFilter('peoples');
+  const peoplesOnly = entitiesForLayer('peoples');
+  assert(peoplesOnly.length === peopleEntities.length, `peoples layer size ${peoplesOnly.length}`);
+  assert(peoplesOnly.every((e) => e.type === 'people'), 'peoples layer is only type=people');
+  setOverlayLayerFilter('polities');
+  const politiesOnly = entitiesForLayer('polities');
+  assert(politiesOnly.every((e) => e.type !== 'people' && e.type !== 'presence'), 'polities layer excludes people + presence');
+  assert(politiesOnly.length >= 71, `polities layer ≥71 (got ${politiesOnly.length})`);
+  setOverlayLayerFilter('both');
+  assert(entitiesForLayer('both').length === spatialEntities.length, 'both layer = all entities');
+
+  // Easy-test years (with peoples layer)
+  setOverlayLayerFilter('peoples');
+  const idsPeople = (y) => new Set(getActiveOverlaysAtYear(y).map((r) => r.entity.id));
+  assert(idsPeople(-250).has('celts'), 'Celts ON at −250 (peoples layer)');
+  assert(idsPeople(450).has('germanic-peoples'), 'Germanic ON at 450');
+  assert(idsPeople(900).has('slavs'), 'Slavs ON at 900');
+  assert(idsPeople(800).has('bantu-peoples'), 'Bantu ON at 800');
+  assert(idsPeople(1000).has('turkic-peoples'), 'Turkic ON at 1000');
+  assert(idsPeople(800).has('polynesian-peoples'), 'Polynesian ON at 800');
+  assert(idsPeople(-400).has('scythians'), 'Scythians ON at −400');
+  assert(idsPeople(-1000).has('aboriginal-australian'), 'Aboriginal Australian ON at −1000');
+  assert(idsPeople(800).has('amazigh'), 'Amazigh ON at 800');
+  assert(idsPeople(900).has('ancestral-puebloans'), 'Ancestral Puebloans ON at 900');
+
+  // Polynesian fragments — no ocean-spanning blob
+  const poly800 = getOverlayPolygonFeatures(800).filter((f) => f.entityId === 'polynesian-peoples');
+  const polyIds = new Set(poly800.map((f) => f.regionId));
+  assert(polyIds.size >= 3, `Polynesian 800 has ≥3 region ids (got ${polyIds.size})`);
+  for (const f of poly800) {
+    const ring = f.geometry.coordinates[0];
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    for (const [x, y] of ring) {
+      minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+      minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+    }
+    const span = Math.max(maxX - minX, maxY - minY);
+    assert(span < 40, `polynesian-peoples@800 ${f.regionId} span ${span.toFixed(1)} < 40°`);
+  }
+
+  setOverlayLayerFilter('both');
+  assert(spatialEntities.length >= 81, `≥81 overlay entities after Day 27 (got ${spatialEntities.length})`);
+}
+
+// Day 28 — people pack 2 (global coverage)
+{
+  assert(peopleEntities.length === PEOPLE_PACK_IDS.length, `peopleEntities length matches PEOPLE_PACK_IDS (${peopleEntities.length})`);
+  assert(peopleEntities.length >= 20, `≥20 people-pack entities after Day 28 (got ${peopleEntities.length})`);
+
+  const day28Ids = [
+    'indo-aryan',
+    'dravidian-peoples',
+    'arab-peoples',
+    'sinitic-peoples',
+    'finno-ugric',
+    'khoisan-peoples',
+    'inuit-peoples',
+    'maya-peoples',
+    'andean-peoples',
+    'nilotic-peoples',
+  ];
+  for (const id of day28Ids) {
+    assert(PEOPLE_PACK_IDS.includes(id), `PEOPLE_PACK_IDS includes Day 28 ${id}`);
+    const ent = spatialEntities.find((e) => e.id === id);
+    assert(!!ent, `Day 28 people entity ${id} exists`);
+    assert(ent?.type === 'people', `${id} has type people`);
+    assert((ent?.overlays || []).length >= 3, `${id} has ≥3 overlays (got ${ent?.overlays?.length})`);
+  }
+
+  // Easy-test years for Day 28 pack (peoples layer)
+  setOverlayLayerFilter('peoples');
+  const idsPeople28 = (y) => new Set(getActiveOverlaysAtYear(y).map((r) => r.entity.id));
+  assert(idsPeople28(-400).has('indo-aryan'), 'Indo-Aryan ON at −400');
+  assert(idsPeople28(800).has('dravidian-peoples'), 'Dravidian ON at 800');
+  assert(idsPeople28(1000).has('arab-peoples'), 'Arab peoples ON at 1000');
+  assert(idsPeople28(800).has('sinitic-peoples'), 'Sinitic ON at 800');
+  assert(idsPeople28(1000).has('finno-ugric'), 'Finno-Ugric ON at 1000');
+  assert(idsPeople28(-500).has('khoisan-peoples'), 'Khoisan ON at −500');
+  assert(idsPeople28(1200).has('inuit-peoples'), 'Inuit ON at 1200');
+  assert(idsPeople28(800).has('maya-peoples'), 'Maya peoples ON at 800');
+  assert(idsPeople28(800).has('andean-peoples'), 'Andean peoples ON at 800');
+  assert(idsPeople28(800).has('nilotic-peoples'), 'Nilotic ON at 800');
+
+  // Fragmented footholds — no ocean-spanning blobs for Inuit / Arab / Finno-Ugric
+  function assertNoOceanSpanPeople(entityId, year, maxSpan = 55) {
+    const feats = getOverlayPolygonFeatures(year).filter((f) => f.entityId === entityId);
+    assert(feats.length >= 1, `${entityId}@${year} has ≥1 polygon`);
+    for (const f of feats) {
+      const ring = f.geometry.coordinates[0];
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      for (const [x, y] of ring) {
+        minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+        minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+      }
+      const span = Math.max(maxX - minX, maxY - minY);
+      assert(
+        span < maxSpan,
+        `${entityId}@${year} ${f.regionId} span ${span.toFixed(1)} < ${maxSpan}° (no ocean-spanning blob)`,
+      );
+    }
+  }
+  assertNoOceanSpanPeople('inuit-peoples', 1200, 55);
+  assertNoOceanSpanPeople('arab-peoples', 1000, 55);
+  assertNoOceanSpanPeople('finno-ugric', 1000, 55);
+  const inuit1200 = getOverlayPolygonFeatures(1200).filter((f) => f.entityId === 'inuit-peoples');
+  assert(new Set(inuit1200.map((f) => f.regionId)).size >= 3, 'Inuit 1200 has ≥3 region ids');
+
+  setOverlayLayerFilter('both');
+  assert(spatialEntities.length >= 91, `≥91 overlay entities after Day 28 (got ${spatialEntities.length})`);
+}
+
+// Day 29 — human presence layer (human-atlas layer 3)
+{
+  assert(presenceEntities.length === PRESENCE_PACK_IDS.length, `presenceEntities length matches PRESENCE_PACK_IDS (${presenceEntities.length})`);
+  assert(presenceEntities.length >= 10, `≥10 presence entities (got ${presenceEntities.length})`);
+
+  const existingColors = new Set(
+    spatialEntities
+      .filter((e) => e.type !== 'presence')
+      .map((e) => e.color.toLowerCase()),
+  );
+  const presenceColors = new Set();
+  for (const id of PRESENCE_PACK_IDS) {
+    const ent = spatialEntities.find((e) => e.id === id);
+    assert(!!ent, `presence entity ${id} exists in spatialEntities`);
+    assert(ent?.type === 'presence', `${id} has type presence`);
+    assert((ent?.overlays || []).length >= 3, `${id} has ≥3 overlays (got ${ent?.overlays?.length})`);
+    const c = String(ent.color || '').toLowerCase();
+    assert(!existingColors.has(c), `${id} color ${c} does not collide with polity/people colors`);
+    assert(!presenceColors.has(c), `${id} color ${c} unique within presence pack`);
+    presenceColors.add(c);
+    for (const tid of ent.timelineItemIds || []) {
+      assert(false, `${id} should not invent timelineItemIds (found ${tid})`);
+    }
+    // Multi-vertex rings
+    for (const ov of ent.overlays || []) {
+      for (const region of ov.regions || []) {
+        assert((region.ring || []).length >= 4, `${id}@${ov.year} ${region.id} ring ≥4 verts`);
+      }
+    }
+  }
+
+  // Layer filter
+  setOverlayLayerFilter('presence');
+  const presenceOnly = entitiesForLayer('presence');
+  assert(presenceOnly.length === presenceEntities.length, `presence layer size ${presenceOnly.length}`);
+  assert(presenceOnly.every((e) => e.type === 'presence'), 'presence layer is only type=presence');
+  setOverlayLayerFilter('polities');
+  assert(entitiesForLayer('polities').every((e) => e.type !== 'presence'), 'polities layer excludes presence');
+  setOverlayLayerFilter('peoples');
+  assert(entitiesForLayer('peoples').every((e) => e.type !== 'presence'), 'peoples layer excludes presence');
+  setOverlayLayerFilter('both');
+  assert(entitiesForLayer('both').length === spatialEntities.length, 'both layer = all entities (incl presence)');
+
+  // Easy-test years (presence layer)
+  setOverlayLayerFilter('presence');
+  const idsPresence = (y) => new Set(getActiveOverlaysAtYear(y).map((r) => r.entity.id));
+  assert(idsPresence(-3000).has('nile-valley-presence'), 'Nile Valley ON at −3000 (presence layer)');
+  assert(idsPresence(-3000).has('fertile-crescent-presence'), 'Fertile Crescent ON at −3000');
+  assert(idsPresence(-3000).has('yellow-river-presence'), 'Yellow River ON at −3000');
+  assert(idsPresence(500).has('mesoamerica-presence'), 'Mesoamerica ON at 500');
+  assert(idsPresence(500).has('andean-presence'), 'Andean ON at 500');
+  assert(idsPresence(1900).has('global-modern-presence'), 'Global modern ON at 1900');
+  assert(idsPresence(800).has('indus-gangetic-presence'), 'Indus–Gangetic ON at 800');
+  assert(idsPresence(1000).has('temperate-europe-presence'), 'Temperate Europe ON at 1000');
+
+  // Global modern — many separate region ids, no ocean-spanning blob
+  const gm1900 = getOverlayPolygonFeatures(1900).filter((f) => f.entityId === 'global-modern-presence');
+  const gmIds = new Set(gm1900.map((f) => f.regionId));
+  assert(gmIds.size >= 4, `global-modern-presence@1900 has ≥4 region ids (got ${gmIds.size})`);
+  for (const f of gm1900) {
+    const ring = f.geometry.coordinates[0];
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    for (const [x, y] of ring) {
+      minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+      minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+    }
+    const span = Math.max(maxX - minX, maxY - minY);
+    assert(span < 70, `global-modern-presence@1900 ${f.regionId} span ${span.toFixed(1)} < 70°`);
+  }
+
+  // SE Asia fragments — no ocean blob across mainland+islands as one ring
+  const sea500 = getOverlayPolygonFeatures(500).filter((f) => f.entityId === 'southeast-asia-presence');
+  assert(new Set(sea500.map((f) => f.regionId)).size >= 2, 'SE Asia@500 has ≥2 region ids');
+
+  setOverlayLayerFilter('both');
+  const presenceCount = presenceEntities.length;
+  assert(
+    spatialEntities.length >= 91 + presenceCount,
+    `≥${91 + presenceCount} overlay entities after Day 29 (got ${spatialEntities.length})`,
+  );
 }
 
 

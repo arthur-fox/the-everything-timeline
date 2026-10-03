@@ -8,6 +8,8 @@
  * Day 23: denser overlay coverage — rise→peak→decline keyframes for thin / peak-only empires.
  * Day 24: densify remaining 2-keyframe notables to ≥3 overlays.
  * Day 25: fill remaining timeline civilisations on the globe (27 polity overlays; people/presence later).
+ * Day 27–28: people packs (human-atlas layer 2) — cultural/ethnolinguistic overlays via globe-people.js (20 entities).
+ * Day 29: human presence layer (human-atlas layer 3) — inhabited-footprint overlays via globe-presence.js (~10 entities).
  *
  * Spatial entities + schematic region rings for Globe polygons.
  * Rings are intentionally rough — not GIS-accurate ancient borders.
@@ -16,8 +18,10 @@
 import { civilisations } from './civilisations.js';
 import { warsItems } from './wars.js';
 import { morphEntityAtYear, ensureClockwise } from './globe-morph.js';
+import { peopleEntities, PEOPLE_PACK_IDS } from './globe-people.js';
+import { presenceEntities, PRESENCE_PACK_IDS } from './globe-presence.js';
 
-/** @typedef {'empire' | 'civilization' | 'state' | 'other'} SpatialEntityType */
+/** @typedef {'empire' | 'civilization' | 'state' | 'people' | 'presence' | 'other'} SpatialEntityType */
 /** @typedef {'rough' | 'simplified' | 'schematic'} ApproximationLevel */
 
 /**
@@ -6183,6 +6187,59 @@ export const spatialEntities = [
   },
 ];
 
+// Day 27 — append people-pack entities (type: 'people') into the shared catalogue.
+for (const person of peopleEntities) {
+  spatialEntities.push(person);
+}
+
+// Day 29 — append human-presence entities (type: 'presence') into the shared catalogue.
+for (const presence of presenceEntities) {
+  spatialEntities.push(presence);
+}
+
+export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
+
+/** @typedef {'polities' | 'peoples' | 'presence' | 'both'} OverlayLayerFilter */
+
+/** Active globe layer filter (sidebar + polygons). */
+let overlayLayerFilter = /** @type {OverlayLayerFilter} */ ('both');
+
+export function getOverlayLayerFilter() {
+  return overlayLayerFilter;
+}
+
+/**
+ * @param {OverlayLayerFilter|string} layer
+ * @returns {OverlayLayerFilter}
+ */
+export function setOverlayLayerFilter(layer) {
+  const v = String(layer || 'both');
+  overlayLayerFilter =
+    v === 'polities' || v === 'peoples' || v === 'presence' || v === 'both' ? v : 'both';
+  return overlayLayerFilter;
+}
+
+/**
+ * @param {OverlayLayerFilter} [layer]
+ * @returns {SpatialEntity[]}
+ */
+export function entitiesForLayer(layer = overlayLayerFilter) {
+  if (layer === 'peoples') return spatialEntities.filter((e) => e.type === 'people');
+  if (layer === 'presence') return spatialEntities.filter((e) => e.type === 'presence');
+  if (layer === 'polities') {
+    return spatialEntities.filter((e) => e.type !== 'people' && e.type !== 'presence');
+  }
+  return spatialEntities;
+}
+
+export function isPeopleEntity(entity) {
+  return entity?.type === 'people';
+}
+
+export function isPresenceEntity(entity) {
+  return entity?.type === 'presence';
+}
+
 /**
  * Schematic region rings — intentionally rough [lng, lat] GeoJSON order.
  * Closed rings (first point repeated at end). Not GIS-accurate borders.
@@ -6486,7 +6543,7 @@ export function resolveRegionRing(region) {
  * Day 20: morph region rings between bracketing overlay keyframes; soft dissolve at lifespan edges.
  * @returns {object[]} GeoJSON-like features with color/opacity props for Globe.gl accessors
  */
-export function getOverlayPolygonFeatures(year, entities = spatialEntities) {
+export function getOverlayPolygonFeatures(year, entities = entitiesForLayer()) {
   const y = Math.round(Number(year));
   if (!Number.isFinite(y)) return [];
 
@@ -6504,7 +6561,17 @@ export function getOverlayPolygonFeatures(year, entities = spatialEntities) {
     );
     if (!morphed.length) continue;
 
+    const people = isPeopleEntity(entity);
+    const presence = isPresenceEntity(entity);
     for (const part of morphed) {
+      // People / presence read slightly softer so polity borders stay primary when both layers show.
+      // Presence is a touch more translucent than people (inhabited footprint wash).
+      let opacity = part.opacity;
+      if (presence) {
+        opacity = Math.max(0.06, Math.min(0.36, (part.opacity ?? 0.43) * 0.72));
+      } else if (people) {
+        opacity = Math.max(0.08, Math.min(0.42, (part.opacity ?? 0.43) * 0.82));
+      }
       features.push({
         type: 'Feature',
         geometry: {
@@ -6516,7 +6583,8 @@ export function getOverlayPolygonFeatures(year, entities = spatialEntities) {
         regionId: part.regionId,
         regionName: part.regionName,
         color: entity.color,
-        opacity: part.opacity,
+        opacity,
+        entityType: entity.type,
         approximation: part.approximation || nearestOverlay?.approximation || 'rough',
         overlayYear: y,
         morphT: part.morphT,
@@ -6526,7 +6594,8 @@ export function getOverlayPolygonFeatures(year, entities = spatialEntities) {
           regionId: part.regionId,
           regionName: part.regionName,
           color: entity.color,
-          opacity: part.opacity,
+          opacity,
+          entityType: entity.type,
           approximation: part.approximation || nearestOverlay?.approximation || 'rough',
           morphT: part.morphT,
         },
@@ -6611,7 +6680,7 @@ export function formatOverlayYear(year) {
  * @param {SpatialEntity[]} [entities]
  * @returns {{ entity: SpatialEntity, overlay: OverlaySnapshot|null, distance: number }[]}
  */
-export function getActiveOverlaysAtYear(year, entities = spatialEntities) {
+export function getActiveOverlaysAtYear(year, entities = entitiesForLayer()) {
   const y = Math.round(Number(year));
   if (!Number.isFinite(y)) return [];
 
