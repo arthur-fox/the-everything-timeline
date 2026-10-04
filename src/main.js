@@ -48,12 +48,14 @@ import { swedenItems, swedenCategories } from './countries/sweden.js';
 import { canadaItems, canadaCategories } from './countries/canada.js';
 import { argentinaItems, argentinaCategories } from './countries/argentina.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
-import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear } from './globe-view.js';
+import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick } from './globe-view.js';
 import {
   getActiveOverlaysAtYear,
   getOverlayLayerFilter,
   setOverlayLayerFilter,
   formatOverlayYear,
+  getSpatialEntityById,
+  getEntityLifespan,
 } from './globe-overlays.js';
 
 // ============================================================
@@ -577,6 +579,7 @@ function syncDeepLinkUrl() {
       params.set('year', String(globeYear));
       const layer = getOverlayLayerFilter();
       if (layer && layer !== 'both') params.set('layer', layer);
+      if (selectedGlobeEntityId) params.set('entity', selectedGlobeEntityId);
     } else {
       const selectedId = getSelectedDeepLinkId();
       if (selectedId) {
@@ -756,6 +759,8 @@ function activateViewForDeepLink(viewId, { clearSelection = true } = {}) {
 
   if (clearSelection) {
     document.getElementById('event-detail').classList.add('hidden');
+    clearDetailSources();
+    clearDetailRelated();
     detailContext = null;
     updateDetailBookmarkButton();
     hoveredEvent = null;
@@ -766,6 +771,7 @@ function activateViewForDeepLink(viewId, { clearSelection = true } = {}) {
         swimStates[key].selectedItem = null;
       }
     }
+    clearGlobeEntitySelection({ syncUrl: false, closeDetail: false });
   }
 }
 
@@ -777,8 +783,9 @@ function applyDeepLinkFromUrl() {
   const year = params.get('year');
   const filtersRaw = params.get('filters');
   const layerRaw = params.get('layer');
+  const entityRaw = params.get('entity');
 
-  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '')) {
+  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '')) {
     updateActiveViewChrome();
     updateFiltersUI();
     return;
@@ -824,6 +831,13 @@ function applyDeepLinkFromUrl() {
     if (!focused && year != null && year !== '') {
       centerTimelineOnYear(year);
     }
+
+    // Globe entity deep link: restore after year + layer so activity check uses the right state
+    if (entityRaw && isGlobeView()) {
+      selectGlobeEntity(entityRaw, { syncUrl: false, openDetail: true, fromDeepLink: true });
+      focused = true;
+    }
+
     updateFiltersUI();
     draw();
   } finally {
@@ -1807,11 +1821,59 @@ function renderDetailSources(sources) {
 // Context for the open detail panel (used by bookmarks)
 let detailContext = null;
 
+function clearDetailRelated() {
+  const wrap = document.getElementById('detail-related');
+  const list = document.getElementById('detail-related-list');
+  if (list) list.innerHTML = '';
+  if (wrap) {
+    wrap.classList.add('hidden');
+    wrap.hidden = true;
+  }
+}
+
+/**
+ * Render clickable “Related on timeline” links for resolved catalogue items.
+ * @param {{ id: string, name: string, icon?: string, view: string }[]} items
+ */
+function renderDetailRelated(items) {
+  const wrap = document.getElementById('detail-related');
+  const list = document.getElementById('detail-related-list');
+  if (!wrap || !list) return;
+  list.innerHTML = '';
+  const entries = Array.isArray(items) ? items.filter((i) => i && i.id && i.view && i.name) : [];
+  if (!entries.length) {
+    wrap.classList.add('hidden');
+    wrap.hidden = true;
+    return;
+  }
+  for (const item of entries) {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'detail-related-link';
+    btn.textContent = (item.icon ? item.icon + ' ' : '') + item.name;
+    const viewHint = document.createElement('span');
+    viewHint.className = 'detail-related-view';
+    viewHint.textContent = viewLabelForParam(item.view);
+    btn.appendChild(document.createTextNode(' '));
+    btn.appendChild(viewHint);
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      jumpToRelatedTimelineItem(item.view, item.id);
+    });
+    li.appendChild(btn);
+    list.appendChild(li);
+  }
+  wrap.classList.remove('hidden');
+  wrap.hidden = false;
+}
+
 function showDetail(title, date, description, sources, context = null) {
   document.getElementById('detail-title').textContent = title;
   document.getElementById('detail-date').textContent = date;
   document.getElementById('detail-description').textContent = description;
   renderDetailSources(sources);
+  renderDetailRelated(context?.relatedItems || []);
   detailContext = context;
   updateDetailBookmarkButton();
   document.getElementById('event-detail').classList.remove('hidden');
@@ -1820,11 +1882,15 @@ function showDetail(title, date, description, sources, context = null) {
 function hideDetailPanel() {
   document.getElementById('event-detail').classList.add('hidden');
   clearDetailSources();
+  clearDetailRelated();
   detailContext = null;
   updateDetailBookmarkButton();
   selectedEvent = null;
   for (const key of Object.keys(swimStates)) {
     if (swimStates[key]) swimStates[key].selectedItem = null;
+  }
+  if (selectedGlobeEntityId) {
+    clearGlobeEntitySelection({ syncUrl: true, closeDetail: false });
   }
 }
 
@@ -1931,6 +1997,8 @@ function switchView(view) {
 
   // Close detail panel on switch
   document.getElementById('event-detail').classList.add('hidden');
+  clearDetailSources();
+  clearDetailRelated();
   detailContext = null;
   updateDetailBookmarkButton();
   tooltip.classList.remove('visible');
@@ -1945,6 +2013,7 @@ function switchView(view) {
     swimStates[key].hoveredItem = null;
     swimStates[key].selectedItem = null;
   }
+  clearGlobeEntitySelection({ syncUrl: false, closeDetail: false });
 
   updateFiltersUI();
   draw();
@@ -2875,7 +2944,27 @@ function openBookmark(entry) {
     } else {
       activateViewForDeepLink('cosmic', { clearSelection: true });
     }
-    const focused = focusItemById(entry.id);
+    let focused = false;
+    if (resolved && resolved.id === 'globe') {
+      const entity = getSpatialEntityById(entry.id);
+      if (entity) {
+        const life = getEntityLifespan(entity);
+        const keyYears = (entity.keyYears || []).filter((y) => Number.isFinite(y));
+        let y;
+        if (keyYears.length) {
+          y = keyYears[Math.floor(keyYears.length / 2)];
+        } else {
+          const start = Number.isFinite(life.start) ? Math.max(life.start, GLOBE_YEAR_MIN) : GLOBE_YEAR_MIN;
+          const end = Number.isFinite(life.end) ? Math.min(life.end, GLOBE_YEAR_MAX) : GLOBE_YEAR_MAX;
+          y = Math.round((start + end) / 2);
+        }
+        setGlobeYear(y, { syncUrl: false });
+        selectGlobeEntity(entity.id, { syncUrl: false, openDetail: true });
+        focused = true;
+      }
+    } else {
+      focused = focusItemById(entry.id);
+    }
     if (!focused) {
       // Stale bookmark — still land on the view
       updateFiltersUI();
@@ -3075,7 +3164,12 @@ function setGlobeModeActive(active) {
     // Mount after layout so the host has non-zero size
     requestAnimationFrame(() => {
       if (!isGlobeView()) return;
-      mountGlobe(host, { year: globeYear }).catch((err) => {
+      mountGlobe(host, {
+        year: globeYear,
+        onPolygonClick: (entityId) => {
+          selectGlobeEntity(entityId, { syncUrl: true, openDetail: true });
+        },
+      }).catch((err) => {
         console.error('Failed to mount Globe.gl:', err);
         if (host && !host.dataset.globeError) {
           host.dataset.globeError = '1';
@@ -3086,13 +3180,218 @@ function setGlobeModeActive(active) {
           host.appendChild(fallback);
         }
       });
+      // Re-apply selection highlight after mount
+      if (selectedGlobeEntityId) setGlobeSelectedEntity(selectedGlobeEntityId);
     });
   } else {
     // Full dispose so switching views never leaks a WebGL context
+    clearGlobeEntitySelection({ syncUrl: false, closeDetail: false });
     destroyGlobe();
   }
 }
 
+// Keep polygon-click handler registered even across remounts
+setOnGlobePolygonClick((entityId) => {
+  if (!isGlobeView()) return;
+  selectGlobeEntity(entityId, { syncUrl: true, openDetail: true });
+});
+
+
+/** @type {string|null} Currently selected spatial entity on the globe */
+let selectedGlobeEntityId = null;
+
+/**
+ * Find a swim-lane / topic item by id across loaded catalogues.
+ * @returns {{ item: object, view: string }|null}
+ */
+function findTimelineCatalogueItem(itemId) {
+  if (!itemId) return null;
+  const topicOrder = [
+    'civilisations', 'wars', 'technology', 'science', 'religion',
+    'philosophy', 'art', 'economics', 'cosmic-history',
+  ];
+  for (const viewId of topicOrder) {
+    const state = swimStates[viewId];
+    if (!state) continue;
+    const item = state.items.find((i) => i.id === itemId);
+    if (item) return { item, view: viewId };
+  }
+  // Countries (lazy) — only search already-created country states to avoid loading all
+  for (const key of Object.keys(swimStates)) {
+    if (topicOrder.includes(key)) continue;
+    const state = swimStates[key];
+    if (!state) continue;
+    const item = state.items.find((i) => i.id === itemId);
+    if (item) return { item, view: isCountryViewId(key) ? 'country:' + key : key };
+  }
+  return null;
+}
+
+/**
+ * Resolve entity.timelineItemIds to real catalogue entries only (no invented ids).
+ * @param {import('./globe-overlays.js').SpatialEntity|object} entity
+ */
+function resolveRelatedTimelineItems(entity) {
+  const ids = Array.isArray(entity?.timelineItemIds) ? entity.timelineItemIds : [];
+  const out = [];
+  const seen = new Set();
+  for (const tid of ids) {
+    if (!tid || seen.has(tid)) continue;
+    const hit = findTimelineCatalogueItem(tid);
+    if (!hit) continue;
+    seen.add(tid);
+    out.push({
+      id: hit.item.id,
+      name: hit.item.name,
+      icon: hit.item.icon || '',
+      view: hit.view.startsWith('country:') ? hit.view : hit.view,
+    });
+  }
+  return out;
+}
+
+function jumpToRelatedTimelineItem(viewParam, itemId) {
+  if (!viewParam || !itemId) return;
+  const resolved = resolveViewParam(viewParam);
+  const viewId = resolved ? resolved.id : viewParam;
+  activateViewForDeepLink(viewId, { clearSelection: true });
+  clearGlobeEntitySelection({ syncUrl: false, closeDetail: false });
+  const focused = focusItemById(itemId);
+  if (!focused) {
+    updateFiltersUI();
+    draw();
+  }
+  syncDeepLinkUrl();
+}
+
+function formatGlobeEntityDateLabel(entity) {
+  const life = getEntityLifespan(entity);
+  const start = Number.isFinite(life.start) ? life.start : null;
+  const end = Number.isFinite(life.end) ? life.end : null;
+  if (start != null && end != null && Number.isFinite(start) && Number.isFinite(end)) {
+    // Strip grace padding for display when we can use keyYears / overlay span
+    const overlayYears = (entity.overlays || []).map((o) => Number(o?.year)).filter(Number.isFinite);
+    if (overlayYears.length) {
+      const oStart = Math.min(...overlayYears);
+      const oEnd = Math.max(...overlayYears);
+      return `${formatGlobeYear(oStart)} — ${formatGlobeYear(oEnd)}`;
+    }
+    return `${formatGlobeYear(start)} — ${formatGlobeYear(end)}`;
+  }
+  if (entity.keyYears?.length) {
+    return 'Active around ' + formatGlobeYear(entity.keyYears[Math.floor(entity.keyYears.length / 2)]);
+  }
+  return 'Approximate footprint';
+}
+
+function isEntityActiveAtGlobeYear(entityId, year = globeYear) {
+  const active = getActiveOverlaysAtYear(year);
+  return active.some(({ entity }) => entity.id === entityId);
+}
+
+function clearGlobeEntitySelection({ syncUrl = true, closeDetail = false } = {}) {
+  if (!selectedGlobeEntityId && !closeDetail) {
+    setGlobeSelectedEntity(null);
+    return;
+  }
+  selectedGlobeEntityId = null;
+  setGlobeSelectedEntity(null);
+  updateGlobeOverlayPanelSelectionOnly();
+  if (closeDetail) {
+    const panel = document.getElementById('event-detail');
+    if (panel && !panel.classList.contains('hidden') && detailContext?.kind === 'globe-entity') {
+      panel.classList.add('hidden');
+      clearDetailSources();
+      clearDetailRelated();
+      detailContext = null;
+      updateDetailBookmarkButton();
+    }
+  }
+  if (syncUrl && isGlobeView()) syncDeepLinkUrl();
+}
+
+/**
+ * Select a spatial entity: highlight polygon + sidebar row, open detail panel.
+ * @param {string} entityId
+ * @param {{ syncUrl?: boolean, openDetail?: boolean, fromDeepLink?: boolean }} [opts]
+ */
+function selectGlobeEntity(entityId, { syncUrl = true, openDetail = true, fromDeepLink = false } = {}) {
+  if (!entityId) return false;
+  const entity = getSpatialEntityById(entityId);
+  if (!entity) return false;
+
+  // Deep links: only select if active at the restored year
+  if (fromDeepLink && !isEntityActiveAtGlobeYear(entity.id)) {
+    return false;
+  }
+
+  // Ensure layer shows this entity type when selecting from a filtered view
+  const layer = getOverlayLayerFilter();
+  if (layer === 'polities' && (entity.type === 'people' || entity.type === 'presence')) {
+    setOverlayLayerFilter('both');
+    syncGlobeLayerToggleUI();
+  } else if (layer === 'peoples' && entity.type !== 'people') {
+    setOverlayLayerFilter('both');
+    syncGlobeLayerToggleUI();
+  } else if (layer === 'presence' && entity.type !== 'presence') {
+    setOverlayLayerFilter('both');
+    syncGlobeLayerToggleUI();
+  }
+
+  // If not active at current year (sidebar/manual), jump year to a sensible key year
+  if (!isEntityActiveAtGlobeYear(entity.id)) {
+    const keyYears = (entity.keyYears || []).filter((y) => Number.isFinite(y));
+    const life = getEntityLifespan(entity);
+    let y;
+    if (keyYears.length) {
+      y = keyYears.reduce((best, k) =>
+        Math.abs(k - globeYear) < Math.abs(best - globeYear) ? k : best, keyYears[0]);
+    } else {
+      const start = Number.isFinite(life.start) ? Math.max(life.start, GLOBE_YEAR_MIN) : globeYear;
+      const end = Number.isFinite(life.end) ? Math.min(life.end, GLOBE_YEAR_MAX) : globeYear;
+      y = Math.round((start + end) / 2);
+    }
+    setGlobeYear(y, { syncUrl: false });
+  }
+
+  selectedGlobeEntityId = entity.id;
+  setGlobeSelectedEntity(entity.id);
+  updateGlobeOverlayPanel();
+
+  if (openDetail) {
+    const dateLabel = formatGlobeEntityDateLabel(entity);
+    const relatedItems = resolveRelatedTimelineItems(entity);
+    const typeLabel =
+      entity.type === 'people' ? 'People' : entity.type === 'presence' ? 'Presence' : 'Polity';
+    showDetail(
+      entity.name,
+      `${dateLabel} · ${typeLabel}`,
+      entity.description || '',
+      entity.sources,
+      {
+        view: 'globe',
+        id: entity.id,
+        icon: '',
+        name: entity.name,
+        dateLabel,
+        kind: 'globe-entity',
+        relatedItems,
+      },
+    );
+  }
+
+  if (syncUrl) syncDeepLinkUrl();
+  return true;
+}
+
+function updateGlobeOverlayPanelSelectionOnly() {
+  if (!globeOverlayList) return;
+  globeOverlayList.querySelectorAll('.globe-overlay-item').forEach((el) => {
+    const id = el.dataset.entityId;
+    el.classList.toggle('is-selected', Boolean(selectedGlobeEntityId && id === selectedGlobeEntityId));
+    el.setAttribute('aria-pressed', selectedGlobeEntityId && id === selectedGlobeEntityId ? 'true' : 'false');
+  });
+}
 
 function updateGlobeOverlayPanel() {
   if (!globeOverlayList) return;
@@ -3117,11 +3416,19 @@ function updateGlobeOverlayPanel() {
 
   for (const { entity, overlay } of active) {
     const li = document.createElement('li');
+    li.className = 'globe-overlay-list-entry';
     const isPeople = entity.type === 'people';
     const isPresence = entity.type === 'presence';
-    li.className =
+    const selected = selectedGlobeEntityId === entity.id;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className =
       'globe-overlay-item' +
-      (isPresence ? ' is-presence' : isPeople ? ' is-people' : ' is-polity');
+      (isPresence ? ' is-presence' : isPeople ? ' is-people' : ' is-polity') +
+      (selected ? ' is-selected' : '');
+    btn.dataset.entityId = entity.id;
+    btn.setAttribute('aria-pressed', selected ? 'true' : 'false');
+    btn.setAttribute('aria-label', 'Show details for ' + entity.name);
 
     const swatch = document.createElement('span');
     swatch.className =
@@ -3159,8 +3466,12 @@ function updateGlobeOverlayPanel() {
 
     body.appendChild(nameRow);
     body.appendChild(meta);
-    li.appendChild(swatch);
-    li.appendChild(body);
+    btn.appendChild(swatch);
+    btn.appendChild(body);
+    btn.addEventListener('click', () => {
+      selectGlobeEntity(entity.id, { syncUrl: true, openDetail: true });
+    });
+    li.appendChild(btn);
     globeOverlayList.appendChild(li);
   }
 }
@@ -3187,6 +3498,10 @@ function setGlobeYear(yearRaw, { syncUrl = true } = {}) {
   if (!Number.isFinite(year)) return;
   year = Math.max(GLOBE_YEAR_MIN, Math.min(GLOBE_YEAR_MAX, year));
   globeYear = year;
+  // Drop selection if the entity is no longer active at the new year
+  if (selectedGlobeEntityId && !isEntityActiveAtGlobeYear(selectedGlobeEntityId, year)) {
+    clearGlobeEntitySelection({ syncUrl: false, closeDetail: true });
+  }
   updateGlobeYearUI();
   if (syncUrl) syncDeepLinkUrl();
 }

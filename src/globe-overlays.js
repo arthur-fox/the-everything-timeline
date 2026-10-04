@@ -6199,6 +6199,20 @@ for (const presence of presenceEntities) {
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
+/** @type {Map<string, SpatialEntity>} */
+const spatialEntityById = new Map(spatialEntities.map((e) => [e.id, e]));
+
+/**
+ * Lookup a spatial entity by id (polity / people / presence).
+ * @param {string} id
+ * @returns {SpatialEntity|null}
+ */
+export function getSpatialEntityById(id) {
+  if (!id) return null;
+  return spatialEntityById.get(String(id)) || null;
+}
+
+
 /** @typedef {'polities' | 'peoples' | 'presence' | 'both'} OverlayLayerFilter */
 
 /** Active globe layer filter (sidebar + polygons). */
