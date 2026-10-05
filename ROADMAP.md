@@ -457,9 +457,18 @@ First **Presence** globe layer: schematic inhabited-footprint regions that expan
 - Branch stacks on Day 28 (`day-28-people-pack-2` / PR #33). PRs #31–#33 still awaiting merge if not yet on main.
 - Still schematic / honest. Next was **PR E** → ✅ Day 30. Optional: presence densify / more hearths.
 
+#### Day 31 — Presence densify (presence pack 2) — done
+
+Ten more schematic inhabited-footprint hearths/belts so Presence isn't only the classic river-valley cradles.
+
+- New module `src/globe-presence-pack2.js` (**10** entities, spread into `PRESENCE_PACK_IDS` / `presenceEntities`): Yangtze rice belt, Ethiopian highlands, East & Southern Africa farming belt (Great Lakes / Swahili coast / Zimbabwe plateau), Eastern Woodlands (Hopewell → Mississippian), Amazonia (Marajó, central Amazon, upper Amazon, Llanos de Moxos), Japan archipelago (Jōmon → Yayoi → later), Aboriginal Australia (denser belts, with an explicit note that the whole continent was inhabited), New Guinea highlands (Kuk), Eurasian steppe (Pontic–Caspian, Kazakh, Transoxianan oases, Mongolia), Pacific islands (Bismarcks → Fiji → Tonga–Samoa → Hawaiʻi → Aotearoa). ✅
+- Each has 4 keyframes, unique colour, ≥1 source, no invented `timelineItemIds`. Islands and distant hearths stay separate small regions (no ocean-filling rings). ✅
+- Validate: ≥20 presence entities, easy-test years (Yangtze −1000, steppe −3000, Eastern Woodlands 1100, Amazonia 1200, Pacific 1300), ≥15 presence entities active at 500, region span < 15° for island/hearth packs, `spatialEntities.length >= 111`. ✅
+- Branch stacks on Day 30 tip (`day-30-timeline-globe-sync` / PR #35). PRs #31–#35 still awaiting merge if not yet on main.
+
 #### PR F — Living / morphing borders (continued)
 
-Remaining: true multi-polygon topology / ocean gaps; optional easing curves; further mid-keyframes only where morph still looks stiff. Polity fill ✅; people packs ✅ (Day 27 + Day 28); presence ✅ Day 29 first slice; timeline↔globe ✅ Day 30 / PR E. Still schematic / honest, not GIS-perfect. Next: presence densify or further living-border polish.
+Remaining: true multi-polygon topology / ocean gaps; optional easing curves; further mid-keyframes only where morph still looks stiff. Polity fill ✅; people packs ✅ (Day 27 + Day 28); presence ✅ Day 29 first slice; timeline↔globe ✅ Day 30 / PR E. Still schematic / honest, not GIS-perfect. Presence densify ✅ Day 31. Next: further living-border / topology polish.
 
 #### Day 30 / PR E — Timeline ↔ globe integration — done
 
@@ -601,7 +610,7 @@ A sensible near-term sequence:
 25. People packs (human-atlas layer 2) — first pack + layer toggle (Day 27). ✅
 26. People pack 2 — global ethnolinguistic coverage (Day 28). ✅
 27. Human presence layer (human-atlas layer 3) — first inhabited-footprint slice (Day 29). ✅
-28. Presence densify / more hearths — optional follow-on after Day 29.
+28. Presence densify / more hearths — presence pack 2 (Day 31). ✅
 29. Timeline ↔ globe integration (PR E) — Day 30. ✅
 30. Further living-border / topology polish, or presence densify — pick based on review.
 
