@@ -195,7 +195,7 @@
       }
     },
     "regionRef": {
-      "description": "Named region reference. May be a string id or { id, name?, bbox?, ring? }. Rings/bboxes are schematic \u2014 not precise historical borders.",
+      "description": "Named region reference. May be a string id or { id, name?, bbox?, ring?, holes? }. Rings/bboxes are schematic \u2014 not precise historical borders.",
       "oneOf": [
         {
           "type": "string",
@@ -236,6 +236,47 @@
                 "items": {
                   "type": "number"
                 }
+              }
+            },
+            "holes": {
+              "type": "array",
+              "description": "Day 32: optional inner rings (ocean gaps) — sea/lake template ids (see src/globe-holes.js SEA_HOLE_RINGS) or inline { id, name?, ring }. Rendered as GeoJSON Polygon holes. Schematic, not GIS coastlines.",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "ring"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "name": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "ring": {
+                        "type": "array",
+                        "minItems": 4,
+                        "items": {
+                          "type": "array",
+                          "minItems": 2,
+                          "maxItems": 2,
+                          "items": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
               }
             }
           }

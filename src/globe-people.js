@@ -392,6 +392,7 @@ export const peopleEntities = [
           },
           {
             id: 'bantu-east',
+            holes: ['lake-victoria'], // Day 32: ocean gap (polygon hole)
             name: 'Great Lakes fringe',
             ring: [
               [28, -4], [30, 2], [36, 2], [36, -4], [32, -6], [28, -4],
@@ -413,6 +414,7 @@ export const peopleEntities = [
           },
           {
             id: 'bantu-east',
+            holes: ['lake-victoria'], // Day 32: ocean gap (polygon hole)
             name: 'East Africa corridor',
             ring: [
               [28, -12], [30, 2], [40, 2], [40, -8], [34, -14], [28, -12],
@@ -441,6 +443,7 @@ export const peopleEntities = [
           },
           {
             id: 'bantu-east',
+            holes: ['lake-victoria'], // Day 32: ocean gap (polygon hole)
             name: 'East Africa',
             ring: [
               [28, -14], [30, 2], [40, 2], [42, -8], [36, -16], [28, -14],
@@ -497,6 +500,7 @@ export const peopleEntities = [
           },
           {
             id: 'turkic-central',
+            holes: ['aral-sea'], // Day 32: ocean gap (polygon hole)
             name: 'Central Asian steppe',
             ring: [
               [55, 40], [58, 48], [78, 48], [80, 42], [70, 38], [58, 38], [55, 40],
@@ -518,6 +522,7 @@ export const peopleEntities = [
           },
           {
             id: 'turkic-central',
+            holes: ['aral-sea'], // Day 32: ocean gap (polygon hole)
             name: 'Central Asia',
             ring: [
               [50, 38], [52, 48], [78, 48], [80, 40], [68, 36], [52, 36], [50, 38],
@@ -539,6 +544,7 @@ export const peopleEntities = [
         regions: [
           {
             id: 'turkic-central',
+            holes: ['aral-sea'], // Day 32: ocean gap (polygon hole)
             name: 'Central Asia',
             ring: [
               [48, 36], [50, 48], [78, 48], [80, 40], [68, 34], [52, 34], [48, 36],

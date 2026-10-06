@@ -107,16 +107,16 @@ export const presencePack2Entities = [
         r('esa-lakes', 'Interlacustrine Great Lakes', [[29, -3], [30, 1], [33, 1], [34, -2], [32, -4], [29, -3]]),
       ]),
       k(500, 'Eastern farming belt', [
-        r('esa-lakes', 'Great Lakes', [[29, -4], [29, 2], [34, 2], [35, -2], [32, -5], [29, -4]]),
+        { ...r('esa-lakes', 'Great Lakes', [[29, -4], [29, 2], [34, 2], [35, -2], [32, -5], [29, -4]]), holes: ['lake-victoria'] },
         r('esa-coast', 'East African coast fringe', [[38, -8], [39, -3], [41, -3], [41, -6], [39, -9], [38, -8]]),
       ]),
       k(1200, 'Great Zimbabwe / Swahili era', [
-        r('esa-lakes', 'Great Lakes', [[29, -4], [29, 2], [34, 2], [35, -2], [32, -5], [29, -4]]),
+        { ...r('esa-lakes', 'Great Lakes', [[29, -4], [29, 2], [34, 2], [35, -2], [32, -5], [29, -4]]), holes: ['lake-victoria'] },
         r('esa-coast', 'Swahili coast', [[38, -10], [39, -2], [42, -1], [41, -6], [40, -10], [38, -10]]),
         r('esa-zambezi', 'Zimbabwe plateau', [[27, -21], [28, -16], [33, -16], [33, -20], [30, -22], [27, -21]]),
       ]),
       k(1700, 'Early modern eastern / southern belts', [
-        r('esa-lakes', 'Great Lakes kingdoms belt', [[29, -5], [29, 3], [35, 3], [36, -2], [32, -6], [29, -5]]),
+        { ...r('esa-lakes', 'Great Lakes kingdoms belt', [[29, -5], [29, 3], [35, 3], [36, -2], [32, -6], [29, -5]]), holes: ['lake-victoria'] },
         r('esa-coast', 'Swahili coast', [[38, -10], [39, -2], [42, -1], [41, -6], [40, -10], [38, -10]]),
         r('esa-zambezi', 'Zambezi / Zimbabwe plateau', [[26, -22], [27, -15], [34, -15], [34, -20], [30, -23], [26, -22]]),
         r('esa-south-east', 'Southeast African coast / highveld fringe', [[27, -31], [28, -25], [32, -25], [33, -28], [30, -32], [27, -31]]),

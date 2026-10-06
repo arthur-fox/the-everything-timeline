@@ -8,6 +8,7 @@
  * Day 27: first people pack (human-atlas layer 2) — type people overlays + layer filter.
  * Day 28: second people pack — global ethnolinguistic coverage (~20 people total).
  * Day 29: human presence layer (human-atlas layer 3) — inhabited-footprint overlays + Presence filter.
+ * Day 32: ocean gaps (polygon holes) + eased morph (PR F slice 4).
  */
 import {
   getActiveOverlaysAtYear,
@@ -22,7 +23,10 @@ import {
   entitiesForLayer,
   OVERLAY_EDGE_GRACE,
   resolveRegionRing,
+  resolveRegionHoles,
+  SEA_HOLE_RINGS,
 } from '../src/globe-overlays.js';
+import { geoArea, geoContains } from 'd3-geo';
 import { civilisations } from '../src/civilisations.js';
 import {
   lerpRings,
@@ -31,6 +35,8 @@ import {
   lifespanEdgeFactor,
   smoothstep01,
   morphEntityAtYear,
+  easeMorphT,
+  MORPH_EASING,
 } from '../src/globe-morph.js';
 
 let failed = 0;
@@ -765,6 +771,160 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   }
   setOverlayLayerFilter('both');
   assert(spatialEntities.length >= 111, `≥111 overlay entities after Day 31 (got ${spatialEntities.length})`);
+}
+
+
+// Day 32 — ocean gaps (polygon holes) + eased morph (PR F slice 4)
+{
+  const signed = (ring) => {
+    let a = 0;
+    for (let i = 0; i < ring.length - 1; i += 1) a += ring[i][0] * ring[i + 1][1] - ring[i + 1][0] * ring[i][1];
+    return a / 2;
+  };
+  const closed = (ring) => ring.length >= 4 && ring[0][0] === ring[ring.length - 1][0] && ring[0][1] === ring[ring.length - 1][1];
+  const pip = ([x, y], ring) => {
+    let inside = false;
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i, i += 1) {
+      const [xi, yi] = ring[i];
+      const [xj, yj] = ring[j];
+      if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+    }
+    return inside;
+  };
+  const bbox = (ring) => {
+    const xs = ring.map((p) => p[0]);
+    const ys = ring.map((p) => p[1]);
+    return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+  };
+  const segsCross = (p1, p2, p3, p4) => {
+    const d = (a, b, c) => (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
+    const d1 = d(p3, p4, p1); const d2 = d(p3, p4, p2); const d3 = d(p1, p2, p3); const d4 = d(p1, p2, p4);
+    return ((d1 > 0 && d2 < 0) || (d1 < 0 && d2 > 0)) && ((d3 > 0 && d4 < 0) || (d3 < 0 && d4 > 0));
+  };
+  const selfIntersects = (ring) => {
+    const n = ring.length - 1;
+    for (let i = 0; i < n; i += 1) {
+      for (let j = i + 2; j < n; j += 1) {
+        if (i === 0 && j === n - 1) continue; // adjacent via closing edge
+        if (segsCross(ring[i], ring[i + 1], ring[j], ring[j + 1])) return true;
+      }
+    }
+    return false;
+  };
+  const ringsCross = (a, b) => {
+    for (let i = 0; i < a.length - 1; i += 1) {
+      for (let j = 0; j < b.length - 1; j += 1) if (segsCross(a[i], a[i + 1], b[j], b[j + 1])) return true;
+    }
+    return false;
+  };
+
+  // Templates: closed, ≥4 vertices, simple (no self-crossing).
+  for (const [id, tpl] of Object.entries(SEA_HOLE_RINGS)) {
+    assert(closed(tpl.ring), `hole template ${id} is a closed ring with ≥4 vertices`);
+    assert(!selfIntersects(tpl.ring), `hole template ${id} does not self-intersect`);
+  }
+  assert(!ringsCross(SEA_HOLE_RINGS['mediterranean-west'].ring, SEA_HOLE_RINGS['mediterranean-east'].ring),
+    'mediterranean-west / -east holes do not cross each other');
+
+  // Every authored hole: resolves, closed ≥4, CCW, inside outer bbox *and* ring, not shrunk below 75%.
+  let holeRefs = 0;
+  const placements = [];
+  for (const ent of spatialEntities) {
+    for (const ov of ent.overlays || []) {
+      for (const region of ov.regions || []) {
+        if (typeof region !== 'object' || !Array.isArray(region.holes)) continue;
+        const outer = resolveRegionRing(region);
+        assert(!!outer && signed(outer) < 0, `${ent.id}@${ov.year} ${region.id} outer ring is CW`);
+        const resolved = resolveRegionHoles(region, outer);
+        holeRefs += region.holes.length;
+        assert(resolved.length === region.holes.length,
+          `${ent.id}@${ov.year} ${region.id}: all ${region.holes.length} hole(s) resolve inside the outer ring (got ${resolved.length})`);
+        const [w, s, e, n] = bbox(outer);
+        for (const h of resolved) {
+          placements.push(`${ent.id}@${ov.year}:${h.id}`);
+          assert(closed(h.ring), `${ent.id}@${ov.year} ${h.id} hole closed with ≥4 vertices`);
+          assert(signed(h.ring) > 0, `${ent.id}@${ov.year} ${h.id} hole is CCW (opposite of CW exterior)`);
+          assert(h.ring.every(([x, y]) => x >= w && x <= e && y >= s && y <= n),
+            `${ent.id}@${ov.year} ${h.id} hole vertices inside outer bbox`);
+          assert(h.ring.every((p) => pip(p, outer)), `${ent.id}@${ov.year} ${h.id} hole vertices inside outer ring`);
+          assert(h.fitScale >= 0.75, `${ent.id}@${ov.year} ${h.id} fit scale ${h.fitScale} ≥ 0.75 (outer truly wraps the sea)`);
+        }
+      }
+    }
+  }
+  assert(holeRefs >= 20, `≥20 authored hole refs (got ${holeRefs})`);
+
+  // Roman Empire at 117: Mediterranean is a gap, not empire.
+  const med117 = getOverlayPolygonFeatures(117).find((f) => f.entityId === 'roman-empire' && f.regionId === 'mediterranean');
+  assert(!!med117, 'Roman mediterranean feature at 117');
+  assert(med117?.holeIds.includes('mediterranean-west') && med117?.holeIds.includes('mediterranean-east'),
+    `Roman@117 has Mediterranean holes (got ${med117?.holeIds})`);
+  assert(med117?.geometry.coordinates.length === 3, 'Roman@117 polygon = exterior + 2 inner rings');
+  {
+    const g = med117.geometry;
+    const solid = { type: 'Polygon', coordinates: [g.coordinates[0]] };
+    assert(geoArea(g) < geoArea(solid) * 0.8, `d3-geo: holes subtract area (${geoArea(g).toFixed(4)} < ${geoArea(solid).toFixed(4)})`);
+    assert(!geoContains(g, [18, 35]), 'd3-geo: Ionian Sea [18,35] NOT inside Roman@117');
+    assert(!geoContains(g, [5, 39]), 'd3-geo: Balearic Sea [5,39] NOT inside Roman@117');
+    assert(geoContains(g, [2, 47]), 'd3-geo: Gaul [2,47] inside Roman@117');
+    assert(geoContains(g, [32, 39]), 'd3-geo: Anatolia [32,39] inside Roman@117');
+  }
+
+  // Morph mid-year between Roman keyframes 117 → 200 still carries both holes, inside the outer ring.
+  for (const y of [158, 80, 300]) {
+    const f = getOverlayPolygonFeatures(y).find((x) => x.entityId === 'roman-empire' && x.regionId === 'mediterranean');
+    assert(!!f && f.holeIds.includes('mediterranean-west') && f.holeIds.includes('mediterranean-east'),
+      `Roman@${y} (mid-morph) still has Mediterranean holes (got ${f?.holeIds})`);
+  }
+  const roman = spatialEntities.find((e) => e.id === 'roman-empire');
+  const mid = morphEntityAtYear(roman, 158, resolveRegionRing, getEntityLifespan(roman), OVERLAY_EDGE_GRACE, resolveRegionHoles)
+    .find((p) => p.regionId === 'mediterranean');
+  assert(mid && mid.rawT > 0.45 && mid.rawT < 0.55, `Roman@158 rawT~0.5 (got ${mid?.rawT})`);
+  assert(mid && Math.abs(mid.morphT - easeMorphT(mid.rawT)) < 1e-12, 'morphT is the eased rawT');
+  // Fade-in: east Med hole only exists from 117 — at 80 (50→117) it is smaller than at 117.
+  {
+    const area = (r) => Math.abs(signed(r));
+    const at = (y) => getOverlayPolygonFeatures(y).find((x) => x.entityId === 'roman-empire' && x.regionId === 'mediterranean');
+    const f80 = at(80); const f117 = at(117);
+    const e80 = f80.geometry.coordinates[1 + f80.holeIds.indexOf('mediterranean-east')];
+    const e117 = f117.geometry.coordinates[1 + f117.holeIds.indexOf('mediterranean-east')];
+    assert(area(e80) < area(e117), `east Med hole grows in 50→117 (${area(e80).toFixed(1)} < ${area(e117).toFixed(1)})`);
+  }
+
+  // Sweep: every rendered hole stays CCW and inside its exterior through morphs + lifespan fades.
+  let sweptHoles = 0;
+  let badHoles = 0;
+  for (let y = -500; y <= 1950; y += 7) {
+    for (const f of getOverlayPolygonFeatures(y)) {
+      const [outer, ...holes] = f.geometry.coordinates;
+      for (const h of holes) {
+        sweptHoles += 1;
+        if (!(closed(h) && signed(h) > 0 && h.every((p) => pip(p, outer)))) {
+          badHoles += 1;
+          if (badHoles <= 5) console.error(`  bad hole ${f.entityId}/${f.regionId}@${y}`);
+        }
+      }
+    }
+  }
+  assert(sweptHoles > 200 && badHoles === 0, `sweep −500…1950: ${sweptHoles} rendered holes, ${badHoles} bad`);
+
+  // Key easy-test holes
+  const holeAt = (entityId, y, holeId) => getOverlayPolygonFeatures(y).some((f) => f.entityId === entityId && f.holeIds.includes(holeId));
+  assert(holeAt('ottoman-empire', 1683, 'black-sea'), 'Ottoman@1683 Black Sea hole');
+  assert(holeAt('ottoman-empire', 1683, 'aegean-sea'), 'Ottoman@1683 Aegean hole');
+  assert(holeAt('mongol-empire', 1279, 'caspian-sea'), 'Mongol@1279 Caspian hole');
+  assert(holeAt('byzantine-empire', 565, 'black-sea'), 'Byzantine@565 Black Sea hole');
+
+  // Easing: 0→0, 1→1, 0.5→0.5, monotonic, eased (slower than linear near the ends).
+  assert(MORPH_EASING === 'smoothstep', `MORPH_EASING is smoothstep (${MORPH_EASING})`);
+  assert(easeMorphT(0) === 0 && easeMorphT(1) === 1, 'easeMorphT(0)=0, easeMorphT(1)=1');
+  assert(Math.abs(easeMorphT(0.5) - 0.5) < 1e-12, 'easeMorphT(0.5)=0.5');
+  let mono = true;
+  for (let i = 1; i <= 1000; i += 1) if (easeMorphT(i / 1000) < easeMorphT((i - 1) / 1000)) mono = false;
+  assert(mono, 'easeMorphT monotonic non-decreasing on [0,1]');
+  assert(easeMorphT(0.1) < 0.1 && easeMorphT(0.9) > 0.9, 'easeMorphT eases in and out');
+  assert(easeMorphT(-1) === 0 && easeMorphT(2) === 1, 'easeMorphT clamps outside [0,1]');
+  console.log(`  Day 32 hole placements: ${placements.length}`);
 }
 
 

@@ -2,8 +2,18 @@
  * Day 20 / PR F slice 1 — schematic ring morphing between overlay keyframes.
  * Day 21 — denser non-rect keyframes (data) + smoothstep lifespan edge fades.
  * Day 22 — higher base opacity + softer fade-in for newly appearing colony fragments.
+ * Day 32 (PR F slice 4) — ocean gaps: regions may carry `holes` (inner rings, planar-CCW)
+ *   that morph alongside the outer ring; eased (smoothstep) keyframe interpolation.
  * Resample → lerp lng/lat (antimeridian-aware). Unmatched regions fade via scale-to-centroid.
  */
+
+import {
+  ensureHoleWinding,
+  fitHoleInsideRing,
+  holeCentroid,
+  ringInsideRing,
+  scaleRingAbout,
+} from './globe-holes.js';
 
 /** Vertex count for morph correspondence (closed ring stores N+1 with repeat). */
 export const MORPH_RING_SAMPLES = 48;
@@ -234,6 +244,69 @@ export function lifespanEdgeFactor(year, lifespan, grace) {
   return Math.max(0, Math.min(1, f));
 }
 
+/**
+ * Day 32 — ease the keyframe interpolation parameter so borders accelerate out of a
+ * keyframe and settle into the next one (instead of a constant-speed linear slide).
+ * Smoothstep: f(0)=0, f(0.5)=0.5, f(1)=1, monotonic, zero slope at both ends. O(1).
+ */
+export const MORPH_EASING = 'smoothstep';
+export function easeMorphT(t) {
+  return smoothstep01(t);
+}
+
+/** Apply the same about-centre scale used on an outer ring to its holes (keeps containment). */
+function scaleHolesWithOuter(holes, center, f) {
+  return holes.map((h) => ({ ...h, ring: ensureHoleWinding(scaleRingAbout(h.ring, center, f)) }));
+}
+
+/**
+ * Morph holes between two keyframes. Matching ids lerp (resampled, antimeridian-aware);
+ * one-sided holes grow from / shrink to their own centroid. Every result is re-fitted
+ * inside `outer` (shrunk toward its centroid) or dropped, so a hole never pokes out.
+ * @param {{ id: string, name: string, ring: [number,number][] }[]} holesA
+ * @param {{ id: string, name: string, ring: [number,number][] }[]} holesB
+ * @param {number} te eased t in [0,1]
+ * @param {[number,number][]} outer morphed exterior ring
+ */
+export function morphHoles(holesA, holesB, te, outer) {
+  const mapA = new Map((holesA || []).map((h) => [h.id, h]));
+  const mapB = new Map((holesB || []).map((h) => [h.id, h]));
+  const ids = new Set([...mapA.keys(), ...mapB.keys()]);
+  const out = [];
+  for (const id of ids) {
+    const a = mapA.get(id);
+    const b = mapB.get(id);
+    let ring = null;
+    if (a && b) {
+      const same =
+        a.ring.length === b.ring.length &&
+        a.ring.every((p, i) => p[0] === b.ring[i][0] && p[1] === b.ring[i][1]);
+      if (same || te <= 0.001) ring = a.ring;
+      else if (te >= 0.999) ring = b.ring;
+      else if (a.ring.length === b.ring.length) {
+        // Same template at different fit scales → vertex-wise lerp keeps correspondence exact.
+        ring = a.ring.map((p, i) => [lerpLng(p[0], b.ring[i][0], te), p[1] + (b.ring[i][1] - p[1]) * te]);
+      } else {
+        ring = lerpRings(a.ring, b.ring, te);
+      }
+    } else {
+      const src = a || b;
+      const f = a ? 1 - te : te; // fade out (prev only) / fade in (next only)
+      if (f < 0.05) continue;
+      ring = scaleRingAbout(src.ring, holeCentroid(src.ring), f);
+    }
+    ring = ensureHoleWinding(ring);
+    if (!ring) continue;
+    if (!ringInsideRing(ring, outer)) {
+      const fit = fitHoleInsideRing(ring, outer);
+      if (!fit) continue;
+      ring = fit.ring;
+    }
+    out.push({ id, name: (b || a).name, ring });
+  }
+  return out;
+}
+
 function regionMeta(region) {
   if (typeof region === 'string') return { id: region, name: region };
   return { id: region.id, name: region.name || region.id };
@@ -246,32 +319,39 @@ function regionMeta(region) {
  * @param {(region: any) => [number,number][]|null} resolveRing
  * @param {{ start: number, end: number }} lifespan
  * @param {number} edgeGrace
- * @returns {{ regionId: string, regionName: string, ring: [number,number][], opacity: number, morphT: number, approximation: string }[]}
+ * @param {(region: any, outerRing: [number,number][]) => { id: string, name: string, ring: [number,number][] }[]} [resolveHoles]
+ *   Day 32: optional inner-ring resolver (ocean gaps). Omit → no holes.
+ * @returns {{ regionId: string, regionName: string, ring: [number,number][], holes: { id: string, name: string, ring: [number,number][] }[], opacity: number, morphT: number, rawT: number, approximation: string }[]}
  */
-export function morphEntityAtYear(entity, year, resolveRing, lifespan, edgeGrace) {
+export function morphEntityAtYear(entity, year, resolveRing, lifespan, edgeGrace, resolveHoles = null) {
   const edge = lifespanEdgeFactor(year, lifespan, edgeGrace);
   if (edge <= 0) return [];
 
-  const { prev, next, t } = findBracketingOverlays(entity.overlays || [], year);
+  const { prev, next, t: rawT } = findBracketingOverlays(entity.overlays || [], year);
   if (!prev && !next) return [];
+  // Day 32: eased interpolation parameter (smoothstep). Fades below already used
+  // smoothstep01(t), so they read identically; ring lerps now ease too.
+  const t = easeMorphT(rawT);
 
-  const approximation = (t < 0.5 ? prev : next)?.approximation || prev?.approximation || 'schematic';
+  const approximation = (rawT < 0.5 ? prev : next)?.approximation || prev?.approximation || 'schematic';
   const baseOpacity = 0.43;
 
-  /** @type {Map<string, { name: string, ring: [number,number][] }>} */
+  /** @type {Map<string, { name: string, ring: [number,number][], holes: object[] }>} */
   const prevMap = new Map();
-  /** @type {Map<string, { name: string, ring: [number,number][] }>} */
+  /** @type {Map<string, { name: string, ring: [number,number][], holes: object[] }>} */
   const nextMap = new Map();
 
+  const holesFor = (region, ring) =>
+    typeof resolveHoles === 'function' && ring ? resolveHoles(region, ring) || [] : [];
   for (const region of prev?.regions || []) {
     const meta = regionMeta(region);
     const ring = resolveRing(region);
-    if (ring && meta.id) prevMap.set(meta.id, { name: meta.name, ring });
+    if (ring && meta.id) prevMap.set(meta.id, { name: meta.name, ring, holes: holesFor(region, ring) });
   }
   for (const region of next?.regions || []) {
     const meta = regionMeta(region);
     const ring = resolveRing(region);
-    if (ring && meta.id) nextMap.set(meta.id, { name: meta.name, ring });
+    if (ring && meta.id) nextMap.set(meta.id, { name: meta.name, ring, holes: holesFor(region, ring) });
   }
 
   const ids = new Set([...prevMap.keys(), ...nextMap.keys()]);
@@ -281,6 +361,7 @@ export function morphEntityAtYear(entity, year, resolveRing, lifespan, edgeGrace
     const a = prevMap.get(id);
     const b = nextMap.get(id);
     let ring = null;
+    let holes = [];
     let regionOpacity = baseOpacity;
 
     if (a && b) {
@@ -289,24 +370,23 @@ export function morphEntityAtYear(entity, year, resolveRing, lifespan, edgeGrace
         a.ring.length === b.ring.length &&
         a.ring.every((p, i) => p[0] === b.ring[i][0] && p[1] === b.ring[i][1]);
       ring = same ? ensureClockwise(a.ring) : lerpRings(a.ring, b.ring, t);
+      if (ring) holes = morphHoles(a.holes, b.holes, t, ring);
     } else if (b && !a) {
       // Fade in: grow from small toward full as t → 1 (no dense resample).
       // Day 22: smoothstep so distant colony fragments ease in softer than linear.
       const fadeIn = smoothstep01(t);
-      const grown = scaleRingTowardCentroid(
-        ensureClockwise(b.ring),
-        Math.max(0.12, 0.15 + 0.85 * fadeIn),
-      );
-      ring = grown;
+      const bCw = ensureClockwise(b.ring);
+      const f = Math.max(0.12, 0.15 + 0.85 * fadeIn);
+      ring = scaleRingTowardCentroid(bCw, f);
+      if (bCw && b.holes.length) holes = scaleHolesWithOuter(b.holes, ringCentroid(bCw), f);
       regionOpacity = baseOpacity * Math.max(0.15, fadeIn);
     } else if (a && !b) {
       // Fade out: shrink as t → 1 (smoothstep soften)
       const fadeOut = smoothstep01(1 - t);
-      const shrink = scaleRingTowardCentroid(
-        ensureClockwise(a.ring),
-        Math.max(0.12, 0.15 + 0.85 * fadeOut),
-      );
-      ring = shrink;
+      const aCw = ensureClockwise(a.ring);
+      const f = Math.max(0.12, 0.15 + 0.85 * fadeOut);
+      ring = scaleRingTowardCentroid(aCw, f);
+      if (aCw && a.holes.length) holes = scaleHolesWithOuter(a.holes, ringCentroid(aCw), f);
       regionOpacity = baseOpacity * Math.max(0.15, fadeOut);
     }
 
@@ -315,6 +395,8 @@ export function morphEntityAtYear(entity, year, resolveRing, lifespan, edgeGrace
     // Soft dissolve near lifespan edges (shrink + fade) — Day 21: gentler shrink floor
     const edgeScale = 0.4 + 0.6 * edge;
     if (edge < 0.999) {
+      // Holes scale about the *outer* centroid with the same factor so they stay inside.
+      if (holes.length) holes = scaleHolesWithOuter(holes, ringCentroid(ring), edgeScale);
       ring = scaleRingTowardCentroid(ring, edgeScale);
     }
     regionOpacity *= edge;
@@ -325,8 +407,10 @@ export function morphEntityAtYear(entity, year, resolveRing, lifespan, edgeGrace
       regionId: id,
       regionName: (b || a).name,
       ring: safeRing,
+      holes: holes.filter((h) => h && h.ring && h.ring.length >= 4),
       opacity: regionOpacity,
       morphT: t,
+      rawT,
       approximation,
     });
   }
