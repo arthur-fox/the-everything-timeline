@@ -487,7 +487,7 @@ Denser overlays (71 entities) flickered where footprints overlapped — classic 
 PRs #31–#38 merged to main on 7 Oct 2026 (in order, merge commits). Arthur's review of that stack produced five follow-ups, shipped as stacked PRs (A → B → C → D) because they touch the same globe files:
 
 - **A · Day 34 — real overlap-flicker fix.** ✅ (this PR) — see Day 34 below.
-- **B · Day 35 — peoples vs polities visually distinct + "Both" always on + peoples persist to today.** Next.
+- **B · Day 35 — peoples vs polities visually distinct + "Both" always on + peoples persist to today.** ✅ — see Day 35 below.
 - **C · Day 36 — Presence fills the modern globe** (near-complete land cover by ~1900–2025, leaving deserts, tundra, ice sheets and core rainforests sparse). Planned.
 - **D · Day 37 — fullscreen globe mode** (`?fullscreen=1`; only the year scrubber + clickable shapes remain; Esc / button to exit). Planned.
 
@@ -503,6 +503,16 @@ Arthur still saw flicker after Day 26, worst over Mughal India and around the Da
 Fix (globe-view): side colour `null` (no walls); caps use a shared translucent `MeshBasicMaterial` via `polygonCapMaterial` with `depthWrite: false` (same DoubleSide face handling as Globe.gl's default — not a new material type), so overlays depth-test only against the opaque globe; every polygon group gets a stable `renderOrder` (presence → peoples → polities → selected, then a hash slot), so blending order never depends on the camera; layer-aware altitude bands (0.005 / 0.0075 / 0.01) keep picking sensible (polities on top). Features also get a stable `__id` (`entity::region`) so Globe.gl reuses meshes while scrubbing instead of rebuilding them with random ids. `?globeDebug=1` exposes the Globe.gl instance for screenshot QA. ✅
 
 Verified with headless-Chrome renders at several zooms (altitude 0.9–3.0) and tiny camera nudges: Mughal India 1650/1700, Rome 117, Ottomans 1683. Before: blotchy interior patches that change on every nudge (Rome's interior had ~31k changed pixels after erosion for a 0.3% zoom nudge); after: only 1-px edge shifts change (Ottomans 1683: 12k → 11 eroded pixels; Mughal 1650 zoomed out: 11 → 0). Tap-to-select still works (Mughal at 1650). Caveat: where one entity's own regions overlap (e.g. Mughal core + Deccan), the overlap reads slightly darker — stable, not flicker.
+
+#### Day 35 — Peoples vs polities distinct, layers always together, peoples persist — done
+
+Arthur: with "Both" on it wasn't clear which shapes were peoples and which were polities; peoples vanished once big empires took over ("there's more people than ever"); and the Polities / Peoples split felt wrong, so "Both" should just be on all the time.
+
+- **Distinct styling** (globe-view): polities = solid translucent fill + thin solid edge; **peoples = diagonal hatch fill + dashed white edge** (hatch is computed in geographic space in a small `onBeforeCompile` tweak to the Day 34 cap material, anti-aliased, and fades to a flat tint when stripes would go sub-pixel at far zoom); presence = soft wash with no edge. Draw order stays presence → peoples → polities, so empires read on top. ✅
+- **Map key** floats over the globe (Polities / Peoples / Presence swatches matching the globe styling); sidebar swatches for peoples are hatched with a dashed border too. ✅
+- **Layers always together:** the Both / Polities / Peoples / Presence toggle is removed. Legacy `?layer=…` links open the combined view (and the URL no longer writes `layer=`). The internal filter API stays for validation. ✅
+- **Peoples persist to 2025** (`src/globe-people-modern.js`): 19 of 20 peoples get 2–4 more keyframes (1500–1900–2025 range) with honest modern footprints. Most hold steady (Bantu, Polynesian, Inuit, Maya, Nilotic, Aboriginal Australians, Arab, Dravidian, Indo-Aryan incl. Sinhala Lanka). Some grow: Slavs add Siberian settler belts, Sinitic adds Taiwan, Manchuria and the northwest, Turkic adds Azerbaijan, Uyghur and Sakha, Uralic adds Sápmi. Some shrink: Celtic languages retreat to the Gaeltacht, Wales, the Hebrides and western Brittany; the Khoisan to the Kalahari and Namaqualand; the Amazigh to the Atlas, Kabylie and the Tuareg Sahara; Quechua/Aymara to the highlands. The Aral Sea hole is dropped by 2025. Ancestral Puebloans continue as today's Pueblo peoples. **Scythians are not extended** (they genuinely ceased). Descriptions gain a one-line honesty note; overseas diasporas are not drawn. No `timelineItemIds` invented. ✅
+- Validate: every continuing people active at 1900 and 2025 with a 2025 keyframe, no century gaps after first appearance, Scythians off in 1900/2025, modern fragments < 55° span, Aral hole kept at 1900 and dropped at 2025, Lake Victoria hole kept at 2025. ✅
 
 #### PR F — Living / morphing borders (continued)
 
@@ -654,7 +664,7 @@ A sensible near-term sequence:
 29. Timeline ↔ globe integration (PR E) — Day 30. ✅
 30. Further living-border / topology polish — ocean gaps (polygon holes) + eased morph (Day 32 / PR F slice 4). ✅
 31. Phase 5 content expansion — country pack 1 (Peru, Ghana, Kenya, Morocco, Iraq, Philippines; 32 → 38 countries; globe links synced) — Day 33. ✅
-32. Review feedback round (Arthur, 7 Oct): A flicker root-cause fix (Day 34) ✅; B peoples vs polities distinct + Both always + peoples persist (Day 35); C presence fills modern globe (Day 36); D fullscreen globe mode (Day 37).
+32. Review feedback round (Arthur, 7 Oct): A flicker root-cause fix (Day 34) ✅; B peoples vs polities distinct + Both always + peoples persist (Day 35) ✅; C presence fills modern globe (Day 36); D fullscreen globe mode (Day 37).
 33. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
