@@ -334,7 +334,7 @@ export const spatialEntities = [
         ],
       },
     ],
-    timelineItemIds: ['parthian'],
+    timelineItemIds: ['parthian', 'iraq-persian-hellenistic'],
     sources: [
       { title: 'Wikipedia — Parthian Empire', url: 'https://en.wikipedia.org/wiki/Parthian_Empire' },
     ],
@@ -904,7 +904,7 @@ export const spatialEntities = [
         ],
       },
     ],
-    timelineItemIds: ['abbasid-caliphate'],
+    timelineItemIds: ['abbasid-caliphate', 'iraq-abbasid-baghdad'],
     sources: [
       {
         title: 'Wikipedia — Abbasid Caliphate',
@@ -1809,7 +1809,7 @@ export const spatialEntities = [
         ],
       },
     ],
-    timelineItemIds: ['inca'],
+    timelineItemIds: ['inca', 'peru-inca-empire'],
     sources: [
       { title: 'Wikipedia — Inca Empire', url: 'https://en.wikipedia.org/wiki/Inca_Empire' },
     ],
@@ -3770,7 +3770,7 @@ export const spatialEntities = [
         ],
       },
     ],
-    timelineItemIds: ['mesopotamia'],
+    timelineItemIds: ['mesopotamia', 'iraq-sumer-akkad', 'iraq-babylon-assyria'],
     sources: [
       { title: 'Wikipedia — Mesopotamia', url: 'https://en.wikipedia.org/wiki/Mesopotamia' },
     ],
