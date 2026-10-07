@@ -6607,7 +6607,10 @@ export function getOverlayPolygonFeatures(year, entities = entitiesForLayer()) {
       // Presence is a touch more translucent than people (inhabited footprint wash).
       let opacity = part.opacity;
       if (presence) {
-        opacity = Math.max(0.06, Math.min(0.36, (part.opacity ?? 0.43) * 0.72));
+        // Day 36: softer wash so a near-full modern presence layer never drowns polities / peoples;
+        // the continent-scale inhabited-world layer is softest of all.
+        const k = entity.id === 'global-modern-presence' ? 0.7 : 0.62;
+        opacity = Math.max(0.05, Math.min(0.3, (part.opacity ?? 0.43) * k));
       } else if (people) {
         opacity = Math.max(0.08, Math.min(0.42, (part.opacity ?? 0.43) * 0.82));
       }
