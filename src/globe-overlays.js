@@ -8,6 +8,7 @@
  * Day 23: denser overlay coverage — rise→peak→decline keyframes for thin / peak-only empires.
  * Day 24: densify remaining 2-keyframe notables to ≥3 overlays.
  * Day 25: fill remaining timeline civilisations on the globe (27 polity overlays; people/presence later).
+ * Day 26: overlap z-fight fix lives in globe-view (per-entity altitude); morph/opacity unchanged.
  * Day 27–28: people packs (human-atlas layer 2) — cultural/ethnolinguistic overlays via globe-people.js (20 entities).
  *
  * Spatial entities + schematic region rings for Globe polygons.

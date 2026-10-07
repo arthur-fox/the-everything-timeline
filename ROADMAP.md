@@ -418,10 +418,6 @@ Close the timeline↔globe **polity** gap: every civilisation in `civilisations.
 
 **Human-atlas sequence (locked briefly):** (1) this polity fill ✅ (2) **people packs** — ✅ Day 27 + ✅ Day 28 pack 2 (3) **human presence** layer — later planning pass. **PR E** (timeline↔globe deep sync) remains secondary.
 
-#### Day 26 — Overlap polygon z-fight fix — done on PR #31 (awaiting merge)
-
-Stable per-entity altitude offsets + softer strokes for denser overlapping polygons. See open PR #31 if not yet on main.
-
 #### Day 27 — People packs (human-atlas layer 2) — done
 
 First cultural / ethnolinguistic **people pack** on the globe — not state polities.
@@ -444,6 +440,14 @@ Second cultural / ethnolinguistic **people pack** filling geographic gaps left b
 - Validate: Day 28 id list, easy-test years, fragment span checks, `spatialEntities.length >= 91`. ✅
 - Branch stacks on Day 27 (`day-27-people-packs` / PR #32). PR #31 (z-fight) and PR #32 still awaiting merge if not yet on main.
 - Still schematic / honest. Next: **human presence** layer (planning); **PR E** still secondary.
+
+#### Day 26 — Overlap polygon z-fight fix — done
+
+Denser overlays (71 entities) flickered where footprints overlapped — classic coplanar z-fighting between empire meshes (Day 14 only hugged polygons to the globe surface).
+
+- **Stable altitude offsets:** `polygonAltitude(d => …)` from a deterministic hash of `entityId::regionId` — base ~0.0045 + (hash % 48) × 0.00011 so coplanar meshes separate in depth without floating off the globe. Offsets do not jump while scrubbing. ✅
+- Softened white `polygonStrokeColor` (0.4 → 0.12) so edges do not shimmer on overlaps. ✅
+- Kept Globe.gl colour accessors (no custom DoubleSide MeshBasicMaterial — Day 20 planet-tint bug). Bump map stays off; `polygonsTransitionDuration(0)`. ✅
 
 #### PR F — Living / morphing borders (continued)
 
@@ -581,7 +585,7 @@ A sensible near-term sequence:
 21. Denser overlay coverage — Aztec/Inca rise + thin empires (Day 23). ✅
 22. Densify remaining 2-keyframe globe overlays (Day 24 / PR F densify backlog). ✅
 23. Globe overlays for remaining timeline civilisations (Day 25 — polity gap closed). ✅
-24. Overlap polygon z-fight fix — stable altitude offsets (Day 26 / PR #31). ✅ on branch (merge when approved)
+24. Overlap polygon z-fight fix — stable altitude offsets (Day 26). ✅
 25. People packs (human-atlas layer 2) — first pack + layer toggle (Day 27). ✅
 26. People pack 2 — global ethnolinguistic coverage (Day 28). ✅
 27. Human presence layer (human-atlas layer 3) — backlog / later planning pass.
