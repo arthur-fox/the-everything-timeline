@@ -99,8 +99,12 @@ function applyPolygonLayer() {
     .polygonAltitude(polygonAltitudeForFeature)
     .polygonCapColor((d) => hexToRgba(d.color || d.properties?.color, d.opacity ?? d.properties?.opacity))
     .polygonSideColor(() => 'rgba(0,0,0,0)')
-    // Soft stroke — white 0.4 edges shimmered on overlaps (Day 26).
-    .polygonStrokeColor(() => 'rgba(255, 255, 255, 0.12)')
+    // Soft stroke — white 0.4 edges shimmered on overlaps (Day 26). People packs keep a
+    // slightly brighter edge than polities (Day 27).
+    .polygonStrokeColor((d) => {
+      const t = d.entityType || d.properties?.entityType;
+      return t === 'people' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.12)';
+    })
     .polygonsTransitionDuration(0);
 }
 

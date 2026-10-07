@@ -9,6 +9,7 @@
  * Day 24: densify remaining 2-keyframe notables to ≥3 overlays.
  * Day 25: fill remaining timeline civilisations on the globe (27 polity overlays; people/presence later).
  * Day 26: overlap z-fight fix lives in globe-view (per-entity altitude); morph/opacity unchanged.
+ * Day 27: people packs (human-atlas layer 2) — cultural/ethnolinguistic overlays via globe-people.js.
  *
  * Spatial entities + schematic region rings for Globe polygons.
  * Rings are intentionally rough — not GIS-accurate ancient borders.
@@ -17,8 +18,9 @@
 import { civilisations } from './civilisations.js';
 import { warsItems } from './wars.js';
 import { morphEntityAtYear, ensureClockwise } from './globe-morph.js';
+import { peopleEntities, PEOPLE_PACK_IDS } from './globe-people.js';
 
-/** @typedef {'empire' | 'civilization' | 'state' | 'other'} SpatialEntityType */
+/** @typedef {'empire' | 'civilization' | 'state' | 'people' | 'other'} SpatialEntityType */
 /** @typedef {'rough' | 'simplified' | 'schematic'} ApproximationLevel */
 
 /**
@@ -6184,6 +6186,46 @@ export const spatialEntities = [
   },
 ];
 
+// Day 27 — append people-pack entities (type: 'people') into the shared catalogue.
+for (const person of peopleEntities) {
+  spatialEntities.push(person);
+}
+
+export { peopleEntities, PEOPLE_PACK_IDS };
+
+/** @typedef {'polities' | 'peoples' | 'both'} OverlayLayerFilter */
+
+/** Active globe layer filter (sidebar + polygons). */
+let overlayLayerFilter = /** @type {OverlayLayerFilter} */ ('both');
+
+export function getOverlayLayerFilter() {
+  return overlayLayerFilter;
+}
+
+/**
+ * @param {OverlayLayerFilter|string} layer
+ * @returns {OverlayLayerFilter}
+ */
+export function setOverlayLayerFilter(layer) {
+  const v = String(layer || 'both');
+  overlayLayerFilter = v === 'polities' || v === 'peoples' || v === 'both' ? v : 'both';
+  return overlayLayerFilter;
+}
+
+/**
+ * @param {OverlayLayerFilter} [layer]
+ * @returns {SpatialEntity[]}
+ */
+export function entitiesForLayer(layer = overlayLayerFilter) {
+  if (layer === 'peoples') return spatialEntities.filter((e) => e.type === 'people');
+  if (layer === 'polities') return spatialEntities.filter((e) => e.type !== 'people');
+  return spatialEntities;
+}
+
+export function isPeopleEntity(entity) {
+  return entity?.type === 'people';
+}
+
 /**
  * Schematic region rings — intentionally rough [lng, lat] GeoJSON order.
  * Closed rings (first point repeated at end). Not GIS-accurate borders.
@@ -6487,7 +6529,7 @@ export function resolveRegionRing(region) {
  * Day 20: morph region rings between bracketing overlay keyframes; soft dissolve at lifespan edges.
  * @returns {object[]} GeoJSON-like features with color/opacity props for Globe.gl accessors
  */
-export function getOverlayPolygonFeatures(year, entities = spatialEntities) {
+export function getOverlayPolygonFeatures(year, entities = entitiesForLayer()) {
   const y = Math.round(Number(year));
   if (!Number.isFinite(y)) return [];
 
@@ -6505,7 +6547,12 @@ export function getOverlayPolygonFeatures(year, entities = spatialEntities) {
     );
     if (!morphed.length) continue;
 
+    const people = isPeopleEntity(entity);
     for (const part of morphed) {
+      // People packs read slightly softer so polity borders stay primary when both layers show.
+      const opacity = people
+        ? Math.max(0.08, Math.min(0.42, (part.opacity ?? 0.43) * 0.82))
+        : part.opacity;
       features.push({
         type: 'Feature',
         geometry: {
@@ -6517,7 +6564,8 @@ export function getOverlayPolygonFeatures(year, entities = spatialEntities) {
         regionId: part.regionId,
         regionName: part.regionName,
         color: entity.color,
-        opacity: part.opacity,
+        opacity,
+        entityType: entity.type,
         approximation: part.approximation || nearestOverlay?.approximation || 'rough',
         overlayYear: y,
         morphT: part.morphT,
@@ -6527,7 +6575,8 @@ export function getOverlayPolygonFeatures(year, entities = spatialEntities) {
           regionId: part.regionId,
           regionName: part.regionName,
           color: entity.color,
-          opacity: part.opacity,
+          opacity,
+          entityType: entity.type,
           approximation: part.approximation || nearestOverlay?.approximation || 'rough',
           morphT: part.morphT,
         },
@@ -6612,7 +6661,7 @@ export function formatOverlayYear(year) {
  * @param {SpatialEntity[]} [entities]
  * @returns {{ entity: SpatialEntity, overlay: OverlaySnapshot|null, distance: number }[]}
  */
-export function getActiveOverlaysAtYear(year, entities = spatialEntities) {
+export function getActiveOverlaysAtYear(year, entities = entitiesForLayer()) {
   const y = Math.round(Number(year));
   if (!Number.isFinite(y)) return [];
 

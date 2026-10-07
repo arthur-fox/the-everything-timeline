@@ -416,7 +416,19 @@ Close the timeline↔globe **polity** gap: every civilisation in `civilisations.
 - Validate: hard fail if any timeline civ lacks an overlay link; Day 25 entity list ≥3 overlays; easy-test years (Axum 400, Mississippian 1100, Zhou −850, Venice 1200, Zulu 1850). ✅
 - Still schematic / honest, not GIS. **Do not invent timelineItemIds** — exact civ `id`s only.
 
-**Human-atlas sequence (locked briefly):** (1) this polity fill ✅ (2) **people packs** — later (3) **human presence** layer — later planning pass. **PR E** (timeline↔globe deep sync) remains secondary until this polity gap closed (now closed).
+**Human-atlas sequence (locked briefly):** (1) this polity fill ✅ (2) **people packs** — ✅ Day 27 (3) **human presence** layer — later planning pass. **PR E** (timeline↔globe deep sync) remains secondary.
+
+#### Day 27 — People packs (human-atlas layer 2) — done
+
+First cultural / ethnolinguistic **people pack** on the globe — not state polities.
+
+- Schema: spatial entity `type` accepts **`people`**. ✅
+- Seed module `src/globe-people.js` with **10** people entities (≥3 keyframes, unique colours, multi-vertex rings): Celts, Germanic peoples, Slavs, Bantu peoples, Turkic peoples, Polynesian peoples, Scythians, Aboriginal Australians, Amazigh, Ancestral Puebloans. ✅
+- Appended into the shared `spatialEntities` catalogue; lifespan uses overlay keyframe span (± grace) — no invented `timelineItemIds`. ✅
+- **Layer toggle** in the overlays sidebar: Both / Polities / Peoples (deep link `?view=globe&layer=peoples`). ✅
+- Sidebar **People** / **Polity** badges; people fills slightly softer; Polynesian island groups stay separate region ids (no ocean blobs). ✅
+- Validate: people-pack id list, colours, layer filter, easy-test years. ✅
+- Still schematic / honest. Next: **human presence** layer (planning); further people packs; **PR E** still secondary.
 
 #### Day 26 — Overlap polygon z-fight fix — done
 
@@ -428,7 +440,7 @@ Denser overlays (71 entities) flickered where footprints overlapped — classic 
 
 #### PR F — Living / morphing borders (continued)
 
-Remaining after Day 26: true multi-polygon topology / ocean gaps; optional easing curves; further mid-keyframes only where morph still looks stiff. Polity fill for all timeline civs is **done**. Still schematic / honest, not GIS-perfect. Next: people packs / presence (human atlas layers 2–3); **PR E** still secondary.
+Remaining: true multi-polygon topology / ocean gaps; optional easing curves; further mid-keyframes only where morph still looks stiff. Polity fill ✅; people packs ✅ (Day 27). Still schematic / honest, not GIS-perfect. Next: human presence (human-atlas layer 3); **PR E** still secondary.
 
 #### PR E — Timeline integration (still needed; secondary to living borders)
 
@@ -563,8 +575,8 @@ A sensible near-term sequence:
 22. Densify remaining 2-keyframe globe overlays (Day 24 / PR F densify backlog). ✅
 23. Globe overlays for remaining timeline civilisations (Day 25 — polity gap closed). ✅
 24. Overlap polygon z-fight fix — stable altitude offsets (Day 26). ✅
-25. People packs (human-atlas layer 2) — backlog.
+25. People packs (human-atlas layer 2) — first pack + layer toggle (Day 27). ✅
 26. Human presence layer (human-atlas layer 3) — backlog / later planning pass.
-27. Timeline ↔ globe integration (PR E) — secondary until polity gap closed (now closed; still next product slice after people/presence planning).
+27. Timeline ↔ globe integration (PR E) — secondary; next product slice after presence planning / further packs.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
