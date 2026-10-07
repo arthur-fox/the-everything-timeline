@@ -462,6 +462,18 @@ Ten more schematic inhabited-footprint hearths/belts so Presence isn't only the 
 - Validate: ≥20 presence entities, easy-test years (Yangtze −1000, steppe −3000, Eastern Woodlands 1100, Amazonia 1200, Pacific 1300), ≥15 presence entities active at 500, region span < 15° for island/hearth packs, `spatialEntities.length >= 111`. ✅
 - Branch stacks on Day 30 tip (`day-30-timeline-globe-sync` / PR #35). PRs #31–#35 still awaiting merge if not yet on main.
 
+#### Day 32 — Living borders: ocean gaps + eased morph (PR F slice 4) — done
+
+Rings that wrap an inland sea no longer paint the water as territory, and keyframe morphs ease instead of sliding at constant speed.
+
+- **Polygon holes (inner rings):** regions may carry optional `holes` — ids from a new `src/globe-holes.js` catalogue of schematic sea/lake outlines (`SEA_HOLE_RINGS`: western + eastern Mediterranean, Aegean, Black Sea, Caspian, Aral, Persian Gulf, Lake Victoria) or inline `{ id, ring }`. Rendered as GeoJSON `Polygon` inner rings. Schema updated. ✅
+- **Winding verified, not guessed:** exteriors stay planar-CW (existing Globe.gl convention); holes are planar-CCW. Checked against d3-geo (which `three-conic-polygon-geometry` uses for bounds/containment): a CCW hole gives `geoArea(outer) − geoArea(hole)` and `geoContains` excludes it; a CW hole would *add* area. turf / earcut paths ignore winding. ✅
+- **Only where the outer ring truly wraps the sea:** a hole is kept only if it fits inside its outer ring; templates may shrink toward their centroid (validator requires ≥75% fit) — no hole hangs outside an empire. Placed on: Roman Empire (W. Med −27 / 50; W + E Med 117 / 200 / 395), Byzantine (Aegean + Black Sea 565 / 1025), Ottoman (Aegean 1520 / 1600 / 1800; Aegean + Black Sea 1683), Mongol (Aral 1227; Caspian + Aral 1241 / 1279 / 1300), Russian Central Asia (Aral 1850 / 1914), Classical Greece (Aegean −450 / −350), Turkic peoples (Aral 750 / 1000 / 1200), Bantu peoples east (Lake Victoria 200 / 800 / 1200), Temperate Europe presence (W. Med 0 / 1000), East & Southern Africa presence (Lake Victoria 500 / 1200 / 1700). Skipped where the ring only partly covers the sea (e.g. Roman Black Sea, Arab peoples / Persian Gulf). ✅
+- **Holes morph:** matching hole ids lerp (antimeridian-aware) with the outer ring; one-sided holes grow from / shrink to their centroid (e.g. the eastern Mediterranean opens up across 50 → 117 CE). Lifespan fades scale holes about the *outer* centroid so they stay inside; any morphed hole that would poke out is re-fitted or dropped. ✅
+- **Eased morph:** keyframe parameter `t` now goes through smoothstep (`easeMorphT`, constant-time) — borders accelerate out of a keyframe and settle into the next. Existing fade-in/out already used smoothstep, so they read the same. ✅
+- Validate: templates closed / ≥4 vertices / non-self-intersecting; every authored hole resolves, is CCW, sits inside its outer bbox *and* ring; Roman@117 has both Mediterranean holes (+ d3-geo: Ionian/Balearic seas excluded, Gaul/Anatolia included); mid-morph Roman@158 / 80 / 300 still holed; east-Med hole grows 50→117; sweep −500…1950 every rendered hole valid; easing 0→0, 0.5→0.5, 1→1, monotonic. ✅
+- Honesty: hand-drawn coarse coastlines, **not GIS**; islands inside a hole (Sardinia, Corsica, Crete, Cyprus, Balearics) show as unpainted. Branch stacks on Day 31 tip (`day-31-presence-densify` / PR #36). PRs #31–#36 still awaiting merge if not yet on main.
+
 #### Day 26 — Overlap polygon z-fight fix — done
 
 Denser overlays (71 entities) flickered where footprints overlapped — classic coplanar z-fighting between empire meshes (Day 14 only hugged polygons to the globe surface).
@@ -472,7 +484,7 @@ Denser overlays (71 entities) flickered where footprints overlapped — classic 
 
 #### PR F — Living / morphing borders (continued)
 
-Remaining: true multi-polygon topology / ocean gaps; optional easing curves; further mid-keyframes only where morph still looks stiff. Polity fill ✅; people packs ✅ (Day 27 + Day 28); presence ✅ Day 29 first slice; timeline↔globe ✅ Day 30 / PR E. Still schematic / honest, not GIS-perfect. Presence densify ✅ Day 31. Next: further living-border / topology polish.
+Remaining: further mid-keyframes only where morph still looks stiff; optional finer coastline holes (e.g. Red Sea, Baltic, Great Lakes) only where a ring truly wraps them. Ocean gaps (polygon holes) ✅ + eased morph ✅ Day 32. Polity fill ✅; people packs ✅ (Day 27 + Day 28); presence ✅ Day 29 + densify Day 31; timeline↔globe ✅ Day 30 / PR E. Still schematic / honest, not GIS-perfect. PR F is essentially complete — next focus moves to Phase 5 content expansion.
 
 #### Day 30 / PR E — Timeline ↔ globe integration — done
 
@@ -616,6 +628,7 @@ A sensible near-term sequence:
 27. Human presence layer (human-atlas layer 3) — first inhabited-footprint slice (Day 29). ✅
 28. Presence densify / more hearths — presence pack 2 (Day 31). ✅
 29. Timeline ↔ globe integration (PR E) — Day 30. ✅
-30. Further living-border / topology polish, or presence densify — pick based on review.
+30. Further living-border / topology polish — ocean gaps (polygon holes) + eased morph (Day 32 / PR F slice 4). ✅
+31. Phase 5 content expansion — start with country coverage / topic packs (item 12–13), keeping globe-entity links in sync; only revisit topology if a review spots stiff morphs.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

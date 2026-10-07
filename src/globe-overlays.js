@@ -11,6 +11,7 @@
  * Day 26: overlap z-fight fix lives in globe-view (per-entity altitude); morph/opacity unchanged.
  * Day 27–28: people packs (human-atlas layer 2) — cultural/ethnolinguistic overlays via globe-people.js (20 entities).
  * Day 29: human presence layer (human-atlas layer 3) — inhabited-footprint overlays via globe-presence.js (~10 entities).
+ * Day 32: ocean gaps — optional region `holes` (inland seas / lakes) rendered as GeoJSON Polygon inner rings.
  *
  * Spatial entities + schematic region rings for Globe polygons.
  * Rings are intentionally rough — not GIS-accurate ancient borders.
@@ -21,6 +22,9 @@ import { warsItems } from './wars.js';
 import { morphEntityAtYear, ensureClockwise } from './globe-morph.js';
 import { peopleEntities, PEOPLE_PACK_IDS } from './globe-people.js';
 import { presenceEntities, PRESENCE_PACK_IDS } from './globe-presence.js';
+import { resolveRegionHoles, SEA_HOLE_RINGS } from './globe-holes.js';
+
+export { resolveRegionHoles, SEA_HOLE_RINGS };
 
 /** @typedef {'empire' | 'civilization' | 'state' | 'people' | 'presence' | 'other'} SpatialEntityType */
 /** @typedef {'rough' | 'simplified' | 'schematic'} ApproximationLevel */
@@ -31,6 +35,8 @@ import { presenceEntities, PRESENCE_PACK_IDS } from './globe-presence.js';
  * @property {string} [name]
  * @property {[number, number, number, number]} [bbox] west,south,east,north degrees
  * @property {[number, number][]} [ring] closed schematic polygon [lng,lat] (preferred for morph deform)
+ * @property {(string|{ id?: string, name?: string, ring: [number, number][] })[]} [holes]
+ *   Day 32: inner rings (ocean gaps) — SEA_HOLE_RINGS ids or inline rings; must sit inside the outer ring.
  */
 
 /**
@@ -82,6 +88,7 @@ export const spatialEntities = [
           },
           {
             id: 'mediterranean',
+            holes: ['mediterranean-west'], // Day 32: ocean gap (polygon hole)
             name: 'Mediterranean basin',
             // Early: Italy-centric + Spain / N. Africa fringe (non-rect)
             ring: [
@@ -108,6 +115,7 @@ export const spatialEntities = [
           },
           {
             id: 'mediterranean',
+            holes: ['mediterranean-west'], // Day 32: ocean gap (polygon hole)
             name: 'Mediterranean basin',
             // Stretch into Gaul, Britain fringe, deeper N. Africa
             ring: [
@@ -124,6 +132,7 @@ export const spatialEntities = [
         regions: [
           {
             id: 'mediterranean',
+            holes: ['mediterranean-west', 'mediterranean-east'], // Day 32: ocean gap (polygon hole)
             name: 'Mediterranean basin',
             // Peak: Britain → Near East, deep into Balkans / N. Africa
             ring: [
@@ -159,6 +168,7 @@ export const spatialEntities = [
         regions: [
           {
             id: 'mediterranean',
+            holes: ['mediterranean-west', 'mediterranean-east'], // Day 32: ocean gap (polygon hole)
             name: 'Mediterranean basin',
             // Slight Mesopotamia pull-back; Britain + Africa still held
             ring: [
@@ -186,6 +196,7 @@ export const spatialEntities = [
         regions: [
           {
             id: 'mediterranean',
+            holes: ['mediterranean-west', 'mediterranean-east'], // Day 32: ocean gap (polygon hole)
             name: 'Mediterranean basin',
             // Split-era: still broad but truncated north & east
             ring: [
@@ -555,7 +566,7 @@ export const spatialEntities = [
         label: 'Justinianic reconquest',
         approximation: 'schematic',
         regions: [
-          { id: 'byzantine-core', name: 'Balkans / Anatolia', bbox: [20, 35, 42, 46] },
+          { id: 'byzantine-core', name: 'Balkans / Anatolia', bbox: [20, 35, 42, 46], holes: ['aegean-sea', 'black-sea'] },
           { id: 'egypt', name: 'Egypt (briefly)' },
           { id: 'italy', name: 'Italy fringe' },
         ],
@@ -574,7 +585,7 @@ export const spatialEntities = [
         label: 'Macedonian apex',
         approximation: 'schematic',
         regions: [
-          { id: 'byzantine-core', name: 'Balkans / Anatolia', bbox: [19, 35, 42, 46] },
+          { id: 'byzantine-core', name: 'Balkans / Anatolia', bbox: [19, 35, 42, 46], holes: ['aegean-sea', 'black-sea'] },
         ],
       },
     ],
@@ -1039,6 +1050,7 @@ export const spatialEntities = [
           },
           {
             id: 'central-asia',
+            holes: ['aral-sea'], // Day 32: ocean gap (polygon hole)
             name: 'Central Asia',
             ring: [
               [50, 36], [55, 46], [70, 48], [80, 45], [78, 38],
@@ -1062,6 +1074,7 @@ export const spatialEntities = [
           },
           {
             id: 'central-asia',
+            holes: ['caspian-sea', 'aral-sea'], // Day 32: ocean gap (polygon hole)
             name: 'Central Asia',
             // Stretched west toward Caspian / Rus fringe
             ring: [
@@ -1086,6 +1099,7 @@ export const spatialEntities = [
         regions: [
           {
             id: 'eurasian-steppe',
+            holes: ['caspian-sea', 'aral-sea'], // Day 32: ocean gap (polygon hole)
             name: 'Eurasian steppe belt',
             // Broad belt — non-rect so morph deforms, not only scales
             ring: [
@@ -1117,6 +1131,7 @@ export const spatialEntities = [
         regions: [
           {
             id: 'eurasian-steppe',
+            holes: ['caspian-sea', 'aral-sea'], // Day 32: ocean gap (polygon hole)
             name: 'Eurasian steppe belt',
             // Slightly pinched / fragmented look vs 1279 peak
             ring: [
@@ -1250,6 +1265,7 @@ export const spatialEntities = [
         regions: [
           {
             id: 'anatolia-balkans',
+            holes: ['aegean-sea'], // Day 32: ocean gap (polygon hole)
             name: 'Anatolia / Balkans',
             // Crescent: deeper Balkans, still Anatolia-heavy
             ring: [
@@ -1280,6 +1296,7 @@ export const spatialEntities = [
         regions: [
           {
             id: 'anatolia-balkans',
+            holes: ['aegean-sea'], // Day 32: ocean gap (polygon hole)
             name: 'Anatolia / Balkans',
             // Push into Hungary / north Balkans — silhouette stretches NW
             ring: [
@@ -1317,6 +1334,7 @@ export const spatialEntities = [
         regions: [
           {
             id: 'anatolia-balkans',
+            holes: ['aegean-sea', 'black-sea'], // Day 32: ocean gap (polygon hole)
             name: 'Anatolia / Balkans',
             // Peak footprint — widest NW reach before Vienna turn
             ring: [
@@ -1354,6 +1372,7 @@ export const spatialEntities = [
         regions: [
           {
             id: 'anatolia-balkans',
+            holes: ['aegean-sea'], // Day 32: ocean gap (polygon hole)
             name: 'Anatolia / Balkans',
             // Balkans shrinking from the NW; Anatolia still solid
             ring: [
@@ -2074,7 +2093,7 @@ export const spatialEntities = [
         regions: [
           { id: 'russia-european', name: 'European Russia' },
           { id: 'siberia-belt', name: 'Siberian belt', bbox: [60, 50, 140, 70] },
-          { id: 'central-asia', name: 'Central Asia fringe' },
+          { id: 'central-asia', name: 'Central Asia fringe', holes: ['aral-sea'] },
         ],
       },
       {
@@ -2084,7 +2103,7 @@ export const spatialEntities = [
         regions: [
           { id: 'russia-european', name: 'European Russia' },
           { id: 'siberia-belt', name: 'Siberia' },
-          { id: 'central-asia', name: 'Central Asia' },
+          { id: 'central-asia', name: 'Central Asia', holes: ['aral-sea'] },
         ],
       },
     ],
@@ -2588,6 +2607,7 @@ export const spatialEntities = [
         regions: [
           {
             id: 'greece',
+            holes: ['aegean-sea'], // Day 32: ocean gap (polygon hole)
             name: 'Greece / Aegean',
             ring: [
               [19, 36], [20, 41], [24, 42], [28, 41], [27, 36], [24, 35], [21, 35], [19, 36],
@@ -2602,6 +2622,7 @@ export const spatialEntities = [
         regions: [
           {
             id: 'greece',
+            holes: ['aegean-sea'], // Day 32: ocean gap (polygon hole)
             name: 'Greece / Aegean',
             ring: [
               [19, 36], [20, 41.5], [24, 42.5], [28, 41], [27, 36], [24, 35], [21, 35], [19, 36],
@@ -6573,6 +6594,7 @@ export function getOverlayPolygonFeatures(year, entities = entitiesForLayer()) {
       resolveRegionRing,
       lifespan,
       OVERLAY_EDGE_GRACE,
+      resolveRegionHoles,
     );
     if (!morphed.length) continue;
 
@@ -6591,8 +6613,10 @@ export function getOverlayPolygonFeatures(year, entities = entitiesForLayer()) {
         type: 'Feature',
         geometry: {
           type: 'Polygon',
-          coordinates: [part.ring],
+          // Day 32: exterior (planar-CW) + optional holes (planar-CCW) — Globe.gl / d3-geo convention.
+          coordinates: [part.ring, ...(part.holes || []).map((h) => h.ring)],
         },
+        holeIds: (part.holes || []).map((h) => h.id),
         entityId: entity.id,
         name: entity.name,
         regionId: part.regionId,

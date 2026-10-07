@@ -739,6 +739,7 @@ export const presenceEntities = [
           },
           {
             id: 'eu-south',
+            holes: ['mediterranean-west'], // Day 32: ocean gap (polygon hole)
             name: 'Mediterranean Europe fringe',
             ring: [
               [-6, 36], [-5, 44], [12, 44], [14, 38], [8, 36], [-6, 36],
@@ -767,6 +768,7 @@ export const presenceEntities = [
           },
           {
             id: 'eu-south',
+            holes: ['mediterranean-west'], // Day 32: ocean gap (polygon hole)
             name: 'Mediterranean Europe',
             ring: [
               [-8, 36], [-7, 44], [16, 44], [18, 38], [10, 35], [-8, 36],
