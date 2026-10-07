@@ -135,7 +135,7 @@
             <p class="globe-lede">Timeline shows <em>what happened when</em>. Globe mode shows <em>where</em>.</p>
             <p class="globe-note">Colored shapes are approximate spheres of control, cultural presence, or inhabited footprints (schematic polygons), not exact ancient borders. Toggle Polities / Peoples / Presence above the list.</p>
           </div>
-          <p class="globe-hint">Drag to rotate · Pinch to zoom</p>
+          <p class="globe-hint">Drag to rotate · Pinch to zoom · Tap a region for details</p>
           <p id="globe-year-caption" class="globe-year-caption" aria-live="polite"></p>
           <div id="globe-overlay-panel" class="globe-overlay-panel" aria-live="polite">
             <div class="globe-layer-toggle" role="group" aria-label="Globe overlay layers">
@@ -192,6 +192,10 @@
           <span class="detail-bookmark-icon" aria-hidden="true">☆</span>
           <span class="detail-bookmark-label">Bookmark</span>
         </button>
+      </div>
+      <div id="detail-related" class="detail-related hidden" hidden>
+        <h3 class="detail-related-heading">Related on timeline</h3>
+        <ul id="detail-related-list" class="detail-related-list"></ul>
       </div>
       <div id="detail-sources" class="detail-sources hidden" hidden>
         <h3 class="detail-sources-heading">Sources</h3>

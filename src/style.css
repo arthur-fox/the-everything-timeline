@@ -1187,6 +1187,68 @@ body.compare-active .bookmarks-toggle {
   outline: none;
 }
 
+.detail-related {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+}
+
+.detail-related.hidden,
+.detail-related[hidden] {
+  display: none;
+}
+
+.detail-related-heading {
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.detail-related-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detail-related-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+  background: color-mix(in srgb, var(--text) 4%, var(--bg));
+  color: var(--text);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  line-height: 1.35;
+}
+
+.detail-related-link:hover,
+.detail-related-link:focus-visible {
+  border-color: color-mix(in srgb, var(--accent, #3b82f6) 45%, transparent);
+  background: color-mix(in srgb, var(--accent, #3b82f6) 12%, var(--bg));
+  outline: none;
+}
+
+.detail-related-view {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+
 #detail-close {
   position: absolute;
   top: 12px;
@@ -2181,6 +2243,12 @@ body.globe-active .filters-toggle {
   display: none;
 }
 
+.globe-overlay-list-entry {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .globe-overlay-item {
   display: flex;
   align-items: flex-start;
@@ -2188,6 +2256,28 @@ body.globe-active .filters-toggle {
   font-size: 0.84rem;
   line-height: 1.35;
   color: var(--text);
+  width: 100%;
+  text-align: left;
+  padding: 6px 8px;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.globe-overlay-item:hover,
+.globe-overlay-item:focus-visible {
+  background: color-mix(in srgb, var(--text) 6%, var(--bg));
+  border-color: color-mix(in srgb, var(--text) 12%, transparent);
+  outline: none;
+}
+
+.globe-overlay-item.is-selected {
+  background: color-mix(in srgb, var(--accent, #3b82f6) 14%, var(--bg));
+  border-color: color-mix(in srgb, var(--accent, #3b82f6) 40%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent, #3b82f6) 20%, transparent);
 }
 
 .globe-overlay-swatch {

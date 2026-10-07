@@ -451,7 +451,7 @@ First **Presence** globe layer: schematic inhabited-footprint regions that expan
 - Sidebar **Presence** badge; presence fills slightly more translucent than people. Distant fragments (esp. global-modern coastal belts, SE Asia islands) stay separate region ids. ✅
 - Validate: PRESENCE_PACK_IDS, colours, layer filter, easy-test years (Nile −3000, Mesoamerica 500, global-modern 1900), `spatialEntities.length >= 101`. ✅
 - Branch stacks on Day 28 (`day-28-people-pack-2` / PR #33). PRs #31–#33 still awaiting merge if not yet on main.
-- Still schematic / honest. Next: presence densify / more hearths, or **PR E** (timeline↔globe deep sync).
+- Still schematic / honest. Next was **PR E** → ✅ Day 30. Optional: presence densify / more hearths.
 
 #### Day 26 — Overlap polygon z-fight fix — done
 
@@ -463,14 +463,18 @@ Denser overlays (71 entities) flickered where footprints overlapped — classic 
 
 #### PR F — Living / morphing borders (continued)
 
-Remaining: true multi-polygon topology / ocean gaps; optional easing curves; further mid-keyframes only where morph still looks stiff. Polity fill ✅; people packs ✅ (Day 27 + Day 28); presence ✅ Day 29 first slice. Still schematic / honest, not GIS-perfect. Next: presence densify or **PR E**.
+Remaining: true multi-polygon topology / ocean gaps; optional easing curves; further mid-keyframes only where morph still looks stiff. Polity fill ✅; people packs ✅ (Day 27 + Day 28); presence ✅ Day 29 first slice; timeline↔globe ✅ Day 30 / PR E. Still schematic / honest, not GIS-perfect. Next: presence densify or further living-border polish.
 
-#### PR E — Timeline integration (still needed; secondary to living borders)
+#### Day 30 / PR E — Timeline ↔ globe integration — done
 
-- Selecting a year updates the globe overlays (year scrub already drives overlays; deepen sync).
-- Tapping a region opens details.
-- Details link back to timeline/civilisation entries via `timelineItemIds`.
-- Deep links support globe year/entity state.
+Wire the globe overlays back to the timeline detail panel and shareable URLs.
+
+- Year scrub continues to drive overlays; selection clears when the entity leaves the active year. ✅
+- Tapping a globe polygon **or** an overlay-list row opens the detail panel (name, lifespan-ish date line, description, sources). ✅
+- **Related on timeline** links resolve real `timelineItemIds` against catalogue items only (empty ids for people/presence → no broken links). Click jumps to that swim-lane item. ✅
+- Deep links: `?view=globe&year=117&entity=roman-empire` (+ optional `layer=`); URL updates on select; restore year → layer → entity if active. ✅
+- Selected sidebar row + brighter/higher polygon highlight. Soft hint: “Tap a region for details”. ✅
+- Branch stacks on Day 29 tip (`day-29-human-presence`). PRs #31–#34 still awaiting merge if not yet on main.
 
 ### Long-term globe layers
 
@@ -602,6 +606,7 @@ A sensible near-term sequence:
 26. People pack 2 — global ethnolinguistic coverage (Day 28). ✅
 27. Human presence layer (human-atlas layer 3) — first inhabited-footprint slice (Day 29). ✅
 28. Presence densify / more hearths — optional follow-on after Day 29.
-29. Timeline ↔ globe integration (PR E) — secondary; next major product slice.
+29. Timeline ↔ globe integration (PR E) — Day 30. ✅
+30. Further living-border / topology polish, or presence densify — pick based on review.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

@@ -1,6 +1,7 @@
 /**
  * Interactive Globe.gl earth (Phase 4) + historical polygons + Day 20 living-border morph.
  * Day 26: stable per-entity polygonAltitude offsets to stop overlap z-fighting.
+ * Day 30: polygon click → detail panel; selected-entity highlight.
  * Mounted only while Globe mode is active; disposed on leave.
  */
 
@@ -16,6 +17,11 @@ let resizeObserver = null;
 let onControlsStart = null;
 let mounted = false;
 let currentPolygonYear = null;
+/** @type {string|null} */
+let selectedEntityId = null;
+/** @type {((entityId: string, feature: object) => void)|null} */
+let polygonClickHandler = null;
+
 function isCoarsePointer() {
   try {
     return window.matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;
@@ -58,7 +64,7 @@ function hexToRgba(hex, opacity) {
   const r = (n >> 16) & 255;
   const g = (n >> 8) & 255;
   const b = n & 255;
-  const op = Math.max(0.05, Math.min(0.55, Number(opacity) || 0.43));
+  const op = Math.max(0.05, Math.min(0.72, Number(opacity) || 0.43));
   return `rgba(${r},${g},${b},${op})`;
 }
 
@@ -90,22 +96,71 @@ function polygonAltitudeForFeature(d) {
   return POLYGON_ALT_BASE + slot * POLYGON_ALT_STEP;
 }
 
+function featureEntityId(d) {
+  return d?.entityId || d?.properties?.entityId || null;
+}
+
+function isSelectedFeature(d) {
+  const id = featureEntityId(d);
+  return Boolean(selectedEntityId && id && id === selectedEntityId);
+}
+
 function applyPolygonLayer() {
   if (!globe) return;
   // Use Globe.gl colour accessors (not custom MeshBasicMaterial) — custom DoubleSide/
   // FrontSide caps contributed to planet-wide washes with spherical triangulation.
   globe
     .polygonGeoJsonGeometry('geometry')
-    .polygonAltitude(polygonAltitudeForFeature)
-    .polygonCapColor((d) => hexToRgba(d.color || d.properties?.color, d.opacity ?? d.properties?.opacity))
+    .polygonAltitude((d) => polygonAltitudeForFeature(d) + (isSelectedFeature(d) ? 0.006 : 0))
+    .polygonCapColor((d) => {
+      const base = d.opacity ?? d.properties?.opacity;
+      const opacity = isSelectedFeature(d)
+        ? Math.min(0.72, Math.max(0.38, (Number(base) || 0.43) * 1.45))
+        : base;
+      return hexToRgba(d.color || d.properties?.color, opacity);
+    })
     .polygonSideColor(() => 'rgba(0,0,0,0)')
     // Soft stroke — white 0.4 edges shimmered on overlaps (Day 26). People packs keep a
     // slightly brighter edge than polities (Day 27).
     .polygonStrokeColor((d) => {
+      if (isSelectedFeature(d)) return 'rgba(255, 255, 255, 0.95)';
       const t = d.entityType || d.properties?.entityType;
       return t === 'people' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.12)';
     })
     .polygonsTransitionDuration(0);
+}
+
+/**
+ * Register a callback for polygon taps (entityId, feature).
+ * @param {((entityId: string, feature: object) => void)|null} handler
+ */
+export function setOnGlobePolygonClick(handler) {
+  polygonClickHandler = typeof handler === 'function' ? handler : null;
+}
+
+/**
+ * Highlight the selected spatial entity on the globe (no remount).
+ * @param {string|null} entityId
+ */
+export function setGlobeSelectedEntity(entityId) {
+  const next = entityId ? String(entityId) : null;
+  if (selectedEntityId === next) return;
+  selectedEntityId = next;
+  // Re-apply accessors + data so styles refresh without remounting
+  if (globe && mounted) {
+    applyPolygonLayer();
+    if (Number.isFinite(currentPolygonYear)) {
+      try {
+        globe.polygonsData(getOverlayPolygonFeatures(currentPolygonYear));
+      } catch (err) {
+        console.warn('Failed to refresh selected globe polygons:', err);
+      }
+    }
+  }
+}
+
+export function getGlobeSelectedEntity() {
+  return selectedEntityId;
 }
 
 /**
@@ -131,11 +186,15 @@ export function setGlobeOverlayYear(year) {
 /**
  * Create / show the WebGL globe inside `container`.
  * @param {HTMLElement} container
- * @param {{ year?: number }} [opts]
+ * @param {{ year?: number, onPolygonClick?: (entityId: string, feature: object) => void }} [opts]
  */
 export async function mountGlobe(container, opts = {}) {
   if (!container) return null;
   hostEl = container;
+
+  if (typeof opts.onPolygonClick === 'function') {
+    polygonClickHandler = opts.onPolygonClick;
+  }
 
   const year = Number.isFinite(Number(opts.year)) ? Number(opts.year) : currentPolygonYear;
 
@@ -166,6 +225,17 @@ export async function mountGlobe(container, opts = {}) {
     .polygonsData([]);
 
   applyPolygonLayer();
+
+  globe.onPolygonClick((feat) => {
+    const id = featureEntityId(feat);
+    if (!id || !polygonClickHandler) return;
+    polygonClickHandler(id, feat);
+  });
+
+  globe.onPolygonHover((feat) => {
+    if (!hostEl) return;
+    hostEl.style.cursor = feat ? 'pointer' : '';
+  });
 
   await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
   scheduleSizeToHost();
@@ -281,10 +351,13 @@ export function destroyGlobe() {
   }
 
   if (hostEl) {
+    hostEl.style.cursor = '';
     hostEl.innerHTML = '';
   }
   hostEl = null;
   mounted = false;
+  // Keep selectedEntityId + click handler across remounts within the same session;
+  // main.js clears selection when leaving Globe mode.
 }
 
 export function isGlobeMounted() {
