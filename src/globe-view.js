@@ -1,5 +1,6 @@
 /**
  * Interactive Globe.gl earth (Phase 4) + historical polygons + Day 20 living-border morph.
+ * Day 26: stable per-entity polygonAltitude offsets to stop overlap z-fighting.
  * Day 30: polygon click → detail panel; selected-entity highlight.
  * Mounted only while Globe mode is active; disposed on leave.
  */
@@ -67,6 +68,34 @@ function hexToRgba(hex, opacity) {
   return `rgba(${r},${g},${b},${op})`;
 }
 
+/** FNV-1a 32-bit — stable across sessions for altitude slots. */
+function hashId(str) {
+  let h = 2166136261;
+  const s = String(str || '');
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+/**
+ * Day 26: per-entity altitude so coplanar empire meshes do not z-fight.
+ * Base hugs the globe; hash slots add a tiny epsilon (stable while scrubbing).
+ * Max stays ~0.01 so overlays do not float off the surface.
+ */
+const POLYGON_ALT_BASE = 0.0045;
+const POLYGON_ALT_STEP = 0.00011;
+const POLYGON_ALT_SLOTS = 48;
+
+function polygonAltitudeForFeature(d) {
+  const entityId = d?.entityId || d?.properties?.entityId || '';
+  const regionId = d?.regionId || d?.properties?.regionId || '';
+  const key = entityId ? `${entityId}::${regionId}` : regionId || d?.name || 'anon';
+  const slot = hashId(key) % POLYGON_ALT_SLOTS;
+  return POLYGON_ALT_BASE + slot * POLYGON_ALT_STEP;
+}
+
 function featureEntityId(d) {
   return d?.entityId || d?.properties?.entityId || null;
 }
@@ -82,7 +111,7 @@ function applyPolygonLayer() {
   // FrontSide caps contributed to planet-wide washes with spherical triangulation.
   globe
     .polygonGeoJsonGeometry('geometry')
-    .polygonAltitude((d) => (isSelectedFeature(d) ? 0.012 : 0.006))
+    .polygonAltitude((d) => polygonAltitudeForFeature(d) + (isSelectedFeature(d) ? 0.006 : 0))
     .polygonCapColor((d) => {
       const base = d.opacity ?? d.properties?.opacity;
       const opacity = isSelectedFeature(d)
@@ -91,13 +120,12 @@ function applyPolygonLayer() {
       return hexToRgba(d.color || d.properties?.color, opacity);
     })
     .polygonSideColor(() => 'rgba(0,0,0,0)')
+    // Soft stroke — white 0.4 edges shimmered on overlaps (Day 26). People packs keep a
+    // slightly brighter edge than polities (Day 27).
     .polygonStrokeColor((d) => {
       if (isSelectedFeature(d)) return 'rgba(255, 255, 255, 0.95)';
       const t = d.entityType || d.properties?.entityType;
-      // People packs: slightly brighter dashed-feel edge (lighter alpha) vs polity fills
-      return t === 'people'
-        ? 'rgba(255, 255, 255, 0.55)'
-        : 'rgba(255, 255, 255, 0.4)';
+      return t === 'people' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.12)';
     })
     .polygonsTransitionDuration(0);
 }
