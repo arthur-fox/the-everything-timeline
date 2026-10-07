@@ -522,6 +522,8 @@ Goals:
 - major political, cultural, scientific, economic, and conflict events
 - sources for contentious or modern claims
 
+**Country pack 1 — Day 33 ✅.** Added Peru, Ghana, Kenya, Morocco, Iraq, and the Philippines (32 → 38 countries; 42 new items, every item sourced, 73 source links checked). Picks fill thin regions: Andean South America, West and East Africa, the Maghreb, Mesopotamia, and island Southeast Asia. Globe links kept in sync: Inca → Peru, Abbasid → Iraq, Mesopotamia → Iraq (Sumer/Akkad, Babylon/Assyria), Parthian → Iraq. Related-on-timeline links now resolve country items even before that country has been opened. Next country packs: Central Asia, Caribbean/Central America, Central Africa, Southeast Europe, and more South Asia.
+
 ### 13. Topic packs
 
 Potential topic packs:
@@ -625,6 +627,7 @@ A sensible near-term sequence:
 28. Presence densify / more hearths — presence pack 2 (Day 31). ✅
 29. Timeline ↔ globe integration (PR E) — Day 30. ✅
 30. Further living-border / topology polish — ocean gaps (polygon holes) + eased morph (Day 32 / PR F slice 4). ✅
-31. Phase 5 content expansion — start with country coverage / topic packs (item 12–13), keeping globe-entity links in sync; only revisit topology if a review spots stiff morphs.
+31. Phase 5 content expansion — country pack 1 (Peru, Ghana, Kenya, Morocco, Iraq, Philippines; 32 → 38 countries; globe links synced) — Day 33. ✅
+32. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

@@ -47,6 +47,12 @@ import { polandItems, polandCategories } from './countries/poland.js';
 import { swedenItems, swedenCategories } from './countries/sweden.js';
 import { canadaItems, canadaCategories } from './countries/canada.js';
 import { argentinaItems, argentinaCategories } from './countries/argentina.js';
+import { peruItems, peruCategories } from './countries/peru.js';
+import { ghanaItems, ghanaCategories } from './countries/ghana.js';
+import { kenyaItems, kenyaCategories } from './countries/kenya.js';
+import { moroccoItems, moroccoCategories } from './countries/morocco.js';
+import { iraqItems, iraqCategories } from './countries/iraq.js';
+import { philippinesItems, philippinesCategories } from './countries/philippines.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
 import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick } from './globe-view.js';
 import {
@@ -71,24 +77,30 @@ const COUNTRY_REGISTRY = [
   { id: 'ethiopia',     name: 'Ethiopia',        flag: '🇪🇹', minYear: -1000,   maxYear: 2025, load: () => ({ items: ethiopiaItems,     categories: ethiopiaCategories }) },
   { id: 'france',       name: 'France',          flag: '🇫🇷', minYear: -51,     maxYear: 2025, load: () => ({ items: franceItems,       categories: franceCategories }) },
   { id: 'germany',      name: 'Germany',         flag: '🇩🇪', minYear: -50,    maxYear: 2025, load: () => ({ items: germanyItems,      categories: germanyCategories }) },
+  { id: 'ghana',        name: 'Ghana',           flag: '🇬🇭', minYear: 1300,    maxYear: 2025, load: () => ({ items: ghanaItems,        categories: ghanaCategories }) },
   { id: 'greece',       name: 'Greece',          flag: '🇬🇷', minYear: -3000,  maxYear: 2025, load: () => ({ items: greeceItems,       categories: greeceCategories }) },
   { id: 'india',        name: 'India',           flag: '🇮🇳', minYear: -2600,   maxYear: 2025, load: () => ({ items: indiaItems,        categories: indiaCategories }) },
   { id: 'indonesia',    name: 'Indonesia',       flag: '🇮🇩', minYear: -2500,   maxYear: 2025, load: () => ({ items: indonesiaItems,    categories: indonesiaCategories }) },
   { id: 'iran',         name: 'Iran',            flag: '🇮🇷', minYear: -550,   maxYear: 2025, load: () => ({ items: iranItems,         categories: iranCategories }) },
+  { id: 'iraq',         name: 'Iraq',            flag: '🇮🇶', minYear: -4000,   maxYear: 2025, load: () => ({ items: iraqItems,         categories: iraqCategories }) },
   { id: 'italy',        name: 'Italy',           flag: '🇮🇹', minYear: -753,   maxYear: 2025, load: () => ({ items: italyItems,        categories: italyCategories }) },
   { id: 'japan',        name: 'Japan',           flag: '🇯🇵', minYear: -300,   maxYear: 2025, load: () => ({ items: japanItems,        categories: japanCategories }) },
+  { id: 'kenya',        name: 'Kenya',           flag: '🇰🇪', minYear: -3000,   maxYear: 2025, load: () => ({ items: kenyaItems,        categories: kenyaCategories }) },
   { id: 'mexico',       name: 'Mexico',          flag: '🇲🇽', minYear: -2000,   maxYear: 2025, load: () => ({ items: mexicoItems,       categories: mexicoCategories }) },
+  { id: 'morocco',      name: 'Morocco',         flag: '🇲🇦', minYear: -500,    maxYear: 2025, load: () => ({ items: moroccoItems,      categories: moroccoCategories }) },
   { id: 'netherlands',  name: 'Netherlands',     flag: '🇳🇱', minYear: 1477,    maxYear: 2025, load: () => ({ items: netherlandsItems,  categories: netherlandsCategories }) },
   { id: 'nigeria',      name: 'Nigeria',         flag: '🇳🇬', minYear: -1500,   maxYear: 2025, load: () => ({ items: nigeriaItems,      categories: nigeriaCategories }) },
   { id: 'pakistan',     name: 'Pakistan',        flag: '🇵🇰', minYear: -2600,   maxYear: 2025, load: () => ({ items: pakistanItems,     categories: pakistanCategories }) },
+  { id: 'peru',         name: 'Peru',            flag: '🇵🇪', minYear: -3000,   maxYear: 2025, load: () => ({ items: peruItems,         categories: peruCategories }) },
+  { id: 'philippines',  name: 'Philippines',     flag: '🇵🇭', minYear: 900,     maxYear: 2025, load: () => ({ items: philippinesItems,  categories: philippinesCategories }) },
   { id: 'poland',       name: 'Poland',          flag: '🇵🇱', minYear: 960,     maxYear: 2025, load: () => ({ items: polandItems,       categories: polandCategories }) },
   { id: 'portugal',     name: 'Portugal',        flag: '🇵🇹', minYear: 1139,    maxYear: 2025, load: () => ({ items: portugalItems,     categories: portugalCategories }) },
   { id: 'russia',       name: 'Russia',          flag: '🇷🇺', minYear: 862,     maxYear: 2025, load: () => ({ items: russiaItems,       categories: russiaCategories }) },
   { id: 'saudi-arabia', name: 'Saudi Arabia',    flag: '🇸🇦', minYear: -3000,   maxYear: 2025, load: () => ({ items: saudiArabiaItems,  categories: saudiArabiaCategories }) },
   { id: 'south-africa', name: 'South Africa',    flag: '🇿🇦', minYear: -100000, maxYear: 2025, load: () => ({ items: southAfricaItems,  categories: southAfricaCategories }) },
   { id: 'south-korea',  name: 'South Korea',     flag: '🇰🇷', minYear: -2333,   maxYear: 2025, load: () => ({ items: southKoreaItems,   categories: southKoreaCategories }) },
-  { id: 'sweden',       name: 'Sweden',          flag: '🇸🇪', minYear: -8000,   maxYear: 2025, load: () => ({ items: swedenItems,       categories: swedenCategories }) },
   { id: 'spain',        name: 'Spain',           flag: '🇪🇸', minYear: -218,    maxYear: 2025, load: () => ({ items: spainItems,        categories: spainCategories }) },
+  { id: 'sweden',       name: 'Sweden',          flag: '🇸🇪', minYear: -8000,   maxYear: 2025, load: () => ({ items: swedenItems,       categories: swedenCategories }) },
   { id: 'thailand',     name: 'Thailand',        flag: '🇹🇭', minYear: -3000,   maxYear: 2025, load: () => ({ items: thailandItems,     categories: thailandCategories }) },
   { id: 'turkey',       name: 'Turkey',          flag: '🇹🇷', minYear: 1071,    maxYear: 2025, load: () => ({ items: turkeyItems,       categories: turkeyCategories }) },
   { id: 'uk',           name: 'United Kingdom',  flag: '🇬🇧', minYear: -55,     maxYear: 2025, load: () => ({ items: ukItems,           categories: ukCategories }) },
@@ -3223,6 +3235,13 @@ function findTimelineCatalogueItem(itemId) {
     if (!state) continue;
     const item = state.items.find((i) => i.id === itemId);
     if (item) return { item, view: isCountryViewId(key) ? 'country:' + key : key };
+  }
+  // Countries not opened yet — country data is bundled, so peek at the registry
+  // without creating view state (keeps globe → country links working cold).
+  for (const country of COUNTRY_REGISTRY) {
+    if (swimStates[country.id]) continue;
+    const item = country.load().items.find((i) => i.id === itemId);
+    if (item) return { item, view: 'country:' + country.id };
   }
   return null;
 }

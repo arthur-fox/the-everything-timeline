@@ -1,0 +1,132 @@
+export const iraqCategories = [
+  { id: 'mesopotamia', name: 'Ancient Mesopotamia',  color: '#F59E0B' },
+  { id: 'empires',     name: 'Imperial Mesopotamia', color: '#C084FC' },
+  { id: 'caliphate',   name: 'Islamic Golden Age',   color: '#10B981' },
+  { id: 'ottoman',     name: 'Ottoman & Mandate',    color: '#78716C' },
+  { id: 'modern',      name: 'Modern Iraq',          color: '#3B82F6' },
+];
+
+export const iraqItems = [
+  {
+    id: 'iraq-sumer-akkad',
+    name: 'Sumer & Akkad',
+    start: -4000, end: -2004,
+    region: 'mesopotamia',
+    icon: '🏺',
+    description: "Between the Tigris and Euphrates, Sumerian cities such as Uruk, Ur, and Lagash created some of the world's first cities, monumental temples, and — around 3200 BCE — cuneiform writing. Sargon of Akkad united Mesopotamia in what is often called the first empire (c. 2334 BCE). The Third Dynasty of Ur revived Sumerian rule until Elamites sacked Ur around 2004 BCE. Dates are approximate (middle chronology).",
+    sources: [
+      { title: 'Wikipedia — Sumer', url: 'https://en.wikipedia.org/wiki/Sumer' },
+      { title: 'Wikipedia — Akkadian Empire', url: 'https://en.wikipedia.org/wiki/Akkadian_Empire' },
+    ],
+    periods: [
+      { name: 'Uruk period', start: -4000, end: -3100 },
+      { name: 'Early Dynastic Sumer', start: -2900, end: -2334 },
+      { name: 'Akkadian Empire', start: -2334, end: -2154 },
+      { name: 'Third Dynasty of Ur', start: -2112, end: -2004 },
+    ],
+  },
+  {
+    id: 'iraq-babylon-assyria',
+    name: 'Babylon & Assyria',
+    start: -1894, end: -539,
+    region: 'empires',
+    icon: '🦁',
+    description: "Babylon rose under Hammurabi (r. c. 1792–1750 BCE), whose law code is one of the best-known legal texts of the ancient world. In the north, Assyria grew into the Neo-Assyrian Empire, the largest the world had yet seen, ruling from cities such as Nimrud and Nineveh until Nineveh fell in 612 BCE. Nebuchadnezzar II's Neo-Babylonian Empire then dominated the region until Cyrus the Great of Persia took Babylon in 539 BCE.",
+    sources: [
+      { title: 'Wikipedia — Babylonia', url: 'https://en.wikipedia.org/wiki/Babylonia' },
+      { title: 'Wikipedia — Neo-Assyrian Empire', url: 'https://en.wikipedia.org/wiki/Neo-Assyrian_Empire' },
+    ],
+    periods: [
+      { name: 'Old Babylonian', start: -1894, end: -1595 },
+      { name: 'Kassite Babylon & Middle Assyria', start: -1595, end: -911 },
+      { name: 'Neo-Assyrian Empire', start: -911, end: -609 },
+      { name: 'Neo-Babylonian Empire', start: -626, end: -539 },
+    ],
+  },
+  {
+    id: 'iraq-persian-hellenistic',
+    name: 'Persian, Hellenistic & Sasanian Rule',
+    start: -539, end: 637,
+    region: 'empires',
+    icon: '🏛️',
+    description: "For nearly twelve centuries Mesopotamia was the rich heartland of outside empires. Alexander the Great died in Babylon in 323 BCE; the Seleucids built Seleucia on the Tigris, and the Parthians and then the Sasanians ruled from nearby Ctesiphon, whose great brick arch still stands. Arab Muslim armies defeated the Sasanians at al-Qadisiyyah (c. 636) and took Ctesiphon soon after.",
+    sources: [
+      { title: 'Wikipedia — Ctesiphon', url: 'https://en.wikipedia.org/wiki/Ctesiphon' },
+    ],
+    periods: [
+      { name: 'Achaemenid Persia', start: -539, end: -331 },
+      { name: 'Seleucid', start: -312, end: -141 },
+      { name: 'Parthian', start: -141, end: 224 },
+      { name: 'Sasanian', start: 224, end: 637 },
+    ],
+  },
+  {
+    id: 'iraq-abbasid-baghdad',
+    name: 'Abbasid Baghdad',
+    start: 750, end: 1258,
+    region: 'caliphate',
+    icon: '📚',
+    description: "The Abbasid caliph al-Mansur founded Baghdad in 762, and it quickly became one of the largest cities in the world. Under caliphs such as Harun al-Rashid and al-Ma'mun, scholars in Baghdad translated Greek, Persian, and Indian works and advanced mathematics, astronomy, and medicine — al-Khwarizmi's work gave us the words 'algebra' and 'algorithm'. Real power passed to Buyid and Seljuk rulers, and the Mongols under Hulagu sacked Baghdad in 1258.",
+    sources: [
+      { title: 'Wikipedia — Abbasid Caliphate', url: 'https://en.wikipedia.org/wiki/Abbasid_Caliphate' },
+      { title: 'Wikipedia — Siege of Baghdad (1258)', url: 'https://en.wikipedia.org/wiki/Siege_of_Baghdad_(1258)' },
+    ],
+    periods: [
+      { name: 'Golden age', start: 750, end: 861 },
+      { name: 'Fragmentation, Buyids & Seljuks', start: 861, end: 1194 },
+      { name: 'Late caliphate', start: 1194, end: 1258 },
+    ],
+  },
+  {
+    id: 'iraq-ottoman',
+    name: 'Ottoman Iraq',
+    start: 1534, end: 1918,
+    region: 'ottoman',
+    icon: '🌙',
+    description: "Suleiman the Magnificent took Baghdad in 1534, and Iraq became a frontier between the Ottomans and Safavid Persia, which held Baghdad again from 1623 to 1638. From the early 18th century Mamluk governors ruled Baghdad with wide autonomy until Istanbul restored direct rule in 1831. In the First World War, British forces were besieged at Kut (1915–1916) before capturing Baghdad in March 1917.",
+    sources: [
+      { title: 'Wikipedia — Ottoman Iraq', url: 'https://en.wikipedia.org/wiki/Ottoman_Iraq' },
+      { title: 'Wikipedia — Mesopotamian campaign', url: 'https://en.wikipedia.org/wiki/Mesopotamian_campaign' },
+    ],
+    periods: [
+      { name: 'Ottoman–Safavid frontier', start: 1534, end: 1704 },
+      { name: 'Mamluk pashas', start: 1704, end: 1831 },
+      { name: 'Direct rule & First World War', start: 1831, end: 1918 },
+    ],
+  },
+  {
+    id: 'iraq-mandate-kingdom',
+    name: 'British Mandate & Hashemite Kingdom',
+    start: 1920, end: 1958,
+    region: 'ottoman',
+    icon: '👑',
+    description: "Britain received a mandate over Iraq in 1920 and faced a large revolt that year. Faisal I was installed as king in 1921, and Iraq joined the League of Nations as an independent state in 1932, though British influence and oil interests remained strong. A pro-Axis coup in 1941 led to the Anglo-Iraqi War. The monarchy was overthrown in the 14 July Revolution of 1958.",
+    sources: [
+      { title: 'Wikipedia — Kingdom of Iraq', url: 'https://en.wikipedia.org/wiki/Kingdom_of_Iraq' },
+    ],
+    periods: [
+      { name: 'Mandate', start: 1920, end: 1932 },
+      { name: 'Independent kingdom', start: 1932, end: 1958 },
+    ],
+  },
+  {
+    id: 'iraq-republic',
+    name: 'Republic of Iraq',
+    start: 1958, end: 2025,
+    region: 'modern',
+    icon: '🇮🇶',
+    description: "After a decade of coups, the Ba'ath Party took power in 1968, and Saddam Hussein became president in 1979. His rule brought the Iran–Iraq War (1980–1988), the Anfal campaign against the Kurds including the Halabja chemical attack (1988), the invasion of Kuwait and the 1991 Gulf War, and years of sanctions. A US-led invasion toppled Saddam in 2003, followed by insurgency and sectarian civil war. The Islamic State seized Mosul in 2014 and was driven out by 2017. Casualty figures for these wars remain debated.",
+    sources: [
+      { title: 'Wikipedia — History of Iraq (2003–present)', url: 'https://en.wikipedia.org/wiki/History_of_Iraq_(2003%E2%80%93present)' },
+      { title: 'Wikipedia — Iran–Iraq War', url: 'https://en.wikipedia.org/wiki/Iran%E2%80%93Iraq_War' },
+      { title: 'Wikipedia — Anfal campaign', url: 'https://en.wikipedia.org/wiki/Anfal_campaign' },
+    ],
+    periods: [
+      { name: 'Revolution & coups', start: 1958, end: 1968 },
+      { name: "Ba'athist rule & Saddam", start: 1968, end: 2003 },
+      { name: 'Occupation & civil war', start: 2003, end: 2011 },
+      { name: 'War against ISIS', start: 2014, end: 2017 },
+      { name: 'Post-ISIS reconstruction', start: 2017, end: 2025 },
+    ],
+  },
+];
