@@ -296,6 +296,8 @@ const COMPARE_TOPIC_VIEWS = [
 const COMPARE_DIVIDER_H = 30;
 
 let compareMode = false;
+/** Day 37: full-screen globe (only the globe, its key and the year scrubber). */
+let globeFullscreen = false;
 let compareLeft = 'technology';
 let compareRight = 'wars';
 let compareShared = null; // { viewStart, viewEnd, targetStart, targetEnd, minYear, maxYear }
@@ -590,6 +592,7 @@ function syncDeepLinkUrl() {
     if (currentView === 'globe') {
       params.set('year', String(globeYear));
       if (selectedGlobeEntityId) params.set('entity', selectedGlobeEntityId);
+      if (globeFullscreen) params.set('fullscreen', '1');
     } else {
       const selectedId = getSelectedDeepLinkId();
       if (selectedId) {
@@ -794,8 +797,9 @@ function applyDeepLinkFromUrl() {
   const filtersRaw = params.get('filters');
   const layerRaw = params.get('layer');
   const entityRaw = params.get('entity');
+  const fullscreenRaw = params.get('fullscreen');
 
-  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '')) {
+  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '')) {
     updateActiveViewChrome();
     updateFiltersUI();
     return;
@@ -848,6 +852,12 @@ function applyDeepLinkFromUrl() {
     if (entityRaw && isGlobeView()) {
       selectGlobeEntity(entityRaw, { syncUrl: false, openDetail: true, fromDeepLink: true });
       focused = true;
+    }
+
+    // Day 37: ?fullscreen=1 opens the globe full-screen (globe view only; implies view=globe).
+    if (fullscreenRaw === '1' || fullscreenRaw === 'true') {
+      if (!isGlobeView() && !resolved && !id) activateViewForDeepLink('globe', { clearSelection: true });
+      if (isGlobeView()) setGlobeFullscreen(true, { syncUrl: false });
     }
 
     updateFiltersUI();
@@ -3196,11 +3206,56 @@ function setGlobeModeActive(active) {
       if (selectedGlobeEntityId) setGlobeSelectedEntity(selectedGlobeEntityId);
     });
   } else {
+    setGlobeFullscreen(false, { syncUrl: false });
     // Full dispose so switching views never leaks a WebGL context
     clearGlobeEntitySelection({ syncUrl: false, closeDetail: false });
     destroyGlobe();
   }
 }
+
+// ------------------------------------------------------------
+// Day 37 — full-screen globe (Arthur's review): hides the header, controls and side
+// panel so the globe fills the window; only the year scrubber, the map key and the
+// clickable shapes remain. Tapping a shape opens a compact popover (the detail panel,
+// restyled). Esc closes the popover first, then leaves full screen. Deep link
+// ?fullscreen=1. CSS-only (no Fullscreen API) so it behaves the same on iOS Safari.
+// ------------------------------------------------------------
+const globeFullscreenBtn = document.getElementById('globe-fullscreen-toggle');
+
+function setGlobeFullscreen(on, { syncUrl = true } = {}) {
+  const next = Boolean(on) && isGlobeView();
+  if (next === globeFullscreen) return;
+  globeFullscreen = next;
+  document.body.classList.toggle('globe-fullscreen', next);
+  if (globeFullscreenBtn) {
+    globeFullscreenBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
+    const label = next ? 'Exit full screen' : 'Full screen';
+    globeFullscreenBtn.setAttribute('aria-label', next ? 'Exit full-screen globe' : 'Full-screen globe');
+    globeFullscreenBtn.title = next ? 'Exit full screen (Esc)' : 'Full-screen globe (Esc to exit)';
+    const labelEl = globeFullscreenBtn.querySelector('.globe-fullscreen-label');
+    if (labelEl) labelEl.textContent = label;
+  }
+  if (syncUrl) syncDeepLinkUrl();
+}
+
+if (globeFullscreenBtn) {
+  globeFullscreenBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setGlobeFullscreen(!globeFullscreen);
+  });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape' || !globeFullscreen) return;
+  const detail = document.getElementById('event-detail');
+  if (detail && !detail.classList.contains('hidden')) {
+    hideDetailPanel();
+    syncDeepLinkUrl();
+  } else {
+    setGlobeFullscreen(false);
+  }
+  e.preventDefault();
+});
 
 // Keep polygon-click handler registered even across remounts
 setOnGlobePolygonClick((entityId) => {

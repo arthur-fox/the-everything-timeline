@@ -493,21 +493,26 @@ export async function mountGlobe(container, opts = {}) {
 }
 
 /** Day 35: map key lives in the stage markup; float it over the canvas while the globe is mounted. */
-let legendHome = null;
+/** Day 35/37: legend + fullscreen button live in the canvas host while mounted (so they
+ * overlay the globe wherever the host sits — grid cell or fullscreen) and go home on unmount. */
+let hostOverlayHomes = [];
 
 function attachLegend() {
   if (!hostEl) return;
-  const legend = document.querySelector('.globe-legend');
-  if (!legend || legend.parentElement === hostEl) return;
-  legendHome = { parent: legend.parentElement, next: legend.nextSibling };
-  hostEl.appendChild(legend);
+  const els = document.querySelectorAll('.globe-legend, .globe-fullscreen-toggle');
+  for (const el of els) {
+    if (el.parentElement === hostEl) continue;
+    hostOverlayHomes.push({ el, parent: el.parentElement, next: el.nextSibling });
+    hostEl.appendChild(el);
+  }
 }
 
 function detachLegend() {
-  if (!hostEl || !legendHome) return;
-  const legend = hostEl.querySelector(':scope > .globe-legend');
-  if (legend) legendHome.parent.insertBefore(legend, legendHome.next);
-  legendHome = null;
+  if (!hostEl) return;
+  for (const { el, parent, next } of hostOverlayHomes.reverse()) {
+    if (el.parentElement === hostEl) parent.insertBefore(el, next && next.parentNode === parent ? next : null);
+  }
+  hostOverlayHomes = [];
 }
 
 /** `?globeDebug=1` exposes the Globe.gl instance for screenshot / QA harnesses only. */

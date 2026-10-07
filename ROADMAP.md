@@ -489,7 +489,7 @@ PRs #31–#38 merged to main on 7 Oct 2026 (in order, merge commits). Arthur's r
 - **A · Day 34 — real overlap-flicker fix.** ✅ (this PR) — see Day 34 below.
 - **B · Day 35 — peoples vs polities visually distinct + "Both" always on + peoples persist to today.** ✅ — see Day 35 below.
 - **C · Day 36 — Presence fills the modern globe** (near-complete land cover by ~1900–2025, leaving deserts, tundra, ice sheets and core rainforests sparse). ✅ — see Day 36 below.
-- **D · Day 37 — fullscreen globe mode** (`?fullscreen=1`; only the year scrubber + clickable shapes remain; Esc / button to exit). Planned.
+- **D · Day 37 — fullscreen globe mode** (`?fullscreen=1`; only the year scrubber + clickable shapes remain; Esc / button to exit). ✅ — see Day 37 below.
 
 #### Day 34 — Overlap flicker: root cause + fix — done
 
@@ -523,6 +523,16 @@ Arthur: Presence had the same problem as Peoples. Today the globe should be almo
 - **Soft wash:** presence fills drop to ≤ 0.3 opacity (the inhabited-world layer uses a warm `#F2C57C` tint instead of slate, which read as haze at continent scale). Presence draws under peoples and polities and has no edge, so it never drowns them. ✅
 - Validate: ≥45 regions at 2025, spans < 70°; d3-geo checks that 38 inhabited cities are covered at 2025 (London … Kinshasa … Auckland) and 14 sparse places are not (central Sahara, Rub' al Khali, Gobi, Taklamakan, Tibet, central Australia, core Amazon / Congo, Greenland, Antarctica, Siberian tundra, Canadian north, Kalahari, Atacama); no hearth gaps century by century; inhabited world active every 25 years 1700–2025. ✅
 - Honesty: presence means people live here, not density; hand-drawn coarse rings, not GIS.
+
+#### Day 37 — Full-screen globe — done
+
+Arthur asked for a button that hides most of the UI and makes the globe huge, leaving only the timeline at the bottom to scrub and the shapes to click.
+
+- **Full screen** button (top-right of the globe; icon-only on phones). `body.globe-fullscreen` hides the header, controls and side panel. The globe fills the window; the map key moves top-left; the year scrubber floats at the bottom (desktop keeps the notable-year chips as a single scrollable row, phones show only the slider). ✅
+- Shapes stay clickable. In full screen the detail panel becomes a **compact popover**: top-right on desktop, a short sheet above the scrubber on phones. ✅
+- **Exit:** the same button, or **Esc** (closes the popover first, then leaves full screen). Switching away from Globe always exits. ✅
+- **Deep link** `?fullscreen=1` (implies `view=globe`) is kept in the URL while active and combines with `year` / `entity`. ✅
+- CSS-only, no browser Fullscreen API, so it behaves the same on iOS Safari and Esc isn't swallowed by the browser. The globe's ResizeObserver re-fits the canvas. Headless check at 1280×800 and 390×844 (touch): deep link opens full screen, a click or tap on India selects the Mughal Empire, Esc twice closes the popover then exits, and the button toggles both ways. ✅
 
 #### PR F — Living / morphing borders (continued)
 
@@ -674,7 +684,7 @@ A sensible near-term sequence:
 29. Timeline ↔ globe integration (PR E) — Day 30. ✅
 30. Further living-border / topology polish — ocean gaps (polygon holes) + eased morph (Day 32 / PR F slice 4). ✅
 31. Phase 5 content expansion — country pack 1 (Peru, Ghana, Kenya, Morocco, Iraq, Philippines; 32 → 38 countries; globe links synced) — Day 33. ✅
-32. Review feedback round (Arthur, 7 Oct): A flicker root-cause fix (Day 34) ✅; B peoples vs polities distinct + Both always + peoples persist (Day 35) ✅; C presence fills modern globe (Day 36) ✅; D fullscreen globe mode (Day 37).
+32. Review feedback round (Arthur, 7 Oct): A flicker root-cause fix (Day 34) ✅; B peoples vs polities distinct + Both always + peoples persist (Day 35) ✅; C presence fills modern globe (Day 36) ✅; D fullscreen globe mode (Day 37) ✅. All four in review as stacked PRs.
 33. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
