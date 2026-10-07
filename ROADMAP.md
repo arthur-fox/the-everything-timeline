@@ -418,10 +418,6 @@ Close the timeline↔globe **polity** gap: every civilisation in `civilisations.
 
 **Human-atlas sequence (locked briefly):** (1) this polity fill ✅ (2) **people packs** — ✅ Day 27 + ✅ Day 28 pack 2 (3) **human presence** layer — ✅ Day 29 first slice. **PR E** (timeline↔globe deep sync) remains secondary.
 
-#### Day 26 — Overlap polygon z-fight fix — done on PR #31 (awaiting merge)
-
-Stable per-entity altitude offsets + softer strokes for denser overlapping polygons. See open PR #31 if not yet on main.
-
 #### Day 27 — People packs (human-atlas layer 2) — done
 
 First cultural / ethnolinguistic **people pack** on the globe — not state polities.
@@ -477,6 +473,14 @@ Rings that wrap an inland sea no longer paint the water as territory, and keyfra
 - **Eased morph:** keyframe parameter `t` now goes through smoothstep (`easeMorphT`, constant-time) — borders accelerate out of a keyframe and settle into the next. Existing fade-in/out already used smoothstep, so they read the same. ✅
 - Validate: templates closed / ≥4 vertices / non-self-intersecting; every authored hole resolves, is CCW, sits inside its outer bbox *and* ring; Roman@117 has both Mediterranean holes (+ d3-geo: Ionian/Balearic seas excluded, Gaul/Anatolia included); mid-morph Roman@158 / 80 / 300 still holed; east-Med hole grows 50→117; sweep −500…1950 every rendered hole valid; easing 0→0, 0.5→0.5, 1→1, monotonic. ✅
 - Honesty: hand-drawn coarse coastlines, **not GIS**; islands inside a hole (Sardinia, Corsica, Crete, Cyprus, Balearics) show as unpainted. Branch stacks on Day 31 tip (`day-31-presence-densify` / PR #36). PRs #31–#36 still awaiting merge if not yet on main.
+
+#### Day 26 — Overlap polygon z-fight fix — done
+
+Denser overlays (71 entities) flickered where footprints overlapped — classic coplanar z-fighting between empire meshes (Day 14 only hugged polygons to the globe surface).
+
+- **Stable altitude offsets:** `polygonAltitude(d => …)` from a deterministic hash of `entityId::regionId` — base ~0.0045 + (hash % 48) × 0.00011 so coplanar meshes separate in depth without floating off the globe. Offsets do not jump while scrubbing. ✅
+- Softened white `polygonStrokeColor` (0.4 → 0.12) so edges do not shimmer on overlaps. ✅
+- Kept Globe.gl colour accessors (no custom DoubleSide MeshBasicMaterial — Day 20 planet-tint bug). Bump map stays off; `polygonsTransitionDuration(0)`. ✅
 
 #### PR F — Living / morphing borders (continued)
 
@@ -618,7 +622,7 @@ A sensible near-term sequence:
 21. Denser overlay coverage — Aztec/Inca rise + thin empires (Day 23). ✅
 22. Densify remaining 2-keyframe globe overlays (Day 24 / PR F densify backlog). ✅
 23. Globe overlays for remaining timeline civilisations (Day 25 — polity gap closed). ✅
-24. Overlap polygon z-fight fix — stable altitude offsets (Day 26 / PR #31). ✅ on branch (merge when approved)
+24. Overlap polygon z-fight fix — stable altitude offsets (Day 26). ✅
 25. People packs (human-atlas layer 2) — first pack + layer toggle (Day 27). ✅
 26. People pack 2 — global ethnolinguistic coverage (Day 28). ✅
 27. Human presence layer (human-atlas layer 3) — first inhabited-footprint slice (Day 29). ✅
