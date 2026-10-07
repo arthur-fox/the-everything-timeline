@@ -416,7 +416,7 @@ Close the timeline↔globe **polity** gap: every civilisation in `civilisations.
 - Validate: hard fail if any timeline civ lacks an overlay link; Day 25 entity list ≥3 overlays; easy-test years (Axum 400, Mississippian 1100, Zhou −850, Venice 1200, Zulu 1850). ✅
 - Still schematic / honest, not GIS. **Do not invent timelineItemIds** — exact civ `id`s only.
 
-**Human-atlas sequence (locked briefly):** (1) this polity fill ✅ (2) **people packs** — ✅ Day 27 + ✅ Day 28 pack 2 (3) **human presence** layer — later planning pass. **PR E** (timeline↔globe deep sync) remains secondary.
+**Human-atlas sequence (locked briefly):** (1) this polity fill ✅ (2) **people packs** — ✅ Day 27 + ✅ Day 28 pack 2 (3) **human presence** layer — ✅ Day 29 first slice. **PR E** (timeline↔globe deep sync) remains secondary.
 
 #### Day 27 — People packs (human-atlas layer 2) — done
 
@@ -428,7 +428,7 @@ First cultural / ethnolinguistic **people pack** on the globe — not state poli
 - **Layer toggle** in the overlays sidebar: Both / Polities / Peoples (deep link `?view=globe&layer=peoples`). ✅
 - Sidebar **People** / **Polity** badges; people fills slightly softer; Polynesian island groups stay separate region ids (no ocean blobs). ✅
 - Validate: people-pack id list, colours, layer filter, easy-test years. ✅
-- Still schematic / honest. Day 28 adds a second people pack for global coverage. Next after that: **human presence** layer (planning); **PR E** still secondary.
+- Still schematic / honest. Day 28 adds a second people pack for global coverage. Human presence ✅ Day 29; **PR E** still secondary.
 
 #### Day 28 — People pack 2 (global coverage) — done
 
@@ -439,7 +439,19 @@ Second cultural / ethnolinguistic **people pack** filling geographic gaps left b
 - Layer toggle Both / Polities / Peoples unchanged — filters `type === 'people'`. Distant footholds (Inuit Alaska/Canada/Greenland; Arab peninsula/Levant/Egypt/Maghreb; Finno-Ugric Baltic/Ural/Hungary) stay separate region ids. ✅
 - Validate: Day 28 id list, easy-test years, fragment span checks, `spatialEntities.length >= 91`. ✅
 - Branch stacks on Day 27 (`day-27-people-packs` / PR #32). PR #31 (z-fight) and PR #32 still awaiting merge if not yet on main.
-- Still schematic / honest. Next: **human presence** layer (planning); **PR E** still secondary.
+- Still schematic / honest. Next was **human presence** → ✅ Day 29. **PR E** still secondary.
+
+#### Day 29 — Human presence layer (human-atlas layer 3) — done
+
+First **Presence** globe layer: schematic inhabited-footprint regions that expand/densify over deep time — honest approximate hearths/belts, not GIS, not ethnolinguistic (that's Peoples).
+
+- New module `src/globe-presence.js` with **10** presence entities (`type: 'presence'`, ≥3 keyframes, unique colours vs polities + people, multi-vertex rings): Fertile Crescent, Nile Valley, Yellow River, Indus–Gangetic, Mesoamerica, Andean, West Africa/Sahel, Temperate Europe, Southeast Asia, Global modern. ✅
+- Appended into `spatialEntities`; lifespan from overlay keyframe span (± grace); **no invented `timelineItemIds`**. ✅
+- Layer toggle adds **Presence** (Both / Polities / Peoples / Presence); deep link `?view=globe&layer=presence`. Both = all layers. ✅
+- Sidebar **Presence** badge; presence fills slightly more translucent than people. Distant fragments (esp. global-modern coastal belts, SE Asia islands) stay separate region ids. ✅
+- Validate: PRESENCE_PACK_IDS, colours, layer filter, easy-test years (Nile −3000, Mesoamerica 500, global-modern 1900), `spatialEntities.length >= 101`. ✅
+- Branch stacks on Day 28 (`day-28-people-pack-2` / PR #33). PRs #31–#33 still awaiting merge if not yet on main.
+- Still schematic / honest. Next: presence densify / more hearths, or **PR E** (timeline↔globe deep sync).
 
 #### Day 26 — Overlap polygon z-fight fix — done
 
@@ -451,7 +463,7 @@ Denser overlays (71 entities) flickered where footprints overlapped — classic 
 
 #### PR F — Living / morphing borders (continued)
 
-Remaining: true multi-polygon topology / ocean gaps; optional easing curves; further mid-keyframes only where morph still looks stiff. Polity fill ✅; people packs ✅ (Day 27 + Day 28). Still schematic / honest, not GIS-perfect. Next: human presence (human-atlas layer 3); **PR E** still secondary.
+Remaining: true multi-polygon topology / ocean gaps; optional easing curves; further mid-keyframes only where morph still looks stiff. Polity fill ✅; people packs ✅ (Day 27 + Day 28); presence ✅ Day 29 first slice. Still schematic / honest, not GIS-perfect. Next: presence densify or **PR E**.
 
 #### PR E — Timeline integration (still needed; secondary to living borders)
 
@@ -588,7 +600,8 @@ A sensible near-term sequence:
 24. Overlap polygon z-fight fix — stable altitude offsets (Day 26). ✅
 25. People packs (human-atlas layer 2) — first pack + layer toggle (Day 27). ✅
 26. People pack 2 — global ethnolinguistic coverage (Day 28). ✅
-27. Human presence layer (human-atlas layer 3) — backlog / later planning pass.
-28. Timeline ↔ globe integration (PR E) — secondary; next product slice after presence planning.
+27. Human presence layer (human-atlas layer 3) — first inhabited-footprint slice (Day 29). ✅
+28. Presence densify / more hearths — optional follow-on after Day 29.
+29. Timeline ↔ globe integration (PR E) — secondary; next major product slice.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

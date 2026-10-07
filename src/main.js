@@ -3017,6 +3017,7 @@ const GLOBE_YEAR_MAX = 2025;
 let globeYear = 117;
 
 const GLOBE_YEAR_CAPTIONS = [
+  { year: -3000, text: 'Around 3000 BCE — Presence layer: early Nile / Fertile Crescent / Yellow River inhabited belts (approximate).' },
   { year: -2500, text: 'Around 2500 BCE — Early Bronze Age: Sumerian cities and Old Kingdom Egypt on the Nile (approximate).' },
   { year: -2000, text: 'Around 2000 BCE — Middle Kingdom Egypt and Mesopotamian city worlds (approximate).' },
   { year: -500, text: 'Around 500 BCE — Classical polities plus Celtic / Scythian / Amazigh people footprints (approximate).' },
@@ -3026,7 +3027,7 @@ const GLOBE_YEAR_CAPTIONS = [
   { year: 1279, text: 'Around 1279 CE — Mongol peak with Song, Delhi, and Mali neighbours on the map (approximate).' },
   { year: 1492, text: '1492 CE — Iberia at contact; Aztec, Inca, Ming, and Ottoman worlds still dominate their regions (approximate).' },
   { year: 1700, text: 'Around 1700 CE — Ottoman, Mughal, Qing, Spanish, Russian, and early British reach (approximate).' },
-  { year: 1900, text: 'Around 1900 CE — British, Russian, Qing, and late Ottoman empires on a crowded globe (approximate).' },
+  { year: 1900, text: 'Around 1900 CE — British, Russian, Qing, late Ottoman; Presence layer shows denser modern inhabited belts (approximate).' },
   { year: 1914, text: '1914 CE — Industrial empires on the eve of World War I (approximate).' },
   { year: 2025, text: '2025 CE — Today’s political map — future overlays will still be approximate for earlier eras.' },
 ];
@@ -3117,10 +3118,15 @@ function updateGlobeOverlayPanel() {
   for (const { entity, overlay } of active) {
     const li = document.createElement('li');
     const isPeople = entity.type === 'people';
-    li.className = 'globe-overlay-item' + (isPeople ? ' is-people' : ' is-polity');
+    const isPresence = entity.type === 'presence';
+    li.className =
+      'globe-overlay-item' +
+      (isPresence ? ' is-presence' : isPeople ? ' is-people' : ' is-polity');
 
     const swatch = document.createElement('span');
-    swatch.className = 'globe-overlay-swatch' + (isPeople ? ' is-people' : '');
+    swatch.className =
+      'globe-overlay-swatch' +
+      (isPresence ? ' is-presence' : isPeople ? ' is-people' : '');
     swatch.style.background = entity.color;
     swatch.setAttribute('aria-hidden', 'true');
 
@@ -3136,7 +3142,7 @@ function updateGlobeOverlayPanel() {
 
     const badge = document.createElement('span');
     badge.className = 'globe-overlay-type-badge';
-    badge.textContent = isPeople ? 'People' : 'Polity';
+    badge.textContent = isPresence ? 'Presence' : isPeople ? 'People' : 'Polity';
 
     nameRow.appendChild(name);
     nameRow.appendChild(badge);

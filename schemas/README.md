@@ -131,3 +131,7 @@ Cross-object rules stay in `scripts/validate-data.js`:
 ## Globe people packs (Day 27)
 
 Spatial entities may use `type: "people"` for cultural / ethnolinguistic footprints (human-atlas layer 2). Author them in `src/globe-people.js`; do **not** invent `timelineItemIds`. Keep overseas / island footholds as separate region ids.
+
+## Globe human presence (Day 29)
+
+Spatial entities may use `type: "presence"` for schematic inhabited-footprint belts (human-atlas layer 3). Author them in `src/globe-presence.js`; do **not** invent `timelineItemIds`. Keep distant continental fragments as separate region ids (no ocean-spanning rings).
