@@ -134,4 +134,4 @@ Spatial entities may use `type: "people"` for cultural / ethnolinguistic footpri
 
 ## Globe human presence (Day 29)
 
-Spatial entities may use `type: "presence"` for schematic inhabited-footprint belts (human-atlas layer 3). Author them in `src/globe-presence.js`; do **not** invent `timelineItemIds`. Keep distant continental fragments as separate region ids (no ocean-spanning rings).
+Spatial entities may use `type: "presence"` for schematic inhabited-footprint belts (human-atlas layer 3). Author them in `src/globe-presence.js`; do **not** invent `timelineItemIds`. Keep distant continental fragments as separate region ids (no ocean-spanning rings). Day 31 adds a second pack in `src/globe-presence-pack2.js` (spread into the same exports).

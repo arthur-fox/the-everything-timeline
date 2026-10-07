@@ -10,6 +10,8 @@
  * @typedef {import('./globe-overlays.js').SpatialEntity} SpatialEntity
  */
 
+import { presencePack2Entities, PRESENCE_PACK_2_IDS } from './globe-presence-pack2.js';
+
 /** Presence pack ids — first human-presence slice. */
 export const PRESENCE_PACK_IDS = [
   'fertile-crescent-presence',
@@ -22,6 +24,8 @@ export const PRESENCE_PACK_IDS = [
   'temperate-europe-presence',
   'southeast-asia-presence',
   'global-modern-presence',
+  // Day 31 — presence densify (pack 2)
+  ...PRESENCE_PACK_2_IDS,
 ];
 
 /** @type {SpatialEntity[]} */
@@ -1062,4 +1066,6 @@ export const presenceEntities = [
       { title: 'Wikipedia — Human geography', url: 'https://en.wikipedia.org/wiki/Human_geography' },
     ],
   },
+  // Day 31 — presence densify (pack 2): ten more hearths / belts.
+  ...presencePack2Entities,
 ];

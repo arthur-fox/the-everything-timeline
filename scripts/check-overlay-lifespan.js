@@ -719,6 +719,55 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
 }
 
 
+// Day 31 — presence densify (pack 2)
+{
+  const pack2 = [
+    'yangtze-presence', 'ethiopian-highlands-presence', 'east-southern-africa-presence',
+    'eastern-woodlands-presence', 'amazonia-presence', 'japan-archipelago-presence',
+    'aboriginal-australia-presence', 'new-guinea-highlands-presence',
+    'eurasian-steppe-presence', 'pacific-islands-presence',
+  ];
+  assert(presenceEntities.length >= 20, `≥20 presence entities after Day 31 (got ${presenceEntities.length})`);
+  for (const id of pack2) {
+    assert(PRESENCE_PACK_IDS.includes(id), `${id} listed in PRESENCE_PACK_IDS`);
+    const ent = spatialEntities.find((e) => e.id === id);
+    assert(!!ent && ent.type === 'presence', `${id} is a presence entity`);
+    assert((ent?.sources || []).length >= 1, `${id} has ≥1 source`);
+  }
+  assert(new Set(PRESENCE_PACK_IDS).size === PRESENCE_PACK_IDS.length, 'PRESENCE_PACK_IDS unique');
+
+  setOverlayLayerFilter('presence');
+  const idsP = (y) => new Set(getActiveOverlaysAtYear(y).map((r) => r.entity.id));
+  assert(idsP(-1000).has('yangtze-presence'), 'Yangtze ON at −1000');
+  assert(idsP(-3000).has('eurasian-steppe-presence'), 'Steppe ON at −3000');
+  assert(idsP(1100).has('eastern-woodlands-presence'), 'Eastern Woodlands ON at 1100');
+  assert(idsP(1200).has('amazonia-presence'), 'Amazonia ON at 1200');
+  assert(idsP(1200).has('east-southern-africa-presence'), 'East/Southern Africa ON at 1200');
+  assert(idsP(1000).has('aboriginal-australia-presence'), 'Aboriginal Australia ON at 1000');
+  assert(idsP(1300).has('pacific-islands-presence'), 'Pacific islands ON at 1300');
+  assert(idsP(500).size >= 15, `≥15 presence entities active at 500 (got ${idsP(500).size})`);
+
+  // Islands / distant hearths stay separate and small — never an ocean-filling ring.
+  for (const [id, year, minRegions, maxSpan] of [
+    ['pacific-islands-presence', 1300, 5, 15],
+    ['amazonia-presence', 1200, 4, 15],
+    ['aboriginal-australia-presence', 1000, 4, 15],
+    ['east-southern-africa-presence', 1200, 3, 15],
+  ]) {
+    const feats = getOverlayPolygonFeatures(year).filter((f) => f.entityId === id);
+    assert(new Set(feats.map((f) => f.regionId)).size >= minRegions, `${id}@${year} has ≥${minRegions} region ids`);
+    for (const f of feats) {
+      const ring = f.geometry.coordinates[0];
+      const xs = ring.map((p) => p[0]); const ys = ring.map((p) => p[1]);
+      const span = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+      assert(span < maxSpan, `${id}@${year} ${f.regionId} span ${span.toFixed(1)} < ${maxSpan}°`);
+    }
+  }
+  setOverlayLayerFilter('both');
+  assert(spatialEntities.length >= 111, `≥111 overlay entities after Day 31 (got ${spatialEntities.length})`);
+}
+
+
 if (failed) {
   console.error(`\n${failed} lifespan/morph check(s) failed`);
   process.exit(1);
