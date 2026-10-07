@@ -9,6 +9,7 @@
  * Day 24: densify remaining 2-keyframe notables to ≥3 overlays.
  * Day 25: fill remaining timeline civilisations on the globe (27 polity overlays; people/presence later).
  * Day 26: overlap z-fight fix lives in globe-view (per-entity altitude); morph/opacity unchanged.
+ * Day 34: stable feature `__id` (entity::region) so Globe.gl reuses meshes while scrubbing.
  * Day 27–28: people packs (human-atlas layer 2) — cultural/ethnolinguistic overlays via globe-people.js (20 entities).
  * Day 29: human presence layer (human-atlas layer 3) — inhabited-footprint overlays via globe-presence.js (~10 entities).
  * Day 32: ocean gaps — optional region `holes` (inland seas / lakes) rendered as GeoJSON Polygon inner rings.
@@ -6585,6 +6586,7 @@ export function getOverlayPolygonFeatures(year, entities = entitiesForLayer()) {
 
   const active = getActiveOverlaysAtYear(y, entities);
   const features = [];
+  const usedIds = new Set();
 
   for (const { entity, overlay: nearestOverlay } of active) {
     const lifespan = getEntityLifespan(entity);
@@ -6609,7 +6611,13 @@ export function getOverlayPolygonFeatures(year, entities = entitiesForLayer()) {
       } else if (people) {
         opacity = Math.max(0.08, Math.min(0.42, (part.opacity ?? 0.43) * 0.82));
       }
+      // Day 34: stable Globe.gl object id (entity::region) so meshes are reused while scrubbing
+      // instead of being torn down and rebuilt with a random id every year step.
+      let stableId = `${entity.id}::${part.regionId || 'r'}`;
+      for (let n = 2; usedIds.has(stableId); n++) stableId = `${entity.id}::${part.regionId || 'r'}#${n}`;
+      usedIds.add(stableId);
       features.push({
+        __id: stableId,
         type: 'Feature',
         geometry: {
           type: 'Polygon',

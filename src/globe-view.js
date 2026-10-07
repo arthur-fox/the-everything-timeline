@@ -2,6 +2,7 @@
  * Interactive Globe.gl earth (Phase 4) + historical polygons + Day 20 living-border morph.
  * Day 26: stable per-entity polygonAltitude offsets to stop overlap z-fighting.
  * Day 30: polygon click → detail panel; selected-entity highlight.
+ * Day 34: real flicker fix — no depth-writing side walls / caps, stable layer-aware render order.
  * Mounted only while Globe mode is active; disposed on leave.
  */
 
@@ -80,21 +81,117 @@ function hashId(str) {
 }
 
 /**
- * Day 26: per-entity altitude so coplanar empire meshes do not z-fight.
- * Base hugs the globe; hash slots add a tiny epsilon (stable while scrubbing).
- * Max stays ~0.01 so overlays do not float off the surface.
+ * Day 34: overlap flicker — root cause + fix.
+ *
+ * Day 26 gave each polygon its own altitude (0.0045 + slot × 0.00011 globe radii), but on a
+ * radius-100 globe that is a 0.011-unit step, while the depth buffer (Globe.gl camera
+ * near = 0.05) only resolves ~0.05 units at the default view and ~0.2–0.3 units zoomed out —
+ * so neighbouring slots still z-fought. Worse, Globe.gl's default cap material is translucent
+ * yet writes depth, and `polygonSideColor('rgba(0,0,0,0)')` is truthy, so every polygon also
+ * built invisible side walls that wrote depth. Three.js re-sorts translucent meshes by
+ * bounding-sphere distance every frame, so as the globe turned the draw order flipped and the
+ * winner of each overlap changed — the shimmer Arthur saw over Mughal India and the
+ * hole-cut Mediterranean / Aegean shapes.
+ *
+ * Fix: no side walls; caps use a shared translucent material with depthWrite off (overlays
+ * only depth-test against the opaque globe, never each other); each polygon group gets a
+ * stable renderOrder (layer band, then a hash slot) so blending order never flips with the
+ * camera; altitude bands are layer-aware and comfortably above depth resolution.
  */
-const POLYGON_ALT_BASE = 0.0045;
-const POLYGON_ALT_STEP = 0.00011;
-const POLYGON_ALT_SLOTS = 48;
+const LAYER_BAND = { presence: 0, people: 1, polity: 2 };
+const LAYER_ALT = { presence: 0.005, people: 0.0075, polity: 0.01 };
+const POLYGON_ALT_STEP = 0.00004; // tie-break for picking only; depth no longer depends on it
+const POLYGON_ALT_SLOTS = 24;
+const SELECTED_ALT_BUMP = 0.004;
+const SELECTED_BAND = 3;
 
-function polygonAltitudeForFeature(d) {
+function featureLayer(d) {
+  const t = d?.entityType || d?.properties?.entityType;
+  if (t === 'presence') return 'presence';
+  if (t === 'people') return 'people';
+  return 'polity';
+}
+
+function featureKey(d) {
   const entityId = d?.entityId || d?.properties?.entityId || '';
   const regionId = d?.regionId || d?.properties?.regionId || '';
-  const key = entityId ? `${entityId}::${regionId}` : regionId || d?.name || 'anon';
-  const slot = hashId(key) % POLYGON_ALT_SLOTS;
-  return POLYGON_ALT_BASE + slot * POLYGON_ALT_STEP;
+  return entityId ? `${entityId}::${regionId}` : regionId || d?.name || 'anon';
 }
+
+function featureSlot(d) {
+  return hashId(featureKey(d)) % POLYGON_ALT_SLOTS;
+}
+
+function polygonAltitudeForFeature(d) {
+  return LAYER_ALT[featureLayer(d)] + featureSlot(d) * POLYGON_ALT_STEP;
+}
+
+/** Stable draw order: presence under peoples under polities; selected on top. */
+function polygonRenderOrder(d) {
+  const band = isSelectedFeature(d) ? SELECTED_BAND : LAYER_BAND[featureLayer(d)];
+  return 10 + band * 100 + featureSlot(d);
+}
+
+/** Shared cap materials keyed by colour + opacity (Globe.gl skips colour updates for custom materials). */
+const capMaterialCache = new Map();
+let THREE_NS = null;
+
+function capMaterialFor(d, rgba) {
+  if (!THREE_NS) return undefined; // fall back to Globe.gl default until three is loaded
+  const key = rgba;
+  let mat = capMaterialCache.get(key);
+  if (!mat) {
+    const m = /rgba\((\d+),(\d+),(\d+),([\d.]+)\)/.exec(rgba);
+    const [r, g, b, a] = m ? [+m[1], +m[2], +m[3], +m[4]] : [136, 136, 136, 0.43];
+    mat = new THREE_NS.MeshBasicMaterial({
+      color: new THREE_NS.Color(`rgb(${r},${g},${b})`),
+      opacity: a,
+      transparent: true,
+      // Never occlude other overlays — only the opaque globe depth-tests these caps.
+      depthWrite: false,
+      // Same face handling as Globe.gl's default cap material (no planet-wide wash: rings stay CW).
+      side: THREE_NS.DoubleSide,
+    });
+    capMaterialCache.set(key, mat);
+  }
+  return mat;
+}
+
+function disposeCapMaterials() {
+  for (const mat of capMaterialCache.values()) {
+    try {
+      mat.dispose();
+    } catch (_) {
+      // ignore
+    }
+  }
+  capMaterialCache.clear();
+}
+
+/** Each frame (cheap): give polygon groups their stable renderOrder; strokes draw after caps. */
+function applyPolygonRenderOrder(scene) {
+  if (!scene) return;
+  if (!polygonLayerParent || !polygonLayerParent.parent) {
+    polygonLayerParent = null;
+    scene.traverse((obj) => {
+      if (!polygonLayerParent && obj.__globeObjType === 'polygon' && obj.parent) {
+        polygonLayerParent = obj.parent;
+      }
+    });
+    if (!polygonLayerParent) return;
+  }
+  for (const obj of polygonLayerParent.children) {
+    const d = obj.__data?.data;
+    if (!d) continue;
+    const order = polygonRenderOrder(d);
+    if (obj.renderOrder !== order) obj.renderOrder = order;
+    const [cap, stroke] = obj.children;
+    if (cap && cap.renderOrder !== 0) cap.renderOrder = 0;
+    if (stroke && stroke.renderOrder !== 1) stroke.renderOrder = 1;
+  }
+}
+
+let polygonLayerParent = null;
 
 function featureEntityId(d) {
   return d?.entityId || d?.properties?.entityId || null;
@@ -105,21 +202,27 @@ function isSelectedFeature(d) {
   return Boolean(selectedEntityId && id && id === selectedEntityId);
 }
 
+function capColorFor(d) {
+  const base = d.opacity ?? d.properties?.opacity;
+  const opacity = isSelectedFeature(d)
+    ? Math.min(0.72, Math.max(0.38, (Number(base) || 0.43) * 1.45))
+    : base;
+  return hexToRgba(d.color || d.properties?.color, opacity);
+}
+
 function applyPolygonLayer() {
   if (!globe) return;
   // Use Globe.gl colour accessors (not custom MeshBasicMaterial) — custom DoubleSide/
   // FrontSide caps contributed to planet-wide washes with spherical triangulation.
   globe
     .polygonGeoJsonGeometry('geometry')
-    .polygonAltitude((d) => polygonAltitudeForFeature(d) + (isSelectedFeature(d) ? 0.006 : 0))
-    .polygonCapColor((d) => {
-      const base = d.opacity ?? d.properties?.opacity;
-      const opacity = isSelectedFeature(d)
-        ? Math.min(0.72, Math.max(0.38, (Number(base) || 0.43) * 1.45))
-        : base;
-      return hexToRgba(d.color || d.properties?.color, opacity);
-    })
-    .polygonSideColor(() => 'rgba(0,0,0,0)')
+    .polygonAltitude(
+      (d) => polygonAltitudeForFeature(d) + (isSelectedFeature(d) ? SELECTED_ALT_BUMP : 0),
+    )
+    .polygonCapColor(capColorFor)
+    .polygonCapMaterial((d) => capMaterialFor(d, capColorFor(d)))
+    // Day 34: null (not transparent rgba) — a truthy side colour builds invisible depth-writing walls.
+    .polygonSideColor(() => null)
     // Soft stroke — white 0.4 edges shimmered on overlaps (Day 26). People packs keep a
     // slightly brighter edge than polities (Day 27).
     .polygonStrokeColor((d) => {
@@ -211,7 +314,8 @@ export async function mountGlobe(container, opts = {}) {
 
   hostEl.innerHTML = '';
 
-  const Globe = (await import('globe.gl')).default;
+  const [{ default: Globe }, THREE] = await Promise.all([import('globe.gl'), import('three')]);
+  THREE_NS = THREE;
   const mobile = isCoarsePointer();
 
   globe = Globe()(hostEl)
@@ -225,6 +329,13 @@ export async function mountGlobe(container, opts = {}) {
     .polygonsData([]);
 
   applyPolygonLayer();
+
+  try {
+    const scene = globe.scene();
+    scene.onBeforeRender = () => applyPolygonRenderOrder(scene);
+  } catch (_) {
+    // ignore — default sort still works, just less stable
+  }
 
   globe.onPolygonClick((feat) => {
     const id = featureEntityId(feat);
@@ -286,7 +397,19 @@ export async function mountGlobe(container, opts = {}) {
 
   mounted = true;
   if (Number.isFinite(year)) setGlobeOverlayYear(year);
+  exposeGlobeDebugHandle();
   return globe;
+}
+
+/** `?globeDebug=1` exposes the Globe.gl instance for screenshot / QA harnesses only. */
+function exposeGlobeDebugHandle() {
+  try {
+    if (new URLSearchParams(window.location.search).get('globeDebug') === '1') {
+      window.__etGlobe = globe;
+    }
+  } catch (_) {
+    // ignore
+  }
 }
 
 export function pauseGlobe() {
@@ -349,6 +472,8 @@ export function destroyGlobe() {
     }
     globe = null;
   }
+  polygonLayerParent = null;
+  disposeCapMaterials();
 
   if (hostEl) {
     hostEl.style.cursor = '';
