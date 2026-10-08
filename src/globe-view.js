@@ -13,18 +13,293 @@
  *   `?at=lat,lng,alt` opens the camera at a given point of view.
  * Day 40: map-key layer toggles (Polities / Nations, Peoples, Presence; `?hide=`) — with Nations off,
  *   peoples / presence come back undimmed so they can be tapped after 1914.
+ * Day 40 (review B): close-zoom fidelity — NASA GIBS Blue Marble tiles (z ≤ 8, ~600 m/px, no
+ *   labels) sharpen the ground as you zoom (the 4k texture stays underneath as the far view and
+ *   the fallback), and nation borders near the centre of the view swap to a finer Natural Earth
+ *   set (2 km² simplification vs 40 km²) when close.
  * Mounted only while Globe mode is active; disposed on leave.
  */
 
 import {
   getGlobePolygonFeatures,
   loadNationsTopology,
+  loadNationsFineTopology,
+  isNationsFineLoaded,
+  isNationsLoaded,
+  nationShapesNear,
   NATIONS_HANDOFF_YEAR,
+  NATIONS_START,
+  NATIONS_END,
 } from './globe-nations.js';
 
 const EARTH_DAY =
   'https://unpkg.com/three-globe@2.45.0/example/img/earth-blue-marble.jpg';
 // No bump map while overlays are shown — bump shading exaggerates z-fighting vs polygon meshes.
+
+/**
+ * Day 40: NASA GIBS (Global Imagery Browse Services) Blue Marble shaded relief — label-free,
+ * no key, free and open (credit NASA Earth Observatory / NASA GIBS, ESDIS). Web Mercator tiles
+ * up to z8 (~600 m/px at the equator, vs ~10 km/px for the 4096×2048 texture). Globe.gl's tile
+ * engine picks z8 at the closest zoom (camera altitude < 0.0625 radii).
+ *
+ * The 4k texture stays as the far view (tiles at z2–z4 are no sharper) and as the fallback:
+ * tiles are only switched on once a test tile loads, they're only drawn when the camera is
+ * close (TILE_SHOW_ALT), and the textured globe stays underneath (a touch smaller) so a tile
+ * that fails or is still loading shows the old texture instead of a hole.
+ */
+const GIBS_LAYER = 'BlueMarble_ShadedRelief';
+const GIBS_MAX_LEVEL = 8;
+function gibsTileUrl(x, y, level) {
+  return `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/${GIBS_LAYER}/default/GoogleMapsCompatible_Level${GIBS_MAX_LEVEL}/${level}/${y}/${x}.jpeg`;
+}
+
+/**
+ * The tile engine's planner intermittently asks for a huge set of tiles nowhere near the view
+ * (seen with portrait phone viewports: ~200 z7 tiles from the other side of the world instead of
+ * ~8, same camera, roughly one load in two). So the URL callback is also a guard: a tile whose
+ * centre is well outside the visible cap gets an empty data: URL (no network request), and the
+ * next frame clears the engine's tile cache and re-plans. Loaded tiles come back from the HTTP
+ * cache (GIBS sends max-age 3 days for this layer).
+ */
+let tileRejects = 0;
+let tileReplans = 0;
+let tileReplanAt = 0;
+const EMPTY_TILE = 'data:,';
+
+function tileCentre(x, y, level) {
+  const n = 2 ** level;
+  const lng = ((x + 0.5) / n) * 360 - 180;
+  const lat = (Math.atan(Math.sinh(Math.PI * (1 - (2 * (y + 0.5)) / n))) * 180) / Math.PI;
+  return [lat, lng];
+}
+
+function guardedTileUrl(x, y, level) {
+  try {
+    const cam = globe?.camera?.();
+    if (cam && level >= 3) {
+      const camAlt = cam.position.length() / 100 - 1;
+      const pov = globe.pointOfView();
+      const [lat, lng] = tileCentre(x, y, level);
+      const tileDeg = 360 / 2 ** level;
+      const allowed = visibleRadiusDeg(camAlt) * 1.5 + tileDeg * 1.5;
+      if (angularDistDeg(pov.lat, pov.lng, lat, lng) > allowed) {
+        tileRejects++;
+        return EMPTY_TILE;
+      }
+    }
+  } catch (_) {
+    // fall through to the real URL
+  }
+  return gibsTileUrl(x, y, level);
+}
+
+function angularDistDeg(lat1, lng1, lat2, lng2) {
+  const r = Math.PI / 180;
+  const a =
+    Math.sin(((lat2 - lat1) * r) / 2) ** 2 +
+    Math.cos(lat1 * r) * Math.cos(lat2 * r) * Math.sin(((lng2 - lng1) * r) / 2) ** 2;
+  return (2 * Math.asin(Math.min(1, Math.sqrt(a)))) / r;
+}
+
+/** After a bad plan: clear the engine's tile state and plan again (rate-limited). */
+function maybeReplanTiles() {
+  if (!tileRejects || !globe || !tileEngineObj) return;
+  const now = performance.now();
+  if (now - tileReplanAt < 400) return;
+  tileReplanAt = now;
+  tileRejects = 0;
+  tileReplans++;
+  try {
+    globe.globeTileEngineClearCache();
+    tileEngineObj.updatePov(globe.camera());
+  } catch (_) {
+    // ignore
+  }
+}
+
+const TILE_ENABLE_ALT = 1.0; // first time the camera comes this close, probe + switch tiles on
+const TILE_SHOW_ALT = 0.75; // draw tiles below this (z ≥ 4: as sharp as the texture or better)
+const TILE_HIDE_ALT = 0.85;
+const BASE_UNDER_TILES_SCALE = 0.998; // textured globe ~13 km under the tiles while they show
+/** 'off' | 'probing' | 'on' | 'failed' */
+let tileState = 'off';
+let tilesShown = false;
+let baseGlobeObj = null;
+let tileEngineObj = null;
+
+function tilesDisabledByUrl() {
+  try {
+    return new URLSearchParams(window.location.search).get('tiles') === '0';
+  } catch (_) {
+    return false;
+  }
+}
+
+function maybeEnableTiles(camAlt) {
+  if (tileState !== 'off' || camAlt > TILE_ENABLE_ALT || !globe || tilesDisabledByUrl()) return;
+  tileState = 'probing';
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  const timer = setTimeout(() => {
+    img.onload = img.onerror = null;
+    tileState = 'failed';
+    syncTileCredit();
+  }, 8000);
+  img.onload = () => {
+    clearTimeout(timer);
+    if (!globe || tileState !== 'probing') return;
+    try {
+      const scene = globe.scene();
+      findGlobeObjects(scene);
+      const cam = globe.camera();
+      cam.updateMatrixWorld();
+      if (tileEngineObj?.updatePov) tileEngineObj.updatePov(cam);
+      globe.globeTileEngineMaxLevel(GIBS_MAX_LEVEL).globeTileEngineUrl(guardedTileUrl);
+      tileState = 'on';
+    } catch (err) {
+      console.warn('Imagery tiles unavailable:', err);
+      tileState = 'failed';
+    }
+    syncTileCredit();
+  };
+  img.onerror = () => {
+    clearTimeout(timer);
+    tileState = 'failed';
+    syncTileCredit();
+  };
+  img.src = gibsTileUrl(0, 0, 0);
+}
+
+function findGlobeObjects(scene) {
+  if (baseGlobeObj && tileEngineObj) return;
+  scene.traverse((obj) => {
+    if (obj.__globeObjType === 'globe' && obj.children?.length >= 2) {
+      // three-globe: [0] the textured sphere, [1] the slippy-map tile engine
+      baseGlobeObj = obj.children[0];
+      tileEngineObj = obj.children[1];
+    }
+  });
+}
+
+/** Each frame: tiles only when close; keep the textured globe visible underneath as a fallback. */
+function syncTileVisibility(scene, camAlt) {
+  if (tileState !== 'on') return;
+  findGlobeObjects(scene);
+  if (!baseGlobeObj || !tileEngineObj) return;
+  if (!tilesShown && camAlt < TILE_SHOW_ALT) tilesShown = true;
+  else if (tilesShown && camAlt > TILE_HIDE_ALT) tilesShown = false;
+  // three-globe hides the textured sphere whenever a tile URL is set; we keep it as the backdrop.
+  if (!baseGlobeObj.visible) baseGlobeObj.visible = true;
+  // The engine's own black backstop sphere (32k triangles) is redundant under our textured globe.
+  const backstop = tileEngineObj.children[0];
+  if (backstop && backstop.isMesh && backstop.visible) backstop.visible = false;
+  if (tileEngineObj.visible !== tilesShown) tileEngineObj.visible = tilesShown;
+  const s = tilesShown ? BASE_UNDER_TILES_SCALE : 1;
+  if (baseGlobeObj.scale.x !== s) baseGlobeObj.scale.setScalar(s);
+  maybeReplanTiles();
+  // The tile engine only re-plans on camera events, and its first plan after the URL is set
+  // can use a stale view (deep links opened close up got a tile strip off to one side).
+  // Re-plan a couple of times a second while tiles show; already-loaded tiles are kept.
+  const now = performance.now();
+  if (tilesShown && now - tilePovNudgeAt > 500 && typeof tileEngineObj.updatePov === 'function') {
+    tilePovNudgeAt = now;
+    try {
+      tileEngineObj.updatePov(globe.camera());
+    } catch (_) {
+      // ignore
+    }
+  }
+}
+let tilePovNudgeAt = 0;
+
+function syncTileCredit() {
+  for (const el of document.querySelectorAll('.globe-credit')) {
+    el.classList.toggle('has-tiles', tileState === 'on');
+  }
+}
+
+/**
+ * Day 40 (Phase 4b Day 42): finer nation borders close up, only near the view centre.
+ * Below FINE_BORDERS_ENTER the fine TopoJSON is used for shapes with a part within the visible
+ * radius (+ margin); shapes already fine stay fine until they're well outside it (hysteresis),
+ * and the set is re-evaluated at most every FINE_CHECK_MS so dragging doesn't thrash meshes.
+ */
+const FINE_PREFETCH_ALT = 0.8;
+const FINE_BORDERS_ENTER = 0.35;
+const FINE_BORDERS_EXIT = 0.45;
+const FINE_CHECK_MS = 350;
+let fineShapes = null; // Set<number> | null
+let fineLastCheck = 0;
+let fineUpdatePending = false;
+
+function visibleRadiusDeg(camAlt) {
+  const cam = globe?.camera?.();
+  const fov = Number(cam?.fov) || 50;
+  const aspect = Math.max(1, Number(cam?.aspect) || 1);
+  // Flat-earth estimate of the half-diagonal on the ground, capped at the horizon.
+  const flat = camAlt * Math.tan(((fov / 2) * Math.PI) / 180) * Math.hypot(1, aspect) * (180 / Math.PI);
+  const horizon = (Math.acos(1 / (1 + camAlt)) * 180) / Math.PI;
+  return Math.min(horizon, flat) + 2;
+}
+
+function maybeUpdateFineBorders(camAlt) {
+  const y = currentPolygonYear;
+  const nationsEra = Number.isFinite(y) && y >= NATIONS_START && y <= NATIONS_END;
+  if (!nationsEra || !isNationsLoaded() || hiddenLayers.has('polities')) {
+    if (fineShapes) scheduleFineRefresh(null);
+    return;
+  }
+  if (camAlt < FINE_PREFETCH_ALT && !isNationsFineLoaded()) {
+    loadNationsFineTopology()
+      .then(() => {
+        fineLastCheck = 0;
+      })
+      .catch(() => {});
+  }
+  const now = performance.now();
+  if (now - fineLastCheck < FINE_CHECK_MS || fineUpdatePending) return;
+  fineLastCheck = now;
+  const close = fineShapes ? camAlt < FINE_BORDERS_EXIT : camAlt < FINE_BORDERS_ENTER;
+  if (!close || !isNationsFineLoaded()) {
+    if (fineShapes) scheduleFineRefresh(null);
+    return;
+  }
+  let pov;
+  try {
+    pov = globe.pointOfView();
+  } catch (_) {
+    return;
+  }
+  const r = visibleRadiusDeg(camAlt);
+  const want = nationShapesNear(y, pov.lat, pov.lng, r);
+  if (fineShapes) {
+    // Keep shapes that are still roughly in view, so small pans don't swap meshes back and forth.
+    const keep = nationShapesNear(y, pov.lat, pov.lng, r * 1.6);
+    for (const sh of fineShapes) if (keep.has(sh)) want.add(sh);
+  }
+  const same = fineShapes && want.size === fineShapes.size && [...want].every((sh) => fineShapes.has(sh));
+  if (!same) scheduleFineRefresh(want);
+}
+
+function scheduleFineRefresh(next) {
+  fineUpdatePending = true;
+  // Outside the render callback: rebuilding polygonsData mid-render would be re-entrant.
+  setTimeout(() => {
+    fineUpdatePending = false;
+    fineShapes = next && next.size ? next : null;
+    if (globe && mounted && Number.isFinite(currentPolygonYear)) setGlobeOverlayYear(currentPolygonYear);
+  }, 0);
+}
+
+export function getGlobeDetailState() {
+  return {
+    tiles: tileState,
+    tilesShown,
+    tileReplans,
+    fineLoaded: isNationsFineLoaded(),
+    fineShapes: fineShapes ? fineShapes.size : 0,
+  };
+}
 
 let globe = null;
 let hostEl = null;
@@ -244,7 +519,7 @@ function layerKeyForFeature(d) {
 }
 
 function polygonsForYear(year) {
-  const all = getGlobePolygonFeatures(year, { hidePolities: hiddenLayers.has('polities') });
+  const all = getGlobePolygonFeatures(year, { hidePolities: hiddenLayers.has('polities'), fineShapes });
   const shown = hiddenLayers.size ? all.filter((f) => !hiddenLayers.has(layerKeyForFeature(f))) : all;
   return shown.map(densifyFeature);
 }
@@ -365,7 +640,7 @@ function capMaterialFor(d, rgba) {
       side: THREE_NS.DoubleSide,
     });
     mat.userData.etBaseOpacity = a;
-    mat.opacity = a * (0.8 + 0.2 * zoomF);
+    mat.opacity = a * capZoomOpacityMul();
     if (hatch) addHatch(mat);
     capMaterialCache.set(key, mat);
   }
@@ -439,6 +714,9 @@ function applyPolygonRenderOrder(scene, camera) {
     zoomF = zoomFactorForAltitude(camAlt);
     maybeSwitchCapLod(camAlt);
     syncHatchPeriod(camAlt);
+    maybeEnableTiles(camAlt);
+    syncTileVisibility(scene, camAlt);
+    maybeUpdateFineBorders(camAlt);
   }
   applyZoomCapOpacity();
   refineSpentMs = 0;
@@ -487,12 +765,19 @@ function applyZoomToPolygon(obj, cap, stroke) {
   }
 }
 
+/**
+ * Day 39: fills a little lighter close up so the land and the (crisper) borders read through.
+ * Day 40: with sharp imagery underneath, fills go down to 60% (was 80%) at the closest zoom.
+ */
+function capZoomOpacityMul() {
+  return 0.6 + 0.4 * zoomF;
+}
 /** Day 39: fills a little lighter close up so the land and the (crisper) borders read through. */
 function applyZoomCapOpacity() {
   const key = zoomF.toFixed(3);
   if (key === zoomStyleKey) return;
   zoomStyleKey = key;
-  const mul = 0.8 + 0.2 * zoomF;
+  const mul = capZoomOpacityMul();
   for (const mat of capMaterialCache.values()) {
     const base = mat.userData?.etBaseOpacity;
     if (Number.isFinite(base)) mat.opacity = base * mul;
@@ -877,6 +1162,7 @@ function exposeGlobeDebugHandle() {
   try {
     if (new URLSearchParams(window.location.search).get('globeDebug') === '1') {
       window.__etGlobe = globe;
+      window.__etGlobeDetail = getGlobeDetailState;
     }
   } catch (_) {
     // ignore
@@ -944,6 +1230,13 @@ export function destroyGlobe() {
     globe = null;
   }
   polygonLayerParent = null;
+  baseGlobeObj = null;
+  tileEngineObj = null;
+  tileState = 'off';
+  tilesShown = false;
+  fineShapes = null;
+  fineUpdatePending = false;
+  syncTileCredit();
   disposeCapMaterials();
   capLod = 'coarse';
   zoomF = 1;

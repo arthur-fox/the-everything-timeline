@@ -10,7 +10,8 @@
     "validate": "node scripts/validate-data.js && node scripts/check-overlay-lifespan.js && node scripts/check-nations.js",
     "validate:strict": "node scripts/validate-data.js --strict",
     "validate:schema": "node scripts/validate-data.js",
-    "build:nations": "node scripts/build-nations.mjs"
+    "build:nations": "node scripts/build-nations.mjs && node scripts/build-nations.mjs --fine",
+    "build:nations:fine": "node scripts/build-nations.mjs --fine"
   },
   "repository": {
     "type": "git",
