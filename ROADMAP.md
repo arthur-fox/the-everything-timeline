@@ -608,9 +608,19 @@ Rule of thumb: **modern labelled basemaps show today's borders and city names**,
 - **Validate:** `scripts/check-nations.js` checks that the topology matches the table, plus 94 city-in-nation checks at real dates (Lviv: Austria-Hungary 1914 → Poland 1925 → USSR 1941 → Ukraine 1995; Shenyang: Manchukuo 1935; Windhoek: South African-run 1975; Simferopol: occupied 2025 …). It also checks that land coverage stays constant (no gaps or overlaps), a mobile vertex budget, no schematic empires from 1914, the breakup/decolonisation dates, neighbour colours, and that `timelineItemIds` only use existing catalogue ids.
 - **Honest caveats:** borders are province-level, so some pre-1945 shifts are approximate (Karelia, Sudetenland, Schleswig, the Chaco, South Sakhalin and Danzig aren't split; Spanish Morocco and the 17th-parallel split in Vietnam are province-based). Wartime occupations aren't drawn (annexations and puppet states are). Borders switch by year, they don't morph. Tiny islands are omitted.
 
-#### Day 39 — Zoom closer without floating shapes
+#### Day 39 — Zoom closer without floating shapes — done
 
-Lower `controls.minDistance`; scale overlay altitudes with camera distance (bands kept in order, ~1–3 km when close) and adjust the camera `near` plane so nothing clips or flickers. Stroke width and opacity adapt to zoom. Verify against Day 34's flicker renders at altitudes 0.15–3.
+- **Closer camera:** `controls.minDistance` 120 / 140 (phone) → 106, so you can get to ~380 km above the ground instead of ~1,300 km (altitude 0.06 globe radii, was 0.2). Globe.gl's camera `near` (0.05, ~3 km) is kept: overlays don't write depth and only test against the globe, which still resolves comfortably at this range.
+- **Shapes come down to the ground as you zoom in:** Globe.gl applies polygon altitude as a radial scale, so each frame the meshes are rescaled (no geometry rebuild) from their Day 34 band altitude (32–64 km) toward a floor of ~5 km close up (~16.5 km while the finer mesh isn't in). The squeeze keeps the band order (presence < peoples < nations < polities < selected), so stacking and tap-picking never change. The default far view looks the same as before.
+- **Root cause of "shapes dipping under the globe":** Globe.gl's cap triangulator left sliver triangles up to ~2,000 km long on the hand-drawn shapes and big countries. Flat triangles that long sag up to ~60 km below the sphere (measured). Some already dipped ~6 km under the globe at the old bands (Bantu, Aboriginal Australian, Arabian peoples), which showed as small bites near their edges. Now hand-drawn rings are densified to ≤ 1° segments, and every cap is refined after Globe.gl builds it. Triangles are split along their longest edge, and new points go back onto the sphere: ≤ 760 km edges far out (≤ 11.5 km sag) and ≤ 380 km close up (≤ 2.9 km sag; swapped in below camera altitude 0.45, out above 0.6). Refinement runs within a per-frame budget, and both meshes are cached.
+- **Zoom-aware styling:** borders get up to 45% more opaque close up and fills ~20% lighter, so the land and the lines read through. The peoples hatch keeps roughly the same on-screen stripe spacing at every zoom instead of turning into wide bands. (WebGL draws 1 px lines, so stroke *width* can't change without a line-mesh rewrite; that is out of scope.)
+- **`?at=lat,lng,alt`** opens the camera at a point of view (alt in globe radii, clamped 0.06–4), e.g. `?view=globe&year=1960&fullscreen=1&at=46,10,0.1`.
+- **Verified (headless, 1280×800 and 390×844):**
+  - At every camera altitude from 2.1 down to 0.06, in 117, 1700 and 1960, every visible cap triangle stays above the globe surface: at least 2 km clear close up and 20 km far out. Day 38 was −6 km at its default view.
+  - Static frames are pixel-identical (no shimmer) at altitudes 0.06, 0.15 and 0.2.
+  - Tapping a nation at close zoom selects it (Switzerland 1960, Croatia 1995 on phone).
+  - Triangle count at 1960 is up ~9% at the default view (115k vs 106k).
+- **Still to come:** the Blue Marble texture is blurry at the closest zoom (Day 40 tiles fix that), and nation borders are simplified to ~40 km² (Day 42 adds a finer set close up).
 
 #### Day 40 — Sharper imagery (NASA GIBS tiles)
 
@@ -758,7 +768,7 @@ A sensible near-term sequence:
 30. Further living-border / topology polish — ocean gaps (polygon holes) + eased morph (Day 32 / PR F slice 4). ✅
 31. Phase 5 content expansion — country pack 1 (Peru, Ghana, Kenya, Morocco, Iraq, Philippines; 32 → 38 countries; globe links synced) — Day 33. ✅
 32. Review feedback round (Arthur, 7 Oct): A flicker root-cause fix (Day 34) ✅; B peoples vs polities distinct + Both always + peoples persist (Day 35) ✅; C presence fills modern globe (Day 36) ✅; D fullscreen globe mode (Day 37) ✅. All four in review as stacked PRs.
-33. Phase 4b (Arthur, 8 Oct: deep zoom + real borders) — Day 38 modern nations 1914–2025 ✅ (in review); next Day 39 zoom LOD → Day 40 NASA GIBS tiles → Day 41 dated cities → Day 42 nations detail by zoom → Day 43 finer splits → Day 44 nations back to 1880/1815.
+33. Phase 4b (Arthur, 8 Oct: deep zoom + real borders) — Day 38 modern nations 1914–2025 ✅ (in review) → Day 39 zoom closer without floating shapes ✅ (in review); next Day 40 NASA GIBS tiles → Day 41 dated cities → Day 42 nations detail by zoom → Day 43 finer splits → Day 44 nations back to 1880/1815.
 34. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
