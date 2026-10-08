@@ -14,6 +14,11 @@
  * keep a shared border) → mergeArcs per state-period → drop tiny islands → rewind to the
  * Globe.gl convention (planar-clockwise exteriors, counter-clockwise holes) → re-topologise.
  * Also fails loudly if two states claim the same unit in the same year, or a unit id is unknown.
+ *
+ * Day 40: `--fine` (npm run build:nations:fine) writes the close-zoom set instead:
+ * src/data/nations-fine.topo.json — same table, same shape indices (so the globe can swap a
+ * shape's coarse geometry for its fine one), but simplified 20× less (2 km² vs 40 km²), quantised 3×
+ * finer, and keeping islands down to 100 km². Colours are not regenerated in this mode.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -36,15 +41,18 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CACHE = path.join(ROOT, '.cache', 'natural-earth');
 const NE_URL =
   'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_1_states_provinces.geojson';
-const OUT = path.join(ROOT, 'src', 'data', 'nations.topo.json');
+const FINE = process.argv.includes('--fine') || process.env.NATIONS_VARIANT === 'fine';
+const OUT = path.join(ROOT, 'src', 'data', FINE ? 'nations-fine.topo.json' : 'nations.topo.json');
 const COLORS_OUT = path.join(ROOT, 'src', 'data', 'nations-colors.js');
 
 const EARTH_KM2 = 6371 * 6371;
 /** Visvalingam threshold (steradians): ~ effective triangle area kept. */
-const SIMPLIFY_SR = Number(process.env.NATIONS_SIMPLIFY_KM2 || 40) / EARTH_KM2;
+const SIMPLIFY_SR = Number(process.env.NATIONS_SIMPLIFY_KM2 || (FINE ? 2 : 40)) / EARTH_KM2;
 /** Islands / exclaves smaller than this (km²) are dropped unless the largest part or a sizeable exclave. */
-const MIN_PART_KM2 = Number(process.env.NATIONS_MIN_PART_KM2 || 3000);
-const QUANTIZE = 1e5;
+const MIN_PART_KM2 = Number(process.env.NATIONS_MIN_PART_KM2 || (FINE ? 100 : 3000));
+/** Fine mode: hard cap on parts per shape (atoll states), and smaller holes kept. */
+const MAX_SMALL_PARTS = FINE ? 40 : 8;
+const QUANTIZE = FINE ? 3e5 : 1e5;
 
 async function loadAdmin1() {
   const local = process.env.NE_ADMIN1 || path.join(CACHE, 'ne_10m_admin_1_states_provinces.geojson');
@@ -239,7 +247,7 @@ async function main() {
       // (the Maldives had 176 parts) keep only their largest islands.
       .filter((p) => p.area >= MIN_PART_KM2 || p.area === largest || (p.area >= largest * 0.05 && p.area >= 150))
       .sort((a, b) => b.area - a.area)
-      .filter((p, i) => p.area >= MIN_PART_KM2 || i < 8)
+      .filter((p, i) => p.area >= MIN_PART_KM2 || i < MAX_SMALL_PARTS)
       .map((p) => [p.rings[0], ...p.rings.slice(1).filter((h) => Math.abs(polyAreaKm2([h.slice().reverse()])) >= MIN_PART_KM2)]);
     droppedParts += cleaned.length - kept.length;
     parts += kept.length;
@@ -260,6 +268,17 @@ async function main() {
     minPartKm2: MIN_PART_KM2,
     years: [NATIONS_START, NATIONS_END],
   };
+  if (FINE) {
+    out.meta.variant = 'fine';
+    const json = JSON.stringify(out);
+    fs.writeFileSync(OUT, json);
+    console.log(
+      `✓ ${path.relative(ROOT, OUT)} (fine): ${(json.length / 1024).toFixed(0)} KB, ${shapes.length} shapes, ` +
+        `${parts} polygons (${droppedParts} tiny parts dropped), ~${vertices} vertices`,
+    );
+    return;
+  }
+
   // ---- colours: neighbours (shared border in any year) never share a colour ---------------
   const adj = new Map();
   const addEdge = (a, b) => {

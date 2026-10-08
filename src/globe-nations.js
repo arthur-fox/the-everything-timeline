@@ -194,6 +194,7 @@ export function setNationsTopology(t) {
   topo = t;
   shapeGeometry.clear();
   featureCache.clear();
+  shapeBoxes = null;
 }
 
 export function loadNationsTopology() {
@@ -234,8 +235,128 @@ function geometryForShape(s) {
   return g;
 }
 
+// ---------------------------------------------------------------------------
+// Day 40: close-zoom borders. A second, finer TopoJSON (same table and shape indices,
+// simplified 2 km² instead of 40 km², islands down to 100 km²) is fetched the first time the
+// camera comes close; the globe swaps it in only for shapes near the centre of the view, so
+// phones never mesh the whole fine world at once.
+// ---------------------------------------------------------------------------
+let fineTopo = null;
+let finePromise = null;
+const fineGeometry = new Map();
+let shapeBoxes = null;
+
+export function isNationsFineLoaded() {
+  return Boolean(fineTopo);
+}
+
+export function loadNationsFineTopology() {
+  if (fineTopo) return Promise.resolve(fineTopo);
+  if (finePromise) return finePromise;
+  const url = new URL('./data/nations-fine.topo.json', import.meta.url);
+  finePromise = fetch(url)
+    .then((r) => {
+      if (!r.ok) throw new Error(`fine nations topology HTTP ${r.status}`);
+      return r.json();
+    })
+    .then((t) => {
+      // Guard: only usable if it was built from the same table (same shape indices).
+      if (!topo || t.objects?.shapes?.geometries?.length !== topo.objects.shapes.geometries.length) {
+        throw new Error('fine nations topology does not match the coarse one');
+      }
+      fineTopo = t;
+      fineGeometry.clear();
+      return t;
+    })
+    .catch((err) => {
+      finePromise = null;
+      console.warn('Fine borders unavailable (keeping the coarse ones):', err);
+      throw err;
+    });
+  return finePromise;
+}
+
+function fineGeometryForShape(s) {
+  let g = fineGeometry.get(s);
+  if (!g && fineTopo) {
+    g = feature(fineTopo, fineTopo.objects.shapes.geometries[s]).geometry;
+    if (!g || !g.coordinates?.length) return null;
+    fineGeometry.set(s, g);
+  }
+  return g || null;
+}
+
+/** Per-part lng/lat boxes of each coarse shape (lng unwrapped across the antimeridian). */
+function getShapeBoxes() {
+  if (shapeBoxes || !topo) return shapeBoxes;
+  shapeBoxes = topo.objects.shapes.geometries.map((_, s) => {
+    const g = geometryForShape(s);
+    const boxes = [];
+    for (const poly of g?.coordinates || []) {
+      const ring = poly[0] || [];
+      let lo = Infinity;
+      let hi = -Infinity;
+      let la = Infinity;
+      let lb = -Infinity;
+      for (const [x, y] of ring) {
+        if (x < lo) lo = x;
+        if (x > hi) hi = x;
+        if (y < la) la = y;
+        if (y > lb) lb = y;
+      }
+      if (hi - lo > 180) {
+        lo = Infinity;
+        hi = -Infinity;
+        for (const [x] of ring) {
+          const u = x < 0 ? x + 360 : x;
+          if (u < lo) lo = u;
+          if (u > hi) hi = u;
+        }
+      }
+      if (Number.isFinite(lo)) boxes.push([lo, la, hi, lb]);
+    }
+    return boxes;
+  });
+  return shapeBoxes;
+}
+
+function angularDistDeg(lat1, lng1, lat2, lng2) {
+  const r = Math.PI / 180;
+  const a =
+    Math.sin(((lat2 - lat1) * r) / 2) ** 2 +
+    Math.cos(lat1 * r) * Math.cos(lat2 * r) * Math.sin(((lng2 - lng1) * r) / 2) ** 2;
+  return (2 * Math.asin(Math.min(1, Math.sqrt(a)))) / r;
+}
+
+function boxNearCap(box, lat, lng, radiusDeg) {
+  const [lo, la, hi, lb] = box;
+  const cy = Math.max(la, Math.min(lb, lat));
+  let best = Infinity;
+  for (const L of [lng, lng + 360, lng - 360]) {
+    const cx = Math.max(lo, Math.min(hi, L));
+    best = Math.min(best, angularDistDeg(lat, L, cy, cx));
+  }
+  return best <= radiusDeg;
+}
+
+/**
+ * Shape indices active at `year` with any part within `radiusDeg` of (lat, lng).
+ * @returns {Set<number>}
+ */
+export function nationShapesNear(year, lat, lng, radiusDeg) {
+  const out = new Set();
+  const boxes = getShapeBoxes();
+  if (!boxes) return out;
+  const y = Math.round(Number(year));
+  for (const [, from, to, shape] of topo.versions) {
+    if (y < from || y >= to || out.has(shape)) continue;
+    if ((boxes[shape] || []).some((b) => boxNearCap(b, lat, lng, radiusDeg))) out.add(shape);
+  }
+  return out;
+}
+
 /** Globe.gl polygon features for the nations active at `year` (empty until loaded). */
-export function getNationPolygonFeatures(year) {
+export function getNationPolygonFeatures(year, fineShapes = null) {
   const y = Math.round(Number(year));
   if (!topo || !(y >= NATIONS_START && y <= NATIONS_END)) return [];
   const out = [];
@@ -245,10 +366,11 @@ export function getNationPolygonFeatures(year) {
     if (!ent) continue;
     const per = getNationPeriodAtYear(ent, y);
     if (!per) continue;
-    const key = `${tableId}::${shape}::${per.from}`;
+    const fine = Boolean(fineShapes && fineTopo && fineShapes.has(shape) && fineGeometryForShape(shape));
+    const key = `${tableId}::${shape}::${per.from}${fine ? '::fine' : ''}`;
     let f = featureCache.get(key);
     if (!f) {
-      const geometry = geometryForShape(shape);
+      const geometry = fine ? fineGeometryForShape(shape) : geometryForShape(shape);
       if (!geometry || !geometry.coordinates.length) continue;
       const kind = per.kind || 'state';
       const color = nationColorFor(ent, per);
@@ -257,7 +379,7 @@ export function getNationPolygonFeatures(year) {
       const entityId = NATION_ID_PREFIX + tableId;
       f = {
         // Same shape → same Globe.gl object id, so renames (e.g. Persia → Iran) reuse meshes.
-        __id: `${entityId}::s${shape}`,
+        __id: `${entityId}::s${shape}${fine ? '::fine' : ''}`,
         type: 'Feature',
         geometry,
         entityId,
@@ -269,6 +391,7 @@ export function getNationPolygonFeatures(year) {
         entityType: 'nation',
         nationKind: kind,
         approximation: 'simplified',
+        detail: fine ? 'fine' : 'coarse',
         properties: { entityId, name, regionId: `s${shape}`, color, opacity, entityType: 'nation', nationKind: kind },
       };
       featureCache.set(key, f);
@@ -284,7 +407,7 @@ export function getNationPolygonFeatures(year) {
  * peoples / presence undimmed. Polities are dropped from the handoff year on (no double-painting
  * of, say, the British Empire over independent nations).
  */
-export function getGlobePolygonFeatures(year, { hidePolities = false } = {}) {
+export function getGlobePolygonFeatures(year, { hidePolities = false, fineShapes = null } = {}) {
   const y = Math.round(Number(year));
   const schematic = getOverlayPolygonFeatures(y);
   // Until the TopoJSON arrives, keep the schematic empires so the globe is never empty.
@@ -297,7 +420,7 @@ export function getGlobePolygonFeatures(year, { hidePolities = false } = {}) {
     kept.push(hidePolities ? f : dimmedForNationsEra(f));
   }
   if (hidePolities) return kept;
-  return [...kept, ...getNationPolygonFeatures(y)];
+  return [...kept, ...getNationPolygonFeatures(y, fineShapes)];
 }
 
 /**

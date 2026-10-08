@@ -2992,3 +2992,12 @@ body.globe-fullscreen .event-detail #detail-description {
     display: none;
   }
 }
+
+/* Day 40: GIBS credit only once close-up tiles are on */
+.globe-credit-tiles {
+  display: none;
+}
+
+.globe-credit.has-tiles .globe-credit-tiles {
+  display: inline;
+}

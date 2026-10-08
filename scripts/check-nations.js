@@ -194,8 +194,24 @@ for (const ent of NATION_ENTITIES) {
   for (const id of ent.timelineItemIds || []) if (!known.has(id)) fail(`${ent.id}: unknown timelineItemId ${id}`);
 }
 
+// 8. Day 40: the close-zoom set (nations-fine.topo.json) must be built from the same table, so
+//    the globe can swap shape i's coarse geometry for fine shape i.
+let fineNote = '';
+try {
+  const fine = JSON.parse(readFileSync(new URL('../src/data/nations-fine.topo.json', import.meta.url), 'utf8'));
+  if (fine.objects?.shapes?.geometries?.length !== topo.objects.shapes.geometries.length) {
+    fail(`nations-fine: ${fine.objects?.shapes?.geometries?.length} shapes vs ${topo.objects.shapes.geometries.length} — run npm run build:nations`);
+  }
+  if (JSON.stringify(fine.versions) !== JSON.stringify(topo.versions)) fail('nations-fine: versions differ from nations.topo.json — run npm run build:nations');
+  const emptyFine = fine.objects.shapes.geometries.filter((g) => !g.arcs || !g.arcs.length).length;
+  if (emptyFine) fail(`nations-fine: ${emptyFine} empty shapes`);
+  fineNote = `, fine set in sync (${fine.meta?.simplifyKm2?.toFixed?.(0) ?? '?'} km²)`;
+} catch (err) {
+  fail(`nations-fine.topo.json missing or unreadable (${err.message}) — run npm run build:nations`);
+}
+
 if (failures) {
   console.error(`\n✗ nations: ${failures} check(s) failed`);
   process.exit(1);
 }
-console.log(`✓ nations: ${NATION_ENTITIES.length} nations, ${topo.versions.length} shape-periods, ${STEP_YEARS.length} sample years checked (handoff ${NATIONS_HANDOFF_YEAR}).`);
+console.log(`✓ nations: ${NATION_ENTITIES.length} nations, ${topo.versions.length} shape-periods, ${STEP_YEARS.length} sample years checked (handoff ${NATIONS_HANDOFF_YEAR})${fineNote}.`);
