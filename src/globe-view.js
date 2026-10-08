@@ -11,6 +11,8 @@
  *   shrink toward the surface as the camera comes in (band order kept), caps get finer curvature
  *   close up so they never dip under the globe, and borders get crisper / fills lighter when close.
  *   `?at=lat,lng,alt` opens the camera at a given point of view.
+ * Day 40: map-key layer toggles (Polities / Nations, Peoples, Presence; `?hide=`) — with Nations off,
+ *   peoples / presence come back undimmed so they can be tapped after 1914.
  * Mounted only while Globe mode is active; disposed on leave.
  */
 
@@ -227,8 +229,40 @@ function densifyFeature(f) {
   return d;
 }
 
+/**
+ * Day 40: map-key layer toggles (Arthur: "toggle on/off Polities/Peoples/Presence in
+ * full-screen mode"). 'polities' covers the hand-drawn empires and, from 1914, the nations.
+ */
+export const GLOBE_LAYER_KEYS = ['polities', 'peoples', 'presence'];
+let hiddenLayers = new Set();
+
+function layerKeyForFeature(d) {
+  const layer = featureLayer(d);
+  if (layer === 'people') return 'peoples';
+  if (layer === 'presence') return 'presence';
+  return 'polities';
+}
+
 function polygonsForYear(year) {
-  return getGlobePolygonFeatures(year).map(densifyFeature);
+  const all = getGlobePolygonFeatures(year, { hidePolities: hiddenLayers.has('polities') });
+  const shown = hiddenLayers.size ? all.filter((f) => !hiddenLayers.has(layerKeyForFeature(f))) : all;
+  return shown.map(densifyFeature);
+}
+
+/**
+ * Hide / show whole layers without remounting (keys from GLOBE_LAYER_KEYS).
+ * @param {Iterable<string>} keys layers to hide
+ */
+export function setGlobeHiddenLayers(keys) {
+  const next = new Set([...(keys || [])].filter((k) => GLOBE_LAYER_KEYS.includes(k)));
+  const same = next.size === hiddenLayers.size && [...next].every((k) => hiddenLayers.has(k));
+  if (same) return;
+  hiddenLayers = next;
+  if (globe && mounted && Number.isFinite(currentPolygonYear)) setGlobeOverlayYear(currentPolygonYear);
+}
+
+export function getGlobeHiddenLayers() {
+  return new Set(hiddenLayers);
 }
 
 function featureLayer(d) {

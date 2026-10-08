@@ -54,7 +54,7 @@ import { moroccoItems, moroccoCategories } from './countries/morocco.js';
 import { iraqItems, iraqCategories } from './countries/iraq.js';
 import { philippinesItems, philippinesCategories } from './countries/philippines.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
-import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick } from './globe-view.js';
+import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick, setGlobeHiddenLayers, GLOBE_LAYER_KEYS } from './globe-view.js';
 import {
   getOverlayLayerFilter,
   setOverlayLayerFilter,
@@ -307,6 +307,8 @@ const COMPARE_DIVIDER_H = 30;
 let compareMode = false;
 /** Day 37: full-screen globe (only the globe, its key and the year scrubber). */
 let globeFullscreen = false;
+/** Day 40: map layers switched off from the key ('polities' | 'peoples' | 'presence'); all on by default. */
+let globeHiddenLayers = new Set();
 let compareLeft = 'technology';
 let compareRight = 'wars';
 let compareShared = null; // { viewStart, viewEnd, targetStart, targetEnd, minYear, maxYear }
@@ -602,6 +604,7 @@ function syncDeepLinkUrl() {
       params.set('year', String(globeYear));
       if (selectedGlobeEntityId) params.set('entity', selectedGlobeEntityId);
       if (globeFullscreen) params.set('fullscreen', '1');
+      if (globeHiddenLayers.size) params.set('hide', GLOBE_LAYER_KEYS.filter((k) => globeHiddenLayers.has(k)).join(','));
     } else {
       const selectedId = getSelectedDeepLinkId();
       if (selectedId) {
@@ -807,8 +810,9 @@ function applyDeepLinkFromUrl() {
   const layerRaw = params.get('layer');
   const entityRaw = params.get('entity');
   const fullscreenRaw = params.get('fullscreen');
+  const hideRaw = params.get('hide');
 
-  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '')) {
+  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '') && (hideRaw == null || hideRaw === '')) {
     updateActiveViewChrome();
     updateFiltersUI();
     return;
@@ -856,6 +860,9 @@ function applyDeepLinkFromUrl() {
     if (!focused && year != null && year !== '') {
       centerTimelineOnYear(year);
     }
+
+    // Day 40: ?hide=peoples,presence (also accepts "nations" for polities).
+    if (hideRaw != null) setGlobeLayersHidden(parseHiddenLayersParam(hideRaw), { syncUrl: false });
 
     // Globe entity deep link: restore after year + layer so activity check uses the right state
     if (entityRaw && isGlobeView()) {
@@ -3275,6 +3282,73 @@ document.addEventListener('keydown', (e) => {
   e.preventDefault();
 });
 
+// ------------------------------------------------------------
+// Day 40 — map-key layer toggles (Arthur: "toggle on/off Polities/Peoples/Presence in
+// full-screen mode … keep them all on by default"). The key items are buttons in both the
+// normal and full-screen globe; the state lives in `globeHiddenLayers`, survives entering /
+// leaving full screen, and goes in the URL as ?hide=peoples,presence. "Polities" covers the
+// hand-drawn empires and, from 1914, the nations (the key relabels itself at the handoff).
+// ------------------------------------------------------------
+function parseHiddenLayersParam(raw) {
+  const out = new Set();
+  for (const part of String(raw || '').split(',')) {
+    const k = part.trim().toLowerCase();
+    if (k === 'nations' || k === 'nation' || k === 'polity' || k === 'polities') out.add('polities');
+    else if (k === 'people' || k === 'peoples') out.add('peoples');
+    else if (k === 'presence') out.add('presence');
+  }
+  return out;
+}
+
+function syncGlobeLegendToggleUI() {
+  const labels = { polities: 'polities', peoples: 'peoples', presence: 'presence' };
+  document.querySelectorAll('.globe-legend-item[data-layer]').forEach((btn) => {
+    const key = btn.dataset.layer;
+    const hidden = globeHiddenLayers.has(key);
+    const noun = btn.classList.contains('is-nation-key') ? 'nations' : labels[key] || key;
+    btn.classList.toggle('is-off', hidden);
+    btn.setAttribute('aria-pressed', hidden ? 'false' : 'true');
+    btn.title = hidden ? `Show ${noun}` : `Hide ${noun}`;
+  });
+}
+
+function setGlobeLayersHidden(keys, { syncUrl = true } = {}) {
+  globeHiddenLayers = new Set([...keys].filter((k) => GLOBE_LAYER_KEYS.includes(k)));
+  // A selected shape on a layer that just went away is deselected (its popover closes).
+  if (selectedGlobeEntityId) {
+    const sel = selectedGlobeEntityId;
+    const type = isNationEntityId(sel) ? 'nation' : getSpatialEntityById(sel)?.type;
+    const key = type === 'people' ? 'peoples' : type === 'presence' ? 'presence' : 'polities';
+    if (globeHiddenLayers.has(key)) clearGlobeEntitySelection({ syncUrl: false, closeDetail: true });
+  }
+  setGlobeHiddenLayers(globeHiddenLayers);
+  syncGlobeLegendToggleUI();
+  updateGlobeOverlayPanel();
+  if (syncUrl && isGlobeView()) syncDeepLinkUrl();
+}
+
+function toggleGlobeLayer(key) {
+  const next = new Set(globeHiddenLayers);
+  if (next.has(key)) next.delete(key);
+  else next.add(key);
+  setGlobeLayersHidden(next);
+}
+
+function revealGlobeLayerFor(key) {
+  if (!globeHiddenLayers.has(key)) return;
+  const next = new Set(globeHiddenLayers);
+  next.delete(key);
+  setGlobeLayersHidden(next, { syncUrl: false });
+}
+
+document.querySelectorAll('.globe-legend-item[data-layer]').forEach((btn) => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleGlobeLayer(btn.dataset.layer);
+  });
+});
+syncGlobeLegendToggleUI();
+
 // Keep polygon-click handler registered even across remounts
 setOnGlobePolygonClick((entityId) => {
   if (!isGlobeView()) return;
@@ -3420,6 +3494,9 @@ function selectGlobeEntity(entityId, { syncUrl = true, openDetail = true, fromDe
     return false;
   }
 
+  // Day 40: selecting something on a hidden layer (sidebar, deep link) switches that layer back on.
+  revealGlobeLayerFor(entity.type === 'people' ? 'peoples' : entity.type === 'presence' ? 'presence' : 'polities');
+
   // Ensure layer shows this entity type when selecting from a filtered view
   const layer = getOverlayLayerFilter();
   if (layer === 'polities' && (entity.type === 'people' || entity.type === 'presence')) {
@@ -3492,6 +3569,7 @@ function selectGlobeNation(entityId, { syncUrl = true, openDetail = true, fromDe
     setGlobeYear(y, { syncUrl: false });
   }
   const entity = getNationEntityById(entityId, globeYear);
+  revealGlobeLayerFor('polities');
   selectedGlobeEntityId = entity.id;
   setGlobeSelectedEntity(entity.id);
   updateGlobeOverlayPanel();
@@ -3558,7 +3636,8 @@ function updateGlobeOverlayPanel() {
     btn.className =
       'globe-overlay-item' +
       (isPresence ? ' is-presence' : isPeople ? ' is-people' : ' is-polity') +
-      (selected ? ' is-selected' : '');
+      (selected ? ' is-selected' : '') +
+      (globeHiddenLayers.has(isPresence ? 'presence' : isPeople ? 'peoples' : 'polities') ? ' is-layer-hidden' : '');
     btn.dataset.entityId = entity.id;
     btn.setAttribute('aria-pressed', selected ? 'true' : 'false');
     btn.setAttribute('aria-label', 'Show details for ' + entity.name);
@@ -3620,7 +3699,7 @@ function appendGlobeNationsGroup(nations) {
   const li = document.createElement('li');
   li.className = 'globe-overlay-list-entry globe-nations-group-entry';
   const details = document.createElement('details');
-  details.className = 'globe-nations-group';
+  details.className = 'globe-nations-group' + (globeHiddenLayers.has('polities') ? ' is-layer-hidden' : '');
   const hasSelected = nations.some(({ entity }) => entity.id === selectedGlobeEntityId);
   details.open = globeNationsGroupOpen || hasSelected;
   details.addEventListener('toggle', () => {
@@ -3673,6 +3752,7 @@ function updateGlobeYearUI() {
   const label = formatGlobeYear(globeYear);
   if (globeYearLabel) globeYearLabel.textContent = label;
   if (globeYearCaption) globeYearCaption.textContent = globeCaptionForYear(globeYear);
+  ensureScrubWindowContains(globeYear);
   if (globeYearSlider) {
     globeYearSlider.value = String(globeYear);
     globeYearSlider.setAttribute('aria-valuenow', String(globeYear));
@@ -3708,11 +3788,207 @@ function setGlobeYear(yearRaw, { syncUrl = true } = {}) {
   if (syncUrl) syncDeepLinkUrl();
 }
 
+// ------------------------------------------------------------
+// Day 40 — zoomable year scrubber (Arthur: "scrubbing should be able to zoom in a bit … the
+// last 100 years a lot moves around but it's hard to get that fine-grained scrubbing").
+// The slider shows a time window [lo, hi] inside 3000 BCE–2025: scroll the wheel or pinch on
+// it to zoom around that point, +/− buttons zoom around the current year, "All" resets.
+// It always moves in single years; dragging into an end of a zoomed window pages it along;
+// ←/→ step one year anywhere in globe mode (Shift: ten). The window always contains the year.
+// ------------------------------------------------------------
+const SCRUB_MIN_SPAN = 12;
+const scrubWindow = { lo: GLOBE_YEAR_MIN, hi: GLOBE_YEAR_MAX };
+const scrubTrack = document.getElementById('globe-scrub-track');
+const scrubRangeLabel = document.getElementById('globe-scrub-range');
+const scrubZoomInBtn = document.getElementById('globe-scrub-zoom-in');
+const scrubZoomOutBtn = document.getElementById('globe-scrub-zoom-out');
+const scrubResetBtn = document.getElementById('globe-scrub-reset');
+const scrubTickEls = ['globe-tick-start', 'globe-tick-mid', 'globe-tick-end'].map((id) => document.getElementById(id));
+
+function isScrubZoomed() {
+  return scrubWindow.lo > GLOBE_YEAR_MIN || scrubWindow.hi < GLOBE_YEAR_MAX;
+}
+
+function shortGlobeYear(y) {
+  return y < 0 ? `${Math.abs(y).toLocaleString()} BCE` : y === 0 ? '1 BCE' : y < 1000 ? `${y} CE` : String(y);
+}
+
+function applyScrubWindow() {
+  const { lo, hi } = scrubWindow;
+  if (globeYearSlider) {
+    globeYearSlider.min = String(lo);
+    globeYearSlider.max = String(hi);
+    globeYearSlider.setAttribute('aria-valuemin', String(lo));
+    globeYearSlider.setAttribute('aria-valuemax', String(hi));
+    globeYearSlider.value = String(globeYear);
+  }
+  const zoomed = isScrubZoomed();
+  const span = hi - lo;
+  if (scrubRangeLabel) {
+    scrubRangeLabel.textContent = zoomed ? `${shortGlobeYear(lo)}–${shortGlobeYear(hi)} · ${span} yrs` : 'All years';
+  }
+  const mid = Math.round((lo + hi) / 2);
+  const ticks = [lo, mid, hi];
+  scrubTickEls.forEach((el, i) => {
+    if (el) el.textContent = shortGlobeYear(ticks[i]);
+  });
+  document.body.classList.toggle('globe-scrub-zoomed', zoomed);
+  if (scrubResetBtn) scrubResetBtn.disabled = !zoomed;
+  if (scrubZoomOutBtn) scrubZoomOutBtn.disabled = !zoomed;
+  if (scrubZoomInBtn) scrubZoomInBtn.disabled = span <= SCRUB_MIN_SPAN;
+}
+
+/** Clamp to the full range and keep the current year inside the window (shifting, not resizing). */
+function setScrubWindow(lo, hi) {
+  let span = Math.round(hi - lo);
+  span = Math.max(SCRUB_MIN_SPAN, Math.min(GLOBE_YEAR_MAX - GLOBE_YEAR_MIN, span));
+  let a = Math.round(lo);
+  a = Math.max(GLOBE_YEAR_MIN, Math.min(GLOBE_YEAR_MAX - span, a));
+  if (globeYear < a) a = Math.max(GLOBE_YEAR_MIN, globeYear);
+  if (globeYear > a + span) a = Math.min(GLOBE_YEAR_MAX - span, globeYear);
+  scrubWindow.lo = a;
+  scrubWindow.hi = a + span;
+  applyScrubWindow();
+}
+
+function ensureScrubWindowContains(year) {
+  if (year >= scrubWindow.lo && year <= scrubWindow.hi) return;
+  // Jumps (presets, deep links, sidebar) keep the zoom level and centre the window on the year.
+  const span = scrubWindow.hi - scrubWindow.lo;
+  setScrubWindow(year - span / 2, year + span / 2);
+}
+
+/** Zoom by `factor` (<1 zooms in) keeping `anchorYear` at the same spot on the slider. */
+function zoomScrubWindow(factor, anchorYear = globeYear) {
+  const { lo, hi } = scrubWindow;
+  const span = hi - lo;
+  const nextSpan = Math.max(SCRUB_MIN_SPAN, Math.min(GLOBE_YEAR_MAX - GLOBE_YEAR_MIN, span * factor));
+  if (Math.round(nextSpan) === span) return;
+  const t = span > 0 ? (anchorYear - lo) / span : 0.5;
+  setScrubWindow(anchorYear - t * nextSpan, anchorYear - t * nextSpan + nextSpan);
+}
+
+function scrubYearAtClientX(clientX) {
+  if (!globeYearSlider) return globeYear;
+  const r = globeYearSlider.getBoundingClientRect();
+  const t = r.width > 0 ? Math.max(0, Math.min(1, (clientX - r.left) / r.width)) : 0.5;
+  return scrubWindow.lo + t * (scrubWindow.hi - scrubWindow.lo);
+}
+
 if (globeYearSlider) {
   globeYearSlider.addEventListener('input', (e) => {
-    setGlobeYear(e.target.value);
+    if (scrubPinch) {
+      // Two fingers are zooming the scrubber — don't let the first finger drag the year too.
+      e.target.value = String(globeYear);
+      return;
+    }
+    const y = Math.round(Number(e.target.value));
+    setGlobeYear(y);
+    // Dragging into either end of a zoomed window pages it along (5% of the window per move).
+    const step = Math.max(1, Math.round((scrubWindow.hi - scrubWindow.lo) * 0.05));
+    if (isScrubZoomed() && y >= scrubWindow.hi && scrubWindow.hi < GLOBE_YEAR_MAX) {
+      setScrubWindow(scrubWindow.lo + step, scrubWindow.hi + step);
+    } else if (isScrubZoomed() && y <= scrubWindow.lo && scrubWindow.lo > GLOBE_YEAR_MIN) {
+      setScrubWindow(scrubWindow.lo - step, scrubWindow.hi - step);
+    }
   });
 }
+
+/** +/− buttons: zoom and centre the window on the current year (clamped at the ends). */
+function zoomScrubWindowAroundYear(factor) {
+  const span = scrubWindow.hi - scrubWindow.lo;
+  const nextSpan = Math.max(SCRUB_MIN_SPAN, Math.min(GLOBE_YEAR_MAX - GLOBE_YEAR_MIN, span * factor));
+  setScrubWindow(globeYear - nextSpan / 2, globeYear + nextSpan / 2);
+}
+
+if (scrubZoomInBtn) scrubZoomInBtn.addEventListener('click', () => zoomScrubWindowAroundYear(0.25));
+if (scrubZoomOutBtn) scrubZoomOutBtn.addEventListener('click', () => zoomScrubWindowAroundYear(4));
+if (scrubResetBtn) scrubResetBtn.addEventListener('click', () => setScrubWindow(GLOBE_YEAR_MIN, GLOBE_YEAR_MAX));
+
+if (scrubTrack) {
+  // Wheel / trackpad: vertical zooms around the pointer, horizontal pans the window.
+  scrubTrack.addEventListener(
+    'wheel',
+    (e) => {
+      e.preventDefault();
+      const span = scrubWindow.hi - scrubWindow.lo;
+      const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 400 : 1;
+      const dx = e.deltaX * unit;
+      const dy = e.deltaY * unit;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        const w = globeYearSlider?.getBoundingClientRect().width || 600;
+        const shift = (dx / w) * span;
+        // Panning may leave the year behind: bring the year along at the window edge.
+        const lo = Math.max(GLOBE_YEAR_MIN, Math.min(GLOBE_YEAR_MAX - span, scrubWindow.lo + shift));
+        const y = Math.max(Math.round(lo), Math.min(Math.round(lo + span), globeYear));
+        if (y !== globeYear) setGlobeYear(y);
+        setScrubWindow(lo, lo + span);
+        return;
+      }
+      zoomScrubWindow(Math.exp(dy * 0.002), scrubYearAtClientX(e.clientX));
+    },
+    { passive: false },
+  );
+}
+
+// Pinch on the scrubber (phones / tablets): zoom around the midpoint between the fingers.
+let scrubPinch = null;
+let scrubTouchStartYear = null;
+if (scrubTrack) {
+  const dist = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+  scrubTrack.addEventListener(
+    'touchstart',
+    (e) => {
+      if (e.touches.length === 1) scrubTouchStartYear = globeYear;
+      if (e.touches.length === 2) {
+        if (scrubTouchStartYear != null && scrubTouchStartYear !== globeYear) setGlobeYear(scrubTouchStartYear);
+        const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+        scrubPinch = {
+          d0: Math.max(10, dist(e.touches)),
+          lo: scrubWindow.lo,
+          hi: scrubWindow.hi,
+          anchor: scrubYearAtClientX(midX),
+        };
+        e.preventDefault();
+      }
+    },
+    { passive: false },
+  );
+  scrubTrack.addEventListener(
+    'touchmove',
+    (e) => {
+      if (!scrubPinch || e.touches.length < 2) return;
+      e.preventDefault();
+      const span0 = scrubPinch.hi - scrubPinch.lo;
+      const nextSpan = Math.max(SCRUB_MIN_SPAN, Math.min(GLOBE_YEAR_MAX - GLOBE_YEAR_MIN, (span0 * scrubPinch.d0) / Math.max(10, dist(e.touches))));
+      const t = (scrubPinch.anchor - scrubPinch.lo) / span0;
+      setScrubWindow(scrubPinch.anchor - t * nextSpan, scrubPinch.anchor - t * nextSpan + nextSpan);
+    },
+    { passive: false },
+  );
+  const endPinch = (e) => {
+    if (e.touches.length < 2 && scrubPinch) {
+      scrubPinch = null;
+      if (globeYearSlider) globeYearSlider.value = String(globeYear);
+    }
+    if (e.touches.length === 0) scrubTouchStartYear = null;
+  };
+  scrubTrack.addEventListener('touchend', endPinch);
+  scrubTrack.addEventListener('touchcancel', endPinch);
+}
+
+// ←/→ step one year (Shift: ten) anywhere in globe mode; the slider itself already does this natively.
+document.addEventListener('keydown', (e) => {
+  if (!isGlobeView() || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return;
+  if (e.altKey || e.ctrlKey || e.metaKey) return;
+  const t = e.target;
+  if (t === globeYearSlider) return;
+  if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+  e.preventDefault();
+  setGlobeYear(globeYear + (e.key === 'ArrowRight' ? 1 : -1) * (e.shiftKey ? 10 : 1));
+});
+
+applyScrubWindow();
 
 document.querySelectorAll('.globe-year-preset').forEach((btn) => {
   btn.addEventListener('click', () => setGlobeYear(btn.dataset.year));

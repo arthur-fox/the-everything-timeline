@@ -622,6 +622,15 @@ Rule of thumb: **modern labelled basemaps show today's borders and city names**,
   - Triangle count at 1960 is up ~9% at the default view (115k vs 106k).
 - **Still to come:** the Blue Marble texture is blurry at the closest zoom (Day 40 tiles fix that), and nation borders are simplified to ~40 km² (Day 42 adds a finer set close up).
 
+#### Day 40 (review A) — Layer toggles and a zoomable year scrubber — in review
+
+Arthur, after #43/#44: "I should be able to toggle on/off Polities/Peoples/Presence in full-screen mode — definitely keep them all on by default" and "scrubbing should be able to zoom in a bit because like the last 100 years a lot moves around".
+
+- **Layer toggles:** the map key on the globe is now three toggle buttons, Polities (it reads "Nations" from 1914), Peoples and Presence. All on by default; tap to hide or show (struck through when off). They work in full screen and the normal globe, on desktop and phone (≥ 32 px touch targets). The state survives leaving and re-entering full screen and goes in the URL as `?hide=peoples,presence` (`nations` is accepted for `polities`). Selecting something on a hidden layer (sidebar row, deep link) switches that layer back on; hiding the selected shape's layer deselects it. Sidebar rows on a hidden layer are dimmed.
+- **Tapping peoples and presence after 1914:** with Nations off, peoples and presence come back to full strength and their own band, so they can be tapped on land again (they sit under the nations, dimmed, when Nations are on).
+- **Zoomable scrubber:** the slider now shows a time window. Scroll the wheel (or pinch on a phone) on the scrubber to zoom around that point, horizontal trackpad scroll pans, `+` / `−` zoom ×4 around the current year, and `All` resets. A label shows the window ("1881–1960 · 79 yrs") and the tick labels follow it. Steps are always one year (down to a 12-year window). Dragging into either end of a zoomed window pages it along; presets and deep links recentre the window on their year. ←/→ step one year anywhere in globe mode (Shift: ten).
+- **Verified (headless, 1280×800 and 390×844 touch):** layer counts per toggle (1960: 176 nations / 69 peoples / 62 presence → 0 nations), tapping central India with Nations off opens "Dravidian peoples", the URL round-trips (`hide=…` with and without full screen), pinch 314 → 55 years without moving the year, wheel zoom, edge paging, arrow keys.
+
 #### Day 40 — Sharper imagery (NASA GIBS tiles)
 
 Switch to `globeTileEngineUrl` with GIBS Blue Marble Next Generation (z0–8, no key, no labels). Keep the current texture as the far-zoom and offline fallback. Add a credit line, a tile-error fallback and `globeTileEngineMaxLevel(8)`. Optional later: shaded relief or a Sentinel-2 layer behind a flag, only if the licence fits.
@@ -640,11 +649,62 @@ Hand-drawn sub-province cut lines (public domain, our own) for the biggest appro
 
 #### Day 44 — Extend nations back to 1880 / 1815
 
-Push the table earlier (Scramble for Africa, German and Italian unification, Latin American independence) and move the handoff year earlier, era by era, keeping the schematic empires before that.
+Superseded by Phase 4c step group 1 (real nation borders 1815–1914), which splits this into three daily steps.
 
 #### Later — evaluate MapLibre GL globe
 
 Only if street-level zoom becomes a goal. Spike first: rendering parity for overlays, the hatch shader and the flicker fix.
+
+## Phase 4c — A richer, more honest world (Arthur, 8 Oct 2026)
+
+Arthur's next asks, in his order. This phase starts after the Day 40 review PRs (layer toggles and scrubber zoom; close-zoom fidelity) and the remaining Phase 4b steps (Day 41 dated cities, Day 42 finer borders if not already shipped with Day 40, Day 43 finer splits). Each step is sized for one day and ships as its own PR with a preview link; day numbers continue from wherever Phase 4b ends.
+
+### 1. Real nation borders, 1815–1914 (replaces Phase 4b Day 44)
+
+Data rule as Day 38: Natural Earth (public domain) units regrouped by a hand-written, dated table, plus our own hand-drawn cut lines (public domain) where a historical border runs through a modern province. CShapes 2.0 (CC BY-NC-SA) and aourednik/historical-basemaps (GPL-3.0) are references for checking dates only, never bundled. Validation as `check-nations.js`: no overlaps or gaps, city-in-nation checks at real dates, colonies in their ruler's colour.
+
+- **Step 1.1 — 1880–1914.** Scramble for Africa (Berlin Conference 1884–85; colonial lines dated as they were agreed, protectorates vs colonies), late Ottoman decline (Bulgaria 1878/1908, Bosnia 1878/1908, Crete, Libya 1912, the Balkan Wars 1912–13), Korea 1910, Siam's losses. Move the schematic-empire handoff to 1880.
+- **Step 1.2 — 1848–1880.** German unification (1864–71, with Alsace-Lorraine), Italian unification (1859–70), US westward expansion (Mexican Cession 1848, Gadsden 1853, Alaska 1867; organised territories paler than states), Canadian Confederation 1867, the Paraguayan War, Meiji Japan.
+- **Step 1.3 — 1815–1848.** Congress of Vienna Europe (German Confederation, Austrian Empire, the Two Sicilies), Latin American independence (1810s–1820s: Gran Colombia 1819–31, the Federal Republic of Central America, Brazil 1822, Mexico 1821), Greece 1830, Belgium 1830, Texas 1836. Move the handoff to 1815.
+- **Honest limits:** province-level units fit poorly for US territories and inland African colonial lines; those get hand-drawn cuts, flagged as approximate (see group 4).
+
+### 2. Country and place labels that get more detailed as you zoom
+
+- **Step 2.1 — Country labels.** Each nation / polity shows its name for the year (e.g. "Gold Coast", then "Ghana") at a stable interior point, sized by area, with collision culling and back-of-globe hiding. Big states only from orbit; small ones appear as you zoom in. Phone budget: ≤ 60 labels on screen.
+- **Step 2.2 — Place labels by zoom.** Seas, oceans, mountain ranges, deserts and big rivers from Natural Earth physical labels (public domain), then regions and provinces close up. These stay era-neutral (no modern admin names before they existed).
+
+### 3. Dated cities and pinned events
+
+Builds on Phase 4b Day 41 (the first ~300 dated cities).
+
+- **Step 3.1 — More cities, renamed over time.** ~1,000 cities including ancient ones (Ur, Memphis, Babylon, Chang'an, Teotihuacan) with founding years, abandonment, and dated names (Byzantium → Constantinople 330 → Istanbul 1930, Edo → Tokyo 1868, Tenochtitlan → Mexico City). Capitals marked for the year.
+- **Step 3.2 — Events pinned to places.** Battles, treaties and other timeline items get coordinates, so they appear on the globe as you scrub past them (fading in a few years before and out a few years after), and tapping one opens its timeline detail. Validate that every pinned event's place exists at that date.
+- **Step 3.3 — Event density.** Clustering when zoomed out, filters by topic (wars, science, religion …) that match the timeline's filters.
+
+### 4. Showing uncertainty
+
+- **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
+- **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
+
+### 5. Movement: trade routes and migrations
+
+- **Step 5.1 — Trade routes.** Dated route lines with animated flow along them: the Silk Roads, Indian Ocean monsoon trade, trans-Saharan caravans, the Amber Road, the Hanseatic League, the Manila galleons and the Atlantic triangle. Each route has its own active years and a "Flows" toggle in the key.
+- **Step 5.2 — Migrations.** Major migrations as flows over time: out of Africa (schematic), the Bantu expansion, the Austronesian voyages, Indo-European spread, the Migration Period, the Atlantic slave trade, 19th-century European emigration, the 1947 Partition. Width hints at scale; each has sources and an uncertainty level.
+
+### 6. Better coverage between empires
+
+- **Step 6.1 — The early medieval world (500–1000).** Merovingian and Carolingian Francia, Anglo-Saxon kingdoms, the Visigoths, the Avars, the Khazars, the Göktürks and Uyghurs, Tang neighbours (Tibetan Empire, Nanzhao, Silla), Srivijaya.
+- **Step 6.2 — Inland Africa.** Kanem–Bornu, Kongo, Great Zimbabwe and Mutapa, Luba and Lunda, Oyo, Benin, Asante, the Sokoto Caliphate, Buganda, and Ethiopia over time.
+- **Step 6.3 — Southeast Asia.** Funan, Champa, the Khmer Empire, Pagan, Majapahit, Ayutthaya, Đại Việt, Malacca, Mataram.
+- **Step 6.4 — Native American nations after 1500.** The Haudenosaunee, Cherokee, Muscogee, Powhatan, Lakota and Comanche, the Mapuche and others, with dated territories, removals (1830s) and reservations. Sourced carefully, with tribal nations' own histories where available and uncertainty shown honestly.
+
+### 7. Space background
+
+Arthur: replace the plain background with a starfield and space scene.
+
+- **Step 7.1 — Stars and the Milky Way.** A celestial sphere behind the globe: stars from the Yale Bright Star Catalogue (~9,100 naked-eye stars; generally treated as public domain, confirm before bundling) or HYG (CC BY-SA, so only if we accept share-alike for that data file), sized and tinted by magnitude and colour index, plus a Milky Way band from a public-domain NASA sky map (e.g. NASA SVS Deep Star Maps). Aligned to the celestial sphere (Earth's axis = the celestial pole), so the sky rotates consistently as you spin the globe.
+- **Step 7.2 — Constellations.** Constellation lines and names in roughly correct positions, from a public-domain / CC0 source where one exists (otherwise a permissive one such as d3-celestial's BSD-3 data, checked against our ISC licence), with a toggle. Optional: precession by year, so the pole star is Thuban around 3000 BCE and Polaris today.
+- **Phone budget:** one point cloud and one texture; no per-frame CPU work.
 
 ## Phase 5 — Content expansion
 
@@ -768,7 +828,8 @@ A sensible near-term sequence:
 30. Further living-border / topology polish — ocean gaps (polygon holes) + eased morph (Day 32 / PR F slice 4). ✅
 31. Phase 5 content expansion — country pack 1 (Peru, Ghana, Kenya, Morocco, Iraq, Philippines; 32 → 38 countries; globe links synced) — Day 33. ✅
 32. Review feedback round (Arthur, 7 Oct): A flicker root-cause fix (Day 34) ✅; B peoples vs polities distinct + Both always + peoples persist (Day 35) ✅; C presence fills modern globe (Day 36) ✅; D fullscreen globe mode (Day 37) ✅. All four in review as stacked PRs.
-33. Phase 4b (Arthur, 8 Oct: deep zoom + real borders) — Day 38 modern nations 1914–2025 ✅ (in review) → Day 39 zoom closer without floating shapes ✅ (in review); next Day 40 NASA GIBS tiles → Day 41 dated cities → Day 42 nations detail by zoom → Day 43 finer splits → Day 44 nations back to 1880/1815.
-34. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
+33. Phase 4b (Arthur, 8 Oct: deep zoom + real borders) — Day 38 modern nations 1914–2025 ✅ (merged) → Day 39 zoom closer without floating shapes ✅ (merged) → Day 40 review A: layer toggles + zoomable scrubber (in review) → Day 40 NASA GIBS tiles + Day 42 finer borders (review B) → Day 41 dated cities → Day 43 finer splits.
+34. Phase 4c (Arthur, 8 Oct) — real nations 1815–1914 → labels by zoom → dated cities + pinned events → showing uncertainty → trade routes and migrations → coverage between empires → space background (stars, Milky Way, constellations).
+35. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
