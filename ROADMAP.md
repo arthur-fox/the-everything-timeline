@@ -482,6 +482,28 @@ Denser overlays (71 entities) flickered where footprints overlapped — classic 
 - Softened white `polygonStrokeColor` (0.4 → 0.12) so edges do not shimmer on overlaps. ✅
 - Kept Globe.gl colour accessors (no custom DoubleSide MeshBasicMaterial — Day 20 planet-tint bug). Bump map stays off; `polygonsTransitionDuration(0)`. ✅
 
+#### Review feedback round (Arthur, 7 Oct 2026) — Days 34–37
+
+PRs #31–#38 merged to main on 7 Oct 2026 (in order, merge commits). Arthur's review of that stack produced five follow-ups, shipped as stacked PRs (A → B → C → D) because they touch the same globe files:
+
+- **A · Day 34 — real overlap-flicker fix.** ✅ (this PR) — see Day 34 below.
+- **B · Day 35 — peoples vs polities visually distinct + "Both" always on + peoples persist to today.** Next.
+- **C · Day 36 — Presence fills the modern globe** (near-complete land cover by ~1900–2025, leaving deserts, tundra, ice sheets and core rainforests sparse). Planned.
+- **D · Day 37 — fullscreen globe mode** (`?fullscreen=1`; only the year scrubber + clickable shapes remain; Esc / button to exit). Planned.
+
+#### Day 34 — Overlap flicker: root cause + fix — done
+
+Arthur still saw flicker after Day 26, worst over Mughal India and around the Day 32 sea-gap shapes. Day 26 treated it as an altitude problem; the real causes were in how the meshes were drawn:
+
+- **Altitude steps were below depth precision.** Day 26 steps were 0.00011 globe radii = 0.011 scene units; Globe.gl's camera (near = 0.05) only resolves ~0.05 units at the default view and ~0.2–0.3 zoomed out, so neighbouring slots still z-fought.
+- **Translucent caps wrote depth.** Globe.gl's default cap material keeps `depthWrite: true` even when translucent, so whichever overlapping cap drew first punched the other out.
+- **Invisible side walls.** `polygonSideColor(() => 'rgba(0,0,0,0)')` is a truthy colour, so every polygon also built transparent side walls that still wrote depth.
+- **Draw order flipped with the camera.** Three.js re-sorts translucent meshes by bounding-sphere distance every frame; as the globe turned, overlapping shapes swapped order, so the visible "winner" kept changing.
+
+Fix (globe-view): side colour `null` (no walls); caps use a shared translucent `MeshBasicMaterial` via `polygonCapMaterial` with `depthWrite: false` (same DoubleSide face handling as Globe.gl's default — not a new material type), so overlays depth-test only against the opaque globe; every polygon group gets a stable `renderOrder` (presence → peoples → polities → selected, then a hash slot), so blending order never depends on the camera; layer-aware altitude bands (0.005 / 0.0075 / 0.01) keep picking sensible (polities on top). Features also get a stable `__id` (`entity::region`) so Globe.gl reuses meshes while scrubbing instead of rebuilding them with random ids. `?globeDebug=1` exposes the Globe.gl instance for screenshot QA. ✅
+
+Verified with headless-Chrome renders at several zooms (altitude 0.9–3.0) and tiny camera nudges: Mughal India 1650/1700, Rome 117, Ottomans 1683. Before: blotchy interior patches that change on every nudge (Rome's interior had ~31k changed pixels after erosion for a 0.3% zoom nudge); after: only 1-px edge shifts change (Ottomans 1683: 12k → 11 eroded pixels; Mughal 1650 zoomed out: 11 → 0). Tap-to-select still works (Mughal at 1650). Caveat: where one entity's own regions overlap (e.g. Mughal core + Deccan), the overlap reads slightly darker — stable, not flicker.
+
 #### PR F — Living / morphing borders (continued)
 
 Remaining: further mid-keyframes only where morph still looks stiff; optional finer coastline holes (e.g. Red Sea, Baltic, Great Lakes) only where a ring truly wraps them. Ocean gaps (polygon holes) ✅ + eased morph ✅ Day 32. Polity fill ✅; people packs ✅ (Day 27 + Day 28); presence ✅ Day 29 + densify Day 31; timeline↔globe ✅ Day 30 / PR E. Still schematic / honest, not GIS-perfect. PR F is essentially complete — next focus moves to Phase 5 content expansion.
@@ -632,6 +654,7 @@ A sensible near-term sequence:
 29. Timeline ↔ globe integration (PR E) — Day 30. ✅
 30. Further living-border / topology polish — ocean gaps (polygon holes) + eased morph (Day 32 / PR F slice 4). ✅
 31. Phase 5 content expansion — country pack 1 (Peru, Ghana, Kenya, Morocco, Iraq, Philippines; 32 → 38 countries; globe links synced) — Day 33. ✅
-32. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
+32. Review feedback round (Arthur, 7 Oct): A flicker root-cause fix (Day 34) ✅; B peoples vs polities distinct + Both always + peoples persist (Day 35); C presence fills modern globe (Day 36); D fullscreen globe mode (Day 37).
+33. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
