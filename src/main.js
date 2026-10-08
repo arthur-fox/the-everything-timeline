@@ -56,13 +56,22 @@ import { philippinesItems, philippinesCategories } from './countries/philippines
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
 import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick } from './globe-view.js';
 import {
-  getActiveOverlaysAtYear,
   getOverlayLayerFilter,
   setOverlayLayerFilter,
   formatOverlayYear,
   getSpatialEntityById,
   getEntityLifespan,
 } from './globe-overlays.js';
+import {
+  getActiveSchematicOverlaysAtYear,
+  getActiveNationsAtYear,
+  getNationEntityById,
+  getNationPeriodAtYear,
+  isNationEntityId,
+  isNationActiveAtYear,
+  nearestNationYear,
+  NATIONS_HANDOFF_YEAR as GLOBE_NATIONS_START,
+} from './globe-nations.js';
 
 // ============================================================
 // Country registry — add new countries here to scale to 190+
@@ -2967,7 +2976,10 @@ function openBookmark(entry) {
       activateViewForDeepLink('cosmic', { clearSelection: true });
     }
     let focused = false;
-    if (resolved && resolved.id === 'globe') {
+    if (resolved && resolved.id === 'globe' && isNationEntityId(entry.id)) {
+      // Day 38: nation bookmarks reopen at the nearest year the nation exists.
+      focused = selectGlobeEntity(entry.id, { syncUrl: false, openDetail: true });
+    } else if (resolved && resolved.id === 'globe') {
       const entity = getSpatialEntityById(entry.id);
       if (entity) {
         const life = getEntityLifespan(entity);
@@ -3139,8 +3151,13 @@ const GLOBE_YEAR_CAPTIONS = [
   { year: 1492, text: '1492 CE — Iberia at contact; Aztec, Inca, Ming, and Ottoman worlds still dominate their regions (approximate).' },
   { year: 1700, text: 'Around 1700 CE — Ottoman, Mughal, Qing, Spanish, Russian, and early British reach (approximate).' },
   { year: 1900, text: 'Around 1900 CE — British, Russian, Qing, late Ottoman; hatched peoples persist beneath the empires (approximate).' },
-  { year: 1914, text: '1914 CE — Industrial empires on the eve of World War I (approximate).' },
-  { year: 2025, text: '2025 CE — Today: the world’s peoples (hatched) still span every continent; polities and presence remain approximate.' },
+  { year: 1914, text: '1914 — Real borders from here on: European empires and their colonies on the eve of World War I (colonies paler, in their ruler’s colour).' },
+  { year: 1920, text: 'Around 1920 — Austria-Hungary, the Russian and Ottoman empires have broken up; Poland, the Baltic states and Yugoslavia appear.' },
+  { year: 1945, text: '1945 — End of World War II: Germany and Korea divided, Poland moved west, the Soviet Union at its largest.' },
+  { year: 1960, text: 'Around 1960 — Decolonisation: India, Pakistan, Indonesia and most of Africa independent or about to be.' },
+  { year: 1975, text: 'Around 1975 — Portugal’s empire ends; Vietnam reunifies in 1976.' },
+  { year: 1995, text: 'Mid-1990s — The Soviet Union and Yugoslavia have broken up; Germany is reunited.' },
+  { year: 2025, text: '2025 — Today’s world of nations, with the world’s peoples (hatched) still spanning every continent.' },
 ];
 
 const globeViewEl = document.getElementById('globe-view');
@@ -3156,7 +3173,8 @@ function formatGlobeYear(year) {
   if (!Number.isFinite(y)) return '';
   if (y < 0) return Math.abs(y).toLocaleString() + ' BCE';
   if (y === 0) return '1 BCE / 1 CE';
-  return y.toLocaleString() + ' CE';
+  // Day 38: CE years read as years ("1925 CE"), not quantities ("1,925 CE").
+  return String(y) + ' CE';
 }
 
 function globeCaptionForYear(year) {
@@ -3359,7 +3377,9 @@ function formatGlobeEntityDateLabel(entity) {
 }
 
 function isEntityActiveAtGlobeYear(entityId, year = globeYear) {
-  const active = getActiveOverlaysAtYear(year);
+  if (isNationEntityId(entityId)) return isNationActiveAtYear(entityId, year);
+  // Day 38: schematic empires hand off to the nations layer from 1914.
+  const active = getActiveSchematicOverlaysAtYear(year);
   return active.some(({ entity }) => entity.id === entityId);
 }
 
@@ -3391,6 +3411,7 @@ function clearGlobeEntitySelection({ syncUrl = true, closeDetail = false } = {})
  */
 function selectGlobeEntity(entityId, { syncUrl = true, openDetail = true, fromDeepLink = false } = {}) {
   if (!entityId) return false;
+  if (isNationEntityId(entityId)) return selectGlobeNation(entityId, { syncUrl, openDetail, fromDeepLink });
   const entity = getSpatialEntityById(entityId);
   if (!entity) return false;
 
@@ -3458,6 +3479,43 @@ function selectGlobeEntity(entityId, { syncUrl = true, openDetail = true, fromDe
   return true;
 }
 
+/**
+ * Day 38: select a modern nation (1914–2025). Title / dates follow the period active at the
+ * current year (e.g. "Gold Coast (British)" in 1950, "Ghana" in 1960).
+ */
+function selectGlobeNation(entityId, { syncUrl = true, openDetail = true, fromDeepLink = false } = {}) {
+  if (!getNationEntityById(entityId)) return false;
+  if (!isNationActiveAtYear(entityId, globeYear)) {
+    if (fromDeepLink) return false;
+    const y = nearestNationYear(entityId, globeYear);
+    if (y == null) return false;
+    setGlobeYear(y, { syncUrl: false });
+  }
+  const entity = getNationEntityById(entityId, globeYear);
+  selectedGlobeEntityId = entity.id;
+  setGlobeSelectedEntity(entity.id);
+  updateGlobeOverlayPanel();
+  if (openDetail) showGlobeNationDetail(entity);
+  if (syncUrl) syncDeepLinkUrl();
+  return true;
+}
+
+function showGlobeNationDetail(entity) {
+  const per = entity.period;
+  // The nations layer starts in 1914, so periods "from 1914" usually began earlier.
+  const start = per.from <= GLOBE_NATIONS_START ? 'by 1914' : formatGlobeYear(per.from);
+  const dateLabel = `${start} — ${per.to == null ? 'today' : formatGlobeYear(per.to)}`;
+  showDetail(entity.name, `${dateLabel} · ${entity.kindLabel}`, entity.description || '', entity.sources, {
+    view: 'globe',
+    id: entity.id,
+    icon: '',
+    name: entity.name,
+    dateLabel,
+    kind: 'globe-entity',
+    relatedItems: resolveRelatedTimelineItems(entity),
+  });
+}
+
 function updateGlobeOverlayPanelSelectionOnly() {
   if (!globeOverlayList) return;
   globeOverlayList.querySelectorAll('.globe-overlay-item').forEach((el) => {
@@ -3469,17 +3527,18 @@ function updateGlobeOverlayPanelSelectionOnly() {
 
 function updateGlobeOverlayPanel() {
   if (!globeOverlayList) return;
-  const active = getActiveOverlaysAtYear(globeYear);
+  const active = getActiveSchematicOverlaysAtYear(globeYear);
+  const nations = getActiveNationsAtYear(globeYear);
   const yearLabel = formatGlobeYear(globeYear);
 
   if (globeOverlayPanelHeading) {
-    globeOverlayPanelHeading.textContent = active.length
+    globeOverlayPanelHeading.textContent = active.length || nations.length
       ? `Overlays at ${yearLabel}`
       : `Overlays near ${yearLabel}`;
   }
 
   globeOverlayList.innerHTML = '';
-  if (!active.length) {
+  if (!active.length && !nations.length) {
     globeOverlayList.classList.add('hidden');
     if (globeOverlayEmpty) globeOverlayEmpty.classList.remove('hidden');
     return;
@@ -3551,6 +3610,63 @@ function updateGlobeOverlayPanel() {
     li.appendChild(btn);
     globeOverlayList.appendChild(li);
   }
+
+  if (nations.length) appendGlobeNationsGroup(nations);
+}
+
+/** Day 38: nations (1914–2025) sit in one collapsible group so they don't bury empires / peoples. */
+let globeNationsGroupOpen = false;
+function appendGlobeNationsGroup(nations) {
+  const li = document.createElement('li');
+  li.className = 'globe-overlay-list-entry globe-nations-group-entry';
+  const details = document.createElement('details');
+  details.className = 'globe-nations-group';
+  const hasSelected = nations.some(({ entity }) => entity.id === selectedGlobeEntityId);
+  details.open = globeNationsGroupOpen || hasSelected;
+  details.addEventListener('toggle', () => {
+    globeNationsGroupOpen = details.open;
+  });
+  const summary = document.createElement('summary');
+  summary.className = 'globe-nations-summary';
+  const colonies = nations.filter(({ period }) => period.kind === 'colony' || period.kind === 'dominion').length;
+  summary.textContent = `Nations and territories (${nations.length})` + (colonies ? ` · ${colonies} colonies or dominions` : '');
+  details.appendChild(summary);
+  const ul = document.createElement('ul');
+  ul.className = 'globe-nations-list';
+  for (const { entity } of nations) {
+    const row = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    const selected = selectedGlobeEntityId === entity.id;
+    btn.className = 'globe-overlay-item is-nation' + (selected ? ' is-selected' : '');
+    btn.dataset.entityId = entity.id;
+    btn.setAttribute('aria-pressed', selected ? 'true' : 'false');
+    btn.setAttribute('aria-label', 'Show details for ' + entity.name);
+    const swatch = document.createElement('span');
+    swatch.className = 'globe-overlay-swatch is-nation' + (entity.nationKind === 'state' ? '' : ' is-colony');
+    swatch.style.background = entity.color;
+    swatch.setAttribute('aria-hidden', 'true');
+    const body = document.createElement('div');
+    body.className = 'globe-overlay-item-body';
+    const name = document.createElement('div');
+    name.className = 'globe-overlay-item-name';
+    name.textContent = entity.name;
+    const meta = document.createElement('div');
+    meta.className = 'globe-overlay-item-meta';
+    const per = entity.period;
+    const from = per.from <= GLOBE_NATIONS_START ? 'by 1914' : per.from;
+    meta.textContent = `${entity.kindLabel} · ${from}–${per.to == null ? 'today' : per.to}`;
+    body.appendChild(name);
+    body.appendChild(meta);
+    btn.appendChild(swatch);
+    btn.appendChild(body);
+    btn.addEventListener('click', () => selectGlobeEntity(entity.id, { syncUrl: true, openDetail: true }));
+    row.appendChild(btn);
+    ul.appendChild(row);
+  }
+  details.appendChild(ul);
+  li.appendChild(details);
+  globeOverlayList.appendChild(li);
 }
 
 function updateGlobeYearUI() {
@@ -3574,10 +3690,19 @@ function setGlobeYear(yearRaw, { syncUrl = true } = {}) {
   let year = Math.round(Number(yearRaw));
   if (!Number.isFinite(year)) return;
   year = Math.max(GLOBE_YEAR_MIN, Math.min(GLOBE_YEAR_MAX, year));
+  const prevYear = globeYear;
   globeYear = year;
   // Drop selection if the entity is no longer active at the new year
   if (selectedGlobeEntityId && !isEntityActiveAtGlobeYear(selectedGlobeEntityId, year)) {
     clearGlobeEntitySelection({ syncUrl: false, closeDetail: true });
+  } else if (selectedGlobeEntityId && isNationEntityId(selectedGlobeEntityId)) {
+    // Day 38: a nation's name / status can change while scrubbing (colony → independent).
+    const before = getNationPeriodAtYear(selectedGlobeEntityId, prevYear);
+    const after = getNationPeriodAtYear(selectedGlobeEntityId, year);
+    const panel = document.getElementById('event-detail');
+    if (before !== after && panel && !panel.classList.contains('hidden') && detailContext?.kind === 'globe-entity') {
+      showGlobeNationDetail(getNationEntityById(selectedGlobeEntityId, year));
+    }
   }
   updateGlobeYearUI();
   if (syncUrl) syncDeepLinkUrl();

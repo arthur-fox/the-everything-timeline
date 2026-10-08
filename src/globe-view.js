@@ -4,10 +4,17 @@
  * Day 30: polygon click → detail panel; selected-entity highlight.
  * Day 35: peoples hatched + dashed edge vs solid polities; presence soft wash (no edge).
  * Day 34: real flicker fix — no depth-writing side walls / caps, stable layer-aware render order.
+ * Day 38: modern nations layer (1914–2025) — real Natural Earth borders regrouped by year; from 1914
+ *   nations sit above dimmed peoples / presence (taps pick the country); crisp edges; schematic
+ *   empires hand off at 1914.
  * Mounted only while Globe mode is active; disposed on leave.
  */
 
-import { getOverlayPolygonFeatures } from './globe-overlays.js';
+import {
+  getGlobePolygonFeatures,
+  loadNationsTopology,
+  NATIONS_HANDOFF_YEAR,
+} from './globe-nations.js';
 
 const EARTH_DAY =
   'https://unpkg.com/three-globe@2.45.0/example/img/earth-blue-marble.jpg';
@@ -99,18 +106,27 @@ function hashId(str) {
  * stable renderOrder (layer band, then a hash slot) so blending order never flips with the
  * camera; altitude bands are layer-aware and comfortably above depth resolution.
  */
-const LAYER_BAND = { presence: 0, people: 1, polity: 2 };
-const LAYER_ALT = { presence: 0.005, people: 0.0075, polity: 0.01 };
+// Day 38: from 1914 nations take the peoples' band and the (dimmed) peoples drop just below
+// them, so tapping a country picks the nation; before 1914 nothing changes (no nations then).
+const LAYER_BAND = { presence: 0, peopleUnder: 1, nation: 2, people: 2, polity: 3 };
+const LAYER_ALT = { presence: 0.005, peopleUnder: 0.0062, nation: 0.0075, people: 0.0075, polity: 0.01 };
 const POLYGON_ALT_STEP = 0.00004; // tie-break for picking only; depth no longer depends on it
 const POLYGON_ALT_SLOTS = 24;
 const SELECTED_ALT_BUMP = 0.004;
-const SELECTED_BAND = 3;
+const SELECTED_BAND = 4;
 
 function featureLayer(d) {
   const t = d?.entityType || d?.properties?.entityType;
   if (t === 'presence') return 'presence';
   if (t === 'people') return 'people';
+  if (t === 'nation') return 'nation';
   return 'polity';
+}
+
+/** Altitude / draw band: peoples dimmed for the nations era sit under the nations. */
+function featureBand(d) {
+  const layer = featureLayer(d);
+  return layer === 'people' && d?.nationsEraDim ? 'peopleUnder' : layer;
 }
 
 function featureKey(d) {
@@ -124,12 +140,12 @@ function featureSlot(d) {
 }
 
 function polygonAltitudeForFeature(d) {
-  return LAYER_ALT[featureLayer(d)] + featureSlot(d) * POLYGON_ALT_STEP;
+  return LAYER_ALT[featureBand(d)] + featureSlot(d) * POLYGON_ALT_STEP;
 }
 
-/** Stable draw order: presence under peoples under polities; selected on top. */
+/** Stable draw order: presence < (nations era: peoples < nations) < peoples < polities; selected on top. */
 function polygonRenderOrder(d) {
-  const band = isSelectedFeature(d) ? SELECTED_BAND : LAYER_BAND[featureLayer(d)];
+  const band = isSelectedFeature(d) ? SELECTED_BAND : LAYER_BAND[featureBand(d)];
   return 10 + band * 100 + featureSlot(d);
 }
 
@@ -317,7 +333,13 @@ function applyPolygonLayer() {
       if (isSelectedFeature(d)) return 'rgba(255, 255, 255, 0.95)';
       const layer = featureLayer(d);
       if (layer === 'presence') return null;
-      return layer === 'people' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.24)';
+      if (layer === 'nation') {
+        // Day 38: crisp national borders; colonial-internal lines a little softer.
+        const kind = d.nationKind || d.properties?.nationKind;
+        return kind === 'colony' || kind === 'dominion' ? 'rgba(255, 255, 255, 0.42)' : 'rgba(255, 255, 255, 0.62)';
+      }
+      if (layer === 'people') return d.nationsEraDim ? 'rgba(255, 255, 255, 0.34)' : 'rgba(255, 255, 255, 0.7)';
+      return 'rgba(255, 255, 255, 0.24)';
     })
     .polygonsTransitionDuration(0);
 }
@@ -343,7 +365,7 @@ export function setGlobeSelectedEntity(entityId) {
     applyPolygonLayer();
     if (Number.isFinite(currentPolygonYear)) {
       try {
-        globe.polygonsData(getOverlayPolygonFeatures(currentPolygonYear));
+        globe.polygonsData(getGlobePolygonFeatures(currentPolygonYear));
       } catch (err) {
         console.warn('Failed to refresh selected globe polygons:', err);
       }
@@ -367,7 +389,8 @@ export function setGlobeOverlayYear(year) {
   const y = Math.round(Number(year));
   if (!Number.isFinite(y)) return;
   currentPolygonYear = y;
-  const features = getOverlayPolygonFeatures(y);
+  syncNationsEraUI(y);
+  const features = getGlobePolygonFeatures(y);
   try {
     globe.polygonsData(features);
   } catch (err) {
@@ -489,6 +512,12 @@ export async function mountGlobe(container, opts = {}) {
   mounted = true;
   if (Number.isFinite(year)) setGlobeOverlayYear(year);
   exposeGlobeDebugHandle();
+  // Day 38: fetch the nations TopoJSON (~130 KB gzipped) once; redraw when it lands.
+  loadNationsTopology()
+    .then(() => {
+      if (mounted && Number.isFinite(currentPolygonYear)) setGlobeOverlayYear(currentPolygonYear);
+    })
+    .catch(() => {});
   return globe;
 }
 
@@ -499,7 +528,7 @@ let hostOverlayHomes = [];
 
 function attachLegend() {
   if (!hostEl) return;
-  const els = document.querySelectorAll('.globe-legend, .globe-fullscreen-toggle');
+  const els = document.querySelectorAll('.globe-legend, .globe-fullscreen-toggle, .globe-credit');
   for (const el of els) {
     if (el.parentElement === hostEl) continue;
     hostOverlayHomes.push({ el, parent: el.parentElement, next: el.nextSibling });
@@ -513,6 +542,14 @@ function detachLegend() {
     if (el.parentElement === hostEl) parent.insertBefore(el, next && next.parentNode === parent ? next : null);
   }
   hostOverlayHomes = [];
+}
+
+/** Day 38: the key / credit switch from "Polities" to "Nations" at the 1914 handoff. */
+function syncNationsEraUI(year) {
+  const era = Number(year) >= NATIONS_HANDOFF_YEAR;
+  for (const el of document.querySelectorAll('.globe-legend, .globe-credit')) {
+    el.classList.toggle('is-nations-era', era);
+  }
 }
 
 /** `?globeDebug=1` exposes the Globe.gl instance for screenshot / QA harnesses only. */

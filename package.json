@@ -7,9 +7,10 @@
     "dev": "vite",
     "build": "npm run validate && vite build",
     "preview": "vite preview",
-    "validate": "node scripts/validate-data.js && node scripts/check-overlay-lifespan.js",
+    "validate": "node scripts/validate-data.js && node scripts/check-overlay-lifespan.js && node scripts/check-nations.js",
     "validate:strict": "node scripts/validate-data.js --strict",
-    "validate:schema": "node scripts/validate-data.js"
+    "validate:schema": "node scripts/validate-data.js",
+    "build:nations": "node scripts/build-nations.mjs"
   },
   "repository": {
     "type": "git",
@@ -24,10 +25,14 @@
   "homepage": "https://github.com/arthur-fox/the-everything-timeline#readme",
   "devDependencies": {
     "ajv": "^8.20.0",
+    "d3-geo": "^3.1.1",
+    "topojson-server": "^3.0.1",
+    "topojson-simplify": "^3.0.3",
     "vite": "^7.3.1"
   },
   "dependencies": {
     "globe.gl": "^2.46.2",
-    "three": "^0.186.1"
+    "three": "^0.186.1",
+    "topojson-client": "^3.1.0"
   }
 }

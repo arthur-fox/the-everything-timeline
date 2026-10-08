@@ -112,6 +112,13 @@ The repository includes GitHub Actions workflows that build the Vite app and pub
 - Most topic views share the generic swim-lane renderer. Each dataset exports `items` plus `categories`, where items include `start`, `end`, `region`, `description`, `icon`, and optional `periods`.
 - Countries are registered in `src/main.js`; adding a country generally means adding `src/countries/<country>.js` and registering it in `COUNTRY_REGISTRY`.
 - Theme colors are split between CSS variables for DOM elements and `src/theme.js` palettes for canvas drawing.
+- Globe nations (1914–2025) live in `src/globe-nations-table.js` (dated periods built from Natural Earth admin units). After editing it, run `npm run build:nations` to regenerate `src/data/nations.topo.json` and `src/data/nations-colors.js` (downloads Natural Earth once into `.cache/`, or set `NE_ADMIN1=/path/to/ne_10m_admin_1_states_provinces.geojson`). `npm run validate` checks the result.
+
+## Data credits
+
+- Globe borders 1914–2025: [Natural Earth](https://www.naturalearthdata.com/) admin-0 / admin-1 boundaries (public domain), regrouped by year for this project.
+- Globe imagery: NASA Blue Marble (NASA Earth Observatory).
+- Historical overlays before 1914, peoples and presence: hand-drawn schematic shapes (see each entity's sources).
 
 ## Roadmap
 

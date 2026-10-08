@@ -563,6 +563,79 @@ After the MVP, possible layers include:
 - climate and environment
 - exploration routes
 
+## Phase 4b — Deep zoom and real borders (Arthur, 8 Oct 2026)
+
+Arthur, in full screen: "a lot closer to Google Maps in the level of definition … go a lot closer and see cities and borders evolve", and "the past 100 years or so should be filled up with nations". This phase does that one daily step at a time.
+
+### Research summary (8 Oct 2026)
+
+**Imagery tiles (Globe.gl `globeTileEngineUrl`, already in our globe.gl 2.46).** Globe.gl can swap the single Blue Marble texture for slippy-map tiles that load as you zoom.
+
+| Source | Key? | Terms that matter | Fit |
+| --- | --- | --- | --- |
+| **NASA GIBS** Blue Marble Next Generation / shaded relief (EPSG:3857, `GoogleMapsCompatible_Level8`) | No | Free and open; credit "NASA Earth Observatory / NASA GIBS (ESDIS)". Stops at z8 (~600 m/px). | **Best first step.** No labels, no modern borders, nothing to contradict 1925. |
+| EOX Sentinel-2 cloudless | No | 2016 mosaic CC BY 4.0; 2018–2025 mosaics CC BY-NC-SA 4.0 (commercial needs an EOX licence); attribution required | Sharper (~10 m). The 2016 CC BY mosaic is the only licence-clean option, so treat it as optional, behind a flag. |
+| OpenStreetMap standard tiles | No | Tile usage policy: light use only, no bulk or prefetch, visible "© OpenStreetMap contributors" | No: modern labels and borders, plus policy risk at our traffic. |
+| CARTO basemaps | Key required since 25 Sep 2026 | Free: 5M tiles/month non-commercial, 1M commercial; "© OpenStreetMap contributors, © CARTO" | Labelled modern map. Wrong era for history. |
+| Esri World Imagery | Key / ArcGIS account | Attribution required; terms limit free use | Good imagery, but key and terms friction. |
+| Stadia / MapTiler | Key + domain allowlist | Free tiers with caps; attribution | Fine for a later vector-tile phase, not needed now. |
+
+Rule of thumb: **modern labelled basemaps show today's borders and city names**, which contradict any historical year. Use label-free imagery tiles and draw our own dated borders and cities on top.
+
+**Cities.** Natural Earth populated places (public domain, ~7k places, with population rank) give modern cities and coordinates. They have no founding dates, so dates must be curated (founding year, optional "renamed" periods). A later option is the Reba–Reitsma–Seto historical urban population dataset (SEDAC, 3700 BC–AD 2000), but confirm its licence first. Render as Globe.gl `labelsData` / `pointsData`, filtered by camera altitude (capitals first, then by size), so labels appear as you zoom.
+
+**MapLibre GL JS v5 globe projection.** It is a real vector-tile map on a globe: crisp at street level, with label collision. It would mean replacing Globe.gl (our flicker fix, morphing overlays and peoples hatch would all need rewriting), finding a vector-tile host, and still hiding its modern labels and borders. **Keep Globe.gl for now**; revisit only if we need street-level zoom.
+
+**Polygon level of detail.** Overlays sit 30–64 km above the surface (altitude 0.005–0.01 radii). That is fine from orbit but floats visibly at city zoom, and Globe.gl's camera `near` (0.05) limits how close we can go. Plan: scale overlay altitude with camera distance (keeping the Day 34 band order), lower `controls.minDistance`, and swap polygon detail by zoom (coarse topojson far out, the 10m-derived set close in).
+
+**Historical border datasets (1900–2025) against our ISC licence.**
+
+- **Natural Earth (public domain).** Modern admin-0 / admin-1 only, but any regrouping is ours to ship. ✅ Used.
+- **CShapes 2.0** (ETH Zürich / GROWup, 1886–2019, real dates). Licence **CC BY-NC-SA 4.0**: shipping it would make the app's data non-commercial and share-alike. ❌ Not bundled. Fine to read as a reference when checking our dates.
+- **aourednik/historical-basemaps.** **GPL-3.0**, snapshot years only (1880, 1900, 1914, 1920, 1938, 1945, 1960, 1994, 2000, 2010 …), uneven accuracy. ❌ Not bundled (copyleft against ISC, and no in-between dates).
+
+**Recommendation.** (1) Real borders from 1914 now, by regrouping Natural Earth's public-domain admin-1 provinces with a hand-written, dated table (Day 38). (2) Make zooming in feel good: altitude LOD and closer camera. (3) Label-free NASA GIBS tiles. (4) A dated cities layer. (5) Finer splits and an earlier start (1815/1880). MapLibre only if street-level zoom becomes a goal. Trade-off: with no licence-clean historical GIS dataset, pre-1945 border changes inside a province are approximate. That is honest and fixable province by province.
+
+### Daily steps
+
+#### Day 38 — Modern nations 1914–2025 (step 1) — done
+
+- **Data:** `src/globe-nations-table.js` is a hand-written table of ~220 nations, colonies, dominions and disputed areas. Each has real start and end years, built from Natural Earth admin-0 / admin-1 units. It covers the post-WWI breakups (Austria-Hungary, the Ottoman and Russian empires → Poland, the Baltics, Czechoslovakia, Yugoslavia, the mandates), the USSR (1922) and its 1939–45 annexations, Manchukuo, Germany's 1938–45 annexations, East/West Germany, Indian partition, decolonisation in Asia and Africa (each colony switching at its real independence year), Vietnam, Yemen, the 1991 Soviet and Yugoslav breakups, Czechoslovakia (1993), Eritrea, South Sudan, Kosovo (partially recognised), and Crimea from 2014 (grey, occupied).
+- **Build:** `npm run build:nations` (`scripts/build-nations.mjs`) downloads Natural Earth 10m admin-1 (cached in `.cache/`) and merges provinces with shared TopoJSON arcs, so borders never gap or overlap. It simplifies (Visvalingam, 40 km²) and drops islets under 2,000 km² (unless ≥5% of the state). It writes `src/data/nations.topo.json` (393 KB, ~130 KB gzipped, lazy-loaded after the globe mounts; ~45k vertices per year) and a graph-coloured palette (`src/data/nations-colors.js`). The build fails if two nations claim the same land in any year, or if land over 2,500 km² is left unclaimed.
+- **Colours:** each nation keeps one colour across all its years. Neighbours (in any year) never share a colour, and look-alike pairs are avoided. The UK is pink, France blue, Russia/USSR red. **Colonies wear their ruler's colour, paler**, so empires still read as blocs and dissolve into independent colours at real dates.
+- **Globe:** a new `nation` altitude/render band, keeping all of Day 34's flicker fix (depthWrite off, no side walls, stable renderOrder). From 1914 the peoples drop just below the nations and fade, so tapping a country picks the nation (peoples stay listed in the sidebar). Borders are crisper (white, 0.62 for states, 0.42 for colonies). **Handoff at 1914:** the hand-drawn empires stop and the nations take over, so nothing is double-painted. Presence also fades in the nations era. The key reads "Nations — colonies paler", and there is a credit line for Natural Earth and NASA Blue Marble.
+- **UI:** tap a nation or a row in the new collapsible "Nations and territories" sidebar group to see its name for that year (e.g. "Gold Coast (British)" in 1950, "Ghana" in 1960), status and a dated history. Bookmarks and `?entity=nation-…` deep links work. CE years print as "1925 CE" (no thousands comma). There are new year chips (1925 / 1950 / 1975 / 1995) and captions.
+- **Validate:** `scripts/check-nations.js` checks that the topology matches the table, plus 94 city-in-nation checks at real dates (Lviv: Austria-Hungary 1914 → Poland 1925 → USSR 1941 → Ukraine 1995; Shenyang: Manchukuo 1935; Windhoek: South African-run 1975; Simferopol: occupied 2025 …). It also checks that land coverage stays constant (no gaps or overlaps), a mobile vertex budget, no schematic empires from 1914, the breakup/decolonisation dates, neighbour colours, and that `timelineItemIds` only use existing catalogue ids.
+- **Honest caveats:** borders are province-level, so some pre-1945 shifts are approximate (Karelia, Sudetenland, Schleswig, the Chaco, South Sakhalin and Danzig aren't split; Spanish Morocco and the 17th-parallel split in Vietnam are province-based). Wartime occupations aren't drawn (annexations and puppet states are). Borders switch by year, they don't morph. Tiny islands are omitted.
+
+#### Day 39 — Zoom closer without floating shapes
+
+Lower `controls.minDistance`; scale overlay altitudes with camera distance (bands kept in order, ~1–3 km when close) and adjust the camera `near` plane so nothing clips or flickers. Stroke width and opacity adapt to zoom. Verify against Day 34's flicker renders at altitudes 0.15–3.
+
+#### Day 40 — Sharper imagery (NASA GIBS tiles)
+
+Switch to `globeTileEngineUrl` with GIBS Blue Marble Next Generation (z0–8, no key, no labels). Keep the current texture as the far-zoom and offline fallback. Add a credit line, a tile-error fallback and `globeTileEngineMaxLevel(8)`. Optional later: shaded relief or a Sentinel-2 layer behind a flag, only if the licence fits.
+
+#### Day 41 — Dated cities, step 1
+
+~300 cities (capitals and big historical cities) with founding year and dated names (Constantinople → Istanbul 1930, Leningrad 1924–1991, Bombay → Mumbai 1995 …), from Natural Earth places plus curated dates. Labels appear by zoom and rank, and capitals are marked for the year. Validate that dates are inside known ranges and that capitals sit inside their nation in that year.
+
+#### Day 42 — Detail by zoom for nations
+
+Build a second, finer nations topology (simplify ~5 km²; keep islands ≥ 100 km²) and swap it in when zoomed close. Check memory and frame time on a mid-range phone.
+
+#### Day 43 — Finer historical splits
+
+Hand-drawn sub-province cut lines (public domain, our own) for the biggest approximations: Karelia 1940/44, Sudetenland 1938, South Sakhalin, Danzig, the Saar, Memel, Hatay, Chaco. Each is a small polygon with real dates, validated like Day 38.
+
+#### Day 44 — Extend nations back to 1880 / 1815
+
+Push the table earlier (Scramble for Africa, German and Italian unification, Latin American independence) and move the handoff year earlier, era by era, keeping the schematic empires before that.
+
+#### Later — evaluate MapLibre GL globe
+
+Only if street-level zoom becomes a goal. Spike first: rendering parity for overlays, the hatch shader and the flicker fix.
+
 ## Phase 5 — Content expansion
 
 Expand content after the navigation and data foundations are stronger.
@@ -685,6 +758,7 @@ A sensible near-term sequence:
 30. Further living-border / topology polish — ocean gaps (polygon holes) + eased morph (Day 32 / PR F slice 4). ✅
 31. Phase 5 content expansion — country pack 1 (Peru, Ghana, Kenya, Morocco, Iraq, Philippines; 32 → 38 countries; globe links synced) — Day 33. ✅
 32. Review feedback round (Arthur, 7 Oct): A flicker root-cause fix (Day 34) ✅; B peoples vs polities distinct + Both always + peoples persist (Day 35) ✅; C presence fills modern globe (Day 36) ✅; D fullscreen globe mode (Day 37) ✅. All four in review as stacked PRs.
-33. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
+33. Phase 4b (Arthur, 8 Oct: deep zoom + real borders) — Day 38 modern nations 1914–2025 ✅ (in review); next Day 39 zoom LOD → Day 40 NASA GIBS tiles → Day 41 dated cities → Day 42 nations detail by zoom → Day 43 finer splits → Day 44 nations back to 1880/1815.
+34. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
