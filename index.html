@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/the-everything-timeline/assets/index-BxAgtTyt.js"></script>
-  <link rel="stylesheet" crossorigin href="/the-everything-timeline/assets/index-Be6oiz0a.css">
+  <script type="module" crossorigin src="/the-everything-timeline/assets/index-nZ4KeB37.js"></script>
+  <link rel="stylesheet" crossorigin href="/the-everything-timeline/assets/index-CyZ_HOwD.css">
 </head>
 <body>
   <div id="app">
@@ -130,21 +130,20 @@
         <div id="globe-canvas-host" class="globe-canvas-host"
              role="img"
              aria-label="Interactive 3D Earth. Drag to rotate. Scroll or pinch to zoom."></div>
+        <div class="globe-legend" aria-label="Map key">
+          <span class="globe-legend-item"><span class="globe-legend-swatch is-polity" aria-hidden="true"></span>Polities <span class="globe-legend-sub">states &amp; empires</span></span>
+          <span class="globe-legend-item"><span class="globe-legend-swatch is-people" aria-hidden="true"></span>Peoples <span class="globe-legend-sub">cultures &amp; languages</span></span>
+          <span class="globe-legend-item"><span class="globe-legend-swatch is-presence" aria-hidden="true"></span>Presence <span class="globe-legend-sub">where people lived</span></span>
+        </div>
         <div class="globe-copy">
           <h2 class="globe-title">Globe mode</h2>
           <div class="globe-copy-intro">
             <p class="globe-lede">Timeline shows <em>what happened when</em>. Globe mode shows <em>where</em>.</p>
-            <p class="globe-note">Colored shapes are approximate spheres of control, cultural presence, or inhabited footprints (schematic polygons), not exact ancient borders. Toggle Polities / Peoples / Presence above the list.</p>
+            <p class="globe-note">Colored shapes are approximate spheres of control, cultural presence, or inhabited footprints (schematic polygons), not exact ancient borders. Polities are solid, peoples are hatched with a dashed edge, and presence is a soft wash, all shown together (see the key on the globe).</p>
           </div>
           <p class="globe-hint">Drag to rotate · Pinch to zoom · Tap a region for details</p>
           <p id="globe-year-caption" class="globe-year-caption" aria-live="polite"></p>
           <div id="globe-overlay-panel" class="globe-overlay-panel" aria-live="polite">
-            <div class="globe-layer-toggle" role="group" aria-label="Globe overlay layers">
-              <button type="button" class="globe-layer-btn is-active" data-layer="both">Both</button>
-              <button type="button" class="globe-layer-btn" data-layer="polities">Polities</button>
-              <button type="button" class="globe-layer-btn" data-layer="peoples">Peoples</button>
-              <button type="button" class="globe-layer-btn" data-layer="presence">Presence</button>
-            </div>
             <div class="globe-overlay-panel-heading">Overlays at this year</div>
             <ul id="globe-overlay-list" class="globe-overlay-list"></ul>
             <p id="globe-overlay-empty" class="globe-overlay-empty hidden">No seeded overlay snapshots near this year yet.</p>
