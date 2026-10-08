@@ -2557,3 +2557,212 @@ body::before {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* ============================================================
+   Day 37 — Full-screen globe (Arthur's review)
+   Only the globe, its key, the year scrubber and the clickable shapes remain;
+   tapping a shape opens the detail panel as a compact popover.
+   ============================================================ */
+.globe-fullscreen-toggle {
+  display: none;
+}
+
+.globe-canvas-host > .globe-fullscreen-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
+  background: color-mix(in srgb, var(--bg-surface) 78%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: var(--text);
+  font: 600 0.75rem/1 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 4px 14px var(--shadow-tooltip);
+}
+
+.globe-canvas-host > .globe-fullscreen-toggle:hover,
+.globe-canvas-host > .globe-fullscreen-toggle:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.globe-fullscreen-icon {
+  display: inline-flex;
+}
+
+.globe-fullscreen-toggle .fs-exit,
+body.globe-fullscreen .globe-fullscreen-toggle .fs-enter {
+  display: none;
+}
+
+body.globe-fullscreen .globe-fullscreen-toggle .fs-exit {
+  display: inline;
+}
+
+body.globe-fullscreen {
+  overflow: hidden;
+}
+
+body.globe-fullscreen #header,
+body.globe-fullscreen #controls,
+body.globe-fullscreen #compare-bar,
+body.globe-fullscreen .globe-copy {
+  display: none !important;
+}
+
+body.globe-fullscreen .globe-view {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  padding: 0;
+  gap: 0;
+  background: var(--bg);
+}
+
+body.globe-fullscreen .globe-stage {
+  position: absolute;
+  inset: 0;
+  display: block;
+  padding: 0;
+}
+
+body.globe-fullscreen .globe-canvas-host {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  max-height: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+body.globe-fullscreen .globe-canvas-host > .globe-fullscreen-toggle {
+  top: max(12px, env(safe-area-inset-top, 0px));
+  right: max(12px, env(safe-area-inset-right, 0px));
+}
+
+body.globe-fullscreen .globe-canvas-host > .globe-legend {
+  top: max(12px, env(safe-area-inset-top, 0px));
+  left: max(12px, env(safe-area-inset-left, 0px));
+  bottom: auto;
+  max-width: calc(100% - 180px);
+}
+
+body.globe-fullscreen .globe-scrubber {
+  position: absolute;
+  left: 50%;
+  bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  width: min(760px, calc(100% - 24px));
+  z-index: 3;
+  padding: 8px 14px 6px;
+  background: color-mix(in srgb, var(--bg-surface) 80%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+body.globe-fullscreen .globe-year-row {
+  margin-bottom: 2px;
+}
+
+body.globe-fullscreen .globe-year-ticks {
+  margin-bottom: 4px;
+}
+
+body.globe-fullscreen .globe-year-presets {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+body.globe-fullscreen .globe-year-presets::-webkit-scrollbar {
+  display: none;
+}
+
+body.globe-fullscreen .globe-year-preset {
+  flex-shrink: 0;
+  padding: 4px 9px;
+}
+
+/* Compact popover: top-right under the exit button on desktop */
+body.globe-fullscreen .event-detail {
+  top: calc(max(12px, env(safe-area-inset-top, 0px)) + 46px);
+  right: max(12px, env(safe-area-inset-right, 0px));
+  bottom: auto;
+  left: auto;
+  transform: none;
+  width: min(340px, calc(100% - 24px));
+  max-width: 340px;
+  max-height: calc(100vh - 230px);
+  overflow-y: auto;
+  padding: 14px 16px 16px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--bg-surface) 94%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  animation: etFadeIn 0.18s ease;
+  z-index: 220;
+}
+
+body.globe-fullscreen .event-detail h2 {
+  font-size: 1.05rem;
+  padding-right: 34px;
+}
+
+body.globe-fullscreen .event-detail #detail-description {
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+@keyframes etFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 640px) {
+  .globe-canvas-host > .globe-fullscreen-toggle {
+    min-width: 40px;
+    min-height: 40px;
+    justify-content: center;
+    padding: 6px 10px;
+  }
+
+  .globe-canvas-host > .globe-fullscreen-toggle .globe-fullscreen-label {
+    display: none;
+  }
+
+  body.globe-fullscreen .globe-year-presets {
+    display: none;
+  }
+
+  body.globe-fullscreen .globe-canvas-host > .globe-legend {
+    max-width: calc(100% - 80px);
+  }
+
+  body.globe-fullscreen .globe-year-ticks {
+    margin-bottom: 0;
+  }
+
+  /* Popover becomes a short sheet that sits above the scrubber */
+  body.globe-fullscreen .event-detail {
+    top: auto;
+    left: 8px;
+    right: 8px;
+    bottom: calc(max(12px, env(safe-area-inset-bottom, 0px)) + 104px);
+    width: auto;
+    max-width: none;
+    max-height: 42vh;
+    border-radius: 14px;
+    padding: 6px 14px 14px;
+  }
+}
