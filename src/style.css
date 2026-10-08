@@ -2196,7 +2196,7 @@ body.globe-active .filters-toggle {
 }
 
 .globe-legend-swatch.is-presence {
-  background: rgba(148, 163, 184, 0.35);
+  background: rgba(242, 197, 124, 0.45);
   border: 1px solid transparent;
   filter: blur(0.4px);
 }

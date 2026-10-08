@@ -979,6 +979,66 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
 }
 
 
+
+// Day 36 — presence fills the modern globe (review feedback C)
+{
+  setOverlayLayerFilter('both');
+  const gm = (y) => getOverlayPolygonFeatures(y).filter((f) => f.entityId === 'global-modern-presence');
+  const covered = (feats, lng, lat) =>
+    feats.some((f) => geoContains({ type: 'Polygon', coordinates: f.geometry.coordinates }, [lng, lat]));
+  const gm2025 = gm(2025);
+  assert(new Set(gm2025.map((f) => f.regionId)).size >= 45, `inhabited world@2025 has ≥45 regions (got ${gm2025.length})`);
+  for (const f of [...gm2025, ...gm(1900)]) {
+    const ring = f.geometry.coordinates[0];
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    for (const [x, y] of ring) {
+      minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+      minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+    }
+    assert(Math.max(maxX - minX, maxY - minY) < 70, `inhabited world ${f.regionId} span < 70° (no ocean-spanning ring)`);
+  }
+  // Inhabited places are covered by 2025 …
+  const inhabited = {
+    London: [-0.1, 51.5], Paris: [2.35, 48.85], Madrid: [-3.7, 40.4], Rome: [12.5, 41.9], Warsaw: [21, 52.2],
+    Moscow: [37.6, 55.75], Istanbul: [29, 41], Cairo: [31.2, 30], Baghdad: [44.4, 33.3], Tehran: [51.4, 35.7],
+    Riyadh: [46.7, 24.7], Delhi: [77.2, 28.6], Dhaka: [90.4, 23.8], Beijing: [116.4, 39.9], Shanghai: [121.4, 31.2],
+    Seoul: [127, 37.55], Tokyo: [139.7, 35.7], Bangkok: [100.5, 13.75], Jakarta: [106.8, -6.2], Manila: [121, 14.6],
+    Lagos: [3.4, 6.5], Kinshasa: [15.3, -4.3], Nairobi: [36.8, -1.3], 'Addis Ababa': [38.75, 9], Johannesburg: [28, -26.2],
+    Almaty: [76.9, 43.25], Novosibirsk: [82.9, 55], 'New York': [-74, 40.7], Chicago: [-87.6, 41.9], 'Los Angeles': [-118.2, 34.05],
+    Toronto: [-79.4, 43.7], 'Mexico City': [-99.1, 19.4], Bogotá: [-74.1, 4.7], Lima: [-77, -12], 'São Paulo': [-46.6, -23.5],
+    'Buenos Aires': [-58.4, -34.6], Sydney: [151.2, -33.9], Auckland: [174.8, -36.85],
+  };
+  for (const [name, [lng, lat]] of Object.entries(inhabited)) {
+    assert(covered(gm2025, lng, lat), `inhabited world@2025 covers ${name}`);
+  }
+  // … while the genuinely sparse places stay open.
+  const sparse = {
+    'central Sahara': [10, 24], "Rub' al Khali": [50, 20], Gobi: [105, 43], Taklamakan: [83, 39], 'Tibetan plateau': [88, 33.5],
+    'central Australia': [133, -25], 'core Amazon': [-63, -4], 'core Congo': [21, 0], Greenland: [-42, 72],
+    Antarctica: [0, -80], 'Siberian tundra': [100, 70], 'Canadian north': [-100, 65], Kalahari: [21, -23], Atacama: [-69.5, -24.5],
+  };
+  for (const [name, [lng, lat]] of Object.entries(sparse)) {
+    assert(!covered(gm2025, lng, lat), `inhabited world@2025 leaves ${name} sparse`);
+  }
+  // No presence gaps: every hearth stays on every century until its hand-off year.
+  const presAt = (y) => new Set(getActiveOverlaysAtYear(y).filter((r) => r.entity.type === 'presence').map((r) => r.entity.id));
+  for (const ent of presenceEntities) {
+    if (ent.id === 'global-modern-presence') continue;
+    const years = ent.overlays.map((o) => o.year);
+    const first = Math.min(...years);
+    const last = Math.max(...years);
+    assert(last >= 1700, `${ent.id} holds until the modern layer (last keyframe ${last} ≥ 1700)`);
+    for (let y = Math.ceil(first / 100) * 100; y <= last; y += 100) {
+      if (!presAt(y).has(ent.id)) assert(false, `${ent.id} missing at ${y} (presence gap)`);
+    }
+  }
+  for (let y = 1700; y <= 2025; y += 25) {
+    assert(presAt(y).has('global-modern-presence'), `inhabited world active at ${y}`);
+  }
+  assert(gm(1900).length >= 40, `inhabited world@1900 already broad (≥40 regions, got ${gm(1900).length})`);
+  console.log(`  Day 36 inhabited-world regions: 1900=${gm(1900).length}, 2025=${gm2025.length}`);
+}
+
 if (failed) {
   console.error(`\n${failed} lifespan/morph check(s) failed`);
   process.exit(1);

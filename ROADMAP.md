@@ -488,7 +488,7 @@ PRs #31–#38 merged to main on 7 Oct 2026 (in order, merge commits). Arthur's r
 
 - **A · Day 34 — real overlap-flicker fix.** ✅ (this PR) — see Day 34 below.
 - **B · Day 35 — peoples vs polities visually distinct + "Both" always on + peoples persist to today.** ✅ — see Day 35 below.
-- **C · Day 36 — Presence fills the modern globe** (near-complete land cover by ~1900–2025, leaving deserts, tundra, ice sheets and core rainforests sparse). Planned.
+- **C · Day 36 — Presence fills the modern globe** (near-complete land cover by ~1900–2025, leaving deserts, tundra, ice sheets and core rainforests sparse). ✅ — see Day 36 below.
 - **D · Day 37 — fullscreen globe mode** (`?fullscreen=1`; only the year scrubber + clickable shapes remain; Esc / button to exit). Planned.
 
 #### Day 34 — Overlap flicker: root cause + fix — done
@@ -513,6 +513,16 @@ Arthur: with "Both" on it wasn't clear which shapes were peoples and which were 
 - **Layers always together:** the Both / Polities / Peoples / Presence toggle is removed. Legacy `?layer=…` links open the combined view (and the URL no longer writes `layer=`). The internal filter API stays for validation. ✅
 - **Peoples persist to 2025** (`src/globe-people-modern.js`): 19 of 20 peoples get 2–4 more keyframes (1500–1900–2025 range) with honest modern footprints. Most hold steady (Bantu, Polynesian, Inuit, Maya, Nilotic, Aboriginal Australians, Arab, Dravidian, Indo-Aryan incl. Sinhala Lanka). Some grow: Slavs add Siberian settler belts, Sinitic adds Taiwan, Manchuria and the northwest, Turkic adds Azerbaijan, Uyghur and Sakha, Uralic adds Sápmi. Some shrink: Celtic languages retreat to the Gaeltacht, Wales, the Hebrides and western Brittany; the Khoisan to the Kalahari and Namaqualand; the Amazigh to the Atlas, Kabylie and the Tuareg Sahara; Quechua/Aymara to the highlands. The Aral Sea hole is dropped by 2025. Ancestral Puebloans continue as today's Pueblo peoples. **Scythians are not extended** (they genuinely ceased). Descriptions gain a one-line honesty note; overseas diasporas are not drawn. No `timelineItemIds` invented. ✅
 - Validate: every continuing people active at 1900 and 2025 with a 2025 keyframe, no century gaps after first appearance, Scythians off in 1900/2025, modern fragments < 55° span, Aral hole kept at 1900 and dropped at 2025, Lake Victoria hole kept at 2025. ✅
+
+#### Day 36 — Presence fills the modern globe — done
+
+Arthur: Presence had the same problem as Peoples. Today the globe should be almost completely full, except sparsely populated deserts, tundra, the poles and big rainforests.
+
+- **Hearths hand off instead of vanishing** (`src/globe-presence-modern.js`): each of the 19 regional hearths holds its last footprint until the modern layer covers it. That's 1700 for Europe, China, the Yangtze, Indus–Ganges and West Africa, 1850 for the Eastern Woodlands, and 1880 for the rest. Presence no longer empties between antiquity and the modern era. ✅
+- **Inhabited world (modern)** (the old `global-modern-presence`) grows 1700 → 1850 → **1900 (59 regions) → 2025 (62 regions)** to cover nearly all habitable land. Islands and continents stay separate regions (each < 70° span, no ocean-spanning rings), and Lake Victoria is a hole. Deliberately left sparse: the Sahara, Arabian / Australian interiors, the Gobi / Taklamakan / Tibetan core, Siberian and Canadian tundra and northern taiga, Greenland, Antarctica, core Amazon / Congo / Borneo rainforests, Kalahari / Namib and Atacama. 1900 has thinner frontiers (Prairies, US interior west, Australia, Siberia; no Russian Far East, Top End or Hokkaidō yet). ✅
+- **Soft wash:** presence fills drop to ≤ 0.3 opacity (the inhabited-world layer uses a warm `#F2C57C` tint instead of slate, which read as haze at continent scale). Presence draws under peoples and polities and has no edge, so it never drowns them. ✅
+- Validate: ≥45 regions at 2025, spans < 70°; d3-geo checks that 38 inhabited cities are covered at 2025 (London … Kinshasa … Auckland) and 14 sparse places are not (central Sahara, Rub' al Khali, Gobi, Taklamakan, Tibet, central Australia, core Amazon / Congo, Greenland, Antarctica, Siberian tundra, Canadian north, Kalahari, Atacama); no hearth gaps century by century; inhabited world active every 25 years 1700–2025. ✅
+- Honesty: presence means people live here, not density; hand-drawn coarse rings, not GIS.
 
 #### PR F — Living / morphing borders (continued)
 
@@ -664,7 +674,7 @@ A sensible near-term sequence:
 29. Timeline ↔ globe integration (PR E) — Day 30. ✅
 30. Further living-border / topology polish — ocean gaps (polygon holes) + eased morph (Day 32 / PR F slice 4). ✅
 31. Phase 5 content expansion — country pack 1 (Peru, Ghana, Kenya, Morocco, Iraq, Philippines; 32 → 38 countries; globe links synced) — Day 33. ✅
-32. Review feedback round (Arthur, 7 Oct): A flicker root-cause fix (Day 34) ✅; B peoples vs polities distinct + Both always + peoples persist (Day 35) ✅; C presence fills modern globe (Day 36); D fullscreen globe mode (Day 37).
+32. Review feedback round (Arthur, 7 Oct): A flicker root-cause fix (Day 34) ✅; B peoples vs polities distinct + Both always + peoples persist (Day 35) ✅; C presence fills modern globe (Day 36) ✅; D fullscreen globe mode (Day 37).
 33. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

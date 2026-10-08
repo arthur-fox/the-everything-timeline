@@ -4,6 +4,7 @@
  * Schematic inhabited-footprint regions that expand / densify over deep time.
  * Honest approximate hearths and belts — not GIS, not ethnolinguistic (that's Peoples).
  * Distant continental fragments stay separate region ids (no ocean-spanning blobs).
+ * Day 36: hearths hand off to a near-complete modern inhabited world (globe-presence-modern.js).
  */
 
 /**
@@ -11,6 +12,7 @@
  */
 
 import { presencePack2Entities, PRESENCE_PACK_2_IDS } from './globe-presence-pack2.js';
+import { applyModernPresence } from './globe-presence-modern.js';
 
 /** Presence pack ids — first human-presence slice. */
 export const PRESENCE_PACK_IDS = [
@@ -1071,3 +1073,6 @@ export const presenceEntities = [
   // Day 31 — presence densify (pack 2): ten more hearths / belts.
   ...presencePack2Entities,
 ];
+
+// Day 36: hearths persist until the modern layer covers them; modern layer fills habitable land by 2025.
+applyModernPresence(presenceEntities);
