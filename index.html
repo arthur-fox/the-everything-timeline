@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/the-everything-timeline/assets/index-C5XK6gdA.js"></script>
-  <link rel="stylesheet" crossorigin href="/the-everything-timeline/assets/index-cV0ZH58o.css">
+  <script type="module" crossorigin src="/the-everything-timeline/assets/index-D-355_ET.js"></script>
+  <link rel="stylesheet" crossorigin href="/the-everything-timeline/assets/index-CJgQ6bjQ.css">
 </head>
 <body>
   <div id="app">
@@ -136,15 +136,17 @@
           <span class="globe-fullscreen-label">Full screen</span>
         </button>
         <div class="globe-legend" aria-label="Map key">
-          <span class="globe-legend-item"><span class="globe-legend-swatch is-polity" aria-hidden="true"></span>Polities <span class="globe-legend-sub">states &amp; empires</span></span>
+          <span class="globe-legend-item is-polity-key"><span class="globe-legend-swatch is-polity" aria-hidden="true"></span>Polities <span class="globe-legend-sub">states &amp; empires</span></span>
+          <span class="globe-legend-item is-nation-key"><span class="globe-legend-swatch is-nation" aria-hidden="true"></span>Nations <span class="globe-legend-sub">colonies paler</span></span>
           <span class="globe-legend-item"><span class="globe-legend-swatch is-people" aria-hidden="true"></span>Peoples <span class="globe-legend-sub">cultures &amp; languages</span></span>
           <span class="globe-legend-item"><span class="globe-legend-swatch is-presence" aria-hidden="true"></span>Presence <span class="globe-legend-sub">where people lived</span></span>
         </div>
+        <p class="globe-credit">Borders 1914–2025: <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a> (public domain), regrouped by year · Imagery: NASA Blue Marble</p>
         <div class="globe-copy">
           <h2 class="globe-title">Globe mode</h2>
           <div class="globe-copy-intro">
             <p class="globe-lede">Timeline shows <em>what happened when</em>. Globe mode shows <em>where</em>.</p>
-            <p class="globe-note">Colored shapes are approximate spheres of control, cultural presence, or inhabited footprints (schematic polygons), not exact ancient borders. Polities are solid, peoples are hatched with a dashed edge, and presence is a soft wash, all shown together (see the key on the globe).</p>
+            <p class="globe-note">Coloured shapes are approximate spheres of control, cultural presence, or inhabited footprints (schematic polygons), not exact ancient borders. Polities are solid, peoples are hatched with a dashed edge, and presence is a soft wash, all shown together (see the key on the globe). From 1914 the hand-drawn empires give way to real nation borders (Natural Earth, regrouped by year), with colonies shown paler in their ruler's colour.</p>
           </div>
           <p class="globe-hint">Drag to rotate · Pinch to zoom · Tap a region for details</p>
           <p id="globe-year-caption" class="globe-year-caption" aria-live="polite"></p>
@@ -181,6 +183,10 @@
           <button type="button" class="globe-year-preset" data-year="1700">1700</button>
           <button type="button" class="globe-year-preset" data-year="1900">1900</button>
           <button type="button" class="globe-year-preset" data-year="1914">1914</button>
+          <button type="button" class="globe-year-preset" data-year="1925">1925</button>
+          <button type="button" class="globe-year-preset" data-year="1950">1950</button>
+          <button type="button" class="globe-year-preset" data-year="1975">1975</button>
+          <button type="button" class="globe-year-preset" data-year="1995">1995</button>
           <button type="button" class="globe-year-preset" data-year="2025">2025</button>
         </div>
       </div>
