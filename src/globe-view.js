@@ -7,6 +7,10 @@
  * Day 38: modern nations layer (1914–2025) — real Natural Earth borders regrouped by year; from 1914
  *   nations sit above dimmed peoples / presence (taps pick the country); crisp edges; schematic
  *   empires hand off at 1914.
+ * Day 39: zoom much closer (≈380 km up, was ≈1,300 km) without floating shapes — overlay altitudes
+ *   shrink toward the surface as the camera comes in (band order kept), caps get finer curvature
+ *   close up so they never dip under the globe, and borders get crisper / fills lighter when close.
+ *   `?at=lat,lng,alt` opens the camera at a given point of view.
  * Mounted only while Globe mode is active; disposed on leave.
  */
 
@@ -115,6 +119,118 @@ const POLYGON_ALT_SLOTS = 24;
 const SELECTED_ALT_BUMP = 0.004;
 const SELECTED_BAND = 4;
 
+/**
+ * Day 39: zoom LOD — overlays come down to the surface as the camera comes in.
+ *
+ * The camera can now get to altitude 0.06 globe radii (~380 km). At that height the Day 34 bands
+ * (32–64 km up) visibly float: shapes slide against the coastlines as you turn. So each frame the
+ * polygon meshes are re-scaled (Globe.gl applies altitude as a radial scale, so this is cheap and
+ * needs no geometry rebuild) from their band altitude toward a low floor:
+ *
+ *   effective = mix(floor + (band - ALT_REF) × BAND_SQUEEZE, band, zoomF)
+ *
+ * zoomF is 1 from camera altitude ZOOM_FAR_ALT up (unchanged look), 0 at ZOOM_NEAR_ALT and below.
+ * The mapping is monotonic in the band altitude, so stacking / tap-picking order never changes,
+ * and depth still doesn't depend on band spacing (caps don't write depth; renderOrder is fixed).
+ *
+ * The floor is set by cap tessellation, not by depth precision: a cap's flat triangles sit below
+ * the sphere they approximate (a chord of length L sags ≈ L² / 8R), and anything that dips under
+ * the globe's surface gets hidden by it. Globe.gl's triangulator left sliver triangles up to
+ * ~2,000 km long (≈60 km sag, measured) on the hand-drawn shapes and big countries. So every cap
+ * is refined after Globe.gl builds it — triangles are split along their longest edge, new points
+ * pushed back onto the sphere — to ≤ REFINE_EDGE[lod]: far out ~760 km edges (≤ 11.5 km sag, under
+ * the 16.5 km floor), close up (camera altitude < LOD_FINE_ENTER) ~380 km (≤ 2.9 km sag, under
+ * the 5 km floor). Hysteresis (LOD_FINE_EXIT) stops swap ping-pong; both meshes are kept.
+ */
+const MIN_CAMERA_DISTANCE = 106; // globe radius 100 → ~380 km above the surface (was 120 / 140)
+const ZOOM_FAR_ALT = 1.2;
+const ZOOM_NEAR_ALT = 0.08;
+const ALT_REF = 0.004; // just under the lowest Day 34 band (presence 0.005)
+const BAND_SQUEEZE = 0.06; // keeps the bands stacked ~0.3–4 km apart when fully squeezed
+const REFINE_EDGE = { coarse: 12, fine: 6 }; // globe units (radius 100): max sag 0.18 / 0.045
+const ALT_FLOOR = { coarse: 0.0026, fine: 0.0008 }; // radii: above that max sag (0.0018 / 0.00045)
+const REFINE_BUDGET_MS = 24; // per frame, so a zoom-in never stalls
+const LOD_FINE_ENTER = 0.45;
+const LOD_FINE_EXIT = 0.6;
+let capLod = 'coarse';
+let zoomF = 1;
+let zoomStyleKey = '';
+
+function smoothstep01(x) {
+  const t = Math.max(0, Math.min(1, x));
+  return t * t * (3 - 2 * t);
+}
+
+/** Camera altitude in globe radii → 0 (closest) … 1 (default look). */
+function zoomFactorForAltitude(alt) {
+  return smoothstep01((alt - ZOOM_NEAR_ALT) / (ZOOM_FAR_ALT - ZOOM_NEAR_ALT));
+}
+
+/** Effective (rendered) altitude for a polygon whose band altitude is `bandAlt`. */
+export function zoomedAltitude(bandAlt, f = zoomF, lod = capLod) {
+  const squeezed = ALT_FLOOR[lod] + (bandAlt - ALT_REF) * BAND_SQUEEZE;
+  return squeezed + (bandAlt - squeezed) * f;
+}
+
+/**
+ * Day 39: hand-drawn peoples / presence / polity rings have edges up to ~2,000 km long, and the
+ * cap triangulator does not subdivide boundary edges, so their edge triangles sagged up to
+ * ~60 km below the cap (measured) — already poking under the globe here and there at the old
+ * bands, and badly once overlays come down close to the surface. Densify every ring to
+ * ≤ RING_STEP_DEG per segment (cached per geometry object, so Globe.gl's meshes are reused).
+ */
+const RING_STEP_DEG = 1;
+const densifiedGeometry = new WeakMap();
+const densifiedFeature = new WeakMap();
+
+function densifyRing(ring) {
+  if (!Array.isArray(ring) || ring.length < 2) return ring;
+  let needs = false;
+  for (let i = 1; i < ring.length && !needs; i++) {
+    const dl = Math.abs(ring[i][0] - ring[i - 1][0]);
+    needs = dl <= 180 && Math.max(dl, Math.abs(ring[i][1] - ring[i - 1][1])) > RING_STEP_DEG;
+  }
+  if (!needs) return ring;
+  const out = [ring[0]];
+  for (let i = 1; i < ring.length; i++) {
+    const [x0, y0] = ring[i - 1];
+    const [x1, y1] = ring[i];
+    const dl = Math.abs(x1 - x0);
+    const n = dl > 180 ? 1 : Math.ceil(Math.max(dl, Math.abs(y1 - y0)) / RING_STEP_DEG);
+    for (let k = 1; k < n; k++) out.push([x0 + ((x1 - x0) * k) / n, y0 + ((y1 - y0) * k) / n]);
+    out.push(ring[i]);
+  }
+  return out;
+}
+
+function densifyGeometry(g) {
+  if (!g || typeof g !== 'object') return g;
+  let d = densifiedGeometry.get(g);
+  if (d) return d;
+  if (g.type === 'Polygon') d = { ...g, coordinates: g.coordinates.map(densifyRing) };
+  else if (g.type === 'MultiPolygon') d = { ...g, coordinates: g.coordinates.map((poly) => poly.map(densifyRing)) };
+  else d = g;
+  densifiedGeometry.set(g, d);
+  return d;
+}
+
+/** Same feature with a densified geometry (stable object per input, so meshes are reused). */
+function densifyFeature(f) {
+  if (!f || typeof f !== 'object') return f;
+  // Nations come from Natural Earth (already dense) — skip the copy.
+  if ((f.entityType || f.properties?.entityType) === 'nation') return f;
+  let d = densifiedFeature.get(f);
+  if (!d || d.__etSrcGeometry !== f.geometry) {
+    d = { ...f, geometry: densifyGeometry(f.geometry), __etSrcGeometry: f.geometry };
+    densifiedFeature.set(f, d);
+  }
+  return d;
+}
+
+function polygonsForYear(year) {
+  return getGlobePolygonFeatures(year).map(densifyFeature);
+}
+
 function featureLayer(d) {
   const t = d?.entityType || d?.properties?.entityType;
   if (t === 'presence') return 'presence';
@@ -156,10 +272,18 @@ function polygonRenderOrder(d) {
  * Presence: soft wash, no edge.
  */
 const HATCH_PERIOD_DEG = 1.1;
+// Day 39: one shared uniform, so the stripes keep roughly the same on-screen spacing as you zoom
+// (a fixed 1.1° period turned into wide bands close up).
+const hatchPeriodUniform = { value: HATCH_PERIOD_DEG };
+
+function syncHatchPeriod(camAlt) {
+  const k = Math.max(0.08, Math.min(1, camAlt / 1.1));
+  hatchPeriodUniform.value = HATCH_PERIOD_DEG * k;
+}
 
 function addHatch(mat) {
   mat.onBeforeCompile = (shader) => {
-    shader.uniforms.etHatchPeriod = { value: HATCH_PERIOD_DEG };
+    shader.uniforms.etHatchPeriod = hatchPeriodUniform;
     shader.vertexShader = shader.vertexShader
       .replace('#include <common>', '#include <common>\nvarying vec3 vEtPos;')
       .replace('#include <begin_vertex>', '#include <begin_vertex>\nvEtPos = position;');
@@ -206,6 +330,8 @@ function capMaterialFor(d, rgba) {
       // Same face handling as Globe.gl's default cap material (no planet-wide wash: rings stay CW).
       side: THREE_NS.DoubleSide,
     });
+    mat.userData.etBaseOpacity = a;
+    mat.opacity = a * (0.8 + 0.2 * zoomF);
     if (hatch) addHatch(mat);
     capMaterialCache.set(key, mat);
   }
@@ -272,8 +398,16 @@ function disposeCapMaterials() {
 }
 
 /** Each frame (cheap): give polygon groups their stable renderOrder; strokes draw after caps. */
-function applyPolygonRenderOrder(scene) {
+function applyPolygonRenderOrder(scene, camera) {
   if (!scene) return;
+  if (camera && camera.position) {
+    const camAlt = camera.position.length() / 100 - 1;
+    zoomF = zoomFactorForAltitude(camAlt);
+    maybeSwitchCapLod(camAlt);
+    syncHatchPeriod(camAlt);
+  }
+  applyZoomCapOpacity();
+  refineSpentMs = 0;
   if (!polygonLayerParent || !polygonLayerParent.parent) {
     polygonLayerParent = null;
     scene.traverse((obj) => {
@@ -292,7 +426,132 @@ function applyPolygonRenderOrder(scene) {
     if (cap && cap.renderOrder !== 0) cap.renderOrder = 0;
     if (stroke && stroke.renderOrder !== 1) stroke.renderOrder = 1;
     syncStrokeStyle(obj, d, stroke);
+    syncCapRefinement(cap);
+    applyZoomToPolygon(obj, cap, stroke);
   }
+}
+
+/** Day 39: radial re-scale (Globe.gl's own altitude mechanism) + zoom-aware stroke opacity. */
+function applyZoomToPolygon(obj, cap, stroke) {
+  const bandAlt = Number(obj.__currentTargetD?.alt ?? obj.__data?.altitude);
+  if (!Number.isFinite(bandAlt)) return;
+  const alt = zoomedAltitude(bandAlt);
+  const s = 1 + alt;
+  if (cap && cap.scale.x !== s) cap.scale.setScalar(s);
+  if (stroke && stroke.visible) {
+    const ss = s + 1e-4; // Globe.gl keeps strokes just above the cap
+    if (stroke.scale.x !== ss) stroke.scale.setScalar(ss);
+    const mat = stroke.material;
+    if (mat) {
+      const ud = mat.userData || (mat.userData = {});
+      // Globe.gl (re)writes opacity on data updates — treat any foreign value as the new base.
+      if (mat.opacity !== ud.etSetOpacity) ud.etBaseOpacity = mat.opacity;
+      const next = Math.min(1, ud.etBaseOpacity * (1 + 0.45 * (1 - zoomF)));
+      if (mat.opacity !== next) mat.opacity = next;
+      ud.etSetOpacity = next;
+    }
+  }
+}
+
+/** Day 39: fills a little lighter close up so the land and the (crisper) borders read through. */
+function applyZoomCapOpacity() {
+  const key = zoomF.toFixed(3);
+  if (key === zoomStyleKey) return;
+  zoomStyleKey = key;
+  const mul = 0.8 + 0.2 * zoomF;
+  for (const mat of capMaterialCache.values()) {
+    const base = mat.userData?.etBaseOpacity;
+    if (Number.isFinite(base)) mat.opacity = base * mul;
+  }
+}
+
+/** Day 39: finer cap meshes only while close, with hysteresis. */
+function maybeSwitchCapLod(camAlt) {
+  if (capLod === 'coarse' && camAlt < LOD_FINE_ENTER) capLod = 'fine';
+  else if (capLod === 'fine' && camAlt > LOD_FINE_EXIT) capLod = 'coarse';
+}
+
+/**
+ * Split every triangle until its longest edge is ≤ maxEdge, projecting new vertices onto the
+ * sphere through the edge's endpoints. Non-conforming splits are fine here: the only offsets
+ * they leave are radial (sub-km), invisible from above, and the caps don't write depth.
+ */
+function refineCapGeometry(src, maxEdge) {
+  const pos = src.getAttribute('position');
+  const index = src.getIndex();
+  const triCount = index ? index.count / 3 : pos.count / 3;
+  const max2 = maxEdge * maxEdge;
+  const out = [];
+  const v = (i) => [pos.getX(i), pos.getY(i), pos.getZ(i)];
+  const d2 = (p, q) => (p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2 + (p[2] - q[2]) ** 2;
+  const mid = (p, q) => {
+    const m = [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2, (p[2] + q[2]) / 2];
+    const r = (Math.hypot(...p) + Math.hypot(...q)) / 2 / (Math.hypot(...m) || 1);
+    return [m[0] * r, m[1] * r, m[2] * r];
+  };
+  const split = (a, b, c, depth) => {
+    const ab = d2(a, b);
+    const bc = d2(b, c);
+    const ca = d2(c, a);
+    const longest = Math.max(ab, bc, ca);
+    if (longest <= max2 || depth > 10) {
+      out.push(...a, ...b, ...c);
+      return;
+    }
+    if (longest === ab) {
+      const m = mid(a, b);
+      split(a, m, c, depth + 1);
+      split(m, b, c, depth + 1);
+    } else if (longest === bc) {
+      const m = mid(b, c);
+      split(a, b, m, depth + 1);
+      split(a, m, c, depth + 1);
+    } else {
+      const m = mid(c, a);
+      split(a, b, m, depth + 1);
+      split(m, b, c, depth + 1);
+    }
+  };
+  for (let t = 0; t < triCount; t++) {
+    const i0 = index ? index.getX(3 * t) : 3 * t;
+    const i1 = index ? index.getX(3 * t + 1) : 3 * t + 1;
+    const i2 = index ? index.getX(3 * t + 2) : 3 * t + 2;
+    split(v(i0), v(i1), v(i2), 0);
+  }
+  const g = new THREE_NS.BufferGeometry();
+  g.setAttribute('position', new THREE_NS.Float32BufferAttribute(out, 3));
+  // Keep Globe.gl's material slot and parameters (it compares parameters to decide rebuilds).
+  const materialIndex = src.groups?.[0]?.materialIndex ?? 0;
+  g.addGroup(0, out.length / 3, materialIndex);
+  g.parameters = src.parameters;
+  g.computeBoundingSphere();
+  return g;
+}
+
+let refineSpentMs = 0;
+
+/** Swap in the refined cap mesh for the current LOD (built lazily, within a frame budget). */
+function syncCapRefinement(cap) {
+  if (!cap || !cap.geometry || !THREE_NS) return;
+  let rec = cap.__etRefine;
+  if (!rec || (cap.geometry !== rec.coarse && cap.geometry !== rec.fine)) {
+    // Globe.gl built (or rebuilt) this cap; it already disposed our previous mesh in use.
+    if (rec) for (const g of [rec.src, rec.coarse, rec.fine]) if (g && g !== cap.geometry) g.dispose();
+    rec = cap.__etRefine = { src: cap.geometry, coarse: null, fine: null };
+  }
+  if (cap.geometry === rec[capLod]) return;
+  if (!rec[capLod]) {
+    if (refineSpentMs > REFINE_BUDGET_MS) return;
+    const t0 = performance.now();
+    const base = capLod === 'fine' && rec.coarse ? rec.coarse : rec.src || rec.coarse;
+    rec[capLod] = refineCapGeometry(base, REFINE_EDGE[capLod]);
+    refineSpentMs += performance.now() - t0;
+    if (rec.src && rec.coarse) {
+      rec.src.dispose();
+      rec.src = null;
+    }
+  }
+  cap.geometry = rec[capLod];
 }
 
 let polygonLayerParent = null;
@@ -365,7 +624,7 @@ export function setGlobeSelectedEntity(entityId) {
     applyPolygonLayer();
     if (Number.isFinite(currentPolygonYear)) {
       try {
-        globe.polygonsData(getGlobePolygonFeatures(currentPolygonYear));
+        globe.polygonsData(polygonsForYear(currentPolygonYear));
       } catch (err) {
         console.warn('Failed to refresh selected globe polygons:', err);
       }
@@ -390,7 +649,7 @@ export function setGlobeOverlayYear(year) {
   if (!Number.isFinite(y)) return;
   currentPolygonYear = y;
   syncNationsEraUI(y);
-  const features = getGlobePolygonFeatures(y);
+  const features = polygonsForYear(y);
   try {
     globe.polygonsData(features);
   } catch (err) {
@@ -446,7 +705,8 @@ export async function mountGlobe(container, opts = {}) {
 
   try {
     const scene = globe.scene();
-    scene.onBeforeRender = () => applyPolygonRenderOrder(scene);
+    const camera = globe.camera();
+    scene.onBeforeRender = () => applyPolygonRenderOrder(scene, camera);
   } catch (_) {
     // ignore — default sort still works, just less stable
   }
@@ -470,7 +730,9 @@ export async function mountGlobe(container, opts = {}) {
     controls.enableDamping = true;
     controls.dampingFactor = 0.08;
     controls.enablePan = false;
-    controls.minDistance = mobile ? 140 : 120;
+    // Day 39: much closer (was 120 desktop / 140 phone). Camera near stays Globe.gl's 0.05
+    // (~3 km): overlays only depth-test against the globe, which resolves fine at this range.
+    controls.minDistance = MIN_CAMERA_DISTANCE;
     controls.maxDistance = mobile ? 450 : 500;
     controls.autoRotate = true;
     controls.autoRotateSpeed = mobile ? 0.25 : 0.35;
@@ -483,7 +745,13 @@ export async function mountGlobe(container, opts = {}) {
   }
 
   try {
-    globe.pointOfView({ lat: 30, lng: 20, altitude: mobile ? 2.4 : 2.1 }, 0);
+    const at = parseAtParam();
+    if (at) {
+      if (controls) controls.autoRotate = false;
+      globe.pointOfView(at, 0);
+    } else {
+      globe.pointOfView({ lat: 30, lng: 20, altitude: mobile ? 2.4 : 2.1 }, 0);
+    }
   } catch (_) {
     // ignore
   }
@@ -549,6 +817,24 @@ function syncNationsEraUI(year) {
   const era = Number(year) >= NATIONS_HANDOFF_YEAR;
   for (const el of document.querySelectorAll('.globe-legend, .globe-credit')) {
     el.classList.toggle('is-nations-era', era);
+  }
+}
+
+/** Day 39: `?at=lat,lng,alt` (alt in globe radii, clamped to the zoom range) opens a close-up. */
+function parseAtParam() {
+  try {
+    const raw = new URLSearchParams(window.location.search).get('at');
+    if (!raw) return null;
+    const [lat, lng, alt] = raw.split(',').map(Number);
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+    const minAlt = MIN_CAMERA_DISTANCE / 100 - 1;
+    return {
+      lat: Math.max(-89, Math.min(89, lat)),
+      lng: ((((lng + 180) % 360) + 360) % 360) - 180,
+      altitude: Number.isFinite(alt) ? Math.max(minAlt, Math.min(4, alt)) : 0.3,
+    };
+  } catch (_) {
+    return null;
   }
 }
 
@@ -625,6 +911,9 @@ export function destroyGlobe() {
   }
   polygonLayerParent = null;
   disposeCapMaterials();
+  capLod = 'coarse';
+  zoomF = 1;
+  zoomStyleKey = '';
 
   detachLegend();
   if (hostEl) {
