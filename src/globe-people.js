@@ -6,7 +6,10 @@
  * Distant island / diaspora footholds stay separate region ids (no ocean blobs).
  *
  * Day 27: first pack (10). Day 28: second pack (~10) filling geographic gaps.
+ * Day 35: peoples persist to the present where they genuinely continue (globe-people-modern.js).
  */
+
+import { applyPeoplePersistence } from './globe-people-modern.js';
 
 /**
  * @typedef {import('./globe-overlays.js').SpatialEntity} SpatialEntity
@@ -2101,3 +2104,6 @@ export const peopleEntities = [
   },
 
 ];
+
+// Day 35: carry continuing peoples forward to 2025 (Scythians intentionally not extended).
+applyPeoplePersistence(peopleEntities);

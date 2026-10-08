@@ -928,6 +928,57 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
 }
 
 
+
+// Day 35 — peoples persist to the present (review feedback B)
+{
+  setOverlayLayerFilter('both');
+  const ceased = new Set(['scythians']);
+  const at = (y) => new Set(getActiveOverlaysAtYear(y).filter((r) => r.entity.type === 'people').map((r) => r.entity.id));
+  const p1900 = at(1900);
+  const p2025 = at(2025);
+  for (const ent of peopleEntities) {
+    if (ceased.has(ent.id)) {
+      assert(!p1900.has(ent.id) && !p2025.has(ent.id), `${ent.id} genuinely ceased — not shown in 1900/2025`);
+      continue;
+    }
+    assert(p2025.has(ent.id), `${ent.id} persists to 2025`);
+    assert(p1900.has(ent.id), `${ent.id} present in 1900`);
+    const last = Math.max(...ent.overlays.map((o) => o.year));
+    assert(last === 2025, `${ent.id} last keyframe is 2025 (got ${last})`);
+    const years = ent.overlays.map((o) => o.year);
+    assert(years.every((y, i) => i === 0 || y > years[i - 1]), `${ent.id} keyframe years strictly ascending`);
+  }
+  assert(p2025.size >= peopleEntities.length - ceased.size, `≥${peopleEntities.length - ceased.size} peoples at 2025 (got ${p2025.size})`);
+  // Peoples never vanish mid-history: every continuing people active at every century after it first appears.
+  for (const ent of peopleEntities) {
+    if (ceased.has(ent.id)) continue;
+    const first = Math.min(...ent.overlays.map((o) => o.year));
+    for (let y = Math.ceil(first / 100) * 100; y <= 2000; y += 100) {
+      if (!at(y).has(ent.id)) assert(false, `${ent.id} missing at ${y} (gap in persistence)`);
+    }
+  }
+  // Fragments stay small — no ocean-spanning rings for the new modern keyframes.
+  for (const y of [1700, 1900, 2025]) {
+    for (const f of getOverlayPolygonFeatures(y).filter((f) => f.entityType === 'people')) {
+      const ring = f.geometry.coordinates[0];
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      for (const [x, yy] of ring) {
+        minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+        minY = Math.min(minY, yy); maxY = Math.max(maxY, yy);
+      }
+      const span = Math.max(maxX - minX, maxY - minY);
+      assert(span < 55, `${f.entityId}@${y} ${f.regionId} span ${span.toFixed(1)} < 55°`);
+    }
+  }
+  // Holes stay valid through the modern keyframes (Aral hole dropped by 2025).
+  const holeAt35 = (entityId, y, holeId) => getOverlayPolygonFeatures(y).some((f) => f.entityId === entityId && f.holeIds.includes(holeId));
+  assert(holeAt35('turkic-peoples', 1900, 'aral-sea'), 'Turkic@1900 keeps Aral hole');
+  assert(!holeAt35('turkic-peoples', 2025, 'aral-sea'), 'Turkic@2025 Aral hole dropped (sea largely dried)');
+  assert(holeAt35('bantu-peoples', 2025, 'lake-victoria'), 'Bantu@2025 keeps Lake Victoria hole');
+  console.log(`  Day 35 peoples at 2025: ${p2025.size}/${peopleEntities.length}`);
+}
+
+
 if (failed) {
   console.error(`\n${failed} lifespan/morph check(s) failed`);
   process.exit(1);

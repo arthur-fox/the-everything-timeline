@@ -2140,7 +2140,74 @@ body.globe-active .filters-toggle {
   gap: 10px;
 }
 
-/*.globe-layer-toggle — Day 27 people packs */
+/* Day 35: map key overlaid on the globe (layers always shown together) */
+.globe-legend {
+  display: none;
+}
+
+/* globe-view.js moves the key inside the canvas host once the globe mounts */
+.globe-canvas-host > .globe-legend {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  max-width: calc(100% - 20px);
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+  backdrop-filter: blur(6px);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text);
+  pointer-events: none;
+}
+
+.globe-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.globe-legend-sub {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.globe-legend-swatch {
+  width: 16px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.globe-legend-swatch.is-polity {
+  background: rgba(248, 113, 113, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+.globe-legend-swatch.is-people {
+  background: repeating-linear-gradient(45deg, rgba(45, 212, 191, 0.9) 0 2px, transparent 2px 4.5px);
+  border: 1.5px dashed rgba(255, 255, 255, 0.85);
+}
+
+.globe-legend-swatch.is-presence {
+  background: rgba(148, 163, 184, 0.35);
+  border: 1px solid transparent;
+  filter: blur(0.4px);
+}
+
+@media (max-width: 640px) {
+  .globe-legend-sub {
+    display: none;
+  }
+}
+
+/*.globe-layer-toggle — Day 27 people packs (Day 35: toggle removed from the UI; styles kept harmless) */
 .globe-layer-toggle {
   display: inline-flex;
   flex-shrink: 0;
@@ -2207,6 +2274,8 @@ body.globe-active .filters-toggle {
 
 .globe-overlay-swatch.is-people {
   border-radius: 3px;
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--text) 55%, transparent);
 }
 
 .globe-overlay-swatch.is-presence {

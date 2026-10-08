@@ -589,8 +589,6 @@ function syncDeepLinkUrl() {
 
     if (currentView === 'globe') {
       params.set('year', String(globeYear));
-      const layer = getOverlayLayerFilter();
-      if (layer && layer !== 'both') params.set('layer', layer);
       if (selectedGlobeEntityId) params.set('entity', selectedGlobeEntityId);
     } else {
       const selectedId = getSelectedDeepLinkId();
@@ -831,8 +829,10 @@ function applyDeepLinkFromUrl() {
       setFilterSelection(ids);
     }
 
+    // Day 35: layers are always shown together (Arthur's review) — legacy ?layer= links
+    // (peoples / polities / presence) now open the combined view instead of a filtered one.
     if (layerRaw != null && layerRaw !== '') {
-      setOverlayLayerFilter(layerRaw);
+      setOverlayLayerFilter('both');
       syncGlobeLayerToggleUI();
     }
 
@@ -3118,19 +3118,19 @@ const GLOBE_YEAR_MAX = 2025;
 let globeYear = 117;
 
 const GLOBE_YEAR_CAPTIONS = [
-  { year: -3000, text: 'Around 3000 BCE — Presence layer: early Nile / Fertile Crescent / Yellow River inhabited belts (approximate).' },
+  { year: -3000, text: 'Around 3000 BCE — Presence (soft wash): early Nile / Fertile Crescent / Yellow River inhabited belts (approximate).' },
   { year: -2500, text: 'Around 2500 BCE — Early Bronze Age: Sumerian cities and Old Kingdom Egypt on the Nile (approximate).' },
   { year: -2000, text: 'Around 2000 BCE — Middle Kingdom Egypt and Mesopotamian city worlds (approximate).' },
   { year: -500, text: 'Around 500 BCE — Classical polities plus Celtic / Scythian / Amazigh people footprints (approximate).' },
   { year: 117, text: 'Around 117 CE — Rome, Han, Parthia, and Kushan spheres across Eurasia (approximate).' },
   { year: 800, text: 'Around 800 CE — Carolingian, Abbasid, Byzantine, Tang worlds; Slavic / Bantu / Turkic / Polynesian peoples (approximate).' },
-  { year: 900, text: 'Around 900 CE — Peoples layer: Slavs, Ancestral Puebloans, Amazigh, Polynesian triangle footholds (approximate).' },
+  { year: 900, text: 'Around 900 CE — Peoples (hatched): Slavs, Ancestral Puebloans, Amazigh, Polynesian triangle footholds (approximate).' },
   { year: 1279, text: 'Around 1279 CE — Mongol peak with Song, Delhi, and Mali neighbours on the map (approximate).' },
   { year: 1492, text: '1492 CE — Iberia at contact; Aztec, Inca, Ming, and Ottoman worlds still dominate their regions (approximate).' },
   { year: 1700, text: 'Around 1700 CE — Ottoman, Mughal, Qing, Spanish, Russian, and early British reach (approximate).' },
-  { year: 1900, text: 'Around 1900 CE — British, Russian, Qing, late Ottoman; Presence layer shows denser modern inhabited belts (approximate).' },
+  { year: 1900, text: 'Around 1900 CE — British, Russian, Qing, late Ottoman; hatched peoples persist beneath the empires (approximate).' },
   { year: 1914, text: '1914 CE — Industrial empires on the eve of World War I (approximate).' },
-  { year: 2025, text: '2025 CE — Today’s political map — future overlays will still be approximate for earlier eras.' },
+  { year: 2025, text: '2025 CE — Today: the world’s peoples (hatched) still span every continent; polities and presence remain approximate.' },
 ];
 
 const globeViewEl = document.getElementById('globe-view');
@@ -3453,7 +3453,10 @@ function updateGlobeOverlayPanel() {
     swatch.className =
       'globe-overlay-swatch' +
       (isPresence ? ' is-presence' : isPeople ? ' is-people' : '');
-    swatch.style.background = entity.color;
+    // Day 35: swatches mirror the globe styling (peoples hatched, presence soft wash).
+    swatch.style.background = isPeople
+      ? `repeating-linear-gradient(45deg, ${entity.color} 0 2px, transparent 2px 4px)`
+      : entity.color;
     swatch.setAttribute('aria-hidden', 'true');
 
     const body = document.createElement('div');

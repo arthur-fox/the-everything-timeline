@@ -2,6 +2,7 @@
  * Interactive Globe.gl earth (Phase 4) + historical polygons + Day 20 living-border morph.
  * Day 26: stable per-entity polygonAltitude offsets to stop overlap z-fighting.
  * Day 30: polygon click → detail panel; selected-entity highlight.
+ * Day 35: peoples hatched + dashed edge vs solid polities; presence soft wash (no edge).
  * Day 34: real flicker fix — no depth-writing side walls / caps, stable layer-aware render order.
  * Mounted only while Globe mode is active; disposed on leave.
  */
@@ -132,13 +133,50 @@ function polygonRenderOrder(d) {
   return 10 + band * 100 + featureSlot(d);
 }
 
-/** Shared cap materials keyed by colour + opacity (Globe.gl skips colour updates for custom materials). */
+/**
+ * Day 35: peoples vs polities read differently when shown together.
+ * Polities: solid translucent fill + thin solid edge. Peoples: diagonal hatch fill (geographic,
+ * anti-aliased, fades to a flat tint when stripes would go sub-pixel) + dashed edge.
+ * Presence: soft wash, no edge.
+ */
+const HATCH_PERIOD_DEG = 1.1;
+
+function addHatch(mat) {
+  mat.onBeforeCompile = (shader) => {
+    shader.uniforms.etHatchPeriod = { value: HATCH_PERIOD_DEG };
+    shader.vertexShader = shader.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vEtPos;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvEtPos = position;');
+    shader.fragmentShader = shader.fragmentShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vEtPos;\nuniform float etHatchPeriod;')
+      .replace(
+        '#include <alphamap_fragment>',
+        `#include <alphamap_fragment>
+        {
+          vec3 etP = normalize(vEtPos);
+          float etLat = asin(clamp(etP.y, -1.0, 1.0));
+          float etLng = atan(etP.x, etP.z);
+          float etC = (degrees(etLat) + degrees(etLng) * cos(etLat)) / etHatchPeriod;
+          float etW = min(fwidth(etC), 1.0);
+          float etF = abs(fract(etC) - 0.5);
+          float etLine = 1.0 - smoothstep(0.22 - etW, 0.22 + etW, etF);
+          float etFade = clamp(1.6 - etW * 3.0, 0.0, 1.0);
+          diffuseColor.a *= mix(0.6, mix(0.22, 1.3, etLine), etFade);
+        }`,
+      );
+  };
+  mat.customProgramCacheKey = () => 'et-people-hatch-v1';
+  return mat;
+}
+
+/** Shared cap materials keyed by colour + opacity + layer (Globe.gl skips colour updates for custom materials). */
 const capMaterialCache = new Map();
 let THREE_NS = null;
 
 function capMaterialFor(d, rgba) {
   if (!THREE_NS) return undefined; // fall back to Globe.gl default until three is loaded
-  const key = rgba;
+  const hatch = featureLayer(d) === 'people';
+  const key = `${rgba}|${hatch ? 'hatch' : 'solid'}`;
   let mat = capMaterialCache.get(key);
   if (!mat) {
     const m = /rgba\((\d+),(\d+),(\d+),([\d.]+)\)/.exec(rgba);
@@ -152,9 +190,58 @@ function capMaterialFor(d, rgba) {
       // Same face handling as Globe.gl's default cap material (no planet-wide wash: rings stay CW).
       side: THREE_NS.DoubleSide,
     });
+    if (hatch) addHatch(mat);
     capMaterialCache.set(key, mat);
   }
   return mat;
+}
+
+/**
+ * Globe.gl's stroke geometry is indexed, so three's computeLineDistances() refuses it.
+ * Rings are stored as consecutive vertices, so cumulative distance in vertex order is enough.
+ */
+function addLineDistances(geometry) {
+  const pos = geometry.getAttribute('position');
+  if (!pos || !THREE_NS) return;
+  const dist = new Float32Array(pos.count);
+  for (let i = 1; i < pos.count; i++) {
+    const dx = pos.getX(i) - pos.getX(i - 1);
+    const dy = pos.getY(i) - pos.getY(i - 1);
+    const dz = pos.getZ(i) - pos.getZ(i - 1);
+    dist[i] = dist[i - 1] + Math.sqrt(dx * dx + dy * dy + dz * dz);
+  }
+  geometry.setAttribute('lineDistance', new THREE_NS.Float32BufferAttribute(dist, 1));
+}
+
+/** Dashed outline for peoples (swapped onto Globe.gl's stroke LineSegments). */
+function syncStrokeStyle(obj, d, stroke) {
+  if (!THREE_NS || !stroke) return;
+  const wantDashed = featureLayer(d) === 'people';
+  if (wantDashed) {
+    if (!obj.__etDashedMat) {
+      obj.__etOrigStrokeMat = stroke.material;
+      obj.__etDashedMat = new THREE_NS.LineDashedMaterial({
+        color: stroke.material.color.clone(),
+        opacity: stroke.material.opacity,
+        transparent: true,
+        depthWrite: false,
+        dashSize: 2.4,
+        gapSize: 1.6,
+      });
+    }
+    if (stroke.material !== obj.__etDashedMat) {
+      // Globe.gl updates colour/opacity on whichever material is attached.
+      obj.__etDashedMat.color.copy(stroke.material.color);
+      obj.__etDashedMat.opacity = stroke.material.opacity;
+      stroke.material = obj.__etDashedMat;
+    }
+    if (stroke.geometry && obj.__etDashGeom !== stroke.geometry) {
+      addLineDistances(stroke.geometry);
+      obj.__etDashGeom = stroke.geometry;
+    }
+  } else if (obj.__etOrigStrokeMat && stroke.material !== obj.__etOrigStrokeMat) {
+    stroke.material = obj.__etOrigStrokeMat;
+  }
 }
 
 function disposeCapMaterials() {
@@ -188,6 +275,7 @@ function applyPolygonRenderOrder(scene) {
     const [cap, stroke] = obj.children;
     if (cap && cap.renderOrder !== 0) cap.renderOrder = 0;
     if (stroke && stroke.renderOrder !== 1) stroke.renderOrder = 1;
+    syncStrokeStyle(obj, d, stroke);
   }
 }
 
@@ -223,12 +311,13 @@ function applyPolygonLayer() {
     .polygonCapMaterial((d) => capMaterialFor(d, capColorFor(d)))
     // Day 34: null (not transparent rgba) — a truthy side colour builds invisible depth-writing walls.
     .polygonSideColor(() => null)
-    // Soft stroke — white 0.4 edges shimmered on overlaps (Day 26). People packs keep a
-    // slightly brighter edge than polities (Day 27).
+    // Day 35: polities thin solid edge; peoples brighter dashed edge (see syncStrokeStyle);
+    // presence no edge (soft wash). Day 34 removed the depth shimmer that forced 0.12 strokes.
     .polygonStrokeColor((d) => {
       if (isSelectedFeature(d)) return 'rgba(255, 255, 255, 0.95)';
-      const t = d.entityType || d.properties?.entityType;
-      return t === 'people' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.12)';
+      const layer = featureLayer(d);
+      if (layer === 'presence') return null;
+      return layer === 'people' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.24)';
     })
     .polygonsTransitionDuration(0);
 }
@@ -312,6 +401,7 @@ export async function mountGlobe(container, opts = {}) {
     return globe;
   }
 
+  detachLegend();
   hostEl.innerHTML = '';
 
   const [{ default: Globe }, THREE] = await Promise.all([import('globe.gl'), import('three')]);
@@ -329,6 +419,7 @@ export async function mountGlobe(container, opts = {}) {
     .polygonsData([]);
 
   applyPolygonLayer();
+  attachLegend();
 
   try {
     const scene = globe.scene();
@@ -399,6 +490,24 @@ export async function mountGlobe(container, opts = {}) {
   if (Number.isFinite(year)) setGlobeOverlayYear(year);
   exposeGlobeDebugHandle();
   return globe;
+}
+
+/** Day 35: map key lives in the stage markup; float it over the canvas while the globe is mounted. */
+let legendHome = null;
+
+function attachLegend() {
+  if (!hostEl) return;
+  const legend = document.querySelector('.globe-legend');
+  if (!legend || legend.parentElement === hostEl) return;
+  legendHome = { parent: legend.parentElement, next: legend.nextSibling };
+  hostEl.appendChild(legend);
+}
+
+function detachLegend() {
+  if (!hostEl || !legendHome) return;
+  const legend = hostEl.querySelector(':scope > .globe-legend');
+  if (legend) legendHome.parent.insertBefore(legend, legendHome.next);
+  legendHome = null;
 }
 
 /** `?globeDebug=1` exposes the Globe.gl instance for screenshot / QA harnesses only. */
@@ -475,6 +584,7 @@ export function destroyGlobe() {
   polygonLayerParent = null;
   disposeCapMaterials();
 
+  detachLegend();
   if (hostEl) {
     hostEl.style.cursor = '';
     hostEl.innerHTML = '';
