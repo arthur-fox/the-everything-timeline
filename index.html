@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/the-everything-timeline/assets/index-CCobF5uU.js"></script>
-  <link rel="stylesheet" crossorigin href="/the-everything-timeline/assets/index-B3qn21Lg.css">
+  <script type="module" crossorigin src="/the-everything-timeline/assets/index-C5XK6gdA.js"></script>
+  <link rel="stylesheet" crossorigin href="/the-everything-timeline/assets/index-cV0ZH58o.css">
 </head>
 <body>
   <div id="app">
@@ -130,6 +130,11 @@
         <div id="globe-canvas-host" class="globe-canvas-host"
              role="img"
              aria-label="Interactive 3D Earth. Drag to rotate. Scroll or pinch to zoom."></div>
+        <button id="globe-fullscreen-toggle" class="globe-fullscreen-toggle" type="button"
+                aria-pressed="false" aria-label="Full-screen globe" title="Full-screen globe (Esc to exit)">
+          <span class="globe-fullscreen-icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path class="fs-enter" d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/><path class="fs-exit" d="M6 2v4H2M14 6h-4V2M10 14v-4h4M2 10h4v4"/></svg></span>
+          <span class="globe-fullscreen-label">Full screen</span>
+        </button>
         <div class="globe-legend" aria-label="Map key">
           <span class="globe-legend-item"><span class="globe-legend-swatch is-polity" aria-hidden="true"></span>Polities <span class="globe-legend-sub">states &amp; empires</span></span>
           <span class="globe-legend-item"><span class="globe-legend-swatch is-people" aria-hidden="true"></span>Peoples <span class="globe-legend-sub">cultures &amp; languages</span></span>
