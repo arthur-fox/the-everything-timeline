@@ -280,18 +280,23 @@ export function getNationPolygonFeatures(year) {
 
 /**
  * Everything the globe draws at `year`: schematic presence / peoples / pre-1914 polities,
- * plus nations from 1914. Polities are dropped from the handoff year on (no double-painting
+ * plus nations from 1914. `hidePolities` (Day 40 layer toggle) drops nations and keeps the
+ * peoples / presence undimmed. Polities are dropped from the handoff year on (no double-painting
  * of, say, the British Empire over independent nations).
  */
-export function getGlobePolygonFeatures(year) {
+export function getGlobePolygonFeatures(year, { hidePolities = false } = {}) {
   const y = Math.round(Number(year));
   const schematic = getOverlayPolygonFeatures(y);
   // Until the TopoJSON arrives, keep the schematic empires so the globe is never empty.
   if (y < NATIONS_HANDOFF_YEAR || !topo) return schematic;
   const kept = [];
   for (const f of schematic) {
-    if (f.entityType === 'people' || f.entityType === 'presence') kept.push(dimmedForNationsEra(f));
+    if (f.entityType !== 'people' && f.entityType !== 'presence') continue;
+    // Day 40: with Polities / Nations switched off, peoples and presence come back to full
+    // strength and their own band, so they can be tapped on land again.
+    kept.push(hidePolities ? f : dimmedForNationsEra(f));
   }
+  if (hidePolities) return kept;
   return [...kept, ...getNationPolygonFeatures(y)];
 }
 

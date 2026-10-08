@@ -2076,6 +2076,71 @@ body.globe-active .filters-toggle {
   font-size: 1.35rem;
   font-weight: 700;
   color: var(--accent);
+  margin-right: auto;
+}
+
+/* Day 40: scrubber zoom (window label + −/+/All) */
+.globe-scrub-zoom {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.globe-scrub-range {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  margin-right: 4px;
+  white-space: nowrap;
+}
+
+body.globe-scrub-zoomed .globe-scrub-range {
+  color: var(--accent);
+}
+
+.globe-scrub-btn {
+  min-width: 30px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font: 600 0.95rem/1 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  cursor: pointer;
+}
+
+.globe-scrub-btn.is-reset {
+  font-size: 0.72rem;
+}
+
+.globe-scrub-btn:hover:not(:disabled),
+.globe-scrub-btn:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.globe-scrub-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+@media (pointer: coarse) {
+  .globe-scrub-btn {
+    min-width: 38px;
+    height: 36px;
+  }
+}
+
+.globe-scrub-track {
+  position: relative;
+}
+
+/* A zoomed scrubber gets an accent rail so it's obvious the slider isn't "all of history" */
+body.globe-scrub-zoomed .globe-year-ticks {
+  color: var(--accent);
 }
 
 .globe-year-slider {
@@ -2153,9 +2218,9 @@ body.globe-active .filters-toggle {
   z-index: 2;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 12px;
+  gap: 2px 2px;
   max-width: calc(100% - 20px);
-  padding: 6px 10px;
+  padding: 3px 4px;
   border-radius: 10px;
   background: color-mix(in srgb, var(--bg) 72%, transparent);
   border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
@@ -2166,11 +2231,51 @@ body.globe-active .filters-toggle {
   pointer-events: none;
 }
 
+/* Day 40: key items are layer toggles (tap to hide / show) */
 .globe-legend-item {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   white-space: nowrap;
+  margin: 0;
+  padding: 3px 6px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.globe-legend-item:hover,
+.globe-legend-item:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 70%, transparent);
+  outline: none;
+}
+
+.globe-legend-item.is-off {
+  opacity: 0.45;
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+
+.globe-legend-item.is-off .globe-legend-swatch {
+  filter: grayscale(1);
+}
+
+@media (pointer: coarse) {
+  .globe-legend-item {
+    min-height: 32px;
+    padding: 4px 8px;
+  }
+}
+
+/* Day 40: rows on a hidden layer stay listed (tap one to bring its layer back) */
+.globe-overlay-item.is-layer-hidden,
+.globe-nations-group.is-layer-hidden {
+  opacity: 0.5;
 }
 
 .globe-legend-sub {
@@ -2196,6 +2301,8 @@ body.globe-active .filters-toggle {
 }
 
 /* Day 38: the key swaps Polities → Nations at the 1914 handoff */
+.globe-legend .is-nation-key.globe-legend-item,
+.globe-legend.is-nations-era .is-polity-key.globe-legend-item,
 .globe-legend .is-nation-key,
 .globe-legend.is-nations-era .is-polity-key {
   display: none;
@@ -2863,4 +2970,25 @@ body.globe-fullscreen .event-detail #detail-description {
 
 .globe-overlay-swatch.is-nation.is-colony {
   opacity: 0.65;
+}
+
+/* Day 40: keep the scrubber's top row on one line on phones */
+.globe-year-label {
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  body.globe-fullscreen .globe-year-heading {
+    display: none;
+  }
+
+  .globe-scrub-range {
+    font-size: 0.66rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .globe-scrub-range {
+    display: none;
+  }
 }
