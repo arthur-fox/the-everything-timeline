@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/the-everything-timeline/assets/index-D-355_ET.js"></script>
-  <link rel="stylesheet" crossorigin href="/the-everything-timeline/assets/index-CJgQ6bjQ.css">
+  <script type="module" crossorigin src="/the-everything-timeline/assets/index-B3ihf64k.js"></script>
+  <link rel="stylesheet" crossorigin href="/the-everything-timeline/assets/index-bXRg_qSz.css">
 </head>
 <body>
   <div id="app">
@@ -135,11 +135,11 @@
           <span class="globe-fullscreen-icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path class="fs-enter" d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/><path class="fs-exit" d="M6 2v4H2M14 6h-4V2M10 14v-4h4M2 10h4v4"/></svg></span>
           <span class="globe-fullscreen-label">Full screen</span>
         </button>
-        <div class="globe-legend" aria-label="Map key">
-          <span class="globe-legend-item is-polity-key"><span class="globe-legend-swatch is-polity" aria-hidden="true"></span>Polities <span class="globe-legend-sub">states &amp; empires</span></span>
-          <span class="globe-legend-item is-nation-key"><span class="globe-legend-swatch is-nation" aria-hidden="true"></span>Nations <span class="globe-legend-sub">colonies paler</span></span>
-          <span class="globe-legend-item"><span class="globe-legend-swatch is-people" aria-hidden="true"></span>Peoples <span class="globe-legend-sub">cultures &amp; languages</span></span>
-          <span class="globe-legend-item"><span class="globe-legend-swatch is-presence" aria-hidden="true"></span>Presence <span class="globe-legend-sub">where people lived</span></span>
+        <div class="globe-legend" role="group" aria-label="Map key — tap a layer to hide or show it">
+          <button type="button" class="globe-legend-item is-polity-key" data-layer="polities" aria-pressed="true" title="Hide polities"><span class="globe-legend-swatch is-polity" aria-hidden="true"></span>Polities <span class="globe-legend-sub">states &amp; empires</span></button>
+          <button type="button" class="globe-legend-item is-nation-key" data-layer="polities" aria-pressed="true" title="Hide nations"><span class="globe-legend-swatch is-nation" aria-hidden="true"></span>Nations <span class="globe-legend-sub">colonies paler</span></button>
+          <button type="button" class="globe-legend-item" data-layer="peoples" aria-pressed="true" title="Hide peoples"><span class="globe-legend-swatch is-people" aria-hidden="true"></span>Peoples <span class="globe-legend-sub">cultures &amp; languages</span></button>
+          <button type="button" class="globe-legend-item" data-layer="presence" aria-pressed="true" title="Hide presence"><span class="globe-legend-swatch is-presence" aria-hidden="true"></span>Presence <span class="globe-legend-sub">where people lived</span></button>
         </div>
         <p class="globe-credit">Borders 1914–2025: <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a> (public domain), regrouped by year · Imagery: NASA Blue Marble</p>
         <div class="globe-copy">
@@ -161,15 +161,23 @@
         <div class="globe-year-row">
           <span class="globe-year-heading">Year</span>
           <span id="globe-year-label" class="globe-year-label">117 CE</span>
+          <span class="globe-scrub-zoom" role="group" aria-label="Zoom the year scrubber">
+            <span id="globe-scrub-range" class="globe-scrub-range" aria-live="polite">All years</span>
+            <button id="globe-scrub-zoom-out" class="globe-scrub-btn" type="button" aria-label="Zoom the scrubber out (more years)" title="Zoom out (more years)">&minus;</button>
+            <button id="globe-scrub-zoom-in" class="globe-scrub-btn" type="button" aria-label="Zoom the scrubber in (fewer years, finer steps)" title="Zoom in (finer steps) · or scroll / pinch on the scrubber">+</button>
+            <button id="globe-scrub-reset" class="globe-scrub-btn is-reset" type="button" aria-label="Show all years on the scrubber" title="Show all years">All</button>
+          </span>
         </div>
-        <input id="globe-year-slider" class="globe-year-slider" type="range"
-               min="-3000" max="2025" step="1" value="117"
-               aria-valuemin="-3000" aria-valuemax="2025" aria-valuenow="117"
-               aria-label="Scrub globe year" />
-        <div class="globe-year-ticks" aria-hidden="true">
-          <span>3000 BCE</span>
-          <span>1 CE</span>
-          <span>2025 CE</span>
+        <div id="globe-scrub-track" class="globe-scrub-track">
+          <input id="globe-year-slider" class="globe-year-slider" type="range"
+                 min="-3000" max="2025" step="1" value="117"
+                 aria-valuemin="-3000" aria-valuemax="2025" aria-valuenow="117"
+                 aria-label="Scrub globe year (arrow keys step one year)" />
+          <div class="globe-year-ticks" aria-hidden="true">
+            <span id="globe-tick-start">3000 BCE</span>
+            <span id="globe-tick-mid">1 CE</span>
+            <span id="globe-tick-end">2025 CE</span>
+          </div>
         </div>
         <div class="globe-year-presets" role="group" aria-label="Notable years">
           <button type="button" class="globe-year-preset" data-year="-2500">2500 BCE</button>
