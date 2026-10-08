@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Day 38 — build the modern nations layer (1914–2025) from Natural Earth admin-1 units.
+ * Day 38 — build the nations layer from Natural Earth admin-1 units (1914–2025 on Day 38,
+ * extended back to 1815 on Day 41 via src/globe-nations-table-1815.js).
  *
  *   node scripts/build-nations.mjs            # downloads Natural Earth into .cache/ if needed
  *   NE_ADMIN1=/path/ne_10m_admin_1_states_provinces.geojson node scripts/build-nations.mjs
@@ -31,6 +32,7 @@ import {
   NATION_ENTITIES,
   NATIONS_START,
   NATIONS_END,
+  NATIONS_FULL_COVERAGE_START,
   NATION_FIXED_COLORS,
   NATION_PALETTE,
   NATION_ENTITIES_BY_ID,
@@ -192,9 +194,20 @@ async function main() {
       }
     }
   }
-  // Coverage report: big unclaimed land units at sample years.
+  // Coverage report: big unclaimed land units at sample years. Full coverage is required only
+  // from NATIONS_FULL_COVERAGE_START (1914); before that, land outside any state (peoples-held
+  // interiors) is deliberately left to the hand-drawn peoples / presence layers, so it's reported.
+  const landKm2 = atoms.reduce((s, a) => s + a.areaKm2, 0);
+  for (const y of [1815, 1848, 1871, 1885, 1900, 1913]) {
+    if (y < NATIONS_START || y >= NATIONS_FULL_COVERAGE_START) continue;
+    const claimed = new Set();
+    for (const v of versions) if (y >= v.from && y < v.to) for (const a of v.atomIds) claimed.add(a);
+    const km2 = atoms.reduce((s, a) => s + (claimed.has(a.idx) ? a.areaKm2 : 0), 0);
+    console.log(`  ${y}: ${((100 * km2) / landKm2).toFixed(1)}% of land (excl. Antarctica) inside a drawn state`);
+  }
   const gaps = [];
   for (const y of [1914, 1920, 1925, 1939, 1945, 1950, 1960, 1975, 1991, 2000, 2025]) {
+    if (y < NATIONS_FULL_COVERAGE_START) continue;
     const claimed = new Set();
     for (const v of versions) if (y >= v.from && y < v.to) for (const a of v.atomIds) claimed.add(a);
     const missing = atoms.filter((a) => !claimed.has(a.idx) && a.areaKm2 > 2500);
@@ -310,6 +323,15 @@ async function main() {
     LOOKALIKE.get(a).add(b);
     LOOKALIKE.get(b).add(a);
   }
+  // Day 41: keep each group's previous colour when it is still valid (no neighbour clash and no
+  // extra look-alike clash), so extending the table doesn't repaint the whole modern map.
+  // NATIONS_FRESH_COLOURS=1 recolours from scratch.
+  let previous = {};
+  if (!process.env.NATIONS_FRESH_COLOURS && fs.existsSync(COLORS_OUT)) {
+    const txt = fs.readFileSync(COLORS_OUT, 'utf8');
+    const m = /export const NATION_COLORS = (\{[\s\S]*?\});/.exec(txt);
+    if (m) previous = JSON.parse(m[1]);
+  }
   const colors = {};
   const used = new Map(NATION_PALETTE.map((c) => [c, 0]));
   for (const [g, c] of Object.entries(NATION_FIXED_COLORS)) if (groups.has(g) || g === '__disputed') colors[g] = c;
@@ -323,6 +345,8 @@ async function main() {
     // Soft rule: also avoid colours that merely look alike next to each other (e.g. lime / olive).
     const nearClash = (c) => [...(adj.get(g) || [])].filter((n) => colors[n] && LOOKALIKE.get(c)?.has(colors[n])).length;
     free.sort((a, b) => nearClash(a) - nearClash(b) || used.get(a) - used.get(b));
+    const prev = previous[g];
+    if (prev && free.includes(prev) && nearClash(prev) <= nearClash(free[0])) free.unshift(prev);
     colors[g] = free[0];
     used.set(free[0], used.get(free[0]) + 1);
   }

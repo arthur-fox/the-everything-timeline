@@ -1,5 +1,8 @@
 /**
  * Day 38 — modern nations layer (1914–2025): who governed which land, year by year.
+ * Day 41 — the layer now starts in 1815: src/globe-nations-table-1815.js holds the 1815–1914
+ * periods and is merged in below (`NATION_ENTITIES`); shared unit groups and helpers live in
+ * src/globe-nations-units.js.
  *
  * Geometry is NOT hand-drawn here. Every unit below is a Natural Earth (public domain)
  * admin-0 country code (e.g. `FRA`) or admin-1 province code (e.g. `FR-67`), and
@@ -27,81 +30,78 @@
  * removes units.
  */
 
-export const NATIONS_START = 1914;
+export const NATIONS_START = 1815;
 export const NATIONS_END = 2025;
+/**
+ * Day 41: from this year every land unit must be claimed (the build fails on gaps). Before it
+ * (1815–1913) the table only draws land some state actually governed, so the interior of Africa
+ * before the scramble, Australia's interior before 1829 and the like stay empty: the hand-drawn
+ * peoples and presence layers show who lived there.
+ */
+export const NATIONS_FULL_COVERAGE_START = 1914;
 
-// ---------------------------------------------------------------------------
-// Reusable unit groups (Natural Earth admin-1 ISO codes)
-// ---------------------------------------------------------------------------
-const AL = 'FR-67 FR-68 FR-57'; // Alsace–Lorraine
-const FR_OVS = 'FR-GF FR-RE FR-GP FR-MQ FR-YT';
-const PL_W45 = 'PL-ZP PL-LB PL-DS PL-OP PL-WN'; // German until 1945
-const PL_POSEN = 'PL-PM PL-WP PL-KP'; // Prussian partition (Posen / West Prussia)
-const PL_CONGRESS = 'PL-MZ PL-LD PL-LU PL-SK PL-PD'; // Russian partition
-const PL_GALICIA = 'PL-MA PL-PK'; // Austrian partition (west Galicia)
-const UA_GALICIA = 'UA-46 UA-26 UA-61'; // east Galicia
-const KRESY = 'BY-HR BY-BR UA-07 UA-56'; // interwar eastern Poland (approx.)
-const TRANSNISTRIA = 'MD-SN MD-CAM MD-GRI';
-const TRANSYLVANIA =
-  'RO-SM RO-AR RO-BH RO-TM RO-CS RO-MM RO-CJ RO-BN RO-SJ RO-HD RO-AB RO-SB RO-BV RO-CV RO-HR RO-MS';
-const VOJVODINA = 'RS-01 RS-05 RS-03 RS-06 RS-02 RS-04 RS-07';
-const TYROL_S = 'IT-TN IT-BZ';
-const JULIAN = 'IT-TS IT-GO';
-const ISTRIA = 'HR-18';
-const KOTOR = 'ME-10 ME-08 ME-19 ME-05';
-const DOBRUJA_S = 'BG-08 BG-19';
-const KARS = 'TR-36 TR-75 TR-76';
-const HATAY = 'TR-31';
-const CRIMEA = 'UA-43 UA-40';
-const TUVA = 'RU-TY';
-const KGD = 'RU-KGD';
-const DE_EAST = 'DE-MV DE-BB DE-BE DE-ST DE-SN DE-TH';
-const CENTRAL_ASIA = 'KAZ KAB UZB TKM KGZ TJK';
-const CAUCASUS = 'GEO ARM AZE';
-const HEJAZ = 'SA-02 SA-03 SA-07 SA-11';
-const ASIR = 'SA-14 SA-09 SA-10';
-const NEJD = 'SA-01 SA-05 SA-04';
-const SHAMMAR = 'SA-06 SA-08 SA-12';
-const YE_SOUTH = 'YE-AD YE-LA YE-AB YE-SH YE-HD YE-MR YE-DA';
-const YE_NORTH = `YEM -${YE_SOUTH.split(' ').join(' -')}`;
-const WSAHARA = 'SAH MA-15 MA-16';
-const SP_MOROCCO = 'MA-01 MA-03';
-const MANCHURIA = 'CN-HL CN-JL CN-LN';
-const TIBET = 'CN-XZ';
-const SIKKIM = 'IN-SK';
-const GOA = 'IN-GA IN-DH';
-const PONDY = 'IN-PY';
-const MY_BORNEO = 'MY-12 MY-13 MY-15';
-const NNG = 'ID-PA ID-PB';
-const ZANZIBAR = 'TZ-11 TZ-07 TZ-15 TZ-10 TZ-06';
-const BR_CAMEROONS = 'CM-NW CM-SW';
-const NFLD = 'CA-NL';
-const UK_ISLES = 'GBR JEY GGY IMN';
-
-/** Remove each unit in a group: neg('A B') → '-A -B'. */
-const neg = (group) => group.split(/\s+/).filter(Boolean).map((u) => `-${u}`).join(' ');
-
-// Russian Empire / Soviet core pieces
-const RU_CORE = `RUS ${neg(KGD)}`; // RUS minus Kaliningrad (Crimea is re-homed to UKR in the build)
-const UA_RUSSIAN = `UKR ${neg(UA_GALICIA)} -UA-77 -UA-21`; // Ukraine minus Austro-Hungarian lands
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-/** period: years from ≤ y < to (to null = current). extra may set name / kind / owner / note. */
-const p = (from, to, units, extra = {}) => ({ from, to, units, ...extra });
-const state = (id, name, periods, opts = {}) => ({ id, name, kind: 'state', periods, ...opts });
-/** Territory that starts as a colony / protectorate / mandate of `owner` and may later be independent. */
-const colony = (owner, from, to, units, name, extra = {}) => p(from, to, units, { kind: 'colony', owner, name, ...extra });
-const dominion = (from, to, units, name, extra = {}) =>
-  p(from, to, units, { kind: 'dominion', owner: 'uk', name, ...extra });
-const disputed = (from, to, units, name, extra = {}) => p(from, to, units, { kind: 'disputed', name, ...extra });
-
-const BRIT = ['british-empire'];
-const FREN = ['french-colonial'];
-const PORT = ['portugal'];
-const SPAN = ['spanish-empire'];
-const JAPN = ['meiji-japan'];
+import {
+  AL,
+  FR_OVS,
+  PL_W45,
+  PL_POSEN,
+  PL_CONGRESS,
+  PL_GALICIA,
+  UA_GALICIA,
+  KRESY,
+  TRANSNISTRIA,
+  TRANSYLVANIA,
+  VOJVODINA,
+  TYROL_S,
+  JULIAN,
+  ISTRIA,
+  KOTOR,
+  DOBRUJA_S,
+  KARS,
+  HATAY,
+  CRIMEA,
+  TUVA,
+  KGD,
+  DE_EAST,
+  CENTRAL_ASIA,
+  CAUCASUS,
+  HEJAZ,
+  ASIR,
+  NEJD,
+  SHAMMAR,
+  YE_SOUTH,
+  YE_NORTH,
+  WSAHARA,
+  SP_MOROCCO,
+  MANCHURIA,
+  TIBET,
+  SIKKIM,
+  GOA,
+  PONDY,
+  MY_BORNEO,
+  NNG,
+  ZANZIBAR,
+  BR_CAMEROONS,
+  NFLD,
+  UK_ISLES,
+  vassal,
+  BUKHARA,
+  KHIVA,
+  neg,
+  RU_CORE,
+  UA_RUSSIAN,
+  p,
+  state,
+  colony,
+  dominion,
+  disputed,
+  BRIT,
+  FREN,
+  PORT,
+  SPAN,
+  JAPN,
+} from './globe-nations-units.js';
+import { NATION_ENTITIES_1815 } from './globe-nations-table-1815.js';
 
 /**
  * Colonial owners: id → display adjective. Colonies take their owner's colour so empires
@@ -123,10 +123,14 @@ export const NATION_OWNERS = {
   australia: 'Australian',
   'new-zealand': 'New Zealand',
   india: 'Indian',
+  // Day 41 (1815–1913)
+  russia: 'Russian',
+  'ottoman-empire': 'Ottoman',
+  transvaal: 'Transvaal',
 };
 
-/** @type {{ id: string, name: string, kind: string, periods: object[], colorOf?: string, timelineItemIds?: string[] }[]} */
-export const NATION_ENTITIES = [
+/** 1914–2025 (Day 38). Day 41 prepends 1815–1913 periods from globe-nations-table-1815.js below. */
+const NATION_ENTITIES_1914 = [
   // =========================================================================
   // Europe
   // =========================================================================
@@ -183,9 +187,9 @@ export const NATION_ENTITIES = [
   state('estonia', 'Estonia', [p(1918, 1940, 'EST'), p(1991, null, 'EST')]),
   state('finland', 'Finland', [p(1917, null, 'FIN ALD', { note: 'Karelian territory lost in 1940/1944 is not split out (province-level approximation).' })]),
   state('russia', 'Russia', [
-    p(1914, 1917, `${RU_CORE} ${UA_RUSSIAN} BLR LTU -LT-KL LVA EST FIN ALD ${PL_CONGRESS} MDA ${CAUCASUS} ${CENTRAL_ASIA} ${KARS}`, { name: 'Russian Empire' }),
-    p(1917, 1918, `${RU_CORE} ${UA_RUSSIAN} BLR LTU -LT-KL LVA EST ${PL_CONGRESS} MDA ${CAUCASUS} ${CENTRAL_ASIA} ${KARS}`, { name: 'Russia (revolution and civil war)' }),
-    p(1918, 1920, `${RU_CORE} ${UA_RUSSIAN} BLR ${TRANSNISTRIA} ${CENTRAL_ASIA}`, { name: 'Soviet Russia (civil war)', note: 'Soviet republics in Ukraine, Belarus and Central Asia are grouped here until the 1922 union.' }),
+    p(1914, 1917, `${RU_CORE} ${UA_RUSSIAN} BLR LTU -LT-KL LVA EST FIN ALD ${PL_CONGRESS} MDA ${CAUCASUS} ${CENTRAL_ASIA} ${neg(BUKHARA)} ${neg(KHIVA)} ${KARS}`, { name: 'Russian Empire' }),
+    p(1917, 1918, `${RU_CORE} ${UA_RUSSIAN} BLR LTU -LT-KL LVA EST ${PL_CONGRESS} MDA ${CAUCASUS} ${CENTRAL_ASIA} ${neg(BUKHARA)} ${neg(KHIVA)} ${KARS}`, { name: 'Russia (revolution and civil war)' }),
+    p(1918, 1920, `${RU_CORE} ${UA_RUSSIAN} BLR ${TRANSNISTRIA} ${CENTRAL_ASIA} ${neg(BUKHARA)} ${neg(KHIVA)}`, { name: 'Soviet Russia (civil war)', note: 'Soviet republics in Ukraine, Belarus and Central Asia are grouped here until the 1922 union; Bukhara and Khiva were taken in 1920.' }),
     p(1920, 1921, `${RU_CORE} ${UA_RUSSIAN} ${neg('UA-07 UA-56')} BLR -BY-HR -BY-BR ${TRANSNISTRIA} ${CENTRAL_ASIA}`, { name: 'Soviet Russia (civil war)' }),
     p(1921, 1922, `${RU_CORE} -RU-TY ${UA_RUSSIAN} ${neg('UA-07 UA-56')} BLR -BY-HR -BY-BR ${TRANSNISTRIA} ${CENTRAL_ASIA} ${CAUCASUS}`, { name: 'Soviet Russia' }),
     p(1991, null, 'RUS', { note: 'Crimea, occupied since 2014, is shown separately.' }),
@@ -588,6 +592,51 @@ export const NATION_ENTITIES = [
   state('falklands', 'Falkland Islands', [colony('uk', 1914, null, 'FLK SGS', 'Falkland Islands (British)')], { timelineItemIds: BRIT }),
 ];
 
+/**
+ * Day 41: join the 1815–1913 table onto the 1914–2025 one. Same id → the older periods are
+ * prepended (and a period that simply carries on across 1914 — same units, name, kind and
+ * owner — is merged into one); new ids (Prussia, the Papal States, Gran Colombia …) are added.
+ * @type {{ id: string, name: string, kind: string, periods: object[], colorOf?: string, timelineItemIds?: string[] }[]}
+ */
+export const NATION_ENTITIES = mergeNationEras(NATION_ENTITIES_1914, NATION_ENTITIES_1815);
+
+function samePeriodShape(a, b) {
+  const norm = (u) => String(u).trim().replace(/\s+/g, ' ');
+  return (
+    a.to === b.from &&
+    norm(a.units) === norm(b.units) &&
+    (a.name || null) === (b.name || null) &&
+    (a.kind || 'state') === (b.kind || 'state') &&
+    (a.owner || null) === (b.owner || null)
+  );
+}
+
+function mergeNationEras(modern, older) {
+  const byId = new Map(modern.map((e) => [e.id, { ...e, periods: [...e.periods] }]));
+  const order = modern.map((e) => e.id);
+  for (const old of older) {
+    const cur = byId.get(old.id);
+    if (!cur) {
+      byId.set(old.id, { ...old, periods: [...old.periods] });
+      order.push(old.id);
+      continue;
+    }
+    const pre = [...old.periods];
+    const first = cur.periods[0];
+    const last = pre[pre.length - 1];
+    if (last && first && samePeriodShape(last, first)) {
+      pre.pop();
+      const note = [last.note, first.note].filter(Boolean).join(' ');
+      cur.periods[0] = { ...first, from: last.from, ...(note ? { note } : {}) };
+    }
+    cur.periods = [...pre, ...cur.periods];
+    const ids = [...new Set([...(old.timelineItemIds || []), ...(cur.timelineItemIds || [])])];
+    if (ids.length) cur.timelineItemIds = ids;
+    if (old.colorOf && !cur.colorOf) cur.colorOf = old.colorOf;
+  }
+  return order.map((id) => byId.get(id));
+}
+
 // ---------------------------------------------------------------------------
 // Colours (Day 38). Fixed colours for the three biggest colonial / imperial blocs so they
 // read the same in every year; everything else is graph-coloured by the build script so
@@ -613,10 +662,10 @@ export const NATION_PALETTE = [
   '#B5654A', // terracotta
 ];
 
-/** Colour group of a period: colonies share their owner's colour; disputed areas share grey. */
+/** Colour group of a period: colonies (and Day 41 vassal states) share their owner's colour; disputed areas share grey. */
 export function nationColorGroup(entity, period) {
   const kind = period?.kind || entity.kind;
-  if ((kind === 'colony' || kind === 'dominion') && period?.owner) {
+  if ((kind === 'colony' || kind === 'dominion' || kind === 'vassal') && period?.owner) {
     const owner = NATION_ENTITIES_BY_ID.get(period.owner);
     return owner?.colorOf || period.owner;
   }
