@@ -2231,6 +2231,111 @@ body.globe-scrub-zoomed .globe-year-ticks {
   pointer-events: none;
 }
 
+/* Day 42: country / place labels — a DOM layer over the canvas, under the key and buttons.
+   White text with a dark halo so it reads over the blue marble, GIBS tiles and polygon fills. */
+.globe-labels {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+}
+
+.globe-labels[hidden] {
+  display: none;
+}
+
+.globe-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  line-height: 1.15;
+  color: #fff;
+  text-shadow:
+    0 0 2px rgba(0, 0, 0, 0.95),
+    0 0 4px rgba(0, 0, 0, 0.75),
+    0 1px 3px rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  will-change: transform, opacity;
+  user-select: none;
+}
+
+.globe-label.is-on {
+  opacity: 1;
+}
+
+.globe-label.is-kind-colony.is-on,
+.globe-label.is-kind-vassal.is-on {
+  color: #f1f5f9;
+  opacity: 0.9;
+}
+
+.globe-label.is-kind-disputed.is-on {
+  color: #e2e8f0;
+  opacity: 0.85;
+}
+
+.globe-label.is-polity {
+  color: #fff7ed;
+}
+
+.globe-label.is-people.is-on {
+  color: #fef3c7;
+  opacity: 0.9;
+}
+
+.globe-label.is-place {
+  font-feature-settings: 'kern';
+}
+
+.globe-label.is-ocean,
+.globe-label.is-sea {
+  color: #bae6fd;
+  text-shadow:
+    0 0 2px rgba(8, 47, 73, 0.95),
+    0 0 4px rgba(8, 47, 73, 0.8);
+}
+
+.globe-label.is-ocean.is-on {
+  opacity: 0.85;
+}
+
+.globe-label.is-range,
+.globe-label.is-desert {
+  color: #fde68a;
+}
+
+.globe-label.is-region,
+.globe-label.is-island {
+  color: #e7e5e4;
+}
+
+.globe-label.is-range.is-on,
+.globe-label.is-desert.is-on,
+.globe-label.is-region.is-on,
+.globe-label.is-island.is-on {
+  opacity: 0.88;
+}
+
+.globe-label.is-selected {
+  color: #fde047;
+}
+
+/* Day 42: "Aa" swatch on the Labels toggle in the key */
+.globe-legend-swatch.is-labels {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: 700 9px/1 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #fff;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  text-shadow: 0 0 2px #000;
+}
+
 /* Day 40: key items are layer toggles (tap to hide / show) */
 .globe-legend-item {
   display: inline-flex;

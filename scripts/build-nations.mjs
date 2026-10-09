@@ -28,6 +28,7 @@ import { topology } from 'topojson-server';
 import { mergeArcs, feature, neighbors } from 'topojson-client';
 import { presimplify, simplify, sphericalTriangleArea } from 'topojson-simplify';
 import { geoArea, geoCentroid } from 'd3-geo';
+import { geometryLabelAnchor } from '../src/geo-label-point.js';
 import {
   NATION_ENTITIES,
   NATIONS_START,
@@ -281,6 +282,15 @@ async function main() {
     minPartKm2: MIN_PART_KM2,
     years: [NATIONS_START, NATIONS_END],
   };
+  // Day 42: label anchor per shape — pole of inaccessibility of the largest part (lng, lat),
+  // total area (km²) and the anchor's clearance from the border (km), for zoom-aware labels.
+  if (!FINE) {
+    out.labels = features.map((f) => {
+      const a = geometryLabelAnchor(f.geometry, 0.02);
+      if (!a) return null;
+      return [+a.lng.toFixed(2), +a.lat.toFixed(2), Math.round(a.areaKm2), Math.round(a.distKm)];
+    });
+  }
   if (FINE) {
     out.meta.variant = 'fine';
     const json = JSON.stringify(out);

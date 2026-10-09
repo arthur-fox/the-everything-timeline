@@ -33,6 +33,22 @@ import {
   NATIONS_START,
   NATIONS_END,
 } from './globe-nations.js';
+import {
+  initGlobeLabels,
+  destroyGlobeLabels,
+  setGlobeLabelFeatures,
+  updateGlobeLabels,
+  invalidateGlobeLabels,
+  setGlobeLabelsEnabled as setLabelsEnabled,
+  areGlobeLabelsEnabled,
+  getGlobeLabelsDebug,
+} from './globe-labels.js';
+
+/** Day 42: country / place labels on or off (legend "Labels" toggle, `&labels=0`). */
+export function setGlobeLabelsEnabled(on) {
+  setLabelsEnabled(on);
+}
+export { areGlobeLabelsEnabled };
 
 const EARTH_DAY =
   'https://unpkg.com/three-globe@2.45.0/example/img/earth-blue-marble.jpg';
@@ -719,6 +735,7 @@ function applyPolygonRenderOrder(scene, camera) {
     maybeEnableTiles(camAlt);
     syncTileVisibility(scene, camAlt);
     maybeUpdateFineBorders(camAlt);
+    updateGlobeLabels(camera, camAlt);
   }
   applyZoomCapOpacity();
   refineSpentMs = 0;
@@ -940,6 +957,7 @@ export function setGlobeSelectedEntity(entityId) {
   const next = entityId ? String(entityId) : null;
   if (selectedEntityId === next) return;
   selectedEntityId = next;
+  invalidateGlobeLabels();
   // Re-apply accessors + data so styles refresh without remounting
   if (globe && mounted) {
     applyPolygonLayer();
@@ -976,6 +994,7 @@ export function setGlobeOverlayYear(year) {
   } catch (err) {
     console.warn('Failed to update globe polygons:', err);
   }
+  setGlobeLabelFeatures(features);
 }
 
 /**
@@ -1022,6 +1041,7 @@ export async function mountGlobe(container, opts = {}) {
     .polygonsData([]);
 
   applyPolygonLayer();
+  initGlobeLabels({ host: hostEl, globe, THREE, mobile, getSelected: () => selectedEntityId });
   attachLegend();
 
   try {
@@ -1165,6 +1185,7 @@ function exposeGlobeDebugHandle() {
     if (new URLSearchParams(window.location.search).get('globeDebug') === '1') {
       window.__etGlobe = globe;
       window.__etGlobeDetail = getGlobeDetailState;
+      window.__etGlobeLabels = getGlobeLabelsDebug;
     }
   } catch (_) {
     // ignore
@@ -1244,6 +1265,7 @@ export function destroyGlobe() {
   zoomF = 1;
   zoomStyleKey = '';
 
+  destroyGlobeLabels();
   detachLegend();
   if (hostEl) {
     hostEl.style.cursor = '';
