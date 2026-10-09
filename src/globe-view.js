@@ -322,6 +322,17 @@ function scheduleFineRefresh(next) {
   }, 0);
 }
 
+/** Day 45: current camera as the `at=lat,lng,alt` deep-link value (null before the globe exists). */
+export function getGlobeCameraAt() {
+  try {
+    const pov = globe?.pointOfView?.();
+    if (!pov || !Number.isFinite(pov.lat)) return null;
+    return `${pov.lat.toFixed(2)},${pov.lng.toFixed(2)},${pov.altitude.toFixed(2)}`;
+  } catch {
+    return null;
+  }
+}
+
 export function getGlobeDetailState() {
   return {
     tiles: tileState,
@@ -1380,7 +1391,7 @@ let hostOverlayHomes = [];
 
 function attachLegend() {
   if (!hostEl) return;
-  const els = document.querySelectorAll('.globe-legend, .globe-fullscreen-toggle, .globe-credit');
+  const els = document.querySelectorAll('.globe-legend, .globe-fullscreen-toggle, .globe-credit, .feedback-open-fs');
   for (const el of els) {
     if (el.parentElement === hostEl) continue;
     hostOverlayHomes.push({ el, parent: el.parentElement, next: el.nextSibling });

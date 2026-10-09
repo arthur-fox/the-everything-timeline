@@ -54,7 +54,8 @@ import { moroccoItems, moroccoCategories } from './countries/morocco.js';
 import { iraqItems, iraqCategories } from './countries/iraq.js';
 import { philippinesItems, philippinesCategories } from './countries/philippines.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
-import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick, setGlobeHiddenLayers, GLOBE_LAYER_KEYS, setGlobeLabelsEnabled, setGlobeCertaintyEnabled, setGlobeCitiesEnabled, setGlobeEventsEnabled, setGlobePinHandlers } from './globe-view.js';
+import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick, setGlobeHiddenLayers, GLOBE_LAYER_KEYS, setGlobeLabelsEnabled, setGlobeCertaintyEnabled, setGlobeCitiesEnabled, setGlobeEventsEnabled, setGlobePinHandlers, getGlobeCameraAt } from './globe-view.js';
+import { initFeedback } from './feedback.js';
 import { confidenceForEntity, confidenceForNationPeriod, CONFIDENCE_LABEL, CONFIDENCE_DRAWING } from './globe-confidence.js';
 import {
   getOverlayLayerFilter,
@@ -4236,3 +4237,18 @@ updateBookmarksUI();
 resize();
 maybeShowGestureHint();
 canvas.style.cursor = 'grab';
+
+// Day 45 — Feedback button + panel (src/feedback.js; where it goes is set in src/feedback-config.js).
+initFeedback({
+  getContext: () => {
+    const globe = isGlobeView();
+    return {
+      view: currentView,
+      year: globe ? globeYear : null,
+      at: globe ? getGlobeCameraAt() : null,
+      entity: globe ? selectedGlobeEntityId : null,
+      item: globe ? null : getSelectedDeepLinkId?.() || null,
+      fullscreen: globe && globeFullscreen,
+    };
+  },
+});
