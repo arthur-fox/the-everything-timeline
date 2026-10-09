@@ -11,6 +11,13 @@
  *   4. greedy collision avoidance by priority (area; labels already up get a small bonus so they
  *      don't flicker), capped at ~50 labels on phones / ~110 on desktop.
  * Between placements, visible labels just follow their anchor every frame.
+ *
+ * Day 43 (Phase 4c item 3) adds two more kinds of candidate to the same placement pass:
+ *   - dated cities (src/globe-cities.js): a dot + the name the city had in the slider year,
+ *     ranked so world cities show from orbit and towns only close up (`&cities=0` hides them);
+ *   - event pins (src/globe-event-pins.js): clickable markers for timeline entries that happened
+ *     near the slider year (`&events=0` hides them). A click opens the entry's detail panel.
+ * Both are point labels (no fit test): they only need room on screen and to win the collision.
  */
 import { geometryLabelAnchor } from './geo-label-point.js';
 import { shortNationLabel, shortOverlayLabel } from './globe-label-names.js';
@@ -21,6 +28,7 @@ const PLACE_TICK_MS = { desktop: 120, mobile: 180 };
 const MAX_LABELS = { desktop: 110, mobile: 50 };
 const LIMB_MIN = 0.16; // 0 = horizon, 1 = straight below the camera
 const PAD = 3; // px around each label for collision
+const PIN_STEM = 13; // px from an event pin's place to its marker (clears the city name + padding)
 
 let host = null;
 let globe = null;
@@ -28,7 +36,19 @@ let Vec3 = null;
 let mobile = false;
 let container = null;
 let enabled = true;
+let citiesEnabled = true;
+let eventsEnabled = true;
 let getSelected = () => null;
+let pinResolve = null; // (ref) → { icon, title } | null — set by main.js
+let pinClick = null; // (pin) → void
+let curYear = null;
+let extrasState = 'idle'; // idle | loading | ready | error (cities + pins chunk)
+let citiesMod = null;
+let pinsMod = null;
+let cityCands = [];
+let pinCands = [];
+const cityCandCache = new Map();
+const pinCandCache = new Map();
 
 let featureCands = [];
 let placeCands = [];
@@ -57,8 +77,8 @@ export function initGlobeLabels(opts) {
   tmp = new Vec3();
   container = document.createElement('div');
   container.className = 'globe-labels';
-  container.setAttribute('aria-hidden', 'true');
-  container.hidden = !enabled;
+  container.hidden = !anyOn();
+  container.addEventListener('click', onContainerClick);
   host.appendChild(container);
   try {
     const ff = getComputedStyle(host).fontFamily;
@@ -68,6 +88,21 @@ export function initGlobeLabels(opts) {
   }
   dirty = true;
   loadPlaces();
+  loadExtras();
+}
+
+function anyOn() {
+  return enabled || citiesEnabled || eventsEnabled;
+}
+
+function onContainerClick(e) {
+  const el = e.target?.closest?.('.globe-pin');
+  if (!el) return;
+  const rec = records.get(el.dataset.id);
+  if (!rec?.on || !rec.cand.pin) return;
+  e.stopPropagation();
+  e.preventDefault();
+  if (pinClick) pinClick(rec.cand.pin);
 }
 
 export function destroyGlobeLabels() {
@@ -82,8 +117,38 @@ export function destroyGlobeLabels() {
 
 export function setGlobeLabelsEnabled(on) {
   enabled = Boolean(on);
-  if (container) container.hidden = !enabled;
+  if (container) container.hidden = !anyOn();
   dirty = true;
+}
+
+/** Day 43: dated city dots + names on or off (`&cities=0`). */
+export function setGlobeCitiesEnabled(on) {
+  citiesEnabled = Boolean(on);
+  if (container) container.hidden = !anyOn();
+  dirty = true;
+}
+
+export function areGlobeCitiesEnabled() {
+  return citiesEnabled;
+}
+
+/** Day 43: event pins on or off (`&events=0`). */
+export function setGlobeEventsEnabled(on) {
+  eventsEnabled = Boolean(on);
+  if (container) container.hidden = !anyOn();
+  dirty = true;
+}
+
+export function areGlobeEventsEnabled() {
+  return eventsEnabled;
+}
+
+/** Day 43: how pins find their timeline entry, and what a click does. */
+export function setGlobePinHandlers({ resolve, click } = {}) {
+  pinResolve = typeof resolve === 'function' ? resolve : null;
+  pinClick = typeof click === 'function' ? click : null;
+  pinCandCache.clear();
+  rebuildExtras();
 }
 
 export function areGlobeLabelsEnabled() {
@@ -91,8 +156,13 @@ export function areGlobeLabelsEnabled() {
 }
 
 /** Called whenever the globe's polygonsData changes. */
-export function setGlobeLabelFeatures(features) {
+export function setGlobeLabelFeatures(features, year) {
   featureCands = buildFeatureCandidates(features || []);
+  const y = Math.round(Number(year));
+  if (Number.isFinite(y) && y !== curYear) {
+    curYear = y;
+    rebuildExtras();
+  }
   dirty = true;
 }
 
@@ -106,9 +176,15 @@ export function getGlobeLabelsDebug() {
   const shown = [];
   for (const [id, r] of records) {
     if (!r.on) continue;
-    shown.push({ id, text: r.cand.display, kind: r.cand.kind, x: r.x, y: r.y, w: r.cand.w, h: r.cand.h });
+    shown.push({ id, text: r.cand.display, kind: r.cand.kind, x: r.x + (r.cand.dx || 0), y: r.y + r.cand.dys[r.v || 0], w: r.cand.w, h: r.cand.h });
   }
-  return { enabled, placesState, ...stats, featureCandidates: featureCands.length, placeCandidates: placeCands.length, shown };
+  return {
+    enabled, citiesEnabled, eventsEnabled, year: curYear, placesState, extrasState, ...stats,
+    featureCandidates: featureCands.length, placeCandidates: placeCands.length,
+    cityCandidates: cityCands.length, pinCandidates: pinCands.length,
+    cities: shown.filter((s) => s.kind === 'city').length, pins: shown.filter((s) => s.kind === 'pin').length,
+    shown,
+  };
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -126,8 +202,19 @@ function measure(c) {
     measureCtx.font = font;
     w = measureCtx.measureText(c.display).width;
   }
-  c.w = Math.ceil(w + c.spacing * c.size * c.display.length + 2);
-  c.h = Math.ceil(c.size * 1.2);
+  c.w = Math.ceil(w + c.spacing * c.size * c.display.length + 2 + (c.extraW || 0));
+  c.h = Math.ceil(c.size * 1.2 + (c.extraH || 0));
+  // Left-anchored labels (city dot, pin marker): the anchor sits `dotX` px in from the left edge.
+  c.dx = c.dotX != null ? c.w / 2 - c.dotX : 0;
+  // Pins float above their place (a marker with a stem) so the city's own name stays readable,
+  // or hang below it when the space above is taken (variant 1).
+  if (c.kind === 'pin') {
+    c.dys = [-(c.h / 2 + PIN_STEM), c.h / 2 + PIN_STEM];
+    c.shifts = [`translate(-${c.dotX}px, calc(-100% - ${PIN_STEM}px))`, `translate(-${c.dotX}px, ${PIN_STEM}px)`];
+  } else {
+    c.dys = [0];
+    c.shifts = [c.dotX != null ? `translate(-${c.dotX}px, -50%)` : 'translate(-50%, -50%)'];
+  }
 }
 
 function nationStyle(r, kind) {
@@ -270,6 +357,82 @@ async function loadPlaces() {
 }
 
 // ---------------------------------------------------------------------------------------------
+// Day 43: dated cities + event pins (one lazy chunk)
+
+/** Altitude (globe radii) below which a city of each rank is labelled. */
+const CITY_MAX_ALT = [Infinity, 2.6, 1.6, 0.9, 0.5];
+// After state names: world cities outrank event pins (a pin can sit above / below the name
+// instead), towns don't.
+const CITY_PRIO = [0, 750, 260, 110, 50];
+
+async function loadExtras() {
+  if (extrasState !== 'idle') {
+    if (extrasState === 'ready') rebuildExtras();
+    return;
+  }
+  extrasState = 'loading';
+  try {
+    [citiesMod, pinsMod] = await Promise.all([import('./globe-cities.js'), import('./globe-event-pins.js')]);
+    extrasState = 'ready';
+  } catch (err) {
+    console.warn('Globe cities / event pins unavailable:', err);
+    extrasState = 'error';
+  }
+  rebuildExtras();
+}
+
+function rebuildExtras() {
+  if (extrasState !== 'ready' || curYear == null) {
+    cityCands = [];
+    pinCands = [];
+    return;
+  }
+  const y = curYear;
+  const d = mobile ? 0.5 : 0;
+  cityCands = citiesMod.citiesAtYear(y).map(({ city, name, rank }) => {
+    const key = `${city.id}|${name}|${rank}`;
+    let c = cityCandCache.get(key);
+    if (!c) {
+      c = makeCandidate({
+        key: `city:${city.id}`, kind: 'city', text: name, lat: city.lat, lng: city.lng, point: true,
+        size: (rank === 1 ? 11.5 : rank === 2 ? 11 : 10.5) - d, upper: false, spacing: 0,
+        weight: rank <= 2 ? 600 : 500, italic: false, tier: `r${rank}`, rank,
+        maxAlt: CITY_MAX_ALT[rank] * (mobile ? 0.85 : 1), fitKm: 1, fit: 0,
+        prio: CITY_PRIO[rank], extraW: 10, dotX: 3, cls: `is-city is-rank-${rank}`,
+      });
+      cityCandCache.set(key, c);
+    }
+    return c;
+  });
+  const win = pinsMod.pinWindow(y);
+  const out = [];
+  pinsMod.EVENT_PINS.forEach((pin, i) => {
+    const dy = Math.abs(pin.year - y);
+    if (dy > win) return;
+    let c = pinCandCache.get(i);
+    if (c === undefined) {
+      const info = pinResolve ? pinResolve(pin.ref) : null;
+      c = info
+        ? makeCandidate({
+            key: `pin:${i}`, kind: 'pin', text: `${info.icon ? `${info.icon} ` : ''}${pin.label}`,
+            lat: pin.lat, lng: pin.lng, point: true, size: mobile ? 10.5 : 11, upper: false, spacing: 0,
+            weight: 600, italic: false, tier: 'pin', fitKm: 1, fit: 0, prio: 700,
+            extraW: 24, extraH: 6, dotX: 9, cls: 'is-pin', entityId: `pin:${i}`,
+            pin: { ...pin, index: i, icon: info.icon || '', title: info.title || pin.label },
+          })
+        : null;
+      pinCandCache.set(i, c);
+    }
+    if (!c) return;
+    c.near = 1 - (0.6 * dy) / Math.max(1, win);
+    c.faded = dy > win / 2;
+    out.push(c);
+  });
+  pinCands = out;
+  dirty = true;
+}
+
+// ---------------------------------------------------------------------------------------------
 // Placement + per-frame tracking
 
 function coords(lat, lng) {
@@ -309,23 +472,45 @@ function place(camera, camAlt, now) {
   const list = [];
   const obstacles = overlayObstacles(now);
   const EDGE = 4;
-  const usable = (c, x, y) => {
-    const b = [x - c.w / 2, y - c.h / 2, x + c.w / 2, y + c.h / 2];
+  const usable = (c, x, y, v = 0) => {
+    const bx = x + (c.dx || 0);
+    const by = y + c.dys[v];
+    const b = [bx - c.w / 2, by - c.h / 2, bx + c.w / 2, by + c.h / 2];
     if (b[0] < EDGE || b[2] > hostW - EDGE || b[1] < EDGE || b[3] > hostH - EDGE) return false;
     for (const o of obstacles) if (b[0] < o[2] && b[2] > o[0] && b[1] < o[3] && b[3] > o[1]) return false;
     return true;
   };
   // Close up, a country's anchor is often off-screen or under the key although most of the
   // screen is that country: label it inside its visible part instead (screen-grid sampling).
-  const grid = camAlt < GRID_MAX_ALT && featureCands.length ? viewportGrid(camera) : null;
+  const grid = enabled && camAlt < GRID_MAX_ALT && featureCands.length ? viewportGrid(camera) : null;
+  // Cities count for less from orbit (country names first), more close up.
+  const cityBoost = camAlt > 1.2 ? 0.35 : camAlt < 0.6 ? 1.3 : 1;
+  const pinBoost = camAlt > 1.6 ? 0.5 : 1;
   const consider = (c) => {
     if (c.maxAlt !== undefined && camAlt > c.maxAlt) return;
     ensurePos(c);
     const selected = sel && c.entityId === sel;
     const rec = records.get(c.id);
-    let score = c.prio * (rec?.on ? 1.3 : 1);
+    let prio = c.prio;
+    if (c.kind === 'city') prio *= cityBoost;
+    else if (c.kind === 'pin') prio *= pinBoost * (c.near ?? 1);
+    let score = prio * (rec?.on ? 1.3 : 1);
+    // State names come first (Day 42 order among them); cities and pins fill the gaps around them.
+    // Close up, world cities go first and a state name moves aside (grid alternatives below).
+    if (c.kind === 'nation' || c.kind === 'polity') score += 1e5;
+    else if (c.kind === 'city' && grid && c.rank === 1) score += 2e5;
     if (selected) score *= 1e4;
     const f = facing(c.pos, cx, cy, cz, dist);
+    if (c.point) {
+      if (f < LIMB_MIN) return;
+      const [x, y] = project(c.pos, camera);
+      for (let v = 0; v < c.dys.length; v++) {
+        // Keep a shown pin on the side it's on (no flipping while panning).
+        const s = score * (v ? 0.97 : 1) * (rec?.on && (rec.v || 0) === v ? 1.05 : 1);
+        if (usable(c, x, y, v)) list.push({ c, x, y, pos: c.pos, score: s, v });
+      }
+      return;
+    }
     if (f >= LIMB_MIN) {
       const [x, y] = project(c.pos, camera);
       if (usable(c, x, y)) {
@@ -334,6 +519,30 @@ function place(camera, camAlt, now) {
         const span = 2 * Math.max(Math.hypot(nx - x, ny - y), Math.hypot(ex - x, ey - y));
         if (!selected && span < c.w * c.fit) return;
         list.push({ c, x, y, pos: c.pos, score });
+        // Close up: fallback spots used only if the anchor is taken (e.g. by a world city's name):
+        // nudged one line up / down (still inside the shape), then the visible-part grid.
+        if (grid && c.geom) {
+          for (const dy of [-1.25 * c.h, 1.25 * c.h]) {
+            if (!usable(c, x, y + dy) || !grid.containsNear(c, x, y + dy)) continue;
+            const ll = screenToLatLng(x, y + dy, camera);
+            if (ll) list.push({ c, x, y: y + dy, pos: null, dyn: { lat: ll.lat, lng: ll.lng }, score: score * 0.95, lazyDyn: true });
+          }
+        }
+        const alt = grid?.hits.get(c);
+        if (alt && alt.length >= 2 && 2 * Math.sqrt((alt.length * grid.cellArea) / Math.PI) >= c.w * 0.9) {
+          const near = alt
+            .filter((p) => Math.hypot(p.x - x, p.y - y) > c.h && usable(c, p.x, p.y))
+            .sort((a, b) => Math.hypot(a.x - x, a.y - y) - Math.hypot(b.x - x, b.y - y))
+            .slice(0, 2);
+          // Keep a moved label where it is while panning, if that spot still works.
+          if (rec?.on && rec.dyn && rec.pos === rec.dyn.pos && facing(rec.dyn.pos, cx, cy, cz, dist) >= LIMB_MIN) {
+            const [px, py] = project(rec.dyn.pos, camera);
+            if (usable(c, px, py) && grid.containsNear(c, px, py)) list.push({ c, x: px, y: py, pos: rec.dyn.pos, dyn: rec.dyn, score: score * 0.95 });
+          }
+          for (const p of near) {
+            list.push({ c, x: p.x, y: p.y, pos: null, dyn: { lat: p.lat, lng: p.lng }, score: score * 0.9, lazyDyn: true });
+          }
+        }
         return;
       }
     }
@@ -370,12 +579,15 @@ function place(camera, camAlt, now) {
     }
     list.push({ c, x: best.x, y: best.y, pos: best.dyn.pos, dyn: best.dyn, score: score * 0.9 });
   };
-  for (const c of featureCands) consider(c);
-  if (placesState === 'ready') {
-    // The island of Sardinia while the Kingdom of Sardinia is on the map: one label, the state's.
-    const stateTexts = new Set(featureCands.map((c) => c.text.toLowerCase()));
-    for (const c of placeCands) if (!stateTexts.has(c.text.toLowerCase())) consider(c);
+  // The island of Sardinia while the Kingdom of Sardinia is on the map: one label, the state's.
+  const stateTexts = enabled ? new Set(featureCands.map((c) => c.text.toLowerCase())) : new Set();
+  if (enabled) {
+    for (const c of featureCands) consider(c);
+    if (placesState === 'ready') for (const c of placeCands) if (!stateTexts.has(c.text.toLowerCase())) consider(c);
   }
+  // City-states (Singapore, Venice, Monaco …): the state label already names the place.
+  if (citiesEnabled) for (const c of cityCands) if (!stateTexts.has(c.text.toLowerCase())) consider(c);
+  if (eventsEnabled) for (const c of pinCands) consider(c);
   list.sort((a, b) => b.score - a.score);
 
   const max = MAX_LABELS[mobile ? 'mobile' : 'desktop'];
@@ -387,7 +599,10 @@ function place(camera, camAlt, now) {
     if (chosen.size >= max) break;
     const { c, x, y } = it;
     if (chosen.has(c.id)) continue;
-    const b = [x - c.w / 2 - PAD, y - c.h / 2 - PAD, x + c.w / 2 + PAD, y + c.h / 2 + PAD];
+    const v = it.v || 0;
+    const bx = x + (c.dx || 0);
+    const by = y + c.dys[v];
+    const b = [bx - c.w / 2 - PAD, by - c.h / 2 - PAD, bx + c.w / 2 + PAD, by + c.h / 2 + PAD];
     let hit = false;
     for (const o of boxes) {
       if (b[0] < o[2] && b[2] > o[0] && b[1] < o[3] && b[3] > o[1]) {
@@ -398,19 +613,24 @@ function place(camera, camAlt, now) {
     if (hit) continue;
     boxes.push(b);
     chosen.add(c.id);
+    if (it.lazyDyn) {
+      it.dyn.pos = coords(it.dyn.lat, it.dyn.lng);
+      it.pos = it.dyn.pos;
+    }
     let rec = records.get(c.id);
     if (!rec) {
-      const el = document.createElement('div');
-      el.className = `globe-label ${c.cls}`;
-      el.textContent = c.display;
-      el.style.font = c.font;
-      el.style.letterSpacing = `${c.spacing}em`;
+      const el = createLabelEl(c);
       container.appendChild(el);
-      rec = { el, on: false, fadeUntil: 0, cand: c, x, y, pos: it.pos, dyn: null };
+      rec = { el, on: false, fadeUntil: 0, cand: c, x, y, pos: it.pos, dyn: null, v: 0 };
       records.set(c.id, rec);
       setPos(rec, x, y);
     }
     rec.cand = c;
+    if ((rec.v || 0) !== v) {
+      rec.v = v;
+      rec.el.style.transform = '';
+      if (c.kind === 'pin') rec.el.classList.toggle('is-below', v === 1);
+    }
     rec.pos = it.pos;
     rec.dyn = it.dyn || null;
     setPos(rec, x, y);
@@ -421,6 +641,7 @@ function place(camera, camAlt, now) {
       requestAnimationFrame(() => rec.on && rec.el.classList.add('is-on'));
     }
     rec.el.classList.toggle('is-selected', Boolean(sel && c.entityId === sel));
+    if (c.kind === 'pin') rec.el.classList.toggle('is-faded', Boolean(c.faded));
   }
   for (const [id, rec] of records) {
     if (chosen.has(id)) continue;
@@ -564,18 +785,54 @@ function overlayObstacles(now) {
   return obstacleCache.boxes.slice();
 }
 
+function createLabelEl(c) {
+  let el;
+  if (c.kind === 'pin') {
+    el = document.createElement('button');
+    el.type = 'button';
+    el.className = `globe-label globe-pin ${c.cls}`;
+    el.dataset.id = c.id;
+    el.title = `${c.pin.title} — ${c.pin.place}, ${formatPinYear(c.pin.year)}`;
+    el.setAttribute('aria-label', `${c.pin.label}, ${c.pin.place}, ${formatPinYear(c.pin.year)}: open ${c.pin.title}`);
+    const dot = document.createElement('span');
+    dot.className = 'globe-pin-dot';
+    dot.setAttribute('aria-hidden', 'true');
+    const txt = document.createElement('span');
+    txt.textContent = c.display;
+    el.append(dot, txt);
+  } else {
+    el = document.createElement('div');
+    el.className = `globe-label ${c.cls}`;
+    el.setAttribute('aria-hidden', 'true');
+    if (c.kind === 'city') {
+      const dot = document.createElement('span');
+      dot.className = 'globe-city-dot';
+      el.append(dot, document.createTextNode(c.display));
+    } else {
+      el.textContent = c.display;
+    }
+  }
+  el.style.font = c.font;
+  el.style.letterSpacing = `${c.spacing}em`;
+  return el;
+}
+
+function formatPinYear(y) {
+  return y < 0 ? `${-y} BCE` : y < 1000 ? `${y} CE` : String(y);
+}
+
 function setPos(rec, x, y) {
   const rx = Math.round(x * 2) / 2;
   const ry = Math.round(y * 2) / 2;
   if (rec.x === rx && rec.y === ry && rec.el.style.transform) return;
   rec.x = rx;
   rec.y = ry;
-  rec.el.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%)`;
+  rec.el.style.transform = `translate3d(${rx}px, ${ry}px, 0) ${rec.cand.shifts[rec.v || 0]}`;
 }
 
 /** Per-frame hook (from the scene's onBeforeRender). */
 export function updateGlobeLabels(camera, camAlt) {
-  if (!container || !enabled || !camera) return;
+  if (!container || !anyOn() || !camera) return;
   const now = performance.now();
   const t0 = now;
   const { x: cx, y: cy, z: cz } = camera.position;

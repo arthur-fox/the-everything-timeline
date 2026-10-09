@@ -42,7 +42,15 @@ import {
   setGlobeLabelsEnabled as setLabelsEnabled,
   areGlobeLabelsEnabled,
   getGlobeLabelsDebug,
+  setGlobeCitiesEnabled,
+  areGlobeCitiesEnabled,
+  setGlobeEventsEnabled,
+  areGlobeEventsEnabled,
+  setGlobePinHandlers,
 } from './globe-labels.js';
+
+/** Day 43: dated cities (`&cities=0`) and event pins (`&events=0`) — see globe-labels.js. */
+export { setGlobeCitiesEnabled, areGlobeCitiesEnabled, setGlobeEventsEnabled, areGlobeEventsEnabled, setGlobePinHandlers };
 
 /** Day 42: country / place labels on or off (legend "Labels" toggle, `&labels=0`). */
 export function setGlobeLabelsEnabled(on) {
@@ -994,7 +1002,7 @@ export function setGlobeOverlayYear(year) {
   } catch (err) {
     console.warn('Failed to update globe polygons:', err);
   }
-  setGlobeLabelFeatures(features);
+  setGlobeLabelFeatures(features, y);
 }
 
 /**
