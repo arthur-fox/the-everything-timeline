@@ -140,6 +140,7 @@
           <button type="button" class="globe-legend-item" data-layer="peoples" aria-pressed="true" title="Hide peoples"><span class="globe-legend-swatch is-people" aria-hidden="true"></span>Peoples <span class="globe-legend-sub">cultures &amp; languages</span></button>
           <button type="button" class="globe-legend-item" data-layer="presence" aria-pressed="true" title="Hide presence"><span class="globe-legend-swatch is-presence" aria-hidden="true"></span>Presence <span class="globe-legend-sub">where people lived</span></button>
           <button type="button" class="globe-legend-item" data-labels aria-pressed="true" title="Hide labels"><span class="globe-legend-swatch is-labels" aria-hidden="true">Aa</span>Labels</button>
+          <button type="button" class="globe-legend-item is-certainty-key" data-certainty aria-pressed="true" title="How sure the borders are"><span class="globe-legend-swatch is-certainty" aria-hidden="true"><i class="is-sure"></i><i class="is-rough"></i><i class="is-guess"></i></span>Certainty <span class="globe-legend-sub">solid sure · soft rough · dotted guess</span></button>
           <button type="button" class="globe-legend-item" data-overlay="cities" aria-pressed="true" title="Hide cities"><span class="globe-legend-swatch is-cities" aria-hidden="true"></span>Cities <span class="globe-legend-sub">names of the time</span></button>
           <button type="button" class="globe-legend-item" data-overlay="events" aria-pressed="true" title="Hide event pins"><span class="globe-legend-swatch is-events" aria-hidden="true"></span>Events <span class="globe-legend-sub">near this year</span></button>
         </div>
@@ -209,6 +210,7 @@
       <button id="detail-close" type="button" aria-label="Close details">&times;</button>
       <h2 id="detail-title"></h2>
       <p id="detail-date"></p>
+      <p id="detail-confidence" class="detail-confidence hidden"></p>
       <p id="detail-description"></p>
       <div class="detail-actions">
         <button id="detail-bookmark" class="detail-bookmark" type="button" aria-pressed="false" title="Save to bookmarks">

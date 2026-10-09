@@ -19,6 +19,11 @@
  *   labels) sharpen the ground as you zoom (the 4k texture stays underneath as the far view and
  *   the fallback), and nation borders near the centre of the view swap to a finer Natural Earth
  *   set (2 km² simplification vs 40 km²) when close.
+ * Day 44: showing uncertainty (Phase 4c item 4) — every shape carries a confidence level
+ *   (globe-confidence.js). Documented: crisp solid edge. Approximate: softer edge and a fill that
+ *   fades towards it. Conjectural: dotted edge and a fill that fades out well inside it. The fade
+ *   is a per-vertex distance-to-edge attribute on the refined cap mesh (hand-drawn shapes only;
+ *   nations keep crisp fills so neighbours never show gaps). `&certainty=0` / the key turns it off.
  * Mounted only while Globe mode is active; disposed on leave.
  */
 
@@ -611,23 +616,108 @@ const HATCH_PERIOD_DEG = 1.1;
 // (a fixed 1.1° period turned into wide bands close up).
 const hatchPeriodUniform = { value: HATCH_PERIOD_DEG };
 
+/**
+ * Day 44: certainty styling. Feather widths are in globe units (radius 100) at the default view
+ * and shrink with the camera like the hatch, so the fade stays a similar width on screen.
+ */
+const FEATHER_W = 3.2; // ≈ 1.8° of fade at the default view (approximate); conjectural × 1.8
+const FEATHER_STYLE = {
+  approximate: { mul: 1, min: 0.3 },
+  conjectural: { mul: 1.8, min: 0.12 },
+  // Presence is already a faint wash with no edge: fade it less, or small footprints vanish.
+  'presence-approximate': { mul: 1, min: 0.55 },
+  'presence-conjectural': { mul: 1.4, min: 0.4 },
+};
+const featherWidthUniform = { value: FEATHER_W };
+// Max refined triangle edge for feathered caps, so the distance field interpolates smoothly.
+const FEATHER_EDGE = { coarse: 4, fine: 2 };
+// Distances past this (unit sphere) are clamped: the widest fade is 1.8 × 3.2 ≈ 5.8 globe units.
+const FEATHER_MAX_D = 0.08;
+const FEATHER_CELL = 0.11; // > FEATHER_MAX_D + the longest densified ring segment (~0.025)
+const FEATHER_SHAPE_FRAC = 0.6; // fade width ≤ 60% of the shape's deepest point from its edge
+let certaintyEnabled = true;
+let dashScale = 1;
+
+/** Day 44: certainty styling on or off (legend "Certainty" toggle, `&certainty=0`). */
+export function setGlobeCertaintyEnabled(on) {
+  const next = Boolean(on);
+  if (next === certaintyEnabled) return;
+  certaintyEnabled = next;
+  if (globe && mounted) {
+    applyPolygonLayer();
+    if (Number.isFinite(currentPolygonYear)) {
+      try {
+        globe.polygonsData(polygonsForYear(currentPolygonYear));
+      } catch (err) {
+        console.warn('Failed to refresh certainty styling:', err);
+      }
+    }
+  }
+}
+export function isGlobeCertaintyEnabled() {
+  return certaintyEnabled;
+}
+
+function featureConfidence(d) {
+  if (!certaintyEnabled) return 'documented';
+  return d?.confidence || d?.properties?.confidence || 'documented';
+}
+
+/** Fill fade only for hand-drawn shapes (nations tile the land; a fade would open gaps). */
+function featherModeFor(d) {
+  const layer = featureLayer(d);
+  if (layer === 'nation') return null;
+  const c = featureConfidence(d);
+  if (c !== 'approximate' && c !== 'conjectural') return null;
+  return layer === 'presence' ? `presence-${c}` : c;
+}
+
+/** Edge style: solid / dashed (peoples) / dotted (conjectural) / longdash (approximate nations). */
+function strokeStyleFor(d) {
+  const layer = featureLayer(d);
+  const c = featureConfidence(d);
+  if (c === 'conjectural') return 'dotted';
+  if (layer === 'people') return 'dashed';
+  if (layer === 'nation' && c === 'approximate') return 'longdash';
+  return 'solid';
+}
+
+const DASH = {
+  dashed: { dashSize: 2.4, gapSize: 1.6 },
+  dotted: { dashSize: 0.55, gapSize: 1.05 },
+  longdash: { dashSize: 1.7, gapSize: 0.9 },
+};
+
 function syncHatchPeriod(camAlt) {
   const k = Math.max(0.08, Math.min(1, camAlt / 1.1));
   hatchPeriodUniform.value = HATCH_PERIOD_DEG * k;
+  featherWidthUniform.value = FEATHER_W * Math.max(0.12, k);
+  // Dashes and dots keep roughly the same on-screen size as you zoom (they were fixed globe units).
+  dashScale = 1 / Math.max(0.12, k);
 }
 
-function addHatch(mat) {
+/**
+ * Cap shader: optional peoples hatch (Day 35) and optional certainty fade (Day 44). The fade reads
+ * a per-vertex `etEdgeD` (distance to the shape's edge + 1, in globe units); 0 means "not built
+ * yet", which draws without a fade rather than flashing transparent.
+ */
+function addCapShader(mat, { hatch = false, feather = null } = {}) {
+  const fs = feather ? FEATHER_STYLE[feather] : null;
   mat.onBeforeCompile = (shader) => {
     shader.uniforms.etHatchPeriod = hatchPeriodUniform;
+    shader.uniforms.etFeatherW = featherWidthUniform;
     shader.vertexShader = shader.vertexShader
-      .replace('#include <common>', '#include <common>\nvarying vec3 vEtPos;')
-      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvEtPos = position;');
-    shader.fragmentShader = shader.fragmentShader
-      .replace('#include <common>', '#include <common>\nvarying vec3 vEtPos;\nuniform float etHatchPeriod;')
       .replace(
-        '#include <alphamap_fragment>',
-        `#include <alphamap_fragment>
-        {
+        '#include <common>',
+        '#include <common>\nvarying vec3 vEtPos;' + (fs ? '\nattribute float etEdgeD;\nattribute float etEdgeMax;\nvarying float vEtEdgeD;\nvarying float vEtEdgeMax;' : ''),
+      )
+      .replace(
+        '#include <begin_vertex>',
+        '#include <begin_vertex>\nvEtPos = position;' + (fs ? '\nvEtEdgeD = etEdgeD;\nvEtEdgeMax = etEdgeMax;' : ''),
+      );
+    let frag = '#include <alphamap_fragment>\n';
+    if (hatch) {
+      frag += `{
           vec3 etP = normalize(vEtPos);
           float etLat = asin(clamp(etP.y, -1.0, 1.0));
           float etLng = atan(etP.x, etP.z);
@@ -637,11 +727,121 @@ function addHatch(mat) {
           float etLine = 1.0 - smoothstep(0.22 - etW, 0.22 + etW, etF);
           float etFade = clamp(1.6 - etW * 3.0, 0.0, 1.0);
           diffuseColor.a *= mix(0.6, mix(0.22, 1.3, etLine), etFade);
-        }`,
-      );
+        }\n`;
+    }
+    if (fs) {
+      frag += `if (vEtEdgeD > 0.5) {
+          float etD = vEtEdgeD - 1.0;
+          // Narrow shapes (the Nile valley) fade over at most ~60% of their half-width, so they never vanish.
+          float etWid = max(0.05, min(etFeatherW * ${fs.mul.toFixed(2)}, vEtEdgeMax * ${FEATHER_SHAPE_FRAC.toFixed(2)}));
+          float etK = smoothstep(0.0, etWid, etD);
+          diffuseColor.a *= mix(${fs.min.toFixed(2)}, 1.0, etK);
+        }\n`;
+    }
+    shader.fragmentShader = shader.fragmentShader
+      .replace(
+        '#include <common>',
+        '#include <common>\nvarying vec3 vEtPos;\nuniform float etHatchPeriod;\nuniform float etFeatherW;' +
+          (fs ? '\nvarying float vEtEdgeD;\nvarying float vEtEdgeMax;' : ''),
+      )
+      .replace('#include <alphamap_fragment>', frag);
   };
-  mat.customProgramCacheKey = () => 'et-people-hatch-v1';
+  mat.customProgramCacheKey = () => `et-cap-v2-${hatch ? 'h' : 'n'}-${feather || 'none'}`;
   return mat;
+}
+
+/** Unit vector for [lng, lat] in Globe.gl's axes (same as the hatch shader's inverse). */
+function unitVec(lng, lat) {
+  const la = (lat * Math.PI) / 180;
+  const lo = (lng * Math.PI) / 180;
+  return [Math.cos(la) * Math.sin(lo), Math.sin(la), Math.cos(la) * Math.cos(lo)];
+}
+
+/** Segment grid over a feature's rings (outer + holes), for distance-to-edge lookups. */
+function edgeIndexFor(geometry) {
+  if (!geometry) return null;
+  const polys = geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.type === 'MultiPolygon' ? geometry.coordinates : [];
+  const seg = [];
+  for (const poly of polys) {
+    for (const ring of poly || []) {
+      if (!Array.isArray(ring) || ring.length < 2) continue;
+      let prev = unitVec(ring[0][0], ring[0][1]);
+      for (let i = 1; i < ring.length; i++) {
+        const cur = unitVec(ring[i][0], ring[i][1]);
+        seg.push(prev[0], prev[1], prev[2], cur[0], cur[1], cur[2]);
+        prev = cur;
+      }
+    }
+  }
+  if (!seg.length) return null;
+  const cells = new Map();
+  const cellKey = (ix, iy, iz) => ((ix + 20) * 41 + (iy + 20)) * 41 + (iz + 20);
+  const add = (k, si) => {
+    let a = cells.get(k);
+    if (!a) cells.set(k, (a = []));
+    if (a[a.length - 1] !== si) a.push(si);
+  };
+  for (let si = 0; si < seg.length; si += 6) {
+    const ka = cellKey(Math.floor(seg[si] / FEATHER_CELL), Math.floor(seg[si + 1] / FEATHER_CELL), Math.floor(seg[si + 2] / FEATHER_CELL));
+    const kb = cellKey(Math.floor(seg[si + 3] / FEATHER_CELL), Math.floor(seg[si + 4] / FEATHER_CELL), Math.floor(seg[si + 5] / FEATHER_CELL));
+    add(ka, si);
+    if (kb !== ka) add(kb, si);
+  }
+  return { seg, cells, cellKey };
+}
+
+/** Distance (unit sphere, chord) from p to the nearest edge segment, capped at FEATHER_MAX_D. */
+function edgeDistance(idx, px, py, pz) {
+  const { seg, cells, cellKey } = idx;
+  const ix = Math.floor(px / FEATHER_CELL);
+  const iy = Math.floor(py / FEATHER_CELL);
+  const iz = Math.floor(pz / FEATHER_CELL);
+  let best2 = FEATHER_MAX_D * FEATHER_MAX_D;
+  for (let dx = -1; dx <= 1; dx++) {
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dz = -1; dz <= 1; dz++) {
+        const list = cells.get(cellKey(ix + dx, iy + dy, iz + dz));
+        if (!list) continue;
+        for (const si of list) {
+          const ax = seg[si], ay = seg[si + 1], az = seg[si + 2];
+          const ux = seg[si + 3] - ax, uy = seg[si + 4] - ay, uz = seg[si + 5] - az;
+          const wx = px - ax, wy = py - ay, wz = pz - az;
+          const uu = ux * ux + uy * uy + uz * uz;
+          let t = uu > 0 ? (wx * ux + wy * uy + wz * uz) / uu : 0;
+          t = t < 0 ? 0 : t > 1 ? 1 : t;
+          const ex = wx - t * ux, ey = wy - t * uy, ez = wz - t * uz;
+          const d2 = ex * ex + ey * ey + ez * ez;
+          if (d2 < best2) best2 = d2;
+        }
+      }
+    }
+  }
+  return Math.sqrt(best2);
+}
+
+/** Add the `etEdgeD` attribute (distance to edge in globe units, + 1) to a refined cap mesh. */
+function addEdgeDistance(g, geometry) {
+  const idx = edgeIndexFor(geometry);
+  if (!idx) return;
+  const pos = g.getAttribute('position');
+  const out = new Float32Array(pos.count);
+  let maxD = 0;
+  // The refined mesh is non-indexed (each vertex repeats ~6×): look each position up once.
+  const seen = new Map();
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+    const key = (Math.round(x * 500) * 131072 + Math.round(y * 500)) * 131072 + Math.round(z * 500);
+    let dist = seen.get(key);
+    if (dist === undefined) {
+      const r = Math.hypot(x, y, z) || 1;
+      dist = edgeDistance(idx, x / r, y / r, z / r) * 100;
+      seen.set(key, dist);
+      if (dist > maxD) maxD = dist;
+    }
+    out[i] = 1 + dist;
+  }
+  g.setAttribute('etEdgeD', new THREE_NS.Float32BufferAttribute(out, 1));
+  g.setAttribute('etEdgeMax', new THREE_NS.Float32BufferAttribute(new Float32Array(pos.count).fill(maxD), 1));
 }
 
 /** Shared cap materials keyed by colour + opacity + layer (Globe.gl skips colour updates for custom materials). */
@@ -651,7 +851,8 @@ let THREE_NS = null;
 function capMaterialFor(d, rgba) {
   if (!THREE_NS) return undefined; // fall back to Globe.gl default until three is loaded
   const hatch = featureLayer(d) === 'people';
-  const key = `${rgba}|${hatch ? 'hatch' : 'solid'}`;
+  const feather = featherModeFor(d);
+  const key = `${rgba}|${hatch ? 'hatch' : 'solid'}|${feather || 'crisp'}`;
   let mat = capMaterialCache.get(key);
   if (!mat) {
     const m = /rgba\((\d+),(\d+),(\d+),([\d.]+)\)/.exec(rgba);
@@ -667,7 +868,7 @@ function capMaterialFor(d, rgba) {
     });
     mat.userData.etBaseOpacity = a;
     mat.opacity = a * capZoomOpacityMul();
-    if (hatch) addHatch(mat);
+    if (hatch || feather) addCapShader(mat, { hatch, feather });
     capMaterialCache.set(key, mat);
   }
   return mat;
@@ -690,33 +891,41 @@ function addLineDistances(geometry) {
   geometry.setAttribute('lineDistance', new THREE_NS.Float32BufferAttribute(dist, 1));
 }
 
-/** Dashed outline for peoples (swapped onto Globe.gl's stroke LineSegments). */
+/**
+ * Dashed outline for peoples, dotted for conjectural shapes, long dashes for approximate nations
+ * (Day 44), swapped onto Globe.gl's stroke LineSegments.
+ */
 function syncStrokeStyle(obj, d, stroke) {
   if (!THREE_NS || !stroke) return;
-  const wantDashed = featureLayer(d) === 'people';
-  if (wantDashed) {
-    if (!obj.__etDashedMat) {
-      obj.__etOrigStrokeMat = stroke.material;
-      obj.__etDashedMat = new THREE_NS.LineDashedMaterial({
-        color: stroke.material.color.clone(),
-        opacity: stroke.material.opacity,
+  const style = strokeStyleFor(d);
+  if (style !== 'solid') {
+    if (!obj.__etOrigStrokeMat) obj.__etOrigStrokeMat = stroke.material;
+    const mats = obj.__etDashMats || (obj.__etDashMats = {});
+    let mat = mats[style];
+    if (!mat) {
+      const src = stroke.material;
+      mat = mats[style] = new THREE_NS.LineDashedMaterial({
+        color: src.color.clone(),
+        opacity: src.opacity,
         transparent: true,
         depthWrite: false,
-        dashSize: 2.4,
-        gapSize: 1.6,
+        ...DASH[style],
       });
     }
-    if (stroke.material !== obj.__etDashedMat) {
+    if (stroke.material !== mat) {
       // Globe.gl updates colour/opacity on whichever material is attached.
-      obj.__etDashedMat.color.copy(stroke.material.color);
-      obj.__etDashedMat.opacity = stroke.material.opacity;
-      stroke.material = obj.__etDashedMat;
+      mat.color.copy(stroke.material.color);
+      mat.opacity = stroke.material.opacity;
+      stroke.material = mat;
     }
+    if (mat.scale !== dashScale) mat.scale = dashScale;
     if (stroke.geometry && obj.__etDashGeom !== stroke.geometry) {
       addLineDistances(stroke.geometry);
       obj.__etDashGeom = stroke.geometry;
     }
   } else if (obj.__etOrigStrokeMat && stroke.material !== obj.__etOrigStrokeMat) {
+    obj.__etOrigStrokeMat.color.copy(stroke.material.color);
+    obj.__etOrigStrokeMat.opacity = stroke.material.opacity;
     stroke.material = obj.__etOrigStrokeMat;
   }
 }
@@ -765,7 +974,7 @@ function applyPolygonRenderOrder(scene, camera) {
     if (cap && cap.renderOrder !== 0) cap.renderOrder = 0;
     if (stroke && stroke.renderOrder !== 1) stroke.renderOrder = 1;
     syncStrokeStyle(obj, d, stroke);
-    syncCapRefinement(cap);
+    syncCapRefinement(cap, d);
     applyZoomToPolygon(obj, cap, stroke);
   }
 }
@@ -876,23 +1085,40 @@ function refineCapGeometry(src, maxEdge) {
 
 let refineSpentMs = 0;
 
-/** Swap in the refined cap mesh for the current LOD (built lazily, within a frame budget). */
-function syncCapRefinement(cap) {
+/**
+ * Swap in the refined cap mesh for the current LOD (built lazily, within a frame budget).
+ * Day 44: feathered (approximate / conjectural) caps are refined finer and carry a
+ * distance-to-edge attribute for the fill fade.
+ */
+function syncCapRefinement(cap, d) {
   if (!cap || !cap.geometry || !THREE_NS) return;
+  const feather = d ? featherModeFor(d) : null;
   let rec = cap.__etRefine;
   if (!rec || (cap.geometry !== rec.coarse && cap.geometry !== rec.fine)) {
     // Globe.gl built (or rebuilt) this cap; it already disposed our previous mesh in use.
     if (rec) for (const g of [rec.src, rec.coarse, rec.fine]) if (g && g !== cap.geometry) g.dispose();
-    rec = cap.__etRefine = { src: cap.geometry, coarse: null, fine: null };
+    rec = cap.__etRefine = { src: cap.geometry, coarse: null, fine: null, feather };
+  }
+  if (rec.feather !== feather && (rec.src || rec.coarse)) {
+    // Certainty changed for the same mesh (toggle, or a new era): rebuild from the plainest mesh.
+    if (rec.fine && rec.fine !== cap.geometry) rec.fine.dispose();
+    if (!rec.src) rec.src = rec.coarse;
+    else if (rec.coarse && rec.coarse !== cap.geometry) rec.coarse.dispose();
+    rec.coarse = null;
+    rec.fine = null;
+    rec.feather = feather;
   }
   if (cap.geometry === rec[capLod]) return;
   if (!rec[capLod]) {
     if (refineSpentMs > REFINE_BUDGET_MS) return;
     const t0 = performance.now();
     const base = capLod === 'fine' && rec.coarse ? rec.coarse : rec.src || rec.coarse;
-    rec[capLod] = refineCapGeometry(base, REFINE_EDGE[capLod]);
+    const edge = feather ? Math.min(REFINE_EDGE[capLod], FEATHER_EDGE[capLod]) : REFINE_EDGE[capLod];
+    const g = refineCapGeometry(base, edge);
+    if (feather && d?.geometry) addEdgeDistance(g, d.geometry);
+    rec[capLod] = g;
     refineSpentMs += performance.now() - t0;
-    if (rec.src && rec.coarse) {
+    if (rec.src && rec.coarse && !feather) {
       rec.src.dispose();
       rec.src = null;
     }
@@ -941,10 +1167,19 @@ function applyPolygonLayer() {
       if (layer === 'nation') {
         // Day 38: crisp national borders; colonial-internal lines a little softer.
         const kind = d.nationKind || d.properties?.nationKind;
-        return kind === 'colony' || kind === 'dominion' || kind === 'vassal' ? 'rgba(255, 255, 255, 0.42)' : 'rgba(255, 255, 255, 0.62)';
+        const soft = kind === 'colony' || kind === 'dominion' || kind === 'vassal';
+        // Day 44: approximate lines (long dashes) a little softer than documented ones.
+        if (featureConfidence(d) === 'approximate') return soft ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.5)';
+        return soft ? 'rgba(255, 255, 255, 0.42)' : 'rgba(255, 255, 255, 0.62)';
       }
-      if (layer === 'people') return d.nationsEraDim ? 'rgba(255, 255, 255, 0.34)' : 'rgba(255, 255, 255, 0.7)';
-      return 'rgba(255, 255, 255, 0.24)';
+      if (layer === 'people') {
+        const conj = featureConfidence(d) === 'conjectural';
+        if (d.nationsEraDim) return conj ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.34)';
+        return conj ? 'rgba(255, 255, 255, 0.62)' : 'rgba(255, 255, 255, 0.7)';
+      }
+      // Day 44: conjectural polities get a dotted edge (brighter so the dots read); approximate
+      // ones keep the thin solid edge with a softer fill near it.
+      return featureConfidence(d) === 'conjectural' ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.24)';
     })
     .polygonsTransitionDuration(0);
 }

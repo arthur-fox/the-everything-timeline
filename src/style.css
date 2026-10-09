@@ -3214,3 +3214,76 @@ body.globe-fullscreen .event-detail #detail-description {
 .globe-credit.has-tiles .globe-credit-tiles {
   display: inline;
 }
+
+/* Day 44: "Certainty" key item — solid (documented), soft (approximate), dotted (conjectural) */
+.globe-legend-swatch.is-certainty {
+  width: 30px;
+  display: inline-flex;
+  gap: 2px;
+  background: none;
+}
+
+.globe-legend-swatch.is-certainty i {
+  flex: 1;
+  border-radius: 2px;
+}
+
+.globe-legend-swatch.is-certainty .is-sure {
+  background: rgba(91, 141, 239, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+}
+
+.globe-legend-swatch.is-certainty .is-rough {
+  background: radial-gradient(ellipse at center, rgba(91, 141, 239, 0.8) 30%, rgba(91, 141, 239, 0.15) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.globe-legend-swatch.is-certainty .is-guess {
+  background: radial-gradient(ellipse at center, rgba(91, 141, 239, 0.6) 10%, rgba(91, 141, 239, 0) 95%);
+  border: 1px dotted rgba(255, 255, 255, 0.85);
+}
+
+/* Day 44: "How sure" line in the detail panel */
+.event-detail .detail-confidence {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin: -6px 0 12px;
+}
+
+.detail-confidence.hidden {
+  display: none;
+}
+
+.detail-confidence-lead {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.detail-confidence-badge {
+  display: inline-block;
+  padding: 0 6px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid currentColor;
+}
+
+.detail-confidence-badge.is-documented {
+  color: #4ade80;
+  border-style: solid;
+}
+
+.detail-confidence-badge.is-approximate {
+  color: #fbbf24;
+  border-style: dashed;
+}
+
+.detail-confidence-badge.is-conjectural {
+  color: #f472b6;
+  border-style: dotted;
+}
+
+.detail-confidence-drawn {
+  opacity: 0.8;
+}

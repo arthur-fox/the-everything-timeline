@@ -23,6 +23,7 @@ import {
   nationColorGroup,
 } from './globe-nations-table.js';
 import { NATION_COLORS } from './data/nations-colors.js';
+import { confidenceForNationPeriod } from './globe-confidence.js';
 import { getOverlayPolygonFeatures, getActiveOverlaysAtYear } from './globe-overlays.js';
 
 export { NATIONS_START, NATIONS_END, NATIONS_FULL_COVERAGE_START, NATION_ENTITIES };
@@ -386,7 +387,9 @@ export function getNationPolygonFeatures(year, fineShapes = null) {
     const per = getNationPeriodAtYear(ent, y);
     if (!per) continue;
     const fine = Boolean(fineShapes && fineTopo && fineShapes.has(shape) && fineGeometryForShape(shape));
-    const key = `${tableId}::${shape}::${per.from}${fine ? '::fine' : ''}`;
+    // Day 44: confidence can change at 1914 within one period (African claim era), so it is in the key.
+    const conf = confidenceForNationPeriod(per, y, tableId);
+    const key = `${tableId}::${shape}::${per.from}${fine ? '::fine' : ''}::${conf.level}`;
     let f = featureCache.get(key);
     if (!f) {
       const geometry = fine ? fineGeometryForShape(shape) : geometryForShape(shape);
@@ -410,10 +413,12 @@ export function getNationPolygonFeatures(year, fineShapes = null) {
         entityType: 'nation',
         nationKind: kind,
         approximation: 'simplified',
+        confidence: conf.level,
+        confidenceReason: conf.reason,
         detail: fine ? 'fine' : 'coarse',
         // Day 42: [lng, lat, areaKm2, clearKm] from the build (scripts/build-nations.mjs).
         labelAnchor: topo.labels?.[shape] || null,
-        properties: { entityId, name, regionId: `s${shape}`, color, opacity, entityType: 'nation', nationKind: kind },
+        properties: { entityId, name, regionId: `s${shape}`, color, opacity, entityType: 'nation', nationKind: kind, confidence: conf.level },
       };
       featureCache.set(key, f);
     }
