@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://arthur-fox.github.io/the-everything-timeline/schemas/timeline.schema.json",
+  "$id": "https://theeverythingtimeline.com/schemas/timeline.schema.json",
   "title": "The Everything Timeline content schema",
   "description": "Formal shapes for categories, periods, sources, swim-lane items, overview events, eras, and globe spatial overlays. Matches what the app and scripts/validate-data.js use today. TypeScript migration is deliberately deferred.",
   "definitions": {

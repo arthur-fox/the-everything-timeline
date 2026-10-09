@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/arthur-fox/the-everything-timeline/issues"
   },
-  "homepage": "https://github.com/arthur-fox/the-everything-timeline#readme",
+  "homepage": "https://theeverythingtimeline.com/",
   "devDependencies": {
     "ajv": "^8.20.0",
     "d3-geo": "^3.1.1",

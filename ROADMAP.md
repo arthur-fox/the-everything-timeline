@@ -42,9 +42,9 @@ Make timeline states shareable and restorable.
 Potential URL patterns:
 
 ```text
-/the-everything-timeline/?view=technology&id=internet-web
-/the-everything-timeline/?view=country:us&id=civil-war
-/the-everything-timeline/?view=civilisations&year=117
+/?view=technology&id=internet-web
+/?view=country:us&id=civil-war
+/?view=civilisations&year=117
 ```
 
 Deep links should eventually support:
@@ -765,6 +765,18 @@ Arthur: replace the plain background with a starfield and space scene.
 - **Step 7.2 — Constellations.** Constellation lines and names in roughly correct positions, from a public-domain / CC0 source where one exists (otherwise a permissive one such as d3-celestial's BSD-3 data, checked against our ISC licence), with a toggle. Optional: precession by year, so the pole star is Thuban around 3000 BCE and Polaris today.
 - **Phone budget:** one point cloud and one texture; no per-frame CPU work.
 
+## Custom domain & sharing (Arthur, 9 Oct 2026)
+
+- **Status: step 1 built on Day 46 — IN REVIEW (PR #52, stacked on #51). Do not start this item again.** Merge right after theeverythingtimeline.com is set in Settings → Pages.
+
+#### Day 46 — theeverythingtimeline.com (step 1) — in review (PR #52)
+- Site at the root (`base: '/'`, `public/CNAME`); PR previews at `/pr-preview/pr-N/` once the domain is live (base rewritten in `vite.config.js`, no workflow change); canonical + description + Open Graph / Twitter card with a 1200×630 globe image (`public/og-image.png`).
+
+Next steps (not started):
+2. **Per-year / per-view static preview pages** so a shared deep link (e.g. `/?view=globe&year=1453&at=41,29,0.5`) gets its own card: pre-render a few hundred `/share/globe-1453/index.html`-style pages at build time (title, description, og:image per era, then redirect into the app), or generate og:images per era with a headless step in CI. Today every link shares the same static card.
+3. Update `canonical` / `og:url` per deep link client-side (helps bookmarks / some crawlers; social scrapers don't run JS, hence step 2).
+4. Small extras: favicon + apple-touch icon, `robots.txt` + `sitemap.xml`, `404.html` that forwards old `/the-everything-timeline/…` paths.
+
 ## Feedback & paid features discovery (Arthur, 9 Oct 2026)
 
 > "Can you add a feedback button so that people can give feedback … so we can eventually figure out how to have paid features for this." Also: the site will move to a proper domain soon.
@@ -909,5 +921,6 @@ A sensible near-term sequence:
 34. Phase 4c (Arthur, 8 Oct) — real nations 1815–1914 (Day 41) ✅ (merged, #47) → labels by zoom (Day 42) ✅ (merged, #48) → dated cities + pinned events (Day 43) ✅ (merged, #49) → showing uncertainty (Day 44) ✅ (merged, #50) → trade routes and migrations → coverage between empires → space background (stars, Milky Way, constellations).
 35. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
 36. Feedback & paid features discovery (Arthur, 9 Oct) — Day 45 feedback button (in review, #51; do not start again) → configure a real form endpoint → tally "would you pay for…?" answers.
+37. Custom domain theeverythingtimeline.com (Day 46, in review, #52; do not start again) → per-year share pages + og images.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
