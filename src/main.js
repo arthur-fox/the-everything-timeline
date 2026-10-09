@@ -54,7 +54,7 @@ import { moroccoItems, moroccoCategories } from './countries/morocco.js';
 import { iraqItems, iraqCategories } from './countries/iraq.js';
 import { philippinesItems, philippinesCategories } from './countries/philippines.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
-import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick, setGlobeHiddenLayers, GLOBE_LAYER_KEYS, setGlobeLabelsEnabled, setGlobeCertaintyEnabled } from './globe-view.js';
+import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick, setGlobeHiddenLayers, GLOBE_LAYER_KEYS, setGlobeLabelsEnabled, setGlobeCertaintyEnabled, setGlobeCitiesEnabled, setGlobeEventsEnabled, setGlobePinHandlers } from './globe-view.js';
 import { confidenceForEntity, confidenceForNationPeriod, CONFIDENCE_LABEL, CONFIDENCE_DRAWING } from './globe-confidence.js';
 import {
   getOverlayLayerFilter,
@@ -315,6 +315,9 @@ let globeHiddenLayers = new Set();
 let globeLabelsOn = true;
 // Day 44: certainty styling on the globe (solid / soft / dotted edges; `&certainty=0` when off).
 let globeCertaintyOn = true;
+// Day 43: dated cities and event pins on the globe (key toggles; `&cities=0` / `&events=0`).
+let globeCitiesOn = true;
+let globeEventsOn = true;
 let compareLeft = 'technology';
 let compareRight = 'wars';
 let compareShared = null; // { viewStart, viewEnd, targetStart, targetEnd, minYear, maxYear }
@@ -613,6 +616,8 @@ function syncDeepLinkUrl() {
       if (globeHiddenLayers.size) params.set('hide', GLOBE_LAYER_KEYS.filter((k) => globeHiddenLayers.has(k)).join(','));
       if (!globeLabelsOn) params.set('labels', '0');
       if (!globeCertaintyOn) params.set('certainty', '0');
+      if (!globeCitiesOn) params.set('cities', '0');
+      if (!globeEventsOn) params.set('events', '0');
     } else {
       const selectedId = getSelectedDeepLinkId();
       if (selectedId) {
@@ -821,8 +826,10 @@ function applyDeepLinkFromUrl() {
   const hideRaw = params.get('hide');
   const labelsRaw = params.get('labels');
   const certaintyRaw = params.get('certainty');
+  const citiesRaw = params.get('cities');
+  const eventsRaw = params.get('events');
 
-  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '') && (hideRaw == null || hideRaw === '') && (labelsRaw == null || labelsRaw === '') && (certaintyRaw == null || certaintyRaw === '')) {
+  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '') && (hideRaw == null || hideRaw === '') && (labelsRaw == null || labelsRaw === '') && (certaintyRaw == null || certaintyRaw === '') && (citiesRaw == null || citiesRaw === '') && (eventsRaw == null || eventsRaw === '')) {
     updateActiveViewChrome();
     updateFiltersUI();
     return;
@@ -877,6 +884,9 @@ function applyDeepLinkFromUrl() {
     if (labelsRaw != null) setGlobeLabelsShown(!/^(0|off|false|no|none)$/i.test(labelsRaw.trim()), { syncUrl: false });
     // Day 44: ?certainty=0 draws every shape crisp (no soft / dotted edges).
     if (certaintyRaw != null) setGlobeCertaintyShown(!/^(0|off|false|no|none)$/i.test(certaintyRaw.trim()), { syncUrl: false });
+    // Day 43: ?cities=0 / ?events=0 switch the dated cities / event pins off.
+    if (citiesRaw != null) setGlobeExtraShown('cities', !/^(0|off|false|no|none)$/i.test(citiesRaw.trim()), { syncUrl: false });
+    if (eventsRaw != null) setGlobeExtraShown('events', !/^(0|off|false|no|none)$/i.test(eventsRaw.trim()), { syncUrl: false });
 
     // Globe entity deep link: restore after year + layer so activity check uses the right state
     if (entityRaw && isGlobeView()) {
@@ -3443,6 +3453,83 @@ document.querySelectorAll('.globe-legend-item[data-certainty]').forEach((btn) =>
   });
 });
 syncGlobeCertaintyToggleUI();
+
+// Day 43 — "Cities" and "Events" key toggles (on by default).
+function syncGlobeExtrasToggleUI() {
+  document.querySelectorAll('.globe-legend-item[data-overlay]').forEach((btn) => {
+    const which = btn.dataset.overlay;
+    const on = which === 'cities' ? globeCitiesOn : globeEventsOn;
+    const noun = which === 'cities' ? 'cities' : 'event pins';
+    btn.classList.toggle('is-off', !on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.title = on ? `Hide ${noun}` : `Show ${noun}`;
+  });
+}
+
+function setGlobeExtraShown(which, on, { syncUrl = true } = {}) {
+  if (which === 'cities') {
+    globeCitiesOn = Boolean(on);
+    setGlobeCitiesEnabled(globeCitiesOn);
+  } else if (which === 'events') {
+    globeEventsOn = Boolean(on);
+    setGlobeEventsEnabled(globeEventsOn);
+  } else return;
+  syncGlobeExtrasToggleUI();
+  if (syncUrl && isGlobeView()) syncDeepLinkUrl();
+}
+
+document.querySelectorAll('.globe-legend-item[data-overlay]').forEach((btn) => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const which = btn.dataset.overlay;
+    setGlobeExtraShown(which, which === 'cities' ? !globeCitiesOn : !globeEventsOn);
+  });
+});
+syncGlobeExtrasToggleUI();
+
+// Day 43 — event pins: each pin points at a timeline entry ('event:<title>' or '<view>:<id>').
+function resolveGlobePinRef(ref) {
+  const i = String(ref || '').indexOf(':');
+  if (i < 0) return null;
+  const kind = ref.slice(0, i);
+  const key = ref.slice(i + 1);
+  if (kind === 'event') {
+    const evt = events.find((e) => e.title === key);
+    return evt ? { view: 'cosmic', id: evt.title, item: evt, icon: evt.icon || '', title: evt.title, description: evt.description || '', sources: evt.sources } : null;
+  }
+  const it = swimStates[kind]?.items.find((x) => x.id === key);
+  if (!it) return null;
+  return { view: kind, id: it.id, item: it, icon: it.icon || '', title: it.name, description: it.description || '', sources: it.sources };
+}
+
+function showGlobePinDetail(pin) {
+  const info = resolveGlobePinRef(pin.ref);
+  if (!info) return;
+  clearGlobeEntitySelection({ syncUrl: false, closeDetail: false });
+  const when = formatGlobeYear(pin.year);
+  const title = `${info.icon ? info.icon + ' ' : ''}${pin.label}`;
+  const span = info.view === 'cosmic'
+    ? ''
+    : ` · ${info.title} (${formatGlobeYear(info.item.start)} — ${info.item.end >= 2025 ? 'today' : formatGlobeYear(info.item.end)})`;
+  showDetail(title, `${pin.place} · ${when}${span}`, info.description, info.sources, {
+    view: info.view,
+    id: info.id,
+    icon: info.icon,
+    name: info.title,
+    dateLabel: when,
+    kind: 'globe-pin',
+    relatedItems: [{ id: info.id, name: info.title, icon: info.icon, view: info.view }],
+  });
+  if (isGlobeView()) syncDeepLinkUrl();
+}
+
+setGlobePinHandlers({
+  resolve: (ref) => {
+    const info = resolveGlobePinRef(ref);
+    return info ? { icon: info.icon, title: info.title } : null;
+  },
+  click: showGlobePinDetail,
+});
 
 // Keep polygon-click handler registered even across remounts
 setOnGlobePolygonClick((entityId) => {

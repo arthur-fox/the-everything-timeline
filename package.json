@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "npm run validate && vite build",
     "preview": "vite preview",
-    "validate": "node scripts/validate-data.js && node scripts/check-overlay-lifespan.js && node scripts/check-nations.js && node scripts/check-labels.js && node scripts/check-confidence.js",
+    "validate": "node scripts/validate-data.js && node scripts/check-overlay-lifespan.js && node scripts/check-nations.js && node scripts/check-labels.js && node scripts/check-confidence.js && node scripts/check-cities.js",
     "validate:strict": "node scripts/validate-data.js --strict",
     "validate:schema": "node scripts/validate-data.js",
     "build:nations": "node scripts/build-nations.mjs && node scripts/build-nations.mjs --fine",
