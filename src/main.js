@@ -54,13 +54,15 @@ import { moroccoItems, moroccoCategories } from './countries/morocco.js';
 import { iraqItems, iraqCategories } from './countries/iraq.js';
 import { philippinesItems, philippinesCategories } from './countries/philippines.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
-import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick, setGlobeHiddenLayers, GLOBE_LAYER_KEYS, setGlobeLabelsEnabled } from './globe-view.js';
+import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick, setGlobeHiddenLayers, GLOBE_LAYER_KEYS, setGlobeLabelsEnabled, setGlobeCertaintyEnabled } from './globe-view.js';
+import { confidenceForEntity, confidenceForNationPeriod, CONFIDENCE_LABEL, CONFIDENCE_DRAWING } from './globe-confidence.js';
 import {
   getOverlayLayerFilter,
   setOverlayLayerFilter,
   formatOverlayYear,
   getSpatialEntityById,
   getEntityLifespan,
+  getActiveOverlaysAtYear,
 } from './globe-overlays.js';
 import {
   getActiveSchematicOverlaysAtYear,
@@ -311,6 +313,8 @@ let globeFullscreen = false;
 let globeHiddenLayers = new Set();
 // Day 42: country / place labels on the globe (key toggle; `&labels=0` when off).
 let globeLabelsOn = true;
+// Day 44: certainty styling on the globe (solid / soft / dotted edges; `&certainty=0` when off).
+let globeCertaintyOn = true;
 let compareLeft = 'technology';
 let compareRight = 'wars';
 let compareShared = null; // { viewStart, viewEnd, targetStart, targetEnd, minYear, maxYear }
@@ -608,6 +612,7 @@ function syncDeepLinkUrl() {
       if (globeFullscreen) params.set('fullscreen', '1');
       if (globeHiddenLayers.size) params.set('hide', GLOBE_LAYER_KEYS.filter((k) => globeHiddenLayers.has(k)).join(','));
       if (!globeLabelsOn) params.set('labels', '0');
+      if (!globeCertaintyOn) params.set('certainty', '0');
     } else {
       const selectedId = getSelectedDeepLinkId();
       if (selectedId) {
@@ -815,8 +820,9 @@ function applyDeepLinkFromUrl() {
   const fullscreenRaw = params.get('fullscreen');
   const hideRaw = params.get('hide');
   const labelsRaw = params.get('labels');
+  const certaintyRaw = params.get('certainty');
 
-  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '') && (hideRaw == null || hideRaw === '') && (labelsRaw == null || labelsRaw === '')) {
+  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '') && (hideRaw == null || hideRaw === '') && (labelsRaw == null || labelsRaw === '') && (certaintyRaw == null || certaintyRaw === '')) {
     updateActiveViewChrome();
     updateFiltersUI();
     return;
@@ -869,6 +875,8 @@ function applyDeepLinkFromUrl() {
     if (hideRaw != null) setGlobeLayersHidden(parseHiddenLayersParam(hideRaw), { syncUrl: false });
     // Day 42: ?labels=0 switches the country / place labels off.
     if (labelsRaw != null) setGlobeLabelsShown(!/^(0|off|false|no|none)$/i.test(labelsRaw.trim()), { syncUrl: false });
+    // Day 44: ?certainty=0 draws every shape crisp (no soft / dotted edges).
+    if (certaintyRaw != null) setGlobeCertaintyShown(!/^(0|off|false|no|none)$/i.test(certaintyRaw.trim()), { syncUrl: false });
 
     // Globe entity deep link: restore after year + layer so activity check uses the right state
     if (entityRaw && isGlobeView()) {
@@ -1916,11 +1924,37 @@ function showDetail(title, date, description, sources, context = null) {
   document.getElementById('detail-title').textContent = title;
   document.getElementById('detail-date').textContent = date;
   document.getElementById('detail-description').textContent = description;
+  renderDetailConfidence(context?.confidence || null);
   renderDetailSources(sources);
   renderDetailRelated(context?.relatedItems || []);
   detailContext = context;
   updateDetailBookmarkButton();
   document.getElementById('event-detail').classList.remove('hidden');
+}
+
+/** Day 44: "How sure" line in the detail panel for globe shapes (level, why, how it is drawn). */
+function renderDetailConfidence(conf) {
+  const el = document.getElementById('detail-confidence');
+  if (!el) return;
+  el.replaceChildren();
+  if (!conf || !CONFIDENCE_LABEL[conf.level]) {
+    el.classList.add('hidden');
+    return;
+  }
+  const badge = document.createElement('span');
+  badge.className = `detail-confidence-badge is-${conf.level}`;
+  badge.textContent = CONFIDENCE_LABEL[conf.level];
+  const lead = document.createElement('span');
+  lead.className = 'detail-confidence-lead';
+  lead.textContent = 'How sure: ';
+  const reason = document.createElement('span');
+  reason.className = 'detail-confidence-reason';
+  reason.textContent = ` ${conf.reason}`;
+  const drawn = document.createElement('span');
+  drawn.className = 'detail-confidence-drawn';
+  drawn.textContent = ` Drawn with a ${CONFIDENCE_DRAWING[conf.level]}.`;
+  el.append(lead, badge, reason, drawn);
+  el.classList.remove('hidden');
 }
 
 function hideDetailPanel() {
@@ -3384,6 +3418,32 @@ document.querySelectorAll('.globe-legend-item[data-labels]').forEach((btn) => {
 });
 syncGlobeLabelsToggleUI();
 
+// Day 44 — "Certainty" key toggle: soft / dotted edges where borders are uncertain (on by default).
+function syncGlobeCertaintyToggleUI() {
+  document.querySelectorAll('.globe-legend-item[data-certainty]').forEach((btn) => {
+    btn.classList.toggle('is-off', !globeCertaintyOn);
+    btn.setAttribute('aria-pressed', globeCertaintyOn ? 'true' : 'false');
+    btn.title = globeCertaintyOn
+      ? 'How sure the borders are: solid = documented, soft = approximate, dotted = conjectural. Tap to draw every edge crisp.'
+      : 'Show how sure the borders are (solid / soft / dotted edges)';
+  });
+}
+
+function setGlobeCertaintyShown(on, { syncUrl = true } = {}) {
+  globeCertaintyOn = Boolean(on);
+  setGlobeCertaintyEnabled(globeCertaintyOn);
+  syncGlobeCertaintyToggleUI();
+  if (syncUrl && isGlobeView()) syncDeepLinkUrl();
+}
+
+document.querySelectorAll('.globe-legend-item[data-certainty]').forEach((btn) => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setGlobeCertaintyShown(!globeCertaintyOn);
+  });
+});
+syncGlobeCertaintyToggleUI();
+
 // Keep polygon-click handler registered even across remounts
 setOnGlobePolygonClick((entityId) => {
   if (!isGlobeView()) return;
@@ -3583,6 +3643,7 @@ function selectGlobeEntity(entityId, { syncUrl = true, openDetail = true, fromDe
         dateLabel,
         kind: 'globe-entity',
         relatedItems,
+        confidence: confidenceForEntity(entity, globeYear, getActiveOverlaysAtYear(globeYear, [entity])[0]?.overlay || null),
       },
     );
   }
@@ -3626,6 +3687,7 @@ function showGlobeNationDetail(entity) {
     dateLabel,
     kind: 'globe-entity',
     relatedItems: resolveRelatedTimelineItems(entity),
+    confidence: confidenceForNationPeriod(per, globeYear, entity.tableId),
   });
 }
 
@@ -3707,9 +3769,11 @@ function updateGlobeOverlayPanel() {
     const meta = document.createElement('div');
     meta.className = 'globe-overlay-item-meta';
     if (overlay) {
-      const approx = overlay.approximation || 'rough';
+      // Day 44: the list says how sure the shape is (was the drawing detail level).
+      const conf = confidenceForEntity(entity, globeYear, overlay);
       const label = overlay.label || formatOverlayYear(overlay.year);
-      meta.textContent = `${label} (${approx})`;
+      meta.textContent = `${label} · ${conf.level}`;
+      meta.title = conf.reason;
     } else {
       meta.textContent = 'Key year nearby (no snapshot label)';
     }

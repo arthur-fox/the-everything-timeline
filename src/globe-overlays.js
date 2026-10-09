@@ -24,6 +24,7 @@ import { morphEntityAtYear, ensureClockwise } from './globe-morph.js';
 import { peopleEntities, PEOPLE_PACK_IDS } from './globe-people.js';
 import { presenceEntities, PRESENCE_PACK_IDS } from './globe-presence.js';
 import { resolveRegionHoles, SEA_HOLE_RINGS } from './globe-holes.js';
+import { confidenceForEntity } from './globe-confidence.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6602,6 +6603,8 @@ export function getOverlayPolygonFeatures(year, entities = entitiesForLayer()) {
 
     const people = isPeopleEntity(entity);
     const presence = isPresenceEntity(entity);
+    // Day 44: how sure we are of this shape at this year (documented / approximate / conjectural).
+    const conf = confidenceForEntity(entity, y, nearestOverlay);
     for (const part of morphed) {
       // People / presence read slightly softer so polity borders stay primary when both layers show.
       // Presence is a touch more translucent than people (inhabited footprint wash).
@@ -6636,6 +6639,8 @@ export function getOverlayPolygonFeatures(year, entities = entitiesForLayer()) {
         opacity,
         entityType: entity.type,
         approximation: part.approximation || nearestOverlay?.approximation || 'rough',
+        confidence: conf.level,
+        confidenceReason: conf.reason,
         overlayYear: y,
         morphT: part.morphT,
         properties: {
@@ -6647,6 +6652,7 @@ export function getOverlayPolygonFeatures(year, entities = entitiesForLayer()) {
           opacity,
           entityType: entity.type,
           approximation: part.approximation || nearestOverlay?.approximation || 'rough',
+          confidence: conf.level,
           morphT: part.morphT,
         },
       });
