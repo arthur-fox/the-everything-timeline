@@ -113,10 +113,12 @@ The repository includes GitHub Actions workflows that build the Vite app and pub
 - Countries are registered in `src/main.js`; adding a country generally means adding `src/countries/<country>.js` and registering it in `COUNTRY_REGISTRY`.
 - Theme colors are split between CSS variables for DOM elements and `src/theme.js` palettes for canvas drawing.
 - Globe nations (1815–2025) live in `src/globe-nations-table.js` (1914–2025) and `src/globe-nations-table-1815.js` (1815–1914), dated periods built from Natural Earth admin units (shared unit groups in `src/globe-nations-units.js`). After editing it, run `npm run build:nations` to regenerate `src/data/nations.topo.json`, the close-zoom `src/data/nations-fine.topo.json` and `src/data/nations-colors.js` (downloads Natural Earth once into `.cache/`, or set `NE_ADMIN1=/path/to/ne_10m_admin_1_states_provinces.geojson`). `npm run validate` checks the result.
+- Globe labels (Day 42) come from the same data: country names are the period names in the nations table, shortened by `src/globe-label-names.js` ("Kingdom of Prussia" → "Prussia", "Gold Coast (British)" → "Gold Coast (Br.)"); `npm run build:nations` also stores a label anchor per shape. Seas, mountain ranges, deserts and other physical names are built by `npm run build:places` into `src/data/places.json`. `scripts/check-labels.js` (part of `npm run validate`) checks era-correct names, anchors and places. Add `&labels=0` to a globe link to hide labels.
 
 ## Data credits
 
 - Globe borders 1815–2025: [Natural Earth](https://www.naturalearthdata.com/) admin-0 / admin-1 boundaries (public domain), regrouped by year for this project. The dates (which provinces belonged to which state, when) are hand-written from standard historical facts. No licensed historical-border dataset is bundled: CShapes 2.0 (CC BY-NC-SA) and historical-basemaps (GPL-3.0) are not used.
+- Globe place labels (seas, oceans, mountain ranges, deserts, plateaus, big islands): [Natural Earth](https://www.naturalearthdata.com/) 1:50m physical labels (`geography_marine_polys`, `geography_regions_polys`, public domain). Label positions are computed by this project.
 - Globe imagery: NASA Blue Marble (NASA Earth Observatory); close-up tiles from [NASA GIBS](https://www.earthdata.nasa.gov/engage/open-data-services-software/earthdata-developer-portal/gibs-api) (Blue Marble shaded relief, ESDIS).
 - Historical overlays before 1815, peoples and presence: hand-drawn schematic shapes (see each entity's sources).
 

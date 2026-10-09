@@ -7,11 +7,12 @@
     "dev": "vite",
     "build": "npm run validate && vite build",
     "preview": "vite preview",
-    "validate": "node scripts/validate-data.js && node scripts/check-overlay-lifespan.js && node scripts/check-nations.js",
+    "validate": "node scripts/validate-data.js && node scripts/check-overlay-lifespan.js && node scripts/check-nations.js && node scripts/check-labels.js",
     "validate:strict": "node scripts/validate-data.js --strict",
     "validate:schema": "node scripts/validate-data.js",
     "build:nations": "node scripts/build-nations.mjs && node scripts/build-nations.mjs --fine",
-    "build:nations:fine": "node scripts/build-nations.mjs --fine"
+    "build:nations:fine": "node scripts/build-nations.mjs --fine",
+    "build:places": "node scripts/build-places.mjs"
   },
   "repository": {
     "type": "git",

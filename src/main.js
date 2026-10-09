@@ -54,7 +54,7 @@ import { moroccoItems, moroccoCategories } from './countries/morocco.js';
 import { iraqItems, iraqCategories } from './countries/iraq.js';
 import { philippinesItems, philippinesCategories } from './countries/philippines.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
-import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick, setGlobeHiddenLayers, GLOBE_LAYER_KEYS } from './globe-view.js';
+import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick, setGlobeHiddenLayers, GLOBE_LAYER_KEYS, setGlobeLabelsEnabled } from './globe-view.js';
 import {
   getOverlayLayerFilter,
   setOverlayLayerFilter,
@@ -309,6 +309,8 @@ let compareMode = false;
 let globeFullscreen = false;
 /** Day 40: map layers switched off from the key ('polities' | 'peoples' | 'presence'); all on by default. */
 let globeHiddenLayers = new Set();
+// Day 42: country / place labels on the globe (key toggle; `&labels=0` when off).
+let globeLabelsOn = true;
 let compareLeft = 'technology';
 let compareRight = 'wars';
 let compareShared = null; // { viewStart, viewEnd, targetStart, targetEnd, minYear, maxYear }
@@ -605,6 +607,7 @@ function syncDeepLinkUrl() {
       if (selectedGlobeEntityId) params.set('entity', selectedGlobeEntityId);
       if (globeFullscreen) params.set('fullscreen', '1');
       if (globeHiddenLayers.size) params.set('hide', GLOBE_LAYER_KEYS.filter((k) => globeHiddenLayers.has(k)).join(','));
+      if (!globeLabelsOn) params.set('labels', '0');
     } else {
       const selectedId = getSelectedDeepLinkId();
       if (selectedId) {
@@ -811,8 +814,9 @@ function applyDeepLinkFromUrl() {
   const entityRaw = params.get('entity');
   const fullscreenRaw = params.get('fullscreen');
   const hideRaw = params.get('hide');
+  const labelsRaw = params.get('labels');
 
-  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '') && (hideRaw == null || hideRaw === '')) {
+  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '') && (hideRaw == null || hideRaw === '') && (labelsRaw == null || labelsRaw === '')) {
     updateActiveViewChrome();
     updateFiltersUI();
     return;
@@ -863,6 +867,8 @@ function applyDeepLinkFromUrl() {
 
     // Day 40: ?hide=peoples,presence (also accepts "nations" for polities).
     if (hideRaw != null) setGlobeLayersHidden(parseHiddenLayersParam(hideRaw), { syncUrl: false });
+    // Day 42: ?labels=0 switches the country / place labels off.
+    if (labelsRaw != null) setGlobeLabelsShown(!/^(0|off|false|no|none)$/i.test(labelsRaw.trim()), { syncUrl: false });
 
     // Globe entity deep link: restore after year + layer so activity check uses the right state
     if (entityRaw && isGlobeView()) {
@@ -3353,6 +3359,30 @@ document.querySelectorAll('.globe-legend-item[data-layer]').forEach((btn) => {
   });
 });
 syncGlobeLegendToggleUI();
+
+// Day 42 — "Labels" key toggle: country / place names on the globe (on by default).
+function syncGlobeLabelsToggleUI() {
+  document.querySelectorAll('.globe-legend-item[data-labels]').forEach((btn) => {
+    btn.classList.toggle('is-off', !globeLabelsOn);
+    btn.setAttribute('aria-pressed', globeLabelsOn ? 'true' : 'false');
+    btn.title = globeLabelsOn ? 'Hide labels' : 'Show labels';
+  });
+}
+
+function setGlobeLabelsShown(on, { syncUrl = true } = {}) {
+  globeLabelsOn = Boolean(on);
+  setGlobeLabelsEnabled(globeLabelsOn);
+  syncGlobeLabelsToggleUI();
+  if (syncUrl && isGlobeView()) syncDeepLinkUrl();
+}
+
+document.querySelectorAll('.globe-legend-item[data-labels]').forEach((btn) => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setGlobeLabelsShown(!globeLabelsOn);
+  });
+});
+syncGlobeLabelsToggleUI();
 
 // Keep polygon-click handler registered even across remounts
 setOnGlobePolygonClick((entityId) => {

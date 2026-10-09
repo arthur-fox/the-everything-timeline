@@ -411,6 +411,8 @@ export function getNationPolygonFeatures(year, fineShapes = null) {
         nationKind: kind,
         approximation: 'simplified',
         detail: fine ? 'fine' : 'coarse',
+        // Day 42: [lng, lat, areaKm2, clearKm] from the build (scripts/build-nations.mjs).
+        labelAnchor: topo.labels?.[shape] || null,
         properties: { entityId, name, regionId: `s${shape}`, color, opacity, entityType: 'nation', nationKind: kind },
       };
       featureCache.set(key, f);
