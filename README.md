@@ -2,6 +2,8 @@
 
 An interactive, canvas-based history explorer that maps major events from the Big Bang to the age of AI.
 
+**Live:** https://theeverythingtimeline.com/ (formerly https://arthur-fox.github.io/the-everything-timeline/, which redirects once the custom domain is set).
+
 The project is built as a Vite-powered static web app. It combines a compressed cosmic-scale timeline with multiple swim-lane views for civilizations, countries, technology, science, religion, philosophy, art and culture, economics, wars, and cosmic history.
 
 ## What it does
@@ -94,8 +96,10 @@ npm run preview
 Pull requests are configured to publish mobile-testable preview builds under:
 
 ```text
-https://arthur-fox.github.io/the-everything-timeline/pr-preview/pr-<PR_NUMBER>/
+https://theeverythingtimeline.com/pr-preview/pr-<PR_NUMBER>/
 ```
+
+(Before the custom domain is set they live at `https://arthur-fox.github.io/the-everything-timeline/pr-preview/pr-<PR_NUMBER>/`; afterwards that address redirects. The workflow still builds with `--base=/the-everything-timeline/pr-preview/pr-N/`; `vite.config.js` drops the old prefix when it sees the custom domain is live — see *Custom domain*.)
 
 The preview workflow comments the exact URL and a QR code on each PR. When a PR is closed, its preview is removed from the `gh-pages` branch.
 
@@ -129,12 +133,14 @@ Never put a personal email address in the site or config: everything here is pub
 
 ## Custom domain
 
-The app only uses relative, bundler-resolved paths (`new URL(..., import.meta.url)`, Vite `base`) and the live `location` for share / feedback links — no hardcoded `github.io` URL, so moving to a domain needs:
+The site is served at the root of **https://theeverythingtimeline.com/** (apex; `www` redirects to it). Pages publishes from the `gh-pages` branch (legacy branch build), so:
 
-1. `public/CNAME` containing the domain (e.g. `everythingtimeline.com`); Vite copies it into `dist/` so Pages keeps it on every deploy.
-2. `const BASE = '/'` in `vite.config.js` (it is `'/the-everything-timeline/'` for the project site).
-3. DNS: `A`/`AAAA` records to GitHub Pages (or a `CNAME` record to `arthur-fox.github.io` for a `www.` subdomain), then set the domain and tick "Enforce HTTPS" under Settings → Pages.
-4. PR previews: `.github/workflows/pr-preview.yml` builds with `--base=/the-everything-timeline/pr-preview/pr-N/`; change that to `--base=/pr-preview/pr-N/` (needs a token with `workflow` scope or an edit in the GitHub UI).
+- `public/CNAME` (`theeverythingtimeline.com`) is copied into every build, so the domain survives each deploy (the production deploy also uses `keep_files: true`, and the PR-preview action only writes inside `pr-preview/`, so neither removes it).
+- `vite.config.js` builds with `base: '/'`. App code has no hard-coded paths: data loads via `new URL(..., import.meta.url)`, and deep links / feedback links use the live `location`, so `/?view=globe&year=1453…` works at the root.
+- PR previews: the workflow passes `--base=/the-everything-timeline/pr-preview/pr-N/`. A small Vite plugin checks whether `arthur-fox.github.io/the-everything-timeline/` already redirects to the custom domain; if it does, the base becomes `/pr-preview/pr-N/`, otherwise the old path is kept (so previews keep working before cutover). Override with `CUSTOM_DOMAIN_LIVE=1|0` or force any base with `SITE_BASE=/x/`.
+- `index.html` has the canonical URL, description, Open Graph and Twitter card tags; the share image is `public/og-image.png` (1200×630).
+
+Setup (once): DNS apex `A` records `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`, `AAAA` records `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153`, and `www` `CNAME` → `arthur-fox.github.io`; then Settings → Pages → Custom domain `theeverythingtimeline.com` and, once the certificate is issued, *Enforce HTTPS*. Optionally verify the domain under the account's Settings → Pages to block takeovers.
 
 ## Data credits
 

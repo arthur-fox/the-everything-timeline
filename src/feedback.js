@@ -46,6 +46,7 @@ export function collectFeedbackContext() {
   const url = new URL(window.location.href);
   if (app.at) url.searchParams.set('at', app.at);
   url.searchParams.delete('globeDebug');
+  url.searchParams.delete('feedback');
   const coarse = window.matchMedia?.('(pointer: coarse)').matches;
   return {
     link: url.toString().replace(/%2C/gi, ','),
