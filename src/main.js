@@ -3157,8 +3157,13 @@ const GLOBE_YEAR_CAPTIONS = [
   { year: 1279, text: 'Around 1279 CE — Mongol peak with Song, Delhi, and Mali neighbours on the map (approximate).' },
   { year: 1492, text: '1492 CE — Iberia at contact; Aztec, Inca, Ming, and Ottoman worlds still dominate their regions (approximate).' },
   { year: 1700, text: 'Around 1700 CE — Ottoman, Mughal, Qing, Spanish, Russian, and early British reach (approximate).' },
-  { year: 1900, text: 'Around 1900 CE — British, Russian, Qing, late Ottoman; hatched peoples persist beneath the empires (approximate).' },
-  { year: 1914, text: '1914 — Real borders from here on: European empires and their colonies on the eve of World War I (colonies paler, in their ruler’s colour).' },
+  { year: 1790, text: 'Around 1790 CE — Ottoman, Qing, Spanish, Russian and growing British reach on the eve of the Napoleonic wars (approximate). Real borders start in 1815.' },
+  { year: 1815, text: '1815 — Real borders from here on: Europe after the Congress of Vienna, Spain’s American empire in revolt, Company rule spreading across India (colonies and vassals paler, in their ruler’s colour).' },
+  { year: 1848, text: 'Around 1848 — Latin America independent; the US has reached the Pacific; Germany and Italy are still patchworks of states.' },
+  { year: 1871, text: '1871 — Germany unified as an empire; Italy completes unification with Rome; Russia pushes into Central Asia.' },
+  { year: 1885, text: '1885 — The Berlin Conference: the Scramble for Africa begins in earnest; the Balkans largely free of Ottoman rule.' },
+  { year: 1900, text: 'Around 1900 — Africa almost entirely partitioned; the US holds the Philippines and Hawaii; Japan holds Taiwan.' },
+  { year: 1914, text: '1914 — European empires and their colonies on the eve of World War I; Korea is Japanese (colonies paler, in their ruler’s colour).' },
   { year: 1920, text: 'Around 1920 — Austria-Hungary, the Russian and Ottoman empires have broken up; Poland, the Baltic states and Yugoslavia appear.' },
   { year: 1945, text: '1945 — End of World War II: Germany and Korea divided, Poland moved west, the Soviet Union at its largest.' },
   { year: 1960, text: 'Around 1960 — Decolonisation: India, Pakistan, Indonesia and most of Africa independent or about to be.' },
@@ -3287,7 +3292,7 @@ document.addEventListener('keydown', (e) => {
 // full-screen mode … keep them all on by default"). The key items are buttons in both the
 // normal and full-screen globe; the state lives in `globeHiddenLayers`, survives entering /
 // leaving full screen, and goes in the URL as ?hide=peoples,presence. "Polities" covers the
-// hand-drawn empires and, from 1914, the nations (the key relabels itself at the handoff).
+// hand-drawn empires and, from 1815, the nations (the key relabels itself at the handoff).
 // ------------------------------------------------------------
 function parseHiddenLayersParam(raw) {
   const out = new Set();
@@ -3452,7 +3457,7 @@ function formatGlobeEntityDateLabel(entity) {
 
 function isEntityActiveAtGlobeYear(entityId, year = globeYear) {
   if (isNationEntityId(entityId)) return isNationActiveAtYear(entityId, year);
-  // Day 38: schematic empires hand off to the nations layer from 1914.
+  // Day 38: schematic empires hand off to the nations layer (from 1815 since Day 41).
   const active = getActiveSchematicOverlaysAtYear(year);
   return active.some(({ entity }) => entity.id === entityId);
 }
@@ -3557,7 +3562,7 @@ function selectGlobeEntity(entityId, { syncUrl = true, openDetail = true, fromDe
 }
 
 /**
- * Day 38: select a modern nation (1914–2025). Title / dates follow the period active at the
+ * Day 38: select a nation (1815–2025 since Day 41). Title / dates follow the period active at the
  * current year (e.g. "Gold Coast (British)" in 1950, "Ghana" in 1960).
  */
 function selectGlobeNation(entityId, { syncUrl = true, openDetail = true, fromDeepLink = false } = {}) {
@@ -3580,8 +3585,8 @@ function selectGlobeNation(entityId, { syncUrl = true, openDetail = true, fromDe
 
 function showGlobeNationDetail(entity) {
   const per = entity.period;
-  // The nations layer starts in 1914, so periods "from 1914" usually began earlier.
-  const start = per.from <= GLOBE_NATIONS_START ? 'by 1914' : formatGlobeYear(per.from);
+  // The nations layer starts in 1815, so periods "from 1815" usually began earlier.
+  const start = per.from <= GLOBE_NATIONS_START ? `by ${GLOBE_NATIONS_START}` : formatGlobeYear(per.from);
   const dateLabel = `${start} — ${per.to == null ? 'today' : formatGlobeYear(per.to)}`;
   showDetail(entity.name, `${dateLabel} · ${entity.kindLabel}`, entity.description || '', entity.sources, {
     view: 'globe',
@@ -3693,7 +3698,7 @@ function updateGlobeOverlayPanel() {
   if (nations.length) appendGlobeNationsGroup(nations);
 }
 
-/** Day 38: nations (1914–2025) sit in one collapsible group so they don't bury empires / peoples. */
+/** Day 38: nations (1815–2025 since Day 41) sit in one collapsible group so they don't bury empires / peoples. */
 let globeNationsGroupOpen = false;
 function appendGlobeNationsGroup(nations) {
   const li = document.createElement('li');
@@ -3707,8 +3712,8 @@ function appendGlobeNationsGroup(nations) {
   });
   const summary = document.createElement('summary');
   summary.className = 'globe-nations-summary';
-  const colonies = nations.filter(({ period }) => period.kind === 'colony' || period.kind === 'dominion').length;
-  summary.textContent = `Nations and territories (${nations.length})` + (colonies ? ` · ${colonies} colonies or dominions` : '');
+  const colonies = nations.filter(({ period }) => ['colony', 'dominion', 'vassal'].includes(period.kind)).length;
+  summary.textContent = `Nations and territories (${nations.length})` + (colonies ? ` · ${colonies} colonies, dominions or vassals` : '');
   details.appendChild(summary);
   const ul = document.createElement('ul');
   ul.className = 'globe-nations-list';
@@ -3733,7 +3738,7 @@ function appendGlobeNationsGroup(nations) {
     const meta = document.createElement('div');
     meta.className = 'globe-overlay-item-meta';
     const per = entity.period;
-    const from = per.from <= GLOBE_NATIONS_START ? 'by 1914' : per.from;
+    const from = per.from <= GLOBE_NATIONS_START ? `by ${GLOBE_NATIONS_START}` : per.from;
     meta.textContent = `${entity.kindLabel} · ${from}–${per.to == null ? 'today' : per.to}`;
     body.appendChild(name);
     body.appendChild(meta);

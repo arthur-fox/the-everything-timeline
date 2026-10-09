@@ -13,6 +13,8 @@
  *   `?at=lat,lng,alt` opens the camera at a given point of view.
  * Day 40: map-key layer toggles (Polities / Nations, Peoples, Presence; `?hide=`) — with Nations off,
  *   peoples / presence come back undimmed so they can be tapped after 1914.
+ * Day 41: the nations layer starts in 1815 (Congress of Vienna), so every schematic empire hands
+ *   off at 1815 instead of 1914; vassal / autonomous states draw like colonies (paler, softer edge).
  * Day 40 (review B): close-zoom fidelity — NASA GIBS Blue Marble tiles (z ≤ 8, ~600 m/px, no
  *   labels) sharpen the ground as you zoom (the 4k texture stays underneath as the far view and
  *   the fallback), and nation borders near the centre of the view swap to a finer Natural Earth
@@ -387,8 +389,8 @@ function hashId(str) {
  * stable renderOrder (layer band, then a hash slot) so blending order never flips with the
  * camera; altitude bands are layer-aware and comfortably above depth resolution.
  */
-// Day 38: from 1914 nations take the peoples' band and the (dimmed) peoples drop just below
-// them, so tapping a country picks the nation; before 1914 nothing changes (no nations then).
+// Day 38: from the handoff (1815 since Day 41) nations take the peoples' band and the (dimmed)
+// peoples drop just below them, so tapping a country picks the nation; before it nothing changes.
 const LAYER_BAND = { presence: 0, peopleUnder: 1, nation: 2, people: 2, polity: 3 };
 const LAYER_ALT = { presence: 0.005, peopleUnder: 0.0062, nation: 0.0075, people: 0.0075, polity: 0.01 };
 const POLYGON_ALT_STEP = 0.00004; // tie-break for picking only; depth no longer depends on it
@@ -506,7 +508,7 @@ function densifyFeature(f) {
 
 /**
  * Day 40: map-key layer toggles (Arthur: "toggle on/off Polities/Peoples/Presence in
- * full-screen mode"). 'polities' covers the hand-drawn empires and, from 1914, the nations.
+ * full-screen mode"). 'polities' covers the hand-drawn empires and, from 1815, the nations.
  */
 export const GLOBE_LAYER_KEYS = ['polities', 'peoples', 'presence'];
 let hiddenLayers = new Set();
@@ -914,7 +916,7 @@ function applyPolygonLayer() {
       if (layer === 'nation') {
         // Day 38: crisp national borders; colonial-internal lines a little softer.
         const kind = d.nationKind || d.properties?.nationKind;
-        return kind === 'colony' || kind === 'dominion' ? 'rgba(255, 255, 255, 0.42)' : 'rgba(255, 255, 255, 0.62)';
+        return kind === 'colony' || kind === 'dominion' || kind === 'vassal' ? 'rgba(255, 255, 255, 0.42)' : 'rgba(255, 255, 255, 0.62)';
       }
       if (layer === 'people') return d.nationsEraDim ? 'rgba(255, 255, 255, 0.34)' : 'rgba(255, 255, 255, 0.7)';
       return 'rgba(255, 255, 255, 0.24)';
@@ -1131,7 +1133,7 @@ function detachLegend() {
   hostOverlayHomes = [];
 }
 
-/** Day 38: the key / credit switch from "Polities" to "Nations" at the 1914 handoff. */
+/** Day 38: the key / credit switch from "Polities" to "Nations" at the handoff (1815 since Day 41). */
 function syncNationsEraUI(year) {
   const era = Number(year) >= NATIONS_HANDOFF_YEAR;
   for (const el of document.querySelectorAll('.globe-legend, .globe-credit')) {

@@ -622,7 +622,7 @@ Rule of thumb: **modern labelled basemaps show today's borders and city names**,
   - Triangle count at 1960 is up ~9% at the default view (115k vs 106k).
 - **Still to come:** the Blue Marble texture is blurry at the closest zoom (Day 40 tiles fix that), and nation borders are simplified to ~40 km² (Day 42 adds a finer set close up).
 
-#### Day 40 (review A) — Layer toggles and a zoomable year scrubber — in review
+#### Day 40 (review A) — Layer toggles and a zoomable year scrubber — done (merged, #45)
 
 Arthur, after #43/#44: "I should be able to toggle on/off Polities/Peoples/Presence in full-screen mode — definitely keep them all on by default" and "scrubbing should be able to zoom in a bit because like the last 100 years a lot moves around".
 
@@ -631,7 +631,7 @@ Arthur, after #43/#44: "I should be able to toggle on/off Polities/Peoples/Prese
 - **Zoomable scrubber:** the slider now shows a time window. Scroll the wheel (or pinch on a phone) on the scrubber to zoom around that point, horizontal trackpad scroll pans, `+` / `−` zoom ×4 around the current year, and `All` resets. A label shows the window ("1881–1960 · 79 yrs") and the tick labels follow it. Steps are always one year (down to a 12-year window). Dragging into either end of a zoomed window pages it along; presets and deep links recentre the window on their year. ←/→ step one year anywhere in globe mode (Shift: ten).
 - **Verified (headless, 1280×800 and 390×844 touch):** layer counts per toggle (1960: 176 nations / 69 peoples / 62 presence → 0 nations), tapping central India with Nations off opens "Dravidian peoples", the URL round-trips (`hide=…` with and without full screen), pinch 314 → 55 years without moving the year, wheel zoom, edge paging, arrow keys.
 
-#### Day 40 (review B) — Close-zoom fidelity: NASA GIBS tiles + finer borders (Days 40 and 42 together) — in review
+#### Day 40 (review B) — Close-zoom fidelity: NASA GIBS tiles + finer borders (Days 40 and 42 together) — done (merged, #46)
 
 Arthur, on the Day 39 close-up: "at that point the lack of fidelity really stands out".
 
@@ -643,7 +643,7 @@ Arthur, on the Day 39 close-up: "at that point the lack of fidelity really stand
 - **Cost (headless, software GL):** far default view unchanged (no tiles, no fine borders; 115k triangles at 1960). Close up, triangles are about +6k–+10k over Day 39 (Italy 1960 at 0.06: 70k vs 64k; Croatia 1995 on a phone at 0.08: 40k vs 34k), plus 9–30 tile textures (256², ~15 KB each). The first close zoom in the nations era downloads the 568 KB fine set and parses it; swapping in a big fine country (Canada, Russia: ~18–26k vertices) costs one triangulation, which may be a visible hitch on older phones.
 - **Still blurry past z8:** GIBS Blue Marble stops at ~600 m/px. Sharper (Sentinel-2 cloudless 2016, CC BY 4.0, ~10 m) would need a flag and a licence check; Natural Earth 10m itself has ~1 km detail, so borders can't get much finer from this source.
 
-#### Day 41 — Dated cities, step 1
+#### Dated cities, step 1 — next (planned as Day 41; Day 41 went to Phase 4c group 1, real nations 1815–1914)
 
 ~300 cities (capitals and big historical cities) with founding year and dated names (Constantinople → Istanbul 1930, Leningrad 1924–1991, Bombay → Mumbai 1995 …), from Natural Earth places plus curated dates. Labels appear by zoom and rank, and capitals are marked for the year. Validate that dates are inside known ranges and that capitals sit inside their nation in that year.
 
@@ -657,7 +657,7 @@ Hand-drawn sub-province cut lines (public domain, our own) for the biggest appro
 
 #### Day 44 — Extend nations back to 1880 / 1815
 
-Superseded by Phase 4c step group 1 (real nation borders 1815–1914), which splits this into three daily steps.
+Superseded by Phase 4c step group 1 (real nation borders 1815–1914), built on Day 41 (see Phase 4c).
 
 #### Later — evaluate MapLibre GL globe
 
@@ -675,6 +675,19 @@ Data rule as Day 38: Natural Earth (public domain) units regrouped by a hand-wri
 - **Step 1.2 — 1848–1880.** German unification (1864–71, with Alsace-Lorraine), Italian unification (1859–70), US westward expansion (Mexican Cession 1848, Gadsden 1853, Alaska 1867; organised territories paler than states), Canadian Confederation 1867, the Paraguayan War, Meiji Japan.
 - **Step 1.3 — 1815–1848.** Congress of Vienna Europe (German Confederation, Austrian Empire, the Two Sicilies), Latin American independence (1810s–1820s: Gran Colombia 1819–31, the Federal Republic of Central America, Brazil 1822, Mexico 1821), Greece 1830, Belgium 1830, Texas 1836. Move the handoff to 1815.
 - **Honest limits:** province-level units fit poorly for US territories and inland African colonial lines; those get hand-drawn cuts, flagged as approximate (see group 4).
+- **Status: steps 1.1–1.3 built together on Day 41 — in review.** Hand-drawn cut lines and paler organised US territories are not done yet (follow-up below).
+
+#### Day 41 — Real nation borders 1815–1914 (steps 1.1–1.3 together) — in review
+
+- **Data:** new `src/globe-nations-table-1815.js` (223 entities, 473 dated periods, 1815–1914), the same method as Day 38: Natural Earth admin-0 / admin-1 units (public domain) regrouped by a hand-written table of real dates. No CShapes (CC BY-NC-SA) or historical-basemaps (GPL) data is used. Entities that continue past 1914 have their 19th-century periods prepended to the Day 38 table by id, and a period that matches the 1914 one exactly is merged into it (e.g. one "United Kingdom of Great Britain and Ireland" period, 1815–1922). Shared unit groups moved to `src/globe-nations-units.js`. A `steps()` helper writes stepwise growth as deltas (Russia's Central Asian conquests, the British Raj, the Ottoman retreat). New kind **vassal** (autonomous states under a suzerain: Serbia and the Danubian Principalities before 1878, Bulgaria 1878–1908, Egypt before 1882, Tunis, Algiers), drawn paler in the suzerain's colour like colonies.
+- **Covered:** Congress of Vienna Europe (Prussia, Bavaria, Württemberg/Baden, Saxony, Hanover, the Hessian and Thuringian states, Mecklenburg, the Hanseatic cities, Lombardy–Venetia, Sardinia, the Papal States, the Two Sicilies, Tuscany, Parma, Modena, Lucca, the Netherlands with Belgium to 1830, Sweden–Norway); German unification (Schleswig-Holstein 1864, Prussia's 1866 annexations, the North German Confederation 1867, the German Empire 1871 with Alsace–Lorraine); Italian unification (1859, 1860–61, Venetia 1866, Rome 1870); the Ottoman retreat (Greece 1830/1864/1881/1913, Serbia, Montenegro and Romania 1878, Bulgaria and Eastern Rumelia 1878/1885/1908, Bosnia 1878, Cyprus 1878, Crete 1898, Libya 1912, the Balkan Wars); Russia in the Caucasus (Erivan 1828, Shamil's Imamate 1834–59, Circassia 1864, Kars 1878) and Central Asia (the Kazakh jüz, Kokand, Tashkent 1865, Bukhara 1868 and Khiva 1873 as protectorates, Fergana 1876, Turkmen lands 1881–84, the Pamirs 1895) and the Amur/Primorye (1858/60) and Alaska sale (1867); Latin American independence (New Spain, New Granada, Peru, Upper Peru and Chile as Spanish colonies; Gran Colombia 1819–31, the Central American Federation 1821–40, Brazil 1822, Uruguay 1828, the War of the Pacific, Argentina's southern conquest, Acre 1903, Panama 1903); US expansion (Florida 1821, Texas 1836/45, Oregon 1846, the Mexican Cession 1848, Alaska 1867, Hawaii 1898); Canada (Rupert's Land, BC, Confederation 1867/1870/1871/1873); South Asia (Company rule growing step by step: the Marathas 1818, Assam/Arakan 1826, Sindh 1843, the Sikh Empire 1846/49, Burma 1852/1886, the Crown Raj 1858); East and Southeast Asia (Qing losses, Yettishar, Tokugawa → Meiji Japan, Ryukyu 1879, Joseon → Korean Empire 1897 → Japanese protectorate 1905 → annexation 1910, Taiwan 1895, Siam's losses 1893/1904/1907/1909, French Indochina 1862–1907, British Malaya and Borneo, the Dutch East Indies); and **the Scramble for Africa** (Sokoto, Bornu, Ashanti, Dahomey, Ségou, Massina, the Toucouleur, Zulu, Gaza, Merina, Buganda, Ethiopia's growth, the Mahdist state; then each colony from its claim year: Congo Free State 1885, German colonies 1884–85, British East Africa 1888, Rhodesia 1890–91, French West and Equatorial Africa, Italian Eritrea and Somalia, the Boer republics and the Union of South Africa 1910).
+- **Handoff moved to 1815:** every hand-drawn empire stops at 1815 (each has a nation counterpart via `timelineItemIds`), so nothing is double-painted. Before 1914 land outside any state (inland Africa before the 1880s, Patagonia, the Australian interior before 1829, Hokkaido, Rajasthan 1815–18) is deliberately left empty for the peoples and presence layers, which fade less in that period (presence 60%, peoples 80% instead of 35% / 50%). Drawn coverage: 76% of land in 1815, 82% in 1848, 83% in 1871, 90% in 1885, 99% in 1900, 100% from 1914.
+- **Colours:** the colouring now prefers each group's existing colour when it is still valid, so 135 of 194 modern colour groups keep their colour; the rest changed because of new neighbours (e.g. the US now borders Mexico's 1840s lands).
+- **UI:** "Borders 1815–2025" credit, new 1815 and 1871 year chips, captions for 1790, 1815, 1848, 1871, 1885, 1900 and 1914, "by 1815" for periods that began earlier, and history lines in the detail panel merge consecutive periods with the same name (e.g. "Until 1914: Russian Empire — Erivan …; Tashkent …").
+- **Validate:** the build fails on any overlap in any year 1815–2025; full coverage is still required from 1914. `check-nations.js` adds ~190 city checks at 1815, 1830, 1848, 1861, 1871, 1880, 1885, 1900 and 1913 (Milan: Austria 1815 → Italy 1861; Strasbourg: Germany 1871; Plovdiv: Eastern Rumelia 1880; Samarkand: Bukhara 1815 → Russia 1871; Kumasi: Ashanti 1900 → Gold Coast 1913; San Francisco: Mexico 1815 → USA 1848 …), status checks (Belgrade vassal 1815, Sofia vassal 1880, Seoul state 1900 → colony 1913), creation and end dates, names at real dates, the Scramble (≤ 10 African colonies in 1875, ≥ 30 by 1900), and coverage that only grows before 1914.
+- **Kept (headless):** static frames pixel-identical at altitude 0.06–0.15 in 1815, 1871 and 1900; every cap triangle near the view centre ≥ 2 km above the globe close up; GIBS tiles and the fine border swap work in the new years; layer toggles and the 1814 → 1815 handoff checked. Cost: the 1815–1913 globe draws about as much as 1914–2025 (phone, 1885: 844 draw calls vs 895 at 1950). The coarse topology is 476 KB (was 381 KB), the fine set 1.93 MB (was 1.71 MB).
+- **Honest caveats:** borders are today's provinces regrouped, so many 19th-century lines are approximate: Baden and Württemberg are one shape, Western Pomerania sits with Mecklenburg, Natal and Zululand are one shape, Colorado counts as Mexican until 1848 and the Gadsden Purchase isn't split, Kazakh and Central Asian conquests move oblast by oblast, Sakhalin 1905, Paraguay's 1870 losses and Bessarabia 1856–78 aren't split. Colonial claims are drawn at roughly their final extent from the claim year, although real control of the interior often came 10–30 years later (noted per colony). Short-lived states and occupations (1848 revolutions, the Taiping, the Peru–Bolivian Confederation, the French in Mexico, the Boer trek republics before 1852) are not drawn. Princely states are drawn inside British India.
+- **Follow-up:** hand-drawn cut lines for the worst province misfits (Natal/Zululand, Baden/Württemberg, Gadsden, Sakhalin, inland colonial lines); organised US territories paler than states.
 
 ### 2. Country and place labels that get more detailed as you zoom
 
@@ -683,7 +696,7 @@ Data rule as Day 38: Natural Earth (public domain) units regrouped by a hand-wri
 
 ### 3. Dated cities and pinned events
 
-Builds on Phase 4b Day 41 (the first ~300 dated cities).
+Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 3.1 — More cities, renamed over time.** ~1,000 cities including ancient ones (Ur, Memphis, Babylon, Chang'an, Teotihuacan) with founding years, abandonment, and dated names (Byzantium → Constantinople 330 → Istanbul 1930, Edo → Tokyo 1868, Tenochtitlan → Mexico City). Capitals marked for the year.
 - **Step 3.2 — Events pinned to places.** Battles, treaties and other timeline items get coordinates, so they appear on the globe as you scrub past them (fading in a few years before and out a few years after), and tapping one opens its timeline detail. Validate that every pinned event's place exists at that date.
@@ -836,8 +849,8 @@ A sensible near-term sequence:
 30. Further living-border / topology polish — ocean gaps (polygon holes) + eased morph (Day 32 / PR F slice 4). ✅
 31. Phase 5 content expansion — country pack 1 (Peru, Ghana, Kenya, Morocco, Iraq, Philippines; 32 → 38 countries; globe links synced) — Day 33. ✅
 32. Review feedback round (Arthur, 7 Oct): A flicker root-cause fix (Day 34) ✅; B peoples vs polities distinct + Both always + peoples persist (Day 35) ✅; C presence fills modern globe (Day 36) ✅; D fullscreen globe mode (Day 37) ✅. All four in review as stacked PRs.
-33. Phase 4b (Arthur, 8 Oct: deep zoom + real borders) — Day 38 modern nations 1914–2025 ✅ (merged) → Day 39 zoom closer without floating shapes ✅ (merged) → Day 40 review A: layer toggles + zoomable scrubber (in review) → Day 40 review B: NASA GIBS tiles + Day 42 finer borders (in review) → Day 41 dated cities → Day 43 finer splits.
-34. Phase 4c (Arthur, 8 Oct) — real nations 1815–1914 → labels by zoom → dated cities + pinned events → showing uncertainty → trade routes and migrations → coverage between empires → space background (stars, Milky Way, constellations).
+33. Phase 4b (Arthur, 8 Oct: deep zoom + real borders) — Day 38 modern nations 1914–2025 ✅ (merged) → Day 39 zoom closer without floating shapes ✅ (merged) → Day 40 review A: layer toggles + zoomable scrubber ✅ (merged) → Day 40 review B: NASA GIBS tiles + Day 42 finer borders ✅ (merged) → dated cities → Day 43 finer splits.
+34. Phase 4c (Arthur, 8 Oct) — real nations 1815–1914 (Day 41, in review) → labels by zoom → dated cities + pinned events → showing uncertainty → trade routes and migrations → coverage between empires → space background (stars, Milky Way, constellations).
 35. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

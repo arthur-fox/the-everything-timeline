@@ -1,11 +1,13 @@
 /**
- * Day 38 — modern nations layer (1914–2025) for the globe.
+ * Day 38 — nations layer for the globe (1914–2025 on Day 38, 1815–2025 since Day 41).
  *
  * Arthur: "the past 100 years or so should be filled up with nations since we now live in a
- * world full of nations". From 1914 the hand-drawn schematic empires hand off to real
- * nation-state polygons that change at real dates (WWI breakups, the 1922 Soviet union,
- * decolonisation, 1991). Geometry: Natural Earth (public domain) regrouped by year — see
- * src/globe-nations-table.js (the date table) and scripts/build-nations.mjs (the build).
+ * world full of nations". From 1815 (the Congress of Vienna) the hand-drawn schematic empires
+ * hand off to real state polygons that change at real dates (German and Italian unification,
+ * the Scramble for Africa, WWI breakups, decolonisation, 1991). Geometry: Natural Earth (public
+ * domain) regrouped by year — see src/globe-nations-table.js + src/globe-nations-table-1815.js
+ * (the date tables) and scripts/build-nations.mjs (the build). Before 1914 land outside any
+ * state (e.g. inland Africa before the 1880s) is left to the peoples / presence layers.
  *
  * The table is bundled (cheap, synchronous: lookups, active checks, the sidebar list);
  * the polygons (~130 KB gzipped TopoJSON) are fetched lazily when the globe first mounts.
@@ -17,16 +19,17 @@ import {
   NATION_OWNERS,
   NATIONS_START,
   NATIONS_END,
+  NATIONS_FULL_COVERAGE_START,
   nationColorGroup,
 } from './globe-nations-table.js';
 import { NATION_COLORS } from './data/nations-colors.js';
 import { getOverlayPolygonFeatures, getActiveOverlaysAtYear } from './globe-overlays.js';
 
-export { NATIONS_START, NATIONS_END, NATION_ENTITIES };
+export { NATIONS_START, NATIONS_END, NATIONS_FULL_COVERAGE_START, NATION_ENTITIES };
 
 export const NATION_ID_PREFIX = 'nation-';
 
-/** Day 38: schematic polities (empires) are replaced by the nations layer from this year. */
+/** Day 38: schematic polities (empires) are replaced by the nations layer from this year (1815 since Day 41). */
 export const NATIONS_HANDOFF_YEAR = NATIONS_START;
 
 export const NATIONS_SOURCES = [
@@ -34,7 +37,7 @@ export const NATIONS_SOURCES = [
   { title: 'Natural Earth terms of use', url: 'https://www.naturalearthdata.com/about/terms-of-use/' },
 ];
 
-const KIND_OPACITY = { state: 0.56, dominion: 0.46, colony: 0.4, disputed: 0.42 };
+const KIND_OPACITY = { state: 0.56, dominion: 0.46, vassal: 0.44, colony: 0.4, disputed: 0.42 };
 
 export function isNationEntityId(id) {
   return typeof id === 'string' && id.startsWith(NATION_ID_PREFIX);
@@ -86,27 +89,43 @@ export function nationKindLabel(per) {
     return `${adj} colony / protectorate`.trim();
   }
   if (kind === 'dominion') return 'British dominion';
+  if (kind === 'vassal') {
+    const adj = NATION_OWNERS[per.owner] || '';
+    return `Autonomous state under ${adj} suzerainty`.replace(/\s+/g, ' ');
+  }
   if (kind === 'disputed') return 'Disputed / occupied';
   return 'Nation';
 }
 
 function formatSpan(from, to) {
-  // The layer starts in 1914, so a period "from 1914" usually began earlier.
-  if (from <= NATIONS_START) return to == null ? 'Throughout 1914–today' : `Until ${to}`;
+  // The layer starts in 1815, so a period "from 1815" usually began earlier.
+  if (from <= NATIONS_START) return to == null ? `Throughout ${NATIONS_START}–today` : `Until ${to}`;
   return to == null ? `From ${from}` : `${from}–${to}`;
 }
 
 function describeNation(ent) {
-  const lines = ent.periods.map((p) => {
+  // Day 41: consecutive periods with the same name and status (e.g. the Russian Empire's
+  // stepwise conquests) read as one line, with their notes in order.
+  const runs = [];
+  for (const p of ent.periods) {
     const label = p.name || ent.name;
+    const last = runs[runs.length - 1];
+    if (last && last.to === p.from && last.label === label && (last.p.kind || 'state') === (p.kind || 'state') && last.p.owner === p.owner) {
+      last.to = p.to;
+      if (p.note) last.notes.push(p.note);
+    } else {
+      runs.push({ p, label, from: p.from, to: p.to, notes: p.note ? [p.note] : [] });
+    }
+  }
+  const lines = runs.map(({ p, label, from, to, notes }) => {
     // "Gold Coast (British)" already says who ruled it; otherwise add the status.
     const kind = p.kind && p.kind !== 'state' && !label.includes('(') ? ` (${nationKindLabel(p)})` : '';
-    const note = p.note ? ` — ${p.note.replace(/\.+$/, '')}` : '';
-    return `${formatSpan(p.from, p.to)}: ${label}${kind}${note}.`;
+    const note = notes.length ? ` — ${notes.map((n) => n.replace(/\.+$/, '')).join('; ')}` : '';
+    return `${formatSpan(from, to)}: ${label}${kind}${note}.`;
   });
   return (
     `${lines.join(' ')} ` +
-    'Borders are Natural Earth (public domain) lines regrouped by year; before 1945 some shifts are approximated at province level.'
+    'Borders are Natural Earth (public domain) lines regrouped by year; before 1945 many shifts are approximated at province level, and 19th-century borders follow today’s provinces.'
   );
 }
 
@@ -402,8 +421,8 @@ export function getNationPolygonFeatures(year, fineShapes = null) {
 }
 
 /**
- * Everything the globe draws at `year`: schematic presence / peoples / pre-1914 polities,
- * plus nations from 1914. `hidePolities` (Day 40 layer toggle) drops nations and keeps the
+ * Everything the globe draws at `year`: schematic presence / peoples / pre-1815 polities,
+ * plus nations from 1815. `hidePolities` (Day 40 layer toggle) drops nations and keeps the
  * peoples / presence undimmed. Polities are dropped from the handoff year on (no double-painting
  * of, say, the British Empire over independent nations).
  */
@@ -417,7 +436,7 @@ export function getGlobePolygonFeatures(year, { hidePolities = false, fineShapes
     if (f.entityType !== 'people' && f.entityType !== 'presence') continue;
     // Day 40: with Polities / Nations switched off, peoples and presence come back to full
     // strength and their own band, so they can be tapped on land again.
-    kept.push(hidePolities ? f : dimmedForNationsEra(f));
+    kept.push(hidePolities ? f : dimmedForNationsEra(f, y));
   }
   if (hidePolities) return kept;
   return [...kept, ...getNationPolygonFeatures(y, fineShapes)];
@@ -429,14 +448,20 @@ export function getGlobePolygonFeatures(year, { hidePolities = false, fineShapes
  * so Globe.gl keeps its meshes.
  */
 const NATIONS_ERA_DIM = { presence: 0.35, people: 0.5 };
+// Day 41: before 1914 the nations layer leaves stateless land empty, where peoples / presence
+// are the only thing drawn, so they step back less.
+const NATIONS_ERA_DIM_PARTIAL = { presence: 0.6, people: 0.8 };
 const dimCache = new WeakMap();
-function dimmedForNationsEra(f) {
-  let d = dimCache.get(f);
+const dimCachePartial = new WeakMap();
+function dimmedForNationsEra(f, year) {
+  const partial = year < NATIONS_FULL_COVERAGE_START;
+  const cache = partial ? dimCachePartial : dimCache;
+  let d = cache.get(f);
   if (!d) {
-    const k = NATIONS_ERA_DIM[f.entityType] ?? 1;
+    const k = (partial ? NATIONS_ERA_DIM_PARTIAL : NATIONS_ERA_DIM)[f.entityType] ?? 1;
     const opacity = (Number(f.opacity ?? f.properties?.opacity) || 0.4) * k;
     d = { ...f, opacity, nationsEraDim: true, properties: { ...(f.properties || {}), opacity } };
-    dimCache.set(f, d);
+    cache.set(f, d);
   }
   return d;
 }
