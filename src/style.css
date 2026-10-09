@@ -3657,3 +3657,34 @@ textarea.feedback-input {
   min-width: 0;
   overflow-wrap: anywhere;
 }
+
+/* Day 45: with Certainty + Cities + Events the key wraps to two rows, so in the normal (card)
+   globe the credit moves from bottom-right (where it hit the key) to top-left. */
+.globe-canvas-host > .globe-credit {
+  bottom: auto;
+  top: 10px;
+  left: 12px;
+  right: auto;
+  max-width: calc(100% - 170px);
+  text-align: left;
+}
+
+body.globe-fullscreen .globe-canvas-host > .globe-credit {
+  left: auto;
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .globe-canvas-host > .globe-credit {
+    top: 8px;
+    left: 10px;
+    right: 56px;
+    max-width: none;
+  }
+
+  body.globe-fullscreen .globe-canvas-host > .globe-credit {
+    left: auto;
+    right: max(12px, env(safe-area-inset-right, 0px));
+    max-width: 220px;
+  }
+}
