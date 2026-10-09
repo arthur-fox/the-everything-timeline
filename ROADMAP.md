@@ -765,6 +765,24 @@ Arthur: replace the plain background with a starfield and space scene.
 - **Step 7.2 — Constellations.** Constellation lines and names in roughly correct positions, from a public-domain / CC0 source where one exists (otherwise a permissive one such as d3-celestial's BSD-3 data, checked against our ISC licence), with a toggle. Optional: precession by year, so the pole star is Thuban around 3000 BCE and Polaris today.
 - **Phone budget:** one point cloud and one texture; no per-frame CPU work.
 
+## Feedback & paid features discovery (Arthur, 9 Oct 2026)
+
+> "Can you add a feedback button so that people can give feedback … so we can eventually figure out how to have paid features for this." Also: the site will move to a proper domain soon.
+
+- **Status: step 1 built on Day 45 — IN REVIEW (PR #51). Do not start this item again;** the daily ship routine should move on to Phase 4c item 5 (trade routes and migrations).
+
+#### Day 45 — Feedback button (step 1) — in review (PR #51)
+- Unobtrusive **Feedback** button in every view (header top-right on desktop, icon on phones; bottom-left in the full-screen globe). In-app panel: 1–5 emoji rating, "What would you love to see?", optional "Would you pay for…?" (ad-free + early access, saved custom timelines & sharing, classroom / teacher mode, high-res exports & posters, deeper data layers & map packs, offline / installable app, something else), optional email.
+- Context attached and shown to the person: deep link (view, year, `at`, entity / item), screen size, app version + commit. No cookies or tracking; local "feedback sent" note only.
+- Target configurable in `src/feedback-config.js`: `FORM_ENDPOINT` (POST, JSON or form-encoded); empty → prefilled public GitHub issue (label `feedback`, no email) + Copy text.
+- Domain-agnostic; README documents what a custom domain needs (CNAME + Vite base + preview base).
+- Fix: in the normal (card) globe the credit moves to top-left — after #49 + #50 the key wraps to two rows and the bottom-right credit overlapped it (visible on live main).
+
+Next steps (not started):
+2. Pick and configure a real endpoint (README → Feedback; Formspree / Tally / Google Forms-style), so people without GitHub can send feedback and emails stay private.
+3. After ~2–4 weeks, tally the "Would you pay for…?" answers and wishes into a short ranking; prototype the top idea behind a flag (e.g. saved custom timelines, or poster export) before any payment plumbing.
+4. Only then: pricing test (e.g. a "notify me / pre-order" button on the top idea) and a privacy note page.
+
 ## Phase 5 — Content expansion
 
 Expand content after the navigation and data foundations are stronger.
@@ -890,5 +908,6 @@ A sensible near-term sequence:
 33. Phase 4b (Arthur, 8 Oct: deep zoom + real borders) — Day 38 modern nations 1914–2025 ✅ (merged) → Day 39 zoom closer without floating shapes ✅ (merged) → Day 40 review A: layer toggles + zoomable scrubber ✅ (merged) → Day 40 review B: NASA GIBS tiles + Day 42 finer borders ✅ (merged) → dated cities (built with Phase 4c item 3, Day 43) ✅ (merged, #49) → Day 43 finer splits.
 34. Phase 4c (Arthur, 8 Oct) — real nations 1815–1914 (Day 41) ✅ (merged, #47) → labels by zoom (Day 42) ✅ (merged, #48) → dated cities + pinned events (Day 43) ✅ (merged, #49) → showing uncertainty (Day 44) ✅ (merged, #50) → trade routes and migrations → coverage between empires → space background (stars, Milky Way, constellations).
 35. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
+36. Feedback & paid features discovery (Arthur, 9 Oct) — Day 45 feedback button (in review, #51; do not start again) → configure a real form endpoint → tally "would you pay for…?" answers.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.

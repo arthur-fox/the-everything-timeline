@@ -116,6 +116,26 @@ The repository includes GitHub Actions workflows that build the Vite app and pub
 - Globe labels (Day 42) come from the same data: country names are the period names in the nations table, shortened by `src/globe-label-names.js` ("Kingdom of Prussia" → "Prussia", "Gold Coast (British)" → "Gold Coast (Br.)"); `npm run build:nations` also stores a label anchor per shape. Seas, mountain ranges, deserts and other physical names are built by `npm run build:places` into `src/data/places.json`. `scripts/check-labels.js` (part of `npm run validate`) checks era-correct names, anchors and places. Add `&labels=0` to a globe link to hide labels.
 - Globe cities and event pins (Day 43): dated cities live in `src/globe-cities.js` (one row per city: position, rank 1–4, founding / abandonment year, the name at each date, optional rank changes) and event pins in `src/globe-event-pins.js` (each pin points at an existing timeline entry by `event:<title>` or `<view>:<id>`, with a year, place and short label). `scripts/check-cities.js` (part of `npm run validate`) checks rename order, era samples, that cities and land pins sit on land, and that every pin resolves to a timeline entry near its dates. To also check positions against Natural Earth populated places, download `ne_10m_populated_places_simple.geojson` (from the natural-earth-vector repo's `geojson/` folder) into `.cache/natural-earth/`. Add `&cities=0` or `&events=0` to a globe link to hide them.
 
+## Feedback
+
+A small **Feedback** button sits in the header (top right; an icon on phones) and, in the full-screen globe, bottom-left. It opens a panel with a 1–5 emoji rating, "What would you love to see?", an optional "Would you pay for…?" list of candidate premium ideas, and an optional email. The link to the exact view (view, year, `at=` camera, selected entity / item), screen size and app version (`package.json` version + git commit, injected by `vite.config.js`) are attached, and the panel says so ("Sends your answers + …"). Nothing is sent until Send is pressed; the only thing stored is a local "feedback sent" note (`localStorage`), so it never nags. `?feedback=1` opens the panel directly.
+
+Where it goes is set in one file, `src/feedback-config.js`:
+
+- **`FORM_ENDPOINT` empty (default):** "Continue on GitHub" opens a prefilled *public* issue on `arthur-fox/the-everything-timeline` with the `feedback` label (the label only sticks for people with triage rights; Arthur can add it on triage). The email is never put in the issue. "Copy text" puts the full report, email included, on the clipboard.
+- **`FORM_ENDPOINT` set:** answers are POSTed there (`FORM_FORMAT: 'json'` for Formspree / Getform / Basin-style services, `'form'` for a Google Apps Script web app). Fields: `rating`, `wish`, `pay`, `payOther`, `email`, `context_*`, `_subject`.
+
+Never put a personal email address in the site or config: everything here is public.
+
+## Custom domain
+
+The app only uses relative, bundler-resolved paths (`new URL(..., import.meta.url)`, Vite `base`) and the live `location` for share / feedback links — no hardcoded `github.io` URL, so moving to a domain needs:
+
+1. `public/CNAME` containing the domain (e.g. `everythingtimeline.com`); Vite copies it into `dist/` so Pages keeps it on every deploy.
+2. `const BASE = '/'` in `vite.config.js` (it is `'/the-everything-timeline/'` for the project site).
+3. DNS: `A`/`AAAA` records to GitHub Pages (or a `CNAME` record to `arthur-fox.github.io` for a `www.` subdomain), then set the domain and tick "Enforce HTTPS" under Settings → Pages.
+4. PR previews: `.github/workflows/pr-preview.yml` builds with `--base=/the-everything-timeline/pr-preview/pr-N/`; change that to `--base=/pr-preview/pr-N/` (needs a token with `workflow` scope or an edit in the GitHub UI).
+
 ## Data credits
 
 - Globe borders 1815–2025: [Natural Earth](https://www.naturalearthdata.com/) admin-0 / admin-1 boundaries (public domain), regrouped by year for this project. The dates (which provinces belonged to which state, when) are hand-written from standard historical facts. No licensed historical-border dataset is bundled: CShapes 2.0 (CC BY-NC-SA) and historical-basemaps (GPL-3.0) are not used.
