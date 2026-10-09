@@ -776,6 +776,7 @@ Arthur: replace the plain background with a starfield and space scene.
 - Context attached and shown to the person: deep link (view, year, `at`, entity / item), screen size, app version + commit. No cookies or tracking; local "feedback sent" note only.
 - Target configurable in `src/feedback-config.js`: `FORM_ENDPOINT` (POST, JSON or form-encoded); empty → prefilled public GitHub issue (label `feedback`, no email) + Copy text.
 - Domain-agnostic; README documents what a custom domain needs (CNAME + Vite base + preview base).
+- Fix: in the normal (card) globe the credit moves to top-left — after #49 + #50 the key wraps to two rows and the bottom-right credit overlapped it (visible on live main).
 
 Next steps (not started):
 2. Pick and configure a real endpoint (README → Feedback; Formspree / Tally / Google Forms-style), so people without GitHub can send feedback and emails stay private.
