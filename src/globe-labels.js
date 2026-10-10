@@ -767,7 +767,7 @@ function viewportGrid(camera) {
 }
 
 let obstacleCache = { at: 0, boxes: [] };
-const OBSTACLE_SELECTOR = '.globe-legend, .globe-credit, .globe-fullscreen-toggle, body.globe-fullscreen .feedback-open-fs, .globe-scrubber, body.globe-fullscreen .event-detail';
+const OBSTACLE_SELECTOR = '.globe-legend, .globe-credit, .globe-fullscreen-toggle, body.globe-fullscreen .feedback-open-fs, body.globe-fullscreen .fs-mode-switch, .globe-scrubber, body.globe-fullscreen .event-detail';
 function overlayObstacles(now) {
   if (now - obstacleCache.at > 500) {
     const hr = host.getBoundingClientRect();

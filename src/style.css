@@ -4235,3 +4235,55 @@ body::before {
     gap: 0;
   }
 }
+
+/* ============================================================
+   Day 48 — globe opens full screen by default; a compact Timeline | Globe
+   pill stays top-left in full screen so nobody is trapped.
+   ============================================================ */
+.fs-mode-switch {
+  display: none;
+}
+
+body.globe-fullscreen .globe-canvas-host > .fs-mode-switch {
+  display: inline-flex;
+  position: absolute;
+  z-index: 5;
+  top: max(12px, env(safe-area-inset-top, 0px));
+  left: max(12px, env(safe-area-inset-left, 0px));
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.fs-mode-switch .mode-switch-btn {
+  min-height: 32px;
+  padding: 0 13px;
+  gap: 6px;
+}
+
+body.globe-fullscreen .globe-canvas-host > .globe-legend {
+  top: calc(max(12px, env(safe-area-inset-top, 0px)) + 48px);
+  /* clear of the credit (top right, max 260px) */
+  max-width: calc(100% - 300px);
+}
+
+/* "Exit full screen" is the way to the windowed layout: keep it labelled on phones too */
+@media (max-width: 640px) {
+  body.globe-fullscreen .globe-canvas-host > .globe-fullscreen-toggle .globe-fullscreen-label {
+    display: inline;
+  }
+
+  body.globe-fullscreen .globe-canvas-host > .globe-fullscreen-toggle {
+    gap: 6px;
+    padding: 6px 12px;
+  }
+
+  body.globe-fullscreen .globe-canvas-host > .globe-legend {
+    max-width: calc(100% - 24px);
+  }
+}
+
+@media (max-width: 360px) {
+  .fs-mode-switch .mode-switch-btn svg {
+    display: none;
+  }
+}
