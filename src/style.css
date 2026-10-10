@@ -4210,3 +4210,28 @@ body::before {
     font-size: 1rem;
   }
 }
+
+/* Day 47c — gradient text is painted only inside the element box
+   (background-clip: text), so tight line-heights clipped descenders
+   ("g" in Everything). Give the glyphs room, cancel it with a negative
+   margin so the header height stays put. */
+#header h1,
+.globe-title {
+  line-height: 1.2;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+#header h1 {
+  margin-top: -0.06em;
+}
+
+@media (max-width: 640px) {
+  #header h1 {
+    line-height: 1.15;
+  }
+
+  #header h1 .title-short {
+    gap: 0;
+  }
+}
