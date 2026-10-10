@@ -67,6 +67,17 @@ export { areGlobeLabelsEnabled };
 // first; the 4096px one (~580 KB, was a 1.4 MB JPEG from unpkg) swaps in once the globe is idle.
 const EARTH_LOW = new URL('./data/earth-1024.webp', import.meta.url).href;
 const EARTH_HIGH = new URL('./data/earth-4096.webp', import.meta.url).href;
+// Phones / small screens get 2048px (~185 KB): a 4096 upload stalls a phone for ~0.5 s and the
+// close-zoom detail comes from the GIBS tiles anyway.
+const EARTH_HIGH_SMALL = new URL('./data/earth-2048.webp', import.meta.url).href;
+function earthHighUrl() {
+  try {
+    const small = Math.min(window.screen?.width || 9999, window.innerWidth || 9999) <= 820;
+    return small || isCoarsePointer() ? EARTH_HIGH_SMALL : EARTH_HIGH;
+  } catch (_) {
+    return EARTH_HIGH;
+  }
+}
 
 // ------------------------------------------------------------
 // Day 49 — load faster + a loading state. `prefetchGlobe()` starts the globe code and the first
@@ -122,15 +133,16 @@ function scheduleTextureUpgrade() {
   const run = () => {
     const img = new Image();
     img.crossOrigin = 'anonymous';
+    const url = earthHighUrl();
     img.onload = () => {
       if (globe !== g || !globe) return;
       try {
-        globe.globeImageUrl(EARTH_HIGH);
+        globe.globeImageUrl(url);
       } catch (_) {
         // keep the low-res earth
       }
     };
-    img.src = EARTH_HIGH;
+    img.src = url;
   };
   const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1200));
   setTimeout(() => idle(run, { timeout: 2500 }), 600);

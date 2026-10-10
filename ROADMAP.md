@@ -940,7 +940,7 @@ Independent of #54 (based on main). Does not change the hold on Phase 4c item 5 
 
 - **Done in this PR:**
   - Stubbed the unused WebGPU build of three, which three-globe imports. The globe.gl chunk drops from 1.35 MB to 0.65 MB raw.
-  - Self-hosted the NASA Blue Marble earth as WebP. A 43 KB 1024px texture paints first, and the 4096px one (~580 KB, was a 1.4 MB JPEG from unpkg) swaps in once the globe is idle.
+  - Self-hosted the NASA Blue Marble earth as WebP. A 43 KB 1024px texture paints first, and the 4096px one (~580 KB; 2048px ~185 KB on phones; was a 1.4 MB JPEG from unpkg) swaps in once the globe is idle.
   - The globe code and first texture start together on entry and are prefetched on Globe hover, focus or touch.
   - The nations TopoJSON (~155 KB gzipped) loads only when the year needs it (1815+); otherwise it loads shortly after the earth is up.
   - Branded loading state: gold ring + mark, "Loading the globe…", and Earth → Borders → Cities steps. It fades once the earth and borders are on screen.
