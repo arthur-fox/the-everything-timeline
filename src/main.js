@@ -4306,18 +4306,18 @@ function globeLoadingEl() {
   return document.querySelector('.globe-loading');
 }
 var globeLoadingHideTimer = null;
-var GLOBE_LOADING_TEXT = {
-  start: 'Loading the globe…',
-  engine: 'Painting the earth…',
-  earth: 'Drawing the borders…',
-};
+// A function (not a const): a ?view=globe deep link shows the loader while this module is
+// still evaluating, before anything declared down here has been assigned.
+function globeLoadingText(step) {
+  return { start: 'Loading the globe…', engine: 'Painting the earth…', earth: 'Drawing the borders…' }[step];
+}
 
 function showGlobeLoading() {
   const el = globeLoadingEl();
   if (!el) return;
   clearTimeout(globeLoadingHideTimer);
   el.querySelectorAll('[data-step]').forEach((li) => li.classList.remove('is-done'));
-  el.querySelector('.globe-loading-title').textContent = GLOBE_LOADING_TEXT.start;
+  el.querySelector('.globe-loading-title').textContent = globeLoadingText('start');
   el.classList.remove('is-leaving');
   el.classList.add('is-visible');
   syncGlobeLoading();
@@ -4341,8 +4341,8 @@ function syncGlobeLoading() {
   const steps = new Set(getGlobeLoadSteps());
   el.querySelectorAll('[data-step]').forEach((li) => li.classList.toggle('is-done', steps.has(li.dataset.step)));
   const title = el.querySelector('.globe-loading-title');
-  if (steps.has('earth')) title.textContent = GLOBE_LOADING_TEXT.earth;
-  else if (steps.has('engine')) title.textContent = GLOBE_LOADING_TEXT.engine;
+  if (steps.has('earth')) title.textContent = globeLoadingText('earth');
+  else if (steps.has('engine')) title.textContent = globeLoadingText('engine');
   if (steps.has('earth') && steps.has('borders')) {
     clearTimeout(globeLoadingHideTimer);
     // give the cities step a moment to tick if it is about to land, then fade
