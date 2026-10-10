@@ -54,7 +54,7 @@ import { moroccoItems, moroccoCategories } from './countries/morocco.js';
 import { iraqItems, iraqCategories } from './countries/iraq.js';
 import { philippinesItems, philippinesCategories } from './countries/philippines.js';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
-import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick, setGlobeHiddenLayers, GLOBE_LAYER_KEYS, setGlobeLabelsEnabled, setGlobeCertaintyEnabled, setGlobeCitiesEnabled, setGlobeEventsEnabled, setGlobePinHandlers, getGlobeCameraAt } from './globe-view.js';
+import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick, setGlobeHiddenLayers, GLOBE_LAYER_KEYS, setGlobeLabelsEnabled, setGlobeCertaintyEnabled, setGlobeCitiesEnabled, setGlobeEventsEnabled, setGlobePinHandlers, getGlobeCameraAt, prefetchGlobe, getGlobeLoadSteps } from './globe-view.js';
 import { initFeedback } from './feedback.js';
 import { confidenceForEntity, confidenceForNationPeriod, CONFIDENCE_LABEL, CONFIDENCE_DRAWING } from './globe-confidence.js';
 import {
@@ -2143,6 +2143,7 @@ function switchView(view) {
   updateFiltersUI();
   draw();
   syncDeepLinkUrl();
+  afterTimelineSwitch();
 }
 
 // ── View select ──────────────────────────────────────────────
@@ -2553,6 +2554,7 @@ function selectCountry(countryId) {
   updateFiltersUI();
   draw();
   syncDeepLinkUrl();
+  afterTimelineSwitch();
 }
 
 function filterCountryList(query) {
@@ -3299,6 +3301,12 @@ function setGlobeModeActive(active) {
   // Day 48: every entry into the globe (switch, view select, deep link) opens full screen;
   // "Exit full screen" / Esc / ?fullscreen=0 give the windowed layout.
   if (active && !wasActive) setGlobeFullscreen(true, { syncUrl: false });
+  // Day 49: branded loading state + start the globe code / earth texture right away.
+  if (active && !wasActive) {
+    showGlobeLoading();
+    prefetchGlobe().catch(() => {});
+  }
+  if (!active) hideGlobeLoading({ immediate: true });
   if (globeViewEl) {
     globeViewEl.classList.toggle('hidden', !active);
   }
@@ -3313,7 +3321,8 @@ function setGlobeModeActive(active) {
         onPolygonClick: (entityId) => {
           selectGlobeEntity(entityId, { syncUrl: true, openDetail: true });
         },
-      }).catch((err) => {
+      }).then(() => syncGlobeLoading()).catch((err) => {
+        hideGlobeLoading({ immediate: true });
         console.error('Failed to mount Globe.gl:', err);
         if (host && !host.dataset.globeError) {
           host.dataset.globeError = '1';
@@ -4297,3 +4306,138 @@ initFeedback({
     };
   },
 });
+
+// ------------------------------------------------------------
+// Day 49 — globe loading state (Arthur: "the globe takes a long time to load"). Gold ring +
+// brand mark + "Loading the globe…" with Earth → Borders → Cities steps; shown the moment the
+// globe opens, faded out once the earth and borders are on screen. It lives inside the globe
+// host, so the timeline is never covered. Globe code + the first earth texture are also
+// prefetched on hover / focus / touch of a Globe button.
+// ------------------------------------------------------------
+function globeLoadingEl() {
+  return document.querySelector('.globe-loading');
+}
+var globeLoadingHideTimer = null;
+// A function (not a const): a ?view=globe deep link shows the loader while this module is
+// still evaluating, before anything declared down here has been assigned.
+function globeLoadingText(step) {
+  return { start: 'Loading the globe…', engine: 'Painting the earth…', earth: 'Drawing the borders…' }[step];
+}
+
+function showGlobeLoading() {
+  const el = globeLoadingEl();
+  if (!el) return;
+  clearTimeout(globeLoadingHideTimer);
+  el.querySelectorAll('[data-step]').forEach((li) => li.classList.remove('is-done'));
+  el.querySelector('.globe-loading-title').textContent = globeLoadingText('start');
+  el.classList.remove('is-leaving');
+  el.classList.add('is-visible');
+  syncGlobeLoading();
+}
+
+function hideGlobeLoading({ immediate = false } = {}) {
+  const el = globeLoadingEl();
+  if (!el || !el.classList.contains('is-visible')) return;
+  clearTimeout(globeLoadingHideTimer);
+  if (immediate) {
+    el.classList.remove('is-visible', 'is-leaving');
+    return;
+  }
+  el.classList.add('is-leaving');
+  globeLoadingHideTimer = setTimeout(() => el.classList.remove('is-visible', 'is-leaving'), 450);
+}
+
+function syncGlobeLoading() {
+  const el = globeLoadingEl();
+  if (!el || !el.classList.contains('is-visible') || el.classList.contains('is-leaving')) return;
+  const steps = new Set(getGlobeLoadSteps());
+  el.querySelectorAll('[data-step]').forEach((li) => li.classList.toggle('is-done', steps.has(li.dataset.step)));
+  const title = el.querySelector('.globe-loading-title');
+  if (steps.has('earth')) title.textContent = globeLoadingText('earth');
+  else if (steps.has('engine')) title.textContent = globeLoadingText('engine');
+  if (steps.has('earth') && steps.has('borders')) {
+    clearTimeout(globeLoadingHideTimer);
+    // give the cities step a moment to tick if it is about to land, then fade
+    globeLoadingHideTimer = setTimeout(() => hideGlobeLoading(), steps.has('places') ? 150 : 400);
+  }
+}
+
+window.addEventListener('et-globe-load', () => syncGlobeLoading());
+
+for (const btn of document.querySelectorAll('.mode-switch-btn[data-mode="globe"]')) {
+  const warm = () => {
+    if (!isGlobeView()) prefetchGlobe().catch(() => {});
+  };
+  btn.addEventListener('pointerenter', warm, { passive: true });
+  btn.addEventListener('focus', warm);
+  btn.addEventListener('touchstart', warm, { passive: true });
+}
+
+// ------------------------------------------------------------
+// Day 49b — timeline loader (Arthur: "you need a loader on the Timeline view too"). The splash in
+// index.html shows before any CSS / JS; it fades once the canvas has drawn a full frame with the
+// brand fonts ready (a ?view=globe load hands over to the globe loader instead). Switching to a
+// timeline view that still waits on fonts shows the same ring inside the canvas area.
+// ------------------------------------------------------------
+function fontsSettled() {
+  const f = document.fonts;
+  if (!f || !f.ready) return Promise.resolve();
+  return Promise.race([f.ready, new Promise((r) => setTimeout(r, 6000))]);
+}
+
+function fadeOutAndRemove(el) {
+  if (!el || el.classList.contains('is-leaving')) return;
+  el.classList.add('is-leaving');
+  setTimeout(() => el.remove(), 500);
+}
+
+function finishAppLoader() {
+  const el = document.getElementById('app-loader');
+  if (!el) return;
+  if (isGlobeView()) {
+    // the globe has its own loader (inside the globe area)
+    fadeOutAndRemove(el);
+    return;
+  }
+  fontsSettled().then(() => {
+    draw();
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        try {
+          performance.mark('et-timeline-ready');
+        } catch (_) {
+          // ignore
+        }
+        fadeOutAndRemove(el);
+      }),
+    );
+  });
+}
+
+function timelineNeedsWait() {
+  return Boolean(document.fonts && document.fonts.status !== 'loaded');
+}
+
+function showTimelineLoading() {
+  const host = document.getElementById('timeline-container');
+  if (!host || host.querySelector('.timeline-loading')) return;
+  const el = document.createElement('div');
+  el.className = 'globe-loading timeline-loading is-visible';
+  el.setAttribute('role', 'status');
+  el.innerHTML =
+    '<div class="globe-loading-mark" aria-hidden="true"><span class="globe-loading-ring"></span>' +
+    '<svg viewBox="0 0 32 32" width="40" height="40" fill="none" stroke="currentColor"><circle cx="16" cy="16" r="10.5" stroke-width="1.6"/>' +
+    '<path d="M1.5 16h29" stroke-width="1.7" stroke-linecap="round"/><circle cx="16" cy="16" r="2.4" fill="currentColor" stroke="none"/></svg></div>' +
+    '<p class="globe-loading-title">Loading the timeline…</p>';
+  host.appendChild(el);
+  fontsSettled().then(() => {
+    draw();
+    requestAnimationFrame(() => fadeOutAndRemove(el));
+  });
+}
+
+function afterTimelineSwitch() {
+  if (!isGlobeView() && timelineNeedsWait()) showTimelineLoading();
+}
+
+finishAppLoader();

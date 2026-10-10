@@ -367,7 +367,10 @@ const CITY_PRIO = [0, 750, 260, 110, 50];
 
 async function loadExtras() {
   if (extrasState !== 'idle') {
-    if (extrasState === 'ready') rebuildExtras();
+    if (extrasState === 'ready') {
+      rebuildExtras();
+      announcePlaces();
+    }
     return;
   }
   extrasState = 'loading';
@@ -379,6 +382,16 @@ async function loadExtras() {
     extrasState = 'error';
   }
   rebuildExtras();
+  announcePlaces();
+}
+
+/** Day 49: tells the globe loader (via globe-view) that cities + event pins are in. */
+function announcePlaces() {
+  try {
+    window.dispatchEvent(new Event('et-globe-places'));
+  } catch (_) {
+    // ignore
+  }
 }
 
 function rebuildExtras() {
