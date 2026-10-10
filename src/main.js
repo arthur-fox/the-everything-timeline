@@ -2138,6 +2138,7 @@ function switchView(view) {
   updateFiltersUI();
   draw();
   syncDeepLinkUrl();
+  afterTimelineSwitch();
 }
 
 // ── View select ──────────────────────────────────────────────
@@ -2548,6 +2549,7 @@ function selectCountry(countryId) {
   updateFiltersUI();
   draw();
   syncDeepLinkUrl();
+  afterTimelineSwitch();
 }
 
 function filterCountryList(query) {
@@ -4360,3 +4362,72 @@ for (const btn of document.querySelectorAll('.mode-switch-btn[data-mode="globe"]
   btn.addEventListener('focus', warm);
   btn.addEventListener('touchstart', warm, { passive: true });
 }
+
+// ------------------------------------------------------------
+// Day 49b — timeline loader (Arthur: "you need a loader on the Timeline view too"). The splash in
+// index.html shows before any CSS / JS; it fades once the canvas has drawn a full frame with the
+// brand fonts ready (a ?view=globe load hands over to the globe loader instead). Switching to a
+// timeline view that still waits on fonts shows the same ring inside the canvas area.
+// ------------------------------------------------------------
+function fontsSettled() {
+  const f = document.fonts;
+  if (!f || !f.ready) return Promise.resolve();
+  return Promise.race([f.ready, new Promise((r) => setTimeout(r, 6000))]);
+}
+
+function fadeOutAndRemove(el) {
+  if (!el || el.classList.contains('is-leaving')) return;
+  el.classList.add('is-leaving');
+  setTimeout(() => el.remove(), 500);
+}
+
+function finishAppLoader() {
+  const el = document.getElementById('app-loader');
+  if (!el) return;
+  if (isGlobeView()) {
+    // the globe has its own loader (inside the globe area)
+    fadeOutAndRemove(el);
+    return;
+  }
+  fontsSettled().then(() => {
+    draw();
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        try {
+          performance.mark('et-timeline-ready');
+        } catch (_) {
+          // ignore
+        }
+        fadeOutAndRemove(el);
+      }),
+    );
+  });
+}
+
+function timelineNeedsWait() {
+  return Boolean(document.fonts && document.fonts.status !== 'loaded');
+}
+
+function showTimelineLoading() {
+  const host = document.getElementById('timeline-container');
+  if (!host || host.querySelector('.timeline-loading')) return;
+  const el = document.createElement('div');
+  el.className = 'globe-loading timeline-loading is-visible';
+  el.setAttribute('role', 'status');
+  el.innerHTML =
+    '<div class="globe-loading-mark" aria-hidden="true"><span class="globe-loading-ring"></span>' +
+    '<svg viewBox="0 0 32 32" width="40" height="40" fill="none" stroke="currentColor"><circle cx="16" cy="16" r="10.5" stroke-width="1.6"/>' +
+    '<path d="M1.5 16h29" stroke-width="1.7" stroke-linecap="round"/><circle cx="16" cy="16" r="2.4" fill="currentColor" stroke="none"/></svg></div>' +
+    '<p class="globe-loading-title">Loading the timeline…</p>';
+  host.appendChild(el);
+  fontsSettled().then(() => {
+    draw();
+    requestAnimationFrame(() => fadeOutAndRemove(el));
+  });
+}
+
+function afterTimelineSwitch() {
+  if (!isGlobeView() && timelineNeedsWait()) showTimelineLoading();
+}
+
+finishAppLoader();
