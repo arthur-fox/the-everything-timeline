@@ -48,8 +48,8 @@
   <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="./favicon-32.png" type="image/png" sizes="32x32" />
   <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
-  <script type="module" crossorigin src="/pr-preview/pr-56/assets/index-eRF-XHB8.js"></script>
-  <link rel="stylesheet" crossorigin href="/pr-preview/pr-56/assets/index-BuWgpNnJ.css">
+  <script type="module" crossorigin src="/pr-preview/pr-56/assets/index-BKWlBRQP.js"></script>
+  <link rel="stylesheet" crossorigin href="/pr-preview/pr-56/assets/index-DjRYjucE.css">
 </head>
 <body>
   <div id="app-loader" class="app-loader" role="status" aria-live="polite">
@@ -87,7 +87,6 @@
         <p class="subtitle">From the Big Bang to the age of AI</p>
       </div>
       <p id="active-view-label" class="active-view-label" aria-live="polite">Timeline</p>
-      <button type="button" id="feedback-open" class="feedback-open" data-feedback-open aria-haspopup="dialog" title="Send feedback or ideas"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z"/><path d="M5.5 6.5h5M5.5 8.5h3"/></svg><span class="feedback-open-label">Feedback</span></button>
     </header>
 
     <div id="controls">
@@ -228,7 +227,6 @@
           <span class="globe-fullscreen-icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path class="fs-enter" d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/><path class="fs-exit" d="M6 2v4H2M14 6h-4V2M10 14v-4h4M2 10h4v4"/></svg></span>
           <span class="globe-fullscreen-label">Full screen</span>
         </button>
-        <button type="button" id="feedback-open-fs" class="feedback-open feedback-open-fs" data-feedback-open aria-haspopup="dialog" aria-label="Feedback" title="Send feedback or ideas"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z"/><path d="M5.5 6.5h5M5.5 8.5h3"/></svg><span class="feedback-open-label">Feedback</span></button>
         <div class="globe-legend" role="group" aria-label="Map key — tap a layer to hide or show it">
           <button type="button" class="globe-legend-item is-polity-key" data-layer="polities" aria-pressed="true" title="Hide polities"><span class="globe-legend-swatch is-polity" aria-hidden="true"></span>Polities <span class="globe-legend-sub">states &amp; empires</span></button>
           <button type="button" class="globe-legend-item is-nation-key" data-layer="polities" aria-pressed="true" title="Hide nations"><span class="globe-legend-swatch is-nation" aria-hidden="true"></span>Nations <span class="globe-legend-sub">colonies paler</span></button>
@@ -329,5 +327,7 @@
     </div>
   </div>
 
+    <!-- Day 50: one floating Feedback pill for every view (timeline, globe, full-screen globe) -->
+    <button type="button" id="feedback-open" class="feedback-open feedback-fab" data-feedback-open aria-haspopup="dialog" title="Send feedback or ideas"><span class="feedback-fab-icon" aria-hidden="true">💬</span><span class="feedback-open-label">Feedback</span></button>
 </body>
 </html>
