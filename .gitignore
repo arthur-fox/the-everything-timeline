@@ -4,3 +4,6 @@ dist
 .cache
 .scratch/
 src/generated/
+
+# Daily review screenshots live outside the repo
+day-*.png
