@@ -4491,26 +4491,42 @@ body.globe-fullscreen .globe-canvas-host > .globe-legend {
    Day 50 — Floating Feedback pill (Arthur: "bigger and easy to find")
    One gold pill, fixed bottom-right in every view; ≥44px tap target.
    ============================================================ */
-#feedback-open.feedback-fab {
+/* Day 52: the dock holds both pills (☕ Support secondary, 💬 Feedback primary); it is the fixed
+   element that feedback.js lifts over the scrubber / minimap / credit. */
+.fab-dock {
   position: fixed;
-  z-index: 155; /* above the full-screen globe (150), below phone sheets (1000) and the panel */
+  z-index: 155; /* above the full-screen globe (150), below phone sheets (1000) and the panels */
   right: max(16px, env(safe-area-inset-right, 0px));
   bottom: max(16px, env(safe-area-inset-bottom, 0px));
   translate: 0 calc(-1 * var(--fab-lift, 0px)); /* set by feedback.js to clear the scrubber */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none; /* only the pills catch taps */
+}
+
+.fab-dock > .fab-pill {
+  pointer-events: auto;
+}
+
+.fab-pill {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   min-height: 46px;
   padding: 0 20px 0 16px;
   border-radius: 999px;
+  font: 700 1rem/1 var(--font-ui);
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease, background-color 0.15s ease;
+}
+
+#feedback-open.feedback-fab {
   border: 1px solid color-mix(in srgb, var(--accent) 70%, #fff 30%);
   background: var(--brand-gradient);
   color: var(--on-accent);
-  font: 700 1rem/1 var(--font-ui);
-  letter-spacing: 0.01em;
   box-shadow: 0 6px 22px rgba(0, 0, 0, 0.38), 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
 #feedback-open.feedback-fab:hover,
@@ -4521,7 +4537,23 @@ body.globe-fullscreen .globe-canvas-host > .globe-legend {
   box-shadow: 0 8px 26px rgba(0, 0, 0, 0.42), 0 0 0 5px color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
-#feedback-open.feedback-fab:focus-visible {
+/* secondary: dark glass with a gold border + gold text, so Feedback stays the primary pill */
+#support-open.support-fab {
+  border: 1.5px solid var(--accent);
+  background: color-mix(in srgb, #0b1226 86%, transparent);
+  color: var(--accent);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.32);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+#support-open.support-fab:hover,
+#support-open.support-fab:focus-visible {
+  background: color-mix(in srgb, var(--accent) 16%, #0b1226 84%);
+  transform: translateY(-1px);
+}
+
+.fab-pill:focus-visible {
   outline: 2px solid var(--text);
   outline-offset: 3px;
 }
@@ -4530,27 +4562,34 @@ body.globe-fullscreen .globe-canvas-host > .globe-legend {
   display: inline;
 }
 
-.feedback-fab-icon {
+.feedback-fab-icon,
+.support-fab-icon {
   font-size: 1.15rem;
   line-height: 1;
 }
 
-body.has-feedback-panel #feedback-open.feedback-fab {
+body.has-feedback-panel .fab-dock,
+body.has-support-panel .fab-dock {
   visibility: hidden;
 }
 
 @media (max-width: 640px) {
-  #feedback-open.feedback-fab {
+  .fab-dock {
     right: max(12px, env(safe-area-inset-right, 0px));
     bottom: max(12px, env(safe-area-inset-bottom, 0px));
+    gap: 8px;
+  }
+  .fab-pill {
     min-height: 44px;
-    padding: 0 16px 0 13px;
+    padding: 0 15px 0 12px;
     font-size: 0.95rem;
+    gap: 7px;
   }
 }
 
 @media print {
-  #feedback-open.feedback-fab {
+  .fab-dock {
     display: none;
   }
 }
+
