@@ -20,8 +20,9 @@
   <meta name="twitter:title" content="The Everything Timeline" />
   <meta name="twitter:description" content="From the Big Bang to the age of AI — history on an interactive timeline and a living globe." />
   <meta name="twitter:image" content="https://theeverythingtimeline.com/og-image.png" />
-  <!-- Day 49b: Manrope is self-hosted (public/fonts, OFL) so no third-party, render-blocking CSS -->
-  <link rel="preload" href="/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Day 49b: Manrope is self-hosted (public/fonts, OFL; @font-face in src/style.css), so there's no
+       third-party, render-blocking font CSS. No <link rel=preload>: on slow phones it competed with the
+       render-blocking CSS and delayed first paint by ~180 ms. -->
   <script>
     // Day 49b: apply the saved theme before first paint (no dark flash for light-mode users).
     try { if (localStorage.getItem('timeline-theme') === 'light') document.documentElement.dataset.theme = 'light'; } catch (e) {}
