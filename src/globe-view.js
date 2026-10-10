@@ -72,7 +72,7 @@ const EARTH_HIGH = new URL('./data/earth-4096.webp', import.meta.url).href;
 const EARTH_HIGH_SMALL = new URL('./data/earth-2048.webp', import.meta.url).href;
 function earthHighUrl() {
   try {
-    const small = Math.min(window.screen?.width || 9999, window.innerWidth || 9999) <= 820;
+    const small = (window.innerWidth || 9999) <= 820;
     return small || isCoarsePointer() ? EARTH_HIGH_SMALL : EARTH_HIGH;
   } catch (_) {
     return EARTH_HIGH;
