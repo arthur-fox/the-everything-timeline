@@ -804,6 +804,7 @@ Next steps (not started):
 - Send now POSTs JSON straight to Formspark (`https://submit-form.com/8iSgNi2yA`, set in `src/feedback-config.js`); notifications go privately to Arthur's inbox. No GitHub account needed, nothing public; the GitHub-issue path is gone.
 - Email-friendly fields: `rating`, `wish`, `would_pay` (comma list), `email`, `page_url`, `view`, `year`, `map_position`, `selected`, `screen`, `app_version`, plus `_email.subject` ("Everything Timeline feedback (4/5)") and `_email.from` ("Everything Timeline").
 - Spam / double-tap guards: hidden `_honeypot` field (Formspark drops filled ones; the client also skips sending), one send per 30 s per browser, 15 s request timeout. "Copy text" only appears if sending fails, with a friendly retry message.
+- Bigger, easier-to-find button (Arthur): one gold "💬 Feedback" pill fixed bottom-right in every view (replaces the small header button and the full-screen twin), 46 px tall (44 px on phones); lifts above the minimap / zoom bar / scrubber / phone full-screen credit so it never covers them; globe labels avoid it.
 - Privacy note rewritten: goes privately to the team, by email via Formspark; lists exactly what is attached.
 - Formspark's submission quota is shared with another product: test against `https://submit-form.com/echo` (echoes, stores nothing) or a mock, not the real form.
 

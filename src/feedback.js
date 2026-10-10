@@ -381,6 +381,65 @@ export function isFeedbackOpen() {
 }
 
 /**
+ * Day 50: the floating pill sits bottom-right; when the timeline minimap, the year scrubber (or, in the phone
+ * full-screen globe, the credit) occupies that corner it lifts just above it instead.
+ */
+const FAB_GAP = 10;
+const FAB_LIFT_OVER = '#minimap-canvas, #thumb-bar, .globe-scrubber, body.globe-fullscreen .globe-credit';
+let fabRaf = 0;
+
+function placeFab() {
+  fabRaf = 0;
+  const fab = document.getElementById('feedback-open');
+  if (!fab) return;
+  fab.style.removeProperty('--fab-lift');
+  const base = fab.getBoundingClientRect();
+  const vh = window.innerHeight;
+  let top = base.top;
+  const obstacles = [...document.querySelectorAll(FAB_LIFT_OVER)];
+  for (let pass = 0, moved = true; moved && pass < 4; pass++) {
+    moved = false;
+    for (const o of obstacles) {
+      const cs = getComputedStyle(o);
+      if (cs.display === 'none' || cs.visibility === 'hidden') continue;
+      const r = o.getBoundingClientRect();
+      if (!r.width || !r.height) continue;
+      const overlapsX = r.left < base.right + FAB_GAP && r.right > base.left - FAB_GAP;
+      const overlapsY = r.top < base.bottom + FAB_GAP && r.bottom > top - FAB_GAP;
+      if (overlapsX && overlapsY && r.top > vh * 0.45 && r.top - FAB_GAP - base.height < top) {
+        top = r.top - FAB_GAP - base.height;
+        moved = true;
+      }
+    }
+  }
+  const lift = Math.max(0, Math.round(base.top - top));
+  if (lift) fab.style.setProperty('--fab-lift', `${lift}px`);
+}
+
+function schedulePlaceFab() {
+  if (!fabRaf) fabRaf = requestAnimationFrame(placeFab);
+}
+
+function initFabPlacement() {
+  const fab = document.getElementById('feedback-open');
+  if (!fab) return;
+  for (const ev of ['resize', 'orientationchange', 'popstate']) window.addEventListener(ev, schedulePlaceFab);
+  window.addEventListener('scroll', schedulePlaceFab, {
+    passive: true,
+    capture: true,
+  });
+  // view switches, full screen on/off, the scrubber mounting: all show up as body/class changes
+  new MutationObserver(schedulePlaceFab).observe(document.body, {
+    attributes: true,
+    attributeFilter: ['class'],
+    childList: true,
+    subtree: true,
+  });
+  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(schedulePlaceFab).observe(document.body);
+  schedulePlaceFab();
+}
+
+/**
  * @param {{ getContext?: () => object }} opts  getContext → { view, year, at, entity, item, fullscreen }
  */
 export function initFeedback(opts = {}) {
@@ -418,5 +477,6 @@ export function initFeedback(opts = {}) {
     }
   });
   syncButtons();
+  initFabPlacement();
   if (new URLSearchParams(window.location.search).get('feedback') === '1') openFeedback();
 }
