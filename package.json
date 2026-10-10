@@ -7,7 +7,7 @@
     "dev": "node scripts/build-data.mjs && vite",
     "build": "node scripts/build-data.mjs && npm run validate && vite build",
     "preview": "vite preview",
-    "validate": "node scripts/validate-data.js && node scripts/check-overlay-lifespan.js && node scripts/check-nations.js && node scripts/check-labels.js && node scripts/check-confidence.js && node scripts/check-cities.js",
+    "validate": "node scripts/validate-data.js && node scripts/check-overlay-lifespan.js && node scripts/check-nations.js && node scripts/check-labels.js && node scripts/check-confidence.js && node scripts/check-cities.js && node scripts/check-support.js",
     "validate:strict": "node scripts/validate-data.js --strict",
     "validate:schema": "node scripts/validate-data.js",
     "build:nations": "node scripts/build-nations.mjs && node scripts/build-nations.mjs --fine",
@@ -29,6 +29,7 @@
   "devDependencies": {
     "ajv": "^8.20.0",
     "d3-geo": "^3.1.1",
+    "qrcode-generator": "^2.0.4",
     "topojson-server": "^3.0.1",
     "topojson-simplify": "^3.0.3",
     "vite": "^7.3.1"

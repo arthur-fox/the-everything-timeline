@@ -390,7 +390,7 @@ let fabRaf = 0;
 
 function placeFab() {
   fabRaf = 0;
-  const fab = document.getElementById('feedback-open');
+  const fab = document.getElementById('fab-dock') || document.getElementById('feedback-open'); // Day 52: both pills move together
   if (!fab) return;
   fab.style.removeProperty('--fab-lift');
   const base = fab.getBoundingClientRect();
@@ -421,7 +421,7 @@ function schedulePlaceFab() {
 }
 
 function initFabPlacement() {
-  const fab = document.getElementById('feedback-open');
+  const fab = document.getElementById('fab-dock') || document.getElementById('feedback-open'); // Day 52: both pills move together
   if (!fab) return;
   for (const ev of ['resize', 'orientationchange', 'popstate']) window.addEventListener(ev, schedulePlaceFab);
   window.addEventListener('scroll', schedulePlaceFab, {
