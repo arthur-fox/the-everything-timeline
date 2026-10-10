@@ -1,5 +1,6 @@
 import { execSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 
 // Day 46: the site lives at the root of https://theeverythingtimeline.com/ (public/CNAME).
@@ -68,6 +69,14 @@ const pkg = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 
 export default defineConfig({
   base: BASE,
   plugins: [previewBase()],
+  resolve: {
+    // Day 49: drop the unused WebGPU build of three (~1 MB raw, ~250 KB gzipped) from the
+    // globe chunk; see src/vendor/three-webgpu-stub.js.
+    alias: [
+      { find: /^three\/webgpu$/, replacement: fileURLToPath(new URL('./src/vendor/three-webgpu-stub.js', import.meta.url)) },
+      { find: /^three\/tsl$/, replacement: fileURLToPath(new URL('./src/vendor/three-tsl-stub.js', import.meta.url)) },
+    ],
+  },
   define: {
     // Day 45: attached to feedback so reports say which build they came from.
     __APP_VERSION__: JSON.stringify(pkg.version),

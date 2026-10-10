@@ -63,8 +63,93 @@ export function setGlobeLabelsEnabled(on) {
 }
 export { areGlobeLabelsEnabled };
 
-const EARTH_DAY =
-  'https://unpkg.com/three-globe@2.45.0/example/img/earth-blue-marble.jpg';
+// Day 49: NASA Blue Marble (public domain), self-hosted as WebP. A 43 KB 1024px texture paints
+// first; the 4096px one (~580 KB, was a 1.4 MB JPEG from unpkg) swaps in once the globe is idle.
+const EARTH_LOW = new URL('./data/earth-1024.webp', import.meta.url).href;
+const EARTH_HIGH = new URL('./data/earth-4096.webp', import.meta.url).href;
+
+// ------------------------------------------------------------
+// Day 49 — load faster + a loading state. `prefetchGlobe()` starts the globe code and the first
+// texture together (on Globe hover / focus / touch, or on entry); `et-globe-load` events
+// (engine → earth → borders → places) drive the loader in main.js.
+// ------------------------------------------------------------
+let prefetchPromise = null;
+let lowTexturePrefetch = null;
+export function prefetchGlobe() {
+  if (!prefetchPromise) {
+    prefetchPromise = Promise.all([import('globe.gl'), import('three')]);
+    prefetchPromise.catch(() => {
+      prefetchPromise = null;
+    });
+  }
+  if (!lowTexturePrefetch && typeof Image !== 'undefined') {
+    lowTexturePrefetch = new Image();
+    lowTexturePrefetch.crossOrigin = 'anonymous';
+    lowTexturePrefetch.src = EARTH_LOW;
+  }
+  return prefetchPromise;
+}
+
+const loadSteps = new Set();
+function emitLoadStep(step) {
+  if (loadSteps.has(step)) return;
+  loadSteps.add(step);
+  try {
+    window.dispatchEvent(new CustomEvent('et-globe-load', { detail: { step, steps: [...loadSteps] } }));
+  } catch (_) {
+    // ignore
+  }
+}
+/** Empty the host but keep the loading overlay (it lives in the host so it covers the globe). */
+function clearHostKeepLoader(el) {
+  for (const child of [...el.childNodes]) {
+    if (child.nodeType === 1 && child.classList.contains('globe-loading')) continue;
+    child.remove();
+  }
+}
+export function getGlobeLoadSteps() {
+  return [...loadSteps];
+}
+if (typeof window !== 'undefined') {
+  window.addEventListener('et-globe-places', () => emitLoadStep('places'));
+}
+
+let upgradeScheduled = false;
+function scheduleTextureUpgrade() {
+  if (upgradeScheduled) return;
+  upgradeScheduled = true;
+  const g = globe;
+  const run = () => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      if (globe !== g || !globe) return;
+      try {
+        globe.globeImageUrl(EARTH_HIGH);
+      } catch (_) {
+        // keep the low-res earth
+      }
+    };
+    img.src = EARTH_HIGH;
+  };
+  const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1200));
+  setTimeout(() => idle(run, { timeout: 2500 }), 600);
+}
+
+// Nations (1815+) are only fetched up front when the year needs them; otherwise on idle.
+function ensureNationsForYear(year, { soon = false } = {}) {
+  if (isNationsLoaded()) return;
+  const need = Number(year) >= NATIONS_HANDOFF_YEAR - 5;
+  if (!need && !soon) return;
+  const go = () =>
+    loadNationsTopology()
+      .then(() => {
+        if (mounted && Number.isFinite(currentPolygonYear)) setGlobeOverlayYear(currentPolygonYear);
+      })
+      .catch(() => {});
+  if (need) go();
+  else setTimeout(go, 2500);
+}
 // No bump map while overlays are shown — bump shading exaggerates z-fighting vs polygon meshes.
 
 /**
@@ -1242,6 +1327,7 @@ export function setGlobeOverlayYear(year) {
   if (!Number.isFinite(y)) return;
   currentPolygonYear = y;
   syncNationsEraUI(y);
+  ensureNationsForYear(y);
   const features = polygonsForYear(y);
   try {
     globe.polygonsData(features);
@@ -1278,14 +1364,24 @@ export async function mountGlobe(container, opts = {}) {
   }
 
   detachLegend();
-  hostEl.innerHTML = '';
+  clearHostKeepLoader(hostEl);
 
-  const [{ default: Globe }, THREE] = await Promise.all([import('globe.gl'), import('three')]);
+  loadSteps.clear();
+  upgradeScheduled = false;
+  const [{ default: Globe }, THREE] = await prefetchGlobe();
+  emitLoadStep('engine');
   THREE_NS = THREE;
   const mobile = isCoarsePointer();
 
+  // Globe.gl empties its container on init: keep the loading overlay and put it back on top.
+  const loaderEl = hostEl.querySelector('.globe-loading');
   globe = Globe()(hostEl)
-    .globeImageUrl(EARTH_DAY)
+    .onGlobeReady(() => {
+      emitLoadStep('earth');
+      ensureNationsForYear(currentPolygonYear, { soon: true });
+      scheduleTextureUpgrade();
+    })
+    .globeImageUrl(EARTH_LOW)
     .backgroundColor('rgba(0,0,0,0)')
     .showAtmosphere(true)
     .atmosphereColor('#7dd3fc')
@@ -1294,6 +1390,7 @@ export async function mountGlobe(container, opts = {}) {
     .enablePointerInteraction(true)
     .polygonsData([]);
 
+  if (loaderEl) hostEl.appendChild(loaderEl);
   applyPolygonLayer();
   initGlobeLabels({ host: hostEl, globe, THREE, mobile, getSelected: () => selectedEntityId });
   attachLegend();
@@ -1375,12 +1472,11 @@ export async function mountGlobe(container, opts = {}) {
   mounted = true;
   if (Number.isFinite(year)) setGlobeOverlayYear(year);
   exposeGlobeDebugHandle();
-  // Day 38: fetch the nations TopoJSON (~130 KB gzipped) once; redraw when it lands.
-  loadNationsTopology()
-    .then(() => {
-      if (mounted && Number.isFinite(currentPolygonYear)) setGlobeOverlayYear(currentPolygonYear);
-    })
-    .catch(() => {});
+  // Day 38/49: the nations TopoJSON (~155 KB gzipped) loads with the year that needs it (1815+),
+  // otherwise shortly after the earth is up (see ensureNationsForYear).
+  ensureNationsForYear(currentPolygonYear);
+  // Borders are on screen once the first frame with the polygons has rendered.
+  requestAnimationFrame(() => requestAnimationFrame(() => emitLoadStep('borders')));
   return globe;
 }
 
@@ -1466,6 +1562,7 @@ export function resumeGlobe() {
 }
 
 export function destroyGlobe() {
+  loadSteps.clear();
   window.removeEventListener('orientationchange', scheduleSizeToHost);
   if (resizeObserver) {
     try {
@@ -1523,7 +1620,7 @@ export function destroyGlobe() {
   detachLegend();
   if (hostEl) {
     hostEl.style.cursor = '';
-    hostEl.innerHTML = '';
+    clearHostKeepLoader(hostEl);
   }
   hostEl = null;
   mounted = false;

@@ -933,3 +933,21 @@ A sensible near-term sequence:
 38. **Current: Aesthetics refresh + Timeline/Globe switch (Arthur, 9 Oct) — Day 47, IN REVIEW (#53).** Hold Phase 4c item 5 (trade routes) until Arthur has reviewed it.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
+
+## Globe load speed + loading state (Arthur, 9 Oct 2026: "the globe takes a long time to load") — Day 49, IN REVIEW (PR #55)
+
+Independent of #54 (based on main). Does not change the hold on Phase 4c item 5 (trade routes).
+
+- **Done in this PR:**
+  - Stubbed the unused WebGPU build of three, which three-globe imports. The globe.gl chunk drops from 1.35 MB to 0.65 MB raw.
+  - Self-hosted the NASA Blue Marble earth as WebP. A 43 KB 1024px texture paints first, and the 4096px one (~580 KB, was a 1.4 MB JPEG from unpkg) swaps in once the globe is idle.
+  - The globe code and first texture start together on entry and are prefetched on Globe hover, focus or touch.
+  - The nations TopoJSON (~155 KB gzipped) loads only when the year needs it (1815+); otherwise it loads shortly after the earth is up.
+  - Branded loading state: gold ring + mark, "Loading the globe…", and Earth → Borders → Cities steps. It fades once the earth and borders are on screen.
+- **Further ideas (not done):**
+  - Split the 900 KB main bundle (all topic and country timelines are eager imports) so the landing page and globe load less JS.
+  - Precompute polygon triangulation at build time, or in a worker, for the hand-drawn layers.
+  - Delay shader warm-up and label placement to idle frames on phones.
+  - Self-host Manrope (one less origin).
+  - Serve a 2048px texture to small screens.
+  - Lazy-load cities and pins only when zoomed in enough to show them.

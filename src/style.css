@@ -4235,3 +4235,125 @@ body::before {
     gap: 0;
   }
 }
+
+/* ============================================================
+   Day 49 — globe loading state (gold ring + brand mark, Earth → Borders → Cities)
+   ============================================================ */
+.globe-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3, 12px);
+  padding: 24px;
+  text-align: center;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 46%, color-mix(in srgb, var(--accent) 10%, transparent) 0, transparent 38%),
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--bg-surface) 70%, transparent) 0, color-mix(in srgb, var(--bg) 40%, transparent) 70%);
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.globe-loading.is-visible {
+  display: flex;
+}
+
+.globe-loading.is-leaving {
+  opacity: 0;
+}
+
+.globe-loading-mark {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+}
+
+.globe-loading-mark svg {
+  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--accent) 45%, transparent));
+  animation: etLoadPulse 1.8s ease-in-out infinite;
+}
+
+.globe-loading-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 55%, color-mix(in srgb, var(--brand-1) 25%, transparent) 70%, var(--brand-2) 100%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
+  animation: etLoadSpin 1.1s linear infinite;
+}
+
+.globe-loading-title {
+  margin: 0;
+  font: 700 var(--fs-md, 1rem) / 1.3 var(--font-display);
+  letter-spacing: 0.01em;
+  color: var(--accent);
+  text-shadow: 0 1px 12px var(--bg);
+}
+
+.globe-loading-steps {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.globe-loading-steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill, 999px);
+  border: 1px solid var(--hairline);
+  background: color-mix(in srgb, var(--bg-surface) 80%, transparent);
+  color: var(--text-muted);
+  font: 600 var(--fs-xs) / 1.2 var(--font-ui);
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.globe-loading-steps li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.45;
+}
+
+.globe-loading-steps li.is-done {
+  color: var(--accent);
+  border-color: var(--hairline-accent);
+}
+
+.globe-loading-steps li.is-done::before {
+  opacity: 1;
+  box-shadow: 0 0 6px var(--accent);
+}
+
+@keyframes etLoadSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes etLoadPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.94); opacity: 0.8; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe-loading-ring,
+  .globe-loading-mark svg {
+    animation-duration: 3s;
+  }
+}
+
+/* labels / pins stream in under the loader: keep them out of sight until it fades */
+.globe-canvas-host:has(> .globe-loading.is-visible:not(.is-leaving)) > .globe-labels {
+  visibility: hidden;
+}
