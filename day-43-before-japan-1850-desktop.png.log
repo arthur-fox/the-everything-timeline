@@ -1,0 +1,2 @@
+console: Failed to load resource: the server responded with a status of 404 ()
+{"yearLabel":"1850 CE","pov":{"lat":36,"lng":137.99999999999997,"altitude":0.6000000000000001},"tris":77836,"calls":753,"geoms":500,"textures":33,"labels":{"n":16,"overlaps":0,"tickMs":16.5,"maxTickMs":16.5,"frameMs":0,"places":"ready","cityTexts":"","pinTexts":""},"detail":{"tiles":"on","tilesShown":true},"fineFeatures":0,"heap":106,"tileRequests":33,"tileErr":0,"fineBytes":649762,"msPerFrameSwiftshader":244}

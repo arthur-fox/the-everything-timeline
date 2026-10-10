@@ -1,0 +1,2 @@
+console: Failed to load resource: the server responded with a status of 404 (Not Found)
+{"yearLabel":"1871 CE","pov":{"lat":48,"lng":12,"altitude":0.30000000000000004},"tris":86996,"calls":243,"geoms":192,"textures":9,"labels":{"n":4,"overlaps":0,"tickMs":8.1,"maxTickMs":11.3,"frameMs":0,"places":"ready","texts":"GERMAN EMPIRE · AUSTRIA-HUNGARY · ITALY · SWITZERLAND"},"detail":{"tiles":"on","tilesShown":true},"fineFeatures":26,"heap":105,"tileRequests":9,"tileErr":0,"fineBytes":-1,"msPerFrameSwiftshader":247}

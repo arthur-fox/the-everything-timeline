@@ -1,21 +1,22 @@
 /**
- * Day 45: where feedback goes — the one place to change it.
+ * Day 45/50: where feedback goes — the one place to change it.
  *
- * FORM_ENDPOINT: a form service URL that accepts a POST (Formspree, Getform, Basin, a Google
- * Apps Script web app, your own API …). Leave it '' and the Feedback panel falls back to
- * opening a prefilled *public* GitHub issue on GITHUB_REPO (the email field is left out of it)
- * plus a "Copy" button. See README → "Feedback" for the options.
+ * FORM_ENDPOINT: Formspark form (Arthur's account; notifications go to his inbox). The panel
+ * POSTs JSON with Content-Type + Accept: application/json; field names are chosen to read well
+ * in the notification email, and `_email.subject` / `_email.from` set its subject and sender
+ * name (see https://documentation.formspark.io/customization/notification-email.html).
+ * `_honeypot` is Formspark's built-in honeypot: a submission with it filled is silently dropped.
  *
- * FORM_FORMAT: 'json' (Formspree, Getform, Basin, most APIs: JSON body, Accept: application/json)
- *              or 'form' (application/x-www-form-urlencoded, e.g. Google Apps Script).
+ * The workspace's submission quota is shared with another product: don't load-test this URL.
+ * For format checks use https://submit-form.com/echo, which echoes the payload and stores nothing.
  *
  * Never put a personal email address in here: the site is public and so is this file.
  */
 export const FEEDBACK_CONFIG = {
-  FORM_ENDPOINT: '',
-  FORM_FORMAT: 'json',
-  GITHUB_REPO: 'arthur-fox/the-everything-timeline',
-  ISSUE_LABEL: 'feedback',
+  FORM_ENDPOINT: 'https://submit-form.com/8iSgNi2yA',
+  EMAIL_FROM: 'Everything Timeline', // letters, digits, spaces, dashes, underscores only (Formspark rule)
+  MIN_SECONDS_BETWEEN_SENDS: 30,
+  TIMEOUT_MS: 15000,
 };
 
 /** Candidate paid features we're testing interest in ("Would you pay for…?"). */

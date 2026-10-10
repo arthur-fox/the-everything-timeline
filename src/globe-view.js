@@ -1499,7 +1499,7 @@ let hostOverlayHomes = [];
 
 function attachLegend() {
   if (!hostEl) return;
-  const els = document.querySelectorAll('.globe-legend, .globe-fullscreen-toggle, .globe-credit, .feedback-open-fs, .fs-mode-switch');
+  const els = document.querySelectorAll('.globe-legend, .globe-fullscreen-toggle, .globe-credit, .fs-mode-switch');
   for (const el of els) {
     if (el.parentElement === hostEl) continue;
     hostOverlayHomes.push({ el, parent: el.parentElement, next: el.nextSibling });

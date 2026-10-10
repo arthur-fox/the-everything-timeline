@@ -800,8 +800,15 @@ Next steps (not started):
 - Domain-agnostic; README documents what a custom domain needs (CNAME + Vite base + preview base).
 - Fix: in the normal (card) globe the credit moves to top-left — after #49 + #50 the key wraps to two rows and the bottom-right credit overlapped it (visible on live main).
 
+#### Day 50 — Real feedback endpoint (step 2) — done (Formspark, Arthur, 10 Oct)
+- Send now POSTs JSON straight to Formspark (`https://submit-form.com/8iSgNi2yA`, set in `src/feedback-config.js`); notifications go privately to Arthur's inbox. No GitHub account needed, nothing public; the GitHub-issue path is gone.
+- Email-friendly fields: `rating`, `wish`, `would_pay` (comma list), `email`, `page_url`, `view`, `year`, `map_position`, `selected`, `screen`, `app_version`, plus `_email.subject` ("Everything Timeline feedback (4/5)") and `_email.from` ("Everything Timeline").
+- Spam / double-tap guards: hidden `_honeypot` field (Formspark drops filled ones; the client also skips sending), one send per 30 s per browser, 15 s request timeout. "Copy text" only appears if sending fails, with a friendly retry message.
+- Bigger, easier-to-find button (Arthur): one gold "💬 Feedback" pill fixed bottom-right in every view (replaces the small header button and the full-screen twin), 46 px tall (44 px on phones); lifts above the minimap / zoom bar / scrubber / phone full-screen credit so it never covers them; globe labels avoid it.
+- Privacy note rewritten: goes privately to the team, by email via Formspark; lists exactly what is attached.
+- Formspark's submission quota is shared with another product: test against `https://submit-form.com/echo` (echoes, stores nothing) or a mock, not the real form.
+
 Next steps (not started):
-2. Pick and configure a real endpoint (README → Feedback; Formspree / Tally / Google Forms-style), so people without GitHub can send feedback and emails stay private.
 3. After ~2–4 weeks, tally the "Would you pay for…?" answers and wishes into a short ranking; prototype the top idea behind a flag (e.g. saved custom timelines, or poster export) before any payment plumbing.
 4. Only then: pricing test (e.g. a "notify me / pre-order" button on the top idea) and a privacy note page.
 
@@ -930,7 +937,7 @@ A sensible near-term sequence:
 33. Phase 4b (Arthur, 8 Oct: deep zoom + real borders) — Day 38 modern nations 1914–2025 ✅ (merged) → Day 39 zoom closer without floating shapes ✅ (merged) → Day 40 review A: layer toggles + zoomable scrubber ✅ (merged) → Day 40 review B: NASA GIBS tiles + Day 42 finer borders ✅ (merged) → dated cities (built with Phase 4c item 3, Day 43) ✅ (merged, #49) → Day 43 finer splits.
 34. Phase 4c (Arthur, 8 Oct) — real nations 1815–1914 (Day 41) ✅ (merged, #47) → labels by zoom (Day 42) ✅ (merged, #48) → dated cities + pinned events (Day 43) ✅ (merged, #49) → showing uncertainty (Day 44) ✅ (merged, #50) → trade routes and migrations → coverage between empires → space background (stars, Milky Way, constellations).
 35. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
-36. Feedback & paid features discovery (Arthur, 9 Oct) — Day 45 feedback button ✅ (merged, #51) → configure a real form endpoint → tally "would you pay for…?" answers.
+36. Feedback & paid features discovery (Arthur, 9 Oct) — Day 45 feedback button ✅ (merged, #51) → Day 50 Formspark endpoint ✅ → tally "would you pay for…?" answers.
 37. Custom domain theeverythingtimeline.com (Day 46) ✅ (merged, #52) → per-year share pages + og images.
 38. Aesthetics refresh + Timeline/Globe switch (Arthur, 9 Oct) — Day 47 ✅ (merged, #53).
 39. Globe opens full screen by default (Arthur, 9 Oct) — Day 48 ✅ (merged, #54).

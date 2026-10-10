@@ -1,16 +1,15 @@
 /**
  * Day 45: in-app Feedback panel (rating, wishes, "would you pay for…?", optional email).
  *
- * No backend: answers go to FEEDBACK_CONFIG.FORM_ENDPOINT when one is configured
- * (src/feedback-config.js), otherwise to a prefilled public GitHub issue (without the email)
- * or the clipboard. Context (the link to this exact view, year, map position, selection,
+ * Day 50: answers are POSTed privately to FEEDBACK_CONFIG.FORM_ENDPOINT (Formspark, see
+ * src/feedback-config.js); nothing is posted publicly. "Copy text" only appears if sending
+ * fails. A hidden honeypot field and a 30 s gap between sends keep bots and double-taps out. Context (the link to this exact view, year, map position, selection,
  * screen size, app version) is attached so reports can be reproduced. Nothing is sent until
- * the person presses Send; nothing is stored except a local "feedback sent" note.
+ * the person presses Send; nothing is stored except a local "feedback sent" note + time.
  */
 import { FEEDBACK_CONFIG, PREMIUM_IDEAS, FEEDBACK_RATINGS } from './feedback-config.js';
 
 const STORE_KEY = 'everything-timeline:feedback';
-const MAX_ISSUE_URL = 7000; // GitHub's "new issue" URL limit is ~8 KB
 const APP_VERSION = typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : 'dev';
 const APP_COMMIT = typeof __APP_COMMIT__ !== 'undefined' ? __APP_COMMIT__ : 'dev';
 const APP_BUILT = typeof __APP_BUILT__ !== 'undefined' ? __APP_BUILT__ : '';
@@ -34,10 +33,6 @@ function writeStore(patch) {
   } catch {
     // private mode: fine, we just forget
   }
-}
-
-export function feedbackMode() {
-  return FEEDBACK_CONFIG.FORM_ENDPOINT ? 'endpoint' : 'github';
 }
 
 /** Everything attached to a report besides the person's own answers. */
@@ -69,6 +64,7 @@ function readAnswers() {
     pay: [...f.querySelectorAll('input[name="pay"]:checked')].map((i) => i.value),
     payOther: f.elements.payOther.value.trim(),
     email: f.elements.email.value.trim(),
+    honeypot: f.elements._honeypot ? f.elements._honeypot.value : '',
   };
 }
 
@@ -77,7 +73,7 @@ function ratingText(r) {
   return x ? `${x.emoji} ${r}/5 (${x.label})` : 'not given';
 }
 
-/** Plain-text report (issue body / clipboard). */
+/** Plain-text report (the "Copy text" fallback when sending fails). */
 export function formatFeedbackReport(answers, context, { includeEmail = true } = {}) {
   const pay = answers.pay.map((id) => PREMIUM_IDEAS.find((p) => p.id === id)?.label || id);
   if (answers.payOther) pay.push(`Other: ${answers.payOther}`);
@@ -94,8 +90,7 @@ export function formatFeedbackReport(answers, context, { includeEmail = true } =
   lines.push(
     '',
     '---',
-    '<details><summary>Context (attached automatically)</summary>',
-    '',
+    'Context (attached automatically):',
     `- Link: ${context.link}`,
     `- View: ${context.view}${context.fullscreen ? ' (full screen)' : ''}`,
     `- Year: ${context.year ?? '—'}`,
@@ -103,53 +98,61 @@ export function formatFeedbackReport(answers, context, { includeEmail = true } =
     `- Selected: ${context.entity || context.item || '—'}`,
     `- Screen: ${context.screen}`,
     `- App version: ${context.version}`,
-    '',
-    '</details>',
   );
   return lines.join('\n');
 }
 
-function issueTitle(answers) {
-  const wish = answers.wish.replace(/\s+/g, ' ').slice(0, 60);
-  return `Feedback: ${answers.rating ? `${answers.rating}/5` : 'no rating'}${wish ? ` — ${wish}${answers.wish.length > 60 ? '…' : ''}` : ''}`;
+function wouldPayList(answers) {
+  const pay = answers.pay.map((id) => PREMIUM_IDEAS.find((p) => p.id === id)?.label || id);
+  if (answers.payOther) pay.push(`Other: ${answers.payOther}`);
+  return pay.join(', ');
 }
 
-/** Prefilled "new issue" link (public; no email). */
-export function githubIssueUrl(answers, context) {
-  const base = `https://github.com/${FEEDBACK_CONFIG.GITHUB_REPO}/issues/new`;
-  const make = (body) => {
-    const q = new URLSearchParams({ title: issueTitle(answers), body });
-    if (FEEDBACK_CONFIG.ISSUE_LABEL) q.set('labels', FEEDBACK_CONFIG.ISSUE_LABEL);
-    return `${base}?${q}`;
+/** Notification email subject, e.g. "Everything Timeline feedback (4/5)". */
+export function feedbackSubject(answers) {
+  return `Everything Timeline feedback (${answers.rating ? `${answers.rating}/5` : 'no rating'})`;
+}
+
+/** The JSON body Formspark receives; keys are what Arthur reads in the notification email. */
+export function feedbackPayload(answers, context) {
+  return {
+    rating: answers.rating ? ratingText(answers.rating) : 'not given',
+    wish: answers.wish || '(left blank)',
+    would_pay: wouldPayList(answers) || '(nothing ticked)',
+    email: answers.email || '(not given)',
+    page_url: context.link,
+    view: `${context.view}${context.fullscreen ? ' (full screen)' : ''}`,
+    year: context.year == null ? '' : String(context.year),
+    map_position: context.at || '',
+    selected: context.entity || context.item || '',
+    screen: context.screen,
+    app_version: context.version,
+    _honeypot: answers.honeypot || '',
+    _email: { from: FEEDBACK_CONFIG.EMAIL_FROM, subject: feedbackSubject(answers) },
   };
-  let a = { ...answers };
-  let url = make(formatFeedbackReport(a, context, { includeEmail: false }));
-  // Very long wishes: trim so the link still opens (the full text is on the clipboard via Copy).
-  while (url.length > MAX_ISSUE_URL && a.wish.length > 200) {
-    a = { ...a, wish: `${a.wish.slice(0, Math.floor(a.wish.length * 0.7))} … (trimmed; full text copied)` };
-    url = make(formatFeedbackReport(a, context, { includeEmail: false }));
-  }
-  return url;
 }
 
 async function postToEndpoint(answers, context) {
-  const payload = {
-    rating: answers.rating,
-    wish: answers.wish,
-    pay: answers.pay.join(', '),
-    payOther: answers.payOther,
-    email: answers.email,
-    ...Object.fromEntries(Object.entries(context).map(([k, v]) => [`context_${k}`, v == null ? '' : String(v)])),
-    _subject: issueTitle(answers),
-  };
-  const json = FEEDBACK_CONFIG.FORM_FORMAT !== 'form';
-  const res = await fetch(FEEDBACK_CONFIG.FORM_ENDPOINT, {
-    method: 'POST',
-    headers: json ? { 'Content-Type': 'application/json', Accept: 'application/json' } : { Accept: 'application/json' },
-    body: json ? JSON.stringify(payload) : new URLSearchParams(payload),
-    mode: json ? 'cors' : 'no-cors',
-  });
-  if (json && !res.ok) throw new Error(`HTTP ${res.status}`);
+  const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  const timer = ctrl ? setTimeout(() => ctrl.abort(), FEEDBACK_CONFIG.TIMEOUT_MS || 15000) : null;
+  try {
+    const res = await fetch(FEEDBACK_CONFIG.FORM_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(feedbackPayload(answers, context)),
+      signal: ctrl?.signal,
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
+function secondsUntilNextSend() {
+  const last = Date.parse(readStore().lastSendAt || '');
+  if (!Number.isFinite(last)) return 0;
+  const wait = (FEEDBACK_CONFIG.MIN_SECONDS_BETWEEN_SENDS || 30) * 1000 - (Date.now() - last);
+  return wait > 0 ? Math.ceil(wait / 1000) : 0;
 }
 
 async function copyText(text) {
@@ -188,7 +191,6 @@ function el(tag, attrs = {}, ...kids) {
 }
 
 function buildPanel() {
-  const mode = feedbackMode();
   const ratings = el('div', { class: 'feedback-rating', role: 'radiogroup', 'aria-label': 'How do you like it so far?' });
   for (const r of FEEDBACK_RATINGS) {
     ratings.append(
@@ -201,9 +203,8 @@ function buildPanel() {
   }
   pays.append(el('input', { type: 'text', name: 'payOther', class: 'feedback-input', placeholder: 'Something else? (optional)', maxlength: '200', 'aria-label': 'Something else you would pay for' }));
   const privacy =
-    mode === 'endpoint'
-      ? 'Sent: your answers, the link to what you are looking at (view, year, map position, selection), your screen size and the app version. No cookies, no tracking.'
-      : 'This opens a public GitHub issue (you need a GitHub account) with your answers, the link to what you are looking at (view, year, map position, selection), your screen size and the app version. Your email is left out of the issue. No cookies, no tracking.';
+    'Sent privately to the Everything Timeline team (by email, via the Formspark form service) — nothing is posted publicly. ' +
+    'It includes your answers, your email if you give one, the link to what you are looking at (view, year, map position, selection), your screen size and the app version. No cookies, no tracking.';
   const form = el(
     'form',
     { class: 'feedback-form', novalidate: true },
@@ -214,14 +215,15 @@ function buildPanel() {
     el('fieldset', { class: 'feedback-pay' }, el('legend', { class: 'feedback-q' }, 'Would you pay for…? ', el('span', { class: 'feedback-opt', text: '(optional, tick any)' })), pays),
     el('label', { class: 'feedback-q', for: 'feedback-email' }, 'Email for a follow-up ', el('span', { class: 'feedback-opt', text: '(optional)' })),
     el('input', { id: 'feedback-email', name: 'email', type: 'email', class: 'feedback-input', autocomplete: 'email', placeholder: 'you@example.com', maxlength: '200' }),
-    el('p', { class: 'feedback-email-note', hidden: mode !== 'github', text: 'Not added to the GitHub issue — only kept if you Copy the text.' }),
-    el('details', { class: 'feedback-privacy' }, el('summary', { text: 'Sends your answers + a link to this view, screen size & app version · details' }), el('p', { text: privacy }), el('pre', { class: 'feedback-context' })),
+    // Honeypot: hidden from people (and screen readers); bots that fill every field get dropped.
+    el('div', { class: 'feedback-hp', 'aria-hidden': 'true' }, el('label', { text: 'Leave this empty' }, el('input', { type: 'text', name: '_honeypot', tabindex: '-1', autocomplete: 'off' }))),
+    el('details', { class: 'feedback-privacy' }, el('summary', { text: 'Goes privately to the team: your answers + a link to this view, screen size & app version · details' }), el('p', { text: privacy }), el('pre', { class: 'feedback-context' })),
     el('p', { class: 'feedback-status', role: 'status', 'aria-live': 'polite' }),
     el(
       'div',
       { class: 'feedback-actions' },
-      el('button', { type: 'button', class: 'feedback-copy', text: 'Copy text' }),
-      el('button', { type: 'submit', class: 'feedback-send', text: mode === 'endpoint' ? 'Send feedback' : 'Continue on GitHub ↗' }),
+      el('button', { type: 'button', class: 'feedback-copy', text: 'Copy text', hidden: true }),
+      el('button', { type: 'submit', class: 'feedback-send', text: 'Send feedback' }),
     ),
   );
   const p = el(
@@ -296,32 +298,40 @@ async function onSubmit(e) {
     email.focus();
     return;
   }
-  const context = collectFeedbackContext();
-  const send = panel.querySelector('.feedback-send');
-  if (feedbackMode() === 'endpoint') {
-    send.disabled = true;
-    setStatus('Sending…');
-    try {
-      await postToEndpoint(answers, context);
-      markSent();
-      setStatus('Thank you! Your feedback was sent.', 'ok');
-      setTimeout(closeFeedback, 1600);
-    } catch (err) {
-      console.warn('Feedback endpoint failed:', err);
-      setStatus('Couldn’t reach the feedback service. Use “Copy text”, or try again later.', 'error');
-    } finally {
-      send.disabled = false;
-    }
+  const wait = secondsUntilNextSend();
+  if (wait) {
+    setStatus(`Thanks — you just sent one. Please wait ${wait} s before sending again.`, 'error');
     return;
   }
-  const url = githubIssueUrl(answers, context);
-  if (answers.wish.length > 1500) await copyText(formatFeedbackReport(answers, context, { includeEmail: false }));
-  const w = window.open(url, '_blank', 'noopener');
-  markSent();
-  setStatus(
-    w === null ? 'Your browser blocked the new tab — use “Copy text” instead.' : 'Opened GitHub in a new tab: check it and press “Submit new issue”. Thank you!',
-    w === null ? 'error' : 'ok',
-  );
+  const context = collectFeedbackContext();
+  const send = panel.querySelector('.feedback-send');
+  const copy = panel.querySelector('.feedback-copy');
+  if (answers.honeypot) {
+    // a bot filled the hidden field: pretend it worked, send nothing
+    setStatus('Thank you! Your feedback was sent.', 'ok');
+    return;
+  }
+  send.disabled = true;
+  setStatus('Sending…');
+  try {
+    await postToEndpoint(answers, context);
+    writeStore({ lastSendAt: new Date().toISOString() });
+    markSent();
+    copy.hidden = true;
+    setStatus('Thank you! Your feedback was sent to the team.', 'ok');
+    setTimeout(closeFeedback, 1800);
+  } catch (err) {
+    console.warn('Feedback send failed:', err);
+    copy.hidden = false;
+    setStatus(
+      navigator.onLine === false
+        ? 'You seem to be offline, so it couldn’t be sent. Try again when you’re back online, or use “Copy text” to keep what you wrote.'
+        : 'Sorry, it couldn’t be sent just now. Please try again in a minute, or use “Copy text” to keep what you wrote.',
+      'error',
+    );
+  } finally {
+    send.disabled = false;
+  }
 }
 
 function markSent() {
@@ -351,6 +361,7 @@ export function openFeedback() {
     .map(([k, v]) => `${k}: ${v ?? '—'}`)
     .join('\n');
   setStatus('');
+  panel.querySelector('.feedback-copy').hidden = true;
   panel.classList.remove('hidden');
   document.body.classList.add('has-feedback-panel');
   writeStore({ openedAt: new Date().toISOString() });
@@ -367,6 +378,65 @@ export function closeFeedback() {
 
 export function isFeedbackOpen() {
   return Boolean(panel && !panel.classList.contains('hidden'));
+}
+
+/**
+ * Day 50: the floating pill sits bottom-right; when the timeline minimap, the year scrubber (or, in the phone
+ * full-screen globe, the credit) occupies that corner it lifts just above it instead.
+ */
+const FAB_GAP = 10;
+const FAB_LIFT_OVER = '#minimap-canvas, #thumb-bar, .globe-scrubber, body.globe-fullscreen .globe-credit';
+let fabRaf = 0;
+
+function placeFab() {
+  fabRaf = 0;
+  const fab = document.getElementById('feedback-open');
+  if (!fab) return;
+  fab.style.removeProperty('--fab-lift');
+  const base = fab.getBoundingClientRect();
+  const vh = window.innerHeight;
+  let top = base.top;
+  const obstacles = [...document.querySelectorAll(FAB_LIFT_OVER)];
+  for (let pass = 0, moved = true; moved && pass < 4; pass++) {
+    moved = false;
+    for (const o of obstacles) {
+      const cs = getComputedStyle(o);
+      if (cs.display === 'none' || cs.visibility === 'hidden') continue;
+      const r = o.getBoundingClientRect();
+      if (!r.width || !r.height) continue;
+      const overlapsX = r.left < base.right + FAB_GAP && r.right > base.left - FAB_GAP;
+      const overlapsY = r.top < base.bottom + FAB_GAP && r.bottom > top - FAB_GAP;
+      if (overlapsX && overlapsY && r.top > vh * 0.45 && r.top - FAB_GAP - base.height < top) {
+        top = r.top - FAB_GAP - base.height;
+        moved = true;
+      }
+    }
+  }
+  const lift = Math.max(0, Math.round(base.top - top));
+  if (lift) fab.style.setProperty('--fab-lift', `${lift}px`);
+}
+
+function schedulePlaceFab() {
+  if (!fabRaf) fabRaf = requestAnimationFrame(placeFab);
+}
+
+function initFabPlacement() {
+  const fab = document.getElementById('feedback-open');
+  if (!fab) return;
+  for (const ev of ['resize', 'orientationchange', 'popstate']) window.addEventListener(ev, schedulePlaceFab);
+  window.addEventListener('scroll', schedulePlaceFab, {
+    passive: true,
+    capture: true,
+  });
+  // view switches, full screen on/off, the scrubber mounting: all show up as body/class changes
+  new MutationObserver(schedulePlaceFab).observe(document.body, {
+    attributes: true,
+    attributeFilter: ['class'],
+    childList: true,
+    subtree: true,
+  });
+  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(schedulePlaceFab).observe(document.body);
+  schedulePlaceFab();
 }
 
 /**
@@ -407,5 +477,6 @@ export function initFeedback(opts = {}) {
     }
   });
   syncButtons();
+  initFabPlacement();
   if (new URLSearchParams(window.location.search).get('feedback') === '1') openFeedback();
 }

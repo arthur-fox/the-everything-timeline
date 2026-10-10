@@ -126,12 +126,13 @@ Brand "Gilded Night" (Day 47): ink-navy space background, warm gold accent, **Ma
 
 ## Feedback
 
-A small **Feedback** button sits in the header (top right; an icon on phones) and, in the full-screen globe, bottom-left. It opens a panel with a 1–5 emoji rating, "What would you love to see?", an optional "Would you pay for…?" list of candidate premium ideas, and an optional email. The link to the exact view (view, year, `at=` camera, selected entity / item), screen size and app version (`package.json` version + git commit, injected by `vite.config.js`) are attached, and the panel says so ("Sends your answers + …"). Nothing is sent until Send is pressed; the only thing stored is a local "feedback sent" note (`localStorage`), so it never nags. `?feedback=1` opens the panel directly.
+A gold **💬 Feedback** pill floats bottom-right in every view (timeline, globe, full-screen globe; desktop and phone, ≥44 px tall). `feedback.js` lifts it just above the timeline minimap / zoom bar, the year scrubber or the phone full-screen credit when they occupy that corner. It opens a panel with a 1–5 emoji rating, "What would you love to see?", an optional "Would you pay for…?" list of candidate premium ideas, and an optional email. The link to the exact view (view, year, `at=` camera, selected entity / item), screen size and app version (`package.json` version + git commit, injected by `vite.config.js`) are attached, and the panel says so. Nothing is sent until Send is pressed; the only things stored are a local "feedback sent" note and the last send time (`localStorage`). `?feedback=1` opens the panel directly.
 
-Where it goes is set in one file, `src/feedback-config.js`:
+**Where it goes:** Send POSTs JSON (`Content-Type` / `Accept: application/json`) to the [Formspark](https://formspark.io) form set in `src/feedback-config.js` (`FORM_ENDPOINT`). Formspark emails each submission privately to the team; nothing is posted publicly and no GitHub account is needed. Fields, named to read well in that email: `rating`, `wish`, `would_pay` (comma list), `email`, `page_url`, `view`, `year`, `map_position`, `selected`, `screen`, `app_version`, plus Formspark's `_email.subject` ("Everything Timeline feedback (4/5)") and `_email.from`.
 
-- **`FORM_ENDPOINT` empty (default):** "Continue on GitHub" opens a prefilled *public* issue on `arthur-fox/the-everything-timeline` with the `feedback` label (the label only sticks for people with triage rights; Arthur can add it on triage). The email is never put in the issue. "Copy text" puts the full report, email included, on the clipboard.
-- **`FORM_ENDPOINT` set:** answers are POSTed there (`FORM_FORMAT: 'json'` for Formspree / Getform / Basin-style services, `'form'` for a Google Apps Script web app). Fields: `rating`, `wish`, `pay`, `payOther`, `email`, `context_*`, `_subject`.
+- **Spam / repeats:** a hidden `_honeypot` field (Formspark silently drops submissions that fill it; the panel doesn't even send them) and one send per 30 s per browser (`MIN_SECONDS_BETWEEN_SENDS`).
+- **If sending fails** (offline, timeout after 15 s, non-2xx): a friendly message plus a "Copy text" button so nothing typed is lost.
+- **Testing:** the Formspark quota is shared, so don't hit the real form for tests. Point at `https://submit-form.com/echo` (echoes the payload, stores nothing) or intercept the request in a headless test.
 
 Never put a personal email address in the site or config: everything here is public.
 
