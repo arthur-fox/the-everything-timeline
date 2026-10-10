@@ -8,13 +8,12 @@
 
 /* ============================================================
    Day 47 — design tokens ("Gilded Night"): ink-navy space, warm gold brand,
-   Cormorant Garamond display + Manrope UI. Alternatives: [data-palette="b|c"]
-   at the end of this file (try ?palette=b / ?palette=c).
+   Manrope throughout (800 for the wordmark / headings, 400–600 for UI).
    ============================================================ */
 :root,
 [data-theme="dark"] {
   /* type */
-  --font-display: 'Cormorant Garamond', 'Cormorant', Georgia, 'Times New Roman', serif;
+  --font-display: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-ui: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --fs-2xs: 0.68rem;
   --fs-xs: 0.74rem;
@@ -24,7 +23,7 @@
   --fs-xl: 1.35rem;
   --fs-2xl: 1.75rem;
   --fs-3xl: 2.2rem;
-  --tracking-caps: 0.12em;
+  --tracking-caps: 0.08em;
   /* space + shape */
   --space-1: 4px;
   --space-2: 8px;
@@ -41,7 +40,7 @@
   --bg-surface: #111A2C;
   --bg-elevated: #1E2A42;
   --text: #F1EBDD;
-  --text-muted: #B3AC9B;
+  --text-muted: #C6BFAE;
   --accent: #E4B556;
   --accent-strong: #F3CD7A;
   --on-accent: #1B1305;
@@ -4088,72 +4087,126 @@ body::before {
 }
 
 /* ============================================================
-   Alternative palettes for review (?palette=b / ?palette=c).
+   Day 47b — readability pass (Arthur: "make it easier to read")
    ============================================================ */
-/* B — "Lapis & Copper": deep teal ink, copper brand, Fraunces + IBM Plex Sans */
-[data-palette="b"]:not([data-theme="light"]) {
-  --font-display: 'Fraunces', Georgia, serif;
-  --font-ui: 'IBM Plex Sans', system-ui, sans-serif;
-  --bg: #071417;
-  --bg-surface: #0E2126;
-  --bg-elevated: #1A3339;
-  --text: #EAF2EF;
-  --text-muted: #A6BBB6;
-  --accent: #E7956A;
-  --accent-strong: #F2B08B;
-  --on-accent: #1E0E05;
-  --accent-glow: rgba(231, 149, 106, 0.28);
-  --brand-1: #F7C9A8;
-  --brand-2: #E7956A;
-  --brand-3: #B5623A;
-  --hairline: rgba(234, 242, 239, 0.09);
-  --hairline-accent: rgba(231, 149, 106, 0.32);
-  --header-grad-start: rgba(7, 20, 23, 1);
-  --header-grad-end: rgba(7, 20, 23, 0);
-  --globe-halo: rgba(231, 149, 106, 0.1);
-  --canvas-axis: #24434A;
-  --canvas-axis-light: #436A72;
-  --tracking-caps: 0.04em;
+#header h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2.05rem;
+  letter-spacing: -0.015em;
+  text-transform: none;
+  line-height: 1.05;
+  padding-top: 0;
 }
 
-[data-palette="b"]:not([data-theme="light"]) #header h1 {
-  text-transform: none;
+#header .subtitle {
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+
+#header .active-view-label {
+  font-size: var(--fs-sm);
+}
+
+.event-detail h2,
+.feedback-head h2,
+.globe-title,
+.bookmarks-panel h2 {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.event-detail h2 {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.globe-title {
+  font-size: 1.6rem;
+}
+
+.event-detail #detail-date {
+  font-size: var(--fs-sm);
+  letter-spacing: 0.05em;
+}
+
+.event-detail #detail-description,
+.globe-lede {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.globe-note,
+.globe-copy p {
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.globe-year-label {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.globe-year-heading {
+  font-size: var(--fs-xs);
+}
+
+.globe-year-ticks {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.globe-year-preset,
+.era-btn {
+  font-size: var(--fs-sm);
   font-weight: 600;
 }
 
-/* C — "Observatory": near-black, ice-blue brand, Cinzel + Plus Jakarta Sans */
-[data-palette="c"]:not([data-theme="light"]) {
-  --font-display: 'Cinzel', Georgia, serif;
-  --font-ui: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --bg: #05060A;
-  --bg-surface: #10121A;
-  --bg-elevated: #1D2130;
-  --text: #ECEEF4;
-  --text-muted: #A4A9B8;
-  --accent: #9ED8EC;
-  --accent-strong: #C4E9F5;
-  --on-accent: #06141A;
-  --accent-glow: rgba(158, 216, 236, 0.25);
-  --brand-1: #F2FBFF;
-  --brand-2: #9ED8EC;
-  --brand-3: #5E9DB5;
-  --hairline: rgba(236, 238, 244, 0.08);
-  --hairline-accent: rgba(158, 216, 236, 0.3);
-  --header-grad-start: rgba(5, 6, 10, 1);
-  --header-grad-end: rgba(5, 6, 10, 0);
-  --globe-halo: rgba(158, 216, 236, 0.08);
-  --canvas-axis: #262B3C;
-  --canvas-axis-light: #464D63;
-  --tracking-caps: 0.14em;
-}
-
-[data-palette="c"]:not([data-theme="light"]) #header h1 {
-  font-size: 1.9rem;
-}
-
-[data-palette="c"]:not([data-theme="light"]) #header .subtitle {
-  font-style: normal;
-  font-family: var(--font-ui);
+.globe-canvas-host > .globe-legend {
   font-size: var(--fs-sm);
-  letter-spacing: 0.08em;
+}
+
+@media (max-width: 640px) {
+  .globe-canvas-host > .globe-legend {
+    font-size: var(--fs-xs);
+  }
+}
+
+.globe-legend-item {
+  font-weight: 600;
+}
+
+.globe-legend-sub {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.view-select,
+.timeline-search,
+.filters-toggle,
+.compare-toggle,
+.bookmarks-toggle {
+  font-size: var(--fs-sm);
+}
+
+.mode-switch-btn {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 640px) {
+  #header h1 {
+    font-size: 0.98rem;
+    letter-spacing: -0.005em;
+    line-height: 1.05;
+  }
+
+  .event-detail #detail-description {
+    font-size: 1rem;
+  }
 }

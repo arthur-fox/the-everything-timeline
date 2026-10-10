@@ -1050,7 +1050,7 @@ function drawCosmicTimeline() {
   const baseOffset = Math.round(40 * s);
   const hoverGrow = Math.round(4 * s);
   const connectorDash = Math.round(3 * s);
-  const eraFontSize = Math.round(11 * s);
+  const eraFontSize = Math.round(12 * s);
   const iconFontSize = Math.max(10, Math.round(14 * s));
 
   // Era backgrounds
@@ -1157,7 +1157,7 @@ function drawCosmicTimeline() {
 function drawTicks(w, h, axisY) {
   const theme = currentTheme();
   const s = uiScale;
-  const tickFontSize = Math.round(10 * s);
+  const tickFontSize = Math.round(11.5 * s);
   const tickHalf = Math.round(6 * s);
   const tickLabelOffset = Math.round(12 * s);
 

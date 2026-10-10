@@ -22,21 +22,10 @@
   <meta name="twitter:image" content="https://theeverythingtimeline.com/og-image.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="./favicon-32.png" type="image/png" sizes="32x32" />
   <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
-  <script>
-    // Day 47: ?palette=b|c previews the alternative brand palettes (see style.css, end).
-    (function () {
-      var m = /[?&]palette=([bc])\b/i.exec(location.search);
-      if (!m) return;
-      var p = m[1].toLowerCase();
-      document.documentElement.setAttribute('data-palette', p);
-      var f = { b: 'Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700', c: 'Cinzel:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700' }[p];
-      document.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=' + f + '&display=swap">');
-    })();
-  </script>
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>

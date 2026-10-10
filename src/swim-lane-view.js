@@ -101,9 +101,9 @@ export function drawSwimLaneView(ctx, w, h, viewStart, viewEnd, scrollY, hovered
   const regionIndent = Math.round(12 * s);
   const barLabelIndent = Math.round(6 * s);
   const barRadius = Math.round(4 * s);
-  const headerFontSize = Math.round(11 * s);
-  const barLabelFontSize = Math.round(11 * s);
-  const periodLabelFontSize = Math.round(9 * s);
+  const headerFontSize = Math.round(12 * s);
+  const barLabelFontSize = Math.round(12 * s);
+  const periodLabelFontSize = Math.round(10 * s);
 
   // Time axis at top
   drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort, s, timeAxisH);
@@ -229,7 +229,7 @@ function drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort, scale, timeAx
   const s = scale || 1;
   const axisH = timeAxisH || Math.round(TIME_AXIS_HEIGHT * s);
   const axisY = axisH - 1;
-  const tickFontSize = Math.round(10 * s);
+  const tickFontSize = Math.round(11.5 * s);
   const tickHalf = Math.round(5 * s);
   const tickLabelOffset = Math.round(6 * s);
 

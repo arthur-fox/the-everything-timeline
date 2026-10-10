@@ -122,7 +122,7 @@ The repository includes GitHub Actions workflows that build the Vite app and pub
 
 ## Design
 
-Brand "Gilded Night" (Day 47): ink-navy space background, warm gold accent, **Cormorant Garamond** (display: wordmark, headings, years) + **Manrope** (UI), both from Google Fonts with system fallbacks. All colours, fonts, the type scale, spacing and radii are CSS variables at the top of `src/style.css`; the timeline canvas reads the same tokens through `src/theme.js`. Light mode is a parchment variant. The mark / favicon live in `index.html` and `public/favicon.svg`. Review-only alternatives: `?palette=b` (Lapis & Copper: Fraunces + IBM Plex Sans) and `?palette=c` (Observatory: Cinzel + Plus Jakarta Sans).
+Brand "Gilded Night" (Day 47): ink-navy space background, warm gold accent, **Manrope** throughout (800 for the wordmark and headings, 400–600 for UI), both from Google Fonts with system fallbacks. All colours, fonts, the type scale, spacing and radii are CSS variables at the top of `src/style.css`; the timeline canvas reads the same tokens through `src/theme.js`. Light mode is a parchment variant. The mark / favicon live in `index.html` and `public/favicon.svg`.
 
 ## Feedback
 
