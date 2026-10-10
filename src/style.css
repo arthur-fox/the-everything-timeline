@@ -4419,6 +4419,9 @@ body::before {
 
 .timeline-loading.is-leaving {
   opacity: 0;
+}
+
+/* ============================================================
    Day 48 — globe opens full screen by default; a compact Timeline | Globe
    pill stays top-left in full screen so nobody is trapped.
    ============================================================ */
@@ -4426,10 +4429,11 @@ body::before {
   display: none;
 }
 
-body.globe-fullscreen .globe-canvas-host > .fs-mode-switch {
+/* also while the globe is still loading (before it moves into the canvas host) */
+body.globe-fullscreen .fs-mode-switch {
   display: inline-flex;
-  position: absolute;
-  z-index: 5;
+  position: fixed;
+  z-index: 60;
   top: max(12px, env(safe-area-inset-top, 0px));
   left: max(12px, env(safe-area-inset-left, 0px));
   -webkit-backdrop-filter: blur(6px);
