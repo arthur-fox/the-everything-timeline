@@ -4473,3 +4473,16 @@ body.globe-fullscreen .globe-canvas-host > .globe-legend {
     display: none;
   }
 }
+
+/* Day 50: feedback honeypot (off-screen, not display:none so naive bots still see it) + error-only Copy */
+.feedback-hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.feedback-copy[hidden] {
+  display: none;
+}

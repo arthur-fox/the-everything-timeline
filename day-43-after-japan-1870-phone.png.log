@@ -1,0 +1,2 @@
+console: Failed to load resource: the server responded with a status of 404 (Not Found)
+{"yearLabel":"1870 CE","pov":{"lat":36,"lng":137.99999999999997,"altitude":0.6000000000000001},"tris":45580,"calls":232,"geoms":147,"textures":7,"labels":{"n":8,"overlaps":0,"tickMs":13.9,"maxTickMs":13.9,"frameMs":0,"places":"ready","extras":"ready","cities":5,"pins":0,"cityTexts":"Tokyo · Osaka · Vladivostok · Nagasaki · Sapporo","pinTexts":""},"detail":{"tiles":"on","tilesShown":true},"fineFeatures":0,"heap":80,"tileRequests":24,"tileErr":0,"fineBytes":-1,"msPerFrameSwiftshader":96}
