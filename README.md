@@ -137,6 +137,14 @@ A gold **💬 Feedback** pill floats bottom-right in every view (timeline, globe
 
 Never put a personal email address in the site or config: everything here is public.
 
+## Support (tip jar)
+
+A **☕ Support** pill sits next to Feedback in every view (same size, dark with a gold border so Feedback stays the primary pill). It opens a panel with a **Tip on Ko-fi** button (card / PayPal, new tab, `rel="noopener noreferrer"`) and Bitcoin, Ethereum (Ethereum + EVM chains) and Solana addresses, each with Copy and a QR code. `?support=1` opens it directly.
+
+- **All values live in `src/support-config.js`.** `scripts/check-support.js` (part of `npm run validate`, so the build fails otherwise) asserts they equal the exact strings Arthur supplied. It also checks the Bitcoin bech32 checksum, the Ethereum EIP-55 checksum and that the Solana key is 32 bytes. To change an address, update both files in one commit, after Arthur has verified the new value.
+- QR codes are generated at build time as small inline SVGs by `scripts/build-data.mjs` (devDependency `qrcode-generator`; nothing ships to the browser). They encode the bare address.
+- The panel (`src/support-panel.js` + `.css`, ~5 KB gzipped, including the QR codes) loads only on first click / hover. The landing bundle carries ~0.4 KB for the pill.
+
 ## Custom domain
 
 The site is served at the root of **https://theeverythingtimeline.com/** (apex; `www` redirects to it). Pages publishes from the `gh-pages` branch (legacy branch build), so:

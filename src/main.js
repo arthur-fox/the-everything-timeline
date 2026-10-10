@@ -47,6 +47,7 @@ function globeSet(name, ...args) {
   return undefined;
 }
 import { initFeedback } from './feedback.js';
+import { initSupport } from './support.js';
 import { confidenceForEntity, confidenceForNationPeriod, CONFIDENCE_LABEL, CONFIDENCE_DRAWING } from './globe-confidence.js';
 
 // ============================================================
@@ -4353,6 +4354,7 @@ maybeShowGestureHint();
 canvas.style.cursor = 'grab';
 
 // Day 45 — Feedback button + panel (src/feedback.js; where it goes is set in src/feedback-config.js).
+initSupport();
 initFeedback({
   getContext: () => {
     const globe = isGlobeView();
