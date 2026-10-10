@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** **Next for the daily ship routine: item 5 (trade routes and migrations)** — the aesthetics (#53), full-screen globe (#54) and load-speed (#55) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** **Next for the daily ship routine: the data-architecture PR (#57) must be merged first — no trade routes or new data until then; after that, item 5 (trade routes and migrations)** — the aesthetics (#53), full-screen globe (#54) and load-speed (#55) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -755,7 +755,14 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Status: Day 48 — done (merged, PR #54, 9 Oct).**
 - Built: every entry into the globe (the Timeline/Globe switch, the view select, `?view=globe` deep links) opens the full-screen globe. "Exit full screen" (labelled on phones too) or Esc gives the windowed layout with the side panel; Esc closes an open popover first. URL: full screen is the default and is no longer written; `fullscreen=0` forces windowed (shared links keep it); old `fullscreen=1` links still work. In full screen a compact Timeline | Globe pill sits top-left (the header stays hidden), so you can always get back to the timeline; the key moves just below it. Feedback, layer/label toggles and the scrubber are unchanged.
-### 5. Movement: trade routes and migrations — NEXT (daily routine starts here)
+### Data architecture: static data files (Arthur, 10 Oct 2026) — IN REVIEW (PR #57)
+- Arthur: "keep it purely static data … store it as efficiently as possible (without over-engineering) on GitHub. If we get users later, a DB for accounts." and "make sure this is actually a saving".
+- Built (the simplest version that captures most of the saving): country timelines moved to `data/countries/<id>.json` (one file each, loaded when opened; data identical, checked by deep-equal on every file); all globe code + content moved into one lazy chunk (`src/globe-app.js`). One small script (`scripts/build-data.mjs`) writes the country list. No new dependencies.
+- Measured: main bundle 295 → 114 KB gz; timeline landing 336 → 158 KB; phone timeline ready 2.4 → 1.4 s; globe 1565 → 1488 KB (desktop), interactive 5.1 → 3.8 s. Details + "how to add data": [docs/DATA.md](docs/DATA.md). **All future data follows that guide.**
+- Possible follow-up (not started): topic views as lazy files (landing JS ~114 → ~50 KB gz).
+- **Daily routine: do NOT start trade routes or add any new data until this PR is merged.** If it's still open, at most polish this PR per Arthur's review.
+
+### 5. Movement: trade routes and migrations — NEXT after the data PR is merged
 
 - **Step 5.1 — Trade routes.** Dated route lines with animated flow along them: the Silk Roads, Indian Ocean monsoon trade, trans-Saharan caravans, the Amber Road, the Hanseatic League, the Manila galleons and the Atlantic triangle. Each route has its own active years and a "Flows" toggle in the key.
 - **Step 5.2 — Migrations.** Major migrations as flows over time: out of Africa (schematic), the Bantu expansion, the Austronesian voyages, Indo-European spread, the Migration Period, the Atlantic slave trade, 19th-century European emigration, the 1947 Partition. Width hints at scale; each has sources and an uncertainty level.
@@ -942,7 +949,8 @@ A sensible near-term sequence:
 38. Aesthetics refresh + Timeline/Globe switch (Arthur, 9 Oct) — Day 47 ✅ (merged, #53).
 39. Globe opens full screen by default (Arthur, 9 Oct) — Day 48 ✅ (merged, #54).
 40. Globe load speed + globe/timeline loaders (Arthur, 9 Oct) — Day 49 ✅ (merged, #55).
-41. **Next: Phase 4c item 5 — trade routes and migrations (daily routine starts here).**
+41. **Now: Data architecture — static data files (PR #57, in review). Daily routine: no trade routes and no new data until it's merged.**
+42. Then: Phase 4c item 5 — trade routes and migrations.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 

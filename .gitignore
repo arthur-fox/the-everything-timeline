@@ -3,3 +3,7 @@ dist
 .DS_Store
 .cache
 .scratch/
+src/generated/
+
+# Daily review screenshots live outside the repo
+day-*.png

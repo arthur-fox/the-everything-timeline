@@ -282,58 +282,32 @@ function validateEvents(events, eras) {
   }
 }
 
-function parseCountryRegistry(mainSource) {
-  const start = mainSource.indexOf('const COUNTRY_REGISTRY');
-  if (start < 0) {
-    err('main.js: COUNTRY_REGISTRY not found');
-    return [];
-  }
-  const end = mainSource.indexOf('];', start);
-  if (end < 0) {
-    err('main.js: could not parse COUNTRY_REGISTRY bounds');
-    return [];
-  }
-  const block = mainSource.slice(start, end + 2);
-  return [...block.matchAll(/id:\s*'([^']+)'/g)].map((m) => m[1]);
+/** Day 51: country timelines are plain JSON in data/countries/<id>.json (one file per country). */
+function readCountryFiles() {
+  const dir = join(root, 'data/countries');
+  return readdirSync(dir)
+    .filter((f) => f.endsWith('.json'))
+    .sort()
+    .map((f) => ({ file: f, data: JSON.parse(readFileSync(join(dir, f), 'utf8')) }));
 }
 
-async function validateCountries(registryIds) {
-  const countriesDir = join(root, 'src/countries');
-  const files = readdirSync(countriesDir).filter((f) => f.endsWith('.js')).sort();
-  const fileIds = files.map((f) => f.replace(/\.js$/, ''));
-
-  for (const id of fileIds) {
-    if (!registryIds.includes(id)) {
-      err(`country registry: file src/countries/${id}.js is not listed in COUNTRY_REGISTRY`);
+async function validateCountries() {
+  const seen = new Set();
+  for (const { file, data } of readCountryFiles()) {
+    const label = `data/countries/${file}`;
+    const id = file.replace(/\.json$/, '');
+    if (data.id !== id) err(`${label}: "id" must match the file name (${id})`);
+    if (seen.has(data.id)) err(`${label}: duplicate country id "${data.id}"`);
+    seen.add(data.id);
+    if (typeof data.name !== 'string' || !data.name) err(`${label}: missing "name"`);
+    if (typeof data.flag !== 'string' || !data.flag) err(`${label}: missing "flag"`);
+    if (!Number.isFinite(data.minYear) || !Number.isFinite(data.maxYear) || data.minYear >= data.maxYear) {
+      err(`${label}: minYear/maxYear must be numbers with minYear < maxYear`);
     }
-  }
-  for (const id of registryIds) {
-    if (!fileIds.includes(id)) {
-      err(`country registry: id "${id}" has no matching src/countries/${id}.js file`);
-    }
-  }
-
-  // Duplicate registry ids
-  const seenReg = new Set();
-  for (const id of registryIds) {
-    if (seenReg.has(id)) err(`country registry: duplicate id "${id}"`);
-    seenReg.add(id);
-  }
-
-  for (const file of files) {
-    const mod = await importModule(`src/countries/${file}`);
-    const exports = Object.keys(mod);
-    const itemsKey = exports.find((k) => k.endsWith('Items'));
-    const catsKey = exports.find((k) => k.endsWith('Categories'));
-    if (!itemsKey || !catsKey) {
-      err(`countries/${file}: expected *Items and *Categories exports`);
-      continue;
-    }
-    const categoryIds = validateCategories(`countries/${file}`, mod[catsKey]);
-    validateSwimLaneItems(`countries/${file}`, mod[itemsKey], categoryIds);
+    const categoryIds = validateCategories(label, data.categories);
+    validateSwimLaneItems(label, data.items, categoryIds);
   }
 }
-
 
 /**
  * Collect every swim-lane item id across topics + countries for timelineItemIds checks.
@@ -348,13 +322,8 @@ async function collectSwimLaneItemIds() {
       if (item?.id) ids.add(item.id);
     }
   }
-  const countriesDir = join(root, 'src/countries');
-  const files = readdirSync(countriesDir).filter((f) => f.endsWith('.js'));
-  for (const file of files) {
-    const mod = await importModule(`src/countries/${file}`);
-    const itemsKey = Object.keys(mod).find((k) => k.endsWith('Items'));
-    if (!itemsKey) continue;
-    for (const item of mod[itemsKey] || []) {
+  for (const { data } of readCountryFiles()) {
+    for (const item of data.items || []) {
       if (item?.id) ids.add(item.id);
     }
   }
@@ -515,16 +484,14 @@ async function main() {
   const eventsMod = await importModule('src/events.js');
   validateEvents(eventsMod.events, eventsMod.eras);
 
-  const mainSource = readFileSync(join(root, 'src/main.js'), 'utf8');
-  const registryIds = parseCountryRegistry(mainSource);
-  await validateCountries(registryIds);
+  await validateCountries();
 
   const knownItemIds = await collectSwimLaneItemIds();
   const overlaysMod = await importModule('src/globe-overlays.js');
   validateSpatialEntities(overlaysMod.spatialEntities, knownItemIds);
   validateRegionRings(overlaysMod);
 
-  console.log(`Country registry: ${registryIds.length} entries`);
+  console.log(`Country timelines: ${readCountryFiles().length} files in data/countries/`);
   console.log(`Spatial entities: ${overlaysMod.spatialEntities?.length ?? 0}`);
   console.log(`Errors:   ${errors.length}`);
   console.log(`Warnings: ${warnings.length}\n`);
