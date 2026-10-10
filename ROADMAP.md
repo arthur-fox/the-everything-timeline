@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** Next: **the daily ship routine must NOT start item 5 (trade routes) until Arthur has reviewed the Day 48 "globe opens full screen" PR (#PRNUM)** — see "Globe opens full screen by default" just above item 5. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** Next: **the daily ship routine must NOT start item 5 (trade routes) until Arthur has reviewed the Day 48 "globe opens full screen" PR (#54)** — see "Globe opens full screen by default" just above item 5. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -753,7 +753,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 - Built: Timeline / Globe segmented switch top-left (desktop + phone; hidden in full-screen globe; `view=` deep links unchanged; topic + country timelines still in the view select, "Timeline" returns to the last one). "Gilded Night" identity: ink-navy space background, warm gold brand, Manrope throughout (bold 800 title-case wordmark and headings; Cormorant Garamond dropped on review as hard to read); gold mark (globe + timeline line + star) and favicon; design tokens (type scale, spacing, radii, colours) at the top of `src/style.css`, canvas reads them via `src/theme.js`; parchment light theme; new og-image + theme-color.  Arthur picked the gold palette (alternatives removed); readability pass: larger detail/panel text (16px), chips, key, scrubber ticks and canvas axis labels, brighter secondary text.
 ### Globe opens full screen by default (Arthur, 9 Oct 2026) — CURRENT ITEM
 
-- **Status: Day 48 — IN REVIEW (PR #PRNUM). Do not start this item again, and do NOT start item 5 (trade routes) until Arthur has reviewed and merged #PRNUM.** If it is still unmerged when the daily ship routine fires, the routine should at most polish #PRNUM per Arthur's review comments (push to its branch, no new feature PR).
+- **Status: Day 48 — IN REVIEW (PR #54). Do not start this item again, and do NOT start item 5 (trade routes) until Arthur has reviewed and merged #54.** If it is still unmerged when the daily ship routine fires, the routine should at most polish #54 per Arthur's review comments (push to its branch, no new feature PR).
 - Built: every entry into the globe (the Timeline/Globe switch, the view select, `?view=globe` deep links) opens the full-screen globe. "Exit full screen" (labelled on phones too) or Esc gives the windowed layout with the side panel; Esc closes an open popover first. URL: full screen is the default and is no longer written; `fullscreen=0` forces windowed (shared links keep it); old `fullscreen=1` links still work. In full screen a compact Timeline | Globe pill sits top-left (the header stays hidden), so you can always get back to the timeline; the key moves just below it. Feedback, layer/label toggles and the scrubber are unchanged.
 - After review: continue with item 5.
 
@@ -935,6 +935,6 @@ A sensible near-term sequence:
 36. Feedback & paid features discovery (Arthur, 9 Oct) — Day 45 feedback button ✅ (merged, #51) → configure a real form endpoint → tally "would you pay for…?" answers.
 37. Custom domain theeverythingtimeline.com (Day 46) ✅ (merged, #52) → per-year share pages + og images.
 38. Aesthetics refresh + Timeline/Globe switch (Arthur, 9 Oct) — Day 47 ✅ (merged, #53).
-39. **Current: Globe opens full screen by default (Arthur, 9 Oct) — Day 48, IN REVIEW (#PRNUM).** Hold Phase 4c item 5 (trade routes) until Arthur has reviewed it.
+39. **Current: Globe opens full screen by default (Arthur, 9 Oct) — Day 48, IN REVIEW (#54).** Hold Phase 4c item 5 (trade routes) until Arthur has reviewed it.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
