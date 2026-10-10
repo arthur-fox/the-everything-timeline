@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** Next: **the daily ship routine must NOT start item 5 (trade routes) until Arthur has reviewed the Day 47 aesthetics PR (#53)** — see "Aesthetics refresh + Timeline/Globe switch" just above item 5. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** **Next for the daily ship routine: item 5 (trade routes and migrations)** — the aesthetics (#53), full-screen globe (#54) and load-speed (#55) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -745,15 +745,17 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 - **Honest caveats:** confidence is per shape, not per border segment, so a state with one well-known coast and one guessed frontier gets one level. The defaults are by era and layer; only 11 polities have hand-written reasons. The fade follows the shape's own edge, including coasts, so a conjectural coastal people fades at the sea too.
 - **Follow-up:** per-segment confidence (coasts and rivers documented, steppe frontiers guessed); hand-written reasons for the biggest empires; a short "how sure" note in the timeline's own detail panel.
 
-### Aesthetics refresh + Timeline/Globe switch (Arthur, 9 Oct 2026) — CURRENT ITEM
+### Aesthetics refresh + Timeline/Globe switch (Arthur, 9 Oct 2026) — done (merged, PR #53)
 
 > "Before continuing with the roadmap I want us to improve the aesthetics, and I want Globe mode to be a button that we switch between right at the start … I don't like the current font and Purple title … more of a colour and branding thing and font sizes."
 
-- **Status: Day 47 — IN REVIEW (PR #53). Do not start this item again, and do NOT start item 5 (trade routes) until Arthur has reviewed and merged #53.** If #53 is still unmerged when the daily ship routine fires (9:24am BRT, 10 Oct), the routine should at most polish #53 per Arthur's review comments (push to its branch, no new feature PR).
+- **Status: Day 47 — done (merged, PR #53, 9 Oct).** Review round: Cormorant Garamond → Manrope 800 headings, readability pass, palette alternatives removed (Day 47b); gradient-title descender clipping fixed (Day 47c).
 - Built: Timeline / Globe segmented switch top-left (desktop + phone; hidden in full-screen globe; `view=` deep links unchanged; topic + country timelines still in the view select, "Timeline" returns to the last one). "Gilded Night" identity: ink-navy space background, warm gold brand, Manrope throughout (bold 800 title-case wordmark and headings; Cormorant Garamond dropped on review as hard to read); gold mark (globe + timeline line + star) and favicon; design tokens (type scale, spacing, radii, colours) at the top of `src/style.css`, canvas reads them via `src/theme.js`; parchment light theme; new og-image + theme-color.  Arthur picked the gold palette (alternatives removed); readability pass: larger detail/panel text (16px), chips, key, scrubber ticks and canvas axis labels, brighter secondary text.
-- After review: continue with item 5.
+### Globe opens full screen by default (Arthur, 9 Oct 2026) — done (merged, PR #54)
 
-### 5. Movement: trade routes and migrations
+- **Status: Day 48 — done (merged, PR #54, 9 Oct).**
+- Built: every entry into the globe (the Timeline/Globe switch, the view select, `?view=globe` deep links) opens the full-screen globe. "Exit full screen" (labelled on phones too) or Esc gives the windowed layout with the side panel; Esc closes an open popover first. URL: full screen is the default and is no longer written; `fullscreen=0` forces windowed (shared links keep it); old `fullscreen=1` links still work. In full screen a compact Timeline | Globe pill sits top-left (the header stays hidden), so you can always get back to the timeline; the key moves just below it. Feedback, layer/label toggles and the scrubber are unchanged.
+### 5. Movement: trade routes and migrations — NEXT (daily routine starts here)
 
 - **Step 5.1 — Trade routes.** Dated route lines with animated flow along them: the Silk Roads, Indian Ocean monsoon trade, trans-Saharan caravans, the Amber Road, the Hanseatic League, the Manila galleons and the Atlantic triangle. Each route has its own active years and a "Flows" toggle in the key.
 - **Step 5.2 — Migrations.** Major migrations as flows over time: out of Africa (schematic), the Bantu expansion, the Austronesian voyages, Indo-European spread, the Migration Period, the Atlantic slave trade, 19th-century European emigration, the 1947 Partition. Width hints at scale; each has sources and an uncertainty level.
@@ -930,13 +932,16 @@ A sensible near-term sequence:
 35. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
 36. Feedback & paid features discovery (Arthur, 9 Oct) — Day 45 feedback button ✅ (merged, #51) → configure a real form endpoint → tally "would you pay for…?" answers.
 37. Custom domain theeverythingtimeline.com (Day 46) ✅ (merged, #52) → per-year share pages + og images.
-38. **Current: Aesthetics refresh + Timeline/Globe switch (Arthur, 9 Oct) — Day 47, IN REVIEW (#53).** Hold Phase 4c item 5 (trade routes) until Arthur has reviewed it.
+38. Aesthetics refresh + Timeline/Globe switch (Arthur, 9 Oct) — Day 47 ✅ (merged, #53).
+39. Globe opens full screen by default (Arthur, 9 Oct) — Day 48 ✅ (merged, #54).
+40. Globe load speed + globe/timeline loaders (Arthur, 9 Oct) — Day 49 ✅ (merged, #55).
+41. **Next: Phase 4c item 5 — trade routes and migrations (daily routine starts here).**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
-## Globe load speed + loading state (Arthur, 9 Oct 2026: "the globe takes a long time to load") — Day 49, IN REVIEW (PR #55)
+## Globe load speed + loading state (Arthur, 9 Oct 2026: "the globe takes a long time to load") — Day 49, done (merged, PR #55)
 
-Independent of #54 (based on main). Does not change the hold on Phase 4c item 5 (trade routes).
+Merged together with #54 (fullscreen by default): the loader shows over the full-screen globe too.
 
 - **Done in this PR:**
   - Stubbed the unused WebGPU build of three, which three-globe imports. The globe.gl chunk drops from 1.35 MB to 0.65 MB raw.

@@ -613,7 +613,8 @@ function syncDeepLinkUrl() {
     if (currentView === 'globe') {
       params.set('year', String(globeYear));
       if (selectedGlobeEntityId) params.set('entity', selectedGlobeEntityId);
-      if (globeFullscreen) params.set('fullscreen', '1');
+      // Day 48: full screen is the globe default, so only the windowed layout is written.
+      if (!globeFullscreen) params.set('fullscreen', '0');
       if (globeHiddenLayers.size) params.set('hide', GLOBE_LAYER_KEYS.filter((k) => globeHiddenLayers.has(k)).join(','));
       if (!globeLabelsOn) params.set('labels', '0');
       if (!globeCertaintyOn) params.set('certainty', '0');
@@ -895,10 +896,14 @@ function applyDeepLinkFromUrl() {
       focused = true;
     }
 
-    // Day 37: ?fullscreen=1 opens the globe full-screen (globe view only; implies view=globe).
+    // Day 37/48: the globe opens full screen by default; ?fullscreen=0 forces the windowed
+    // layout (so shared links can), ?fullscreen=1 (old links) still implies view=globe.
     if (fullscreenRaw === '1' || fullscreenRaw === 'true') {
       if (!isGlobeView() && !resolved && !id) activateViewForDeepLink('globe', { clearSelection: true });
-      if (isGlobeView()) setGlobeFullscreen(true, { syncUrl: false });
+    }
+    if (isGlobeView()) {
+      const windowed = fullscreenRaw != null && /^(0|off|false|no)$/i.test(fullscreenRaw.trim());
+      setGlobeFullscreen(!windowed, { syncUrl: false });
     }
 
     updateFiltersUI();
@@ -3293,6 +3298,9 @@ function globeCaptionForYear(year) {
 function setGlobeModeActive(active) {
   const wasActive = document.body.classList.contains('globe-active');
   document.body.classList.toggle('globe-active', Boolean(active));
+  // Day 48: every entry into the globe (switch, view select, deep link) opens full screen;
+  // "Exit full screen" / Esc / ?fullscreen=0 give the windowed layout.
+  if (active && !wasActive) setGlobeFullscreen(true, { syncUrl: false });
   // Day 49: branded loading state + start the globe code / earth texture right away.
   if (active && !wasActive) {
     showGlobeLoading();
@@ -3343,18 +3351,20 @@ function setGlobeModeActive(active) {
 // restyled). Esc closes the popover first, then leaves full screen. Deep link
 // ?fullscreen=1. CSS-only (no Fullscreen API) so it behaves the same on iOS Safari.
 // ------------------------------------------------------------
-const globeFullscreenBtn = document.getElementById('globe-fullscreen-toggle');
+// `var` + lookup: setGlobeFullscreen can run (via setGlobeModeActive) before this line.
+var globeFullscreenBtn = document.getElementById('globe-fullscreen-toggle');
 
 function setGlobeFullscreen(on, { syncUrl = true } = {}) {
   const next = Boolean(on) && isGlobeView();
   if (next === globeFullscreen) return;
+  const globeFullscreenBtn = document.getElementById('globe-fullscreen-toggle');
   globeFullscreen = next;
   document.body.classList.toggle('globe-fullscreen', next);
   if (globeFullscreenBtn) {
     globeFullscreenBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
     const label = next ? 'Exit full screen' : 'Full screen';
-    globeFullscreenBtn.setAttribute('aria-label', next ? 'Exit full-screen globe' : 'Full-screen globe');
-    globeFullscreenBtn.title = next ? 'Exit full screen (Esc)' : 'Full-screen globe (Esc to exit)';
+    globeFullscreenBtn.setAttribute('aria-label', next ? 'Exit full screen (windowed globe)' : 'Full-screen globe');
+    globeFullscreenBtn.title = next ? 'Exit full screen: windowed globe with the side panel (Esc)' : 'Full-screen globe (Esc to exit)';
     const labelEl = globeFullscreenBtn.querySelector('.globe-fullscreen-label');
     if (labelEl) labelEl.textContent = label;
   }
