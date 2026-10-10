@@ -944,8 +944,13 @@ Independent of #54 (based on main). Does not change the hold on Phase 4c item 5 
   - The globe code and first texture start together on entry and are prefetched on Globe hover, focus or touch.
   - The nations TopoJSON (~155 KB gzipped) loads only when the year needs it (1815+); otherwise it loads shortly after the earth is up.
   - Branded loading state: gold ring + mark, "Loading the globe…", and Earth → Borders → Cities steps. It fades once the earth and borders are on screen.
+  - Day 49b (Arthur: "you need a loader on the Timeline view too"):
+    - The same gold ring + mark with "Loading the timeline…" is inlined in `index.html`, so it shows before the CSS / JS bundle. It fades once the canvas has drawn a full frame with fonts ready; a `?view=globe` load hands over to the globe loader.
+    - Switching to a timeline view that still waits on fonts shows the ring inside the canvas area.
+    - Manrope is self-hosted (`public/fonts`, OFL) with a preload, replacing the render-blocking Google Fonts CSS.
+    - The saved theme is applied before first paint.
 - **Further ideas (not done):**
-  - Split the 900 KB main bundle (all topic and country timelines are eager imports) so the landing page and globe load less JS.
+  - Split the 900 KB main bundle so the landing page and globe load less JS. The biggest part is globe code (`globe-overlays`, `globe-people`, `globe-presence`, the nations tables, ~580 KB of source) that `main.js` imports statically for the detail panel and links; the 38 country timelines are another ~285 KB. Splitting them needs async detail and search paths, so it is not a quick change. This is the main lever for timeline load time on phones.
   - Precompute polygon triangulation at build time, or in a worker, for the hand-drawn layers.
   - Delay shader warm-up and label placement to idle frames on phones.
   - Self-host Manrope (one less origin).
