@@ -48,8 +48,8 @@
   <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="./favicon-32.png" type="image/png" sizes="32x32" />
   <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
-  <script type="module" crossorigin src="/assets/index-BV88f5HP.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-Bn2ao8f9.css">
+  <script type="module" crossorigin src="/assets/index-5o1zOiaI.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BFnfkzPQ.css">
 </head>
 <body>
   <div id="app-loader" class="app-loader" role="status" aria-live="polite">
@@ -327,7 +327,10 @@
     </div>
   </div>
 
-    <!-- Day 50: one floating Feedback pill for every view (timeline, globe, full-screen globe) -->
-    <button type="button" id="feedback-open" class="feedback-open feedback-fab" data-feedback-open aria-haspopup="dialog" title="Send feedback or ideas"><span class="feedback-fab-icon" aria-hidden="true">💬</span><span class="feedback-open-label">Feedback</span></button>
+    <!-- Day 50/52: floating pills for every view (timeline, globe, full-screen globe): ☕ Support (secondary) + 💬 Feedback (primary) -->
+    <div class="fab-dock" id="fab-dock">
+    <button type="button" id="support-open" class="fab-pill support-fab" data-support-open aria-haspopup="dialog" title="Support The Everything Timeline"><span class="support-fab-icon" aria-hidden="true">☕</span><span class="support-open-label">Support</span></button>
+    <button type="button" id="feedback-open" class="fab-pill feedback-open feedback-fab" data-feedback-open aria-haspopup="dialog" title="Send feedback or ideas"><span class="feedback-fab-icon" aria-hidden="true">💬</span><span class="feedback-open-label">Feedback</span></button>
+    </div>
 </body>
 </html>
