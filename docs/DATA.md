@@ -15,6 +15,7 @@ The Everything Timeline is a static site: all content is plain files in this rep
 | Globe content: polities/overlays, peoples, presence, nations tables + colours, holes, confidence, label names | `src/globe-*.js`, `src/data/nations-colors.js` | lazy globe chunk (`src/globe-app.js`), first time the globe is opened or the Globe button is hovered |
 | Borders | `src/data/nations.topo.json`, `nations-fine.topo.json` (TopoJSON, built by `npm run build:nations`) | with the globe; fine borders at close zoom |
 | Cities, event pins, physical places | `src/globe-cities.js`, `src/globe-event-pins.js`, `src/data/places.json` | with the globe, after first paint |
+| Trade routes (Day 53) | `data/trade-routes.json` (see below) | with the globe, once it is up (≈5 KB gzipped chunk) |
 
 Ids are stable kebab-case strings (`kamakura-shogunate`, `nation-france`) and are used in deep links (`?view=country:japan&id=kamakura-shogunate`), bookmarks and globe ↔ timeline links (`timelineItemIds`). Never rename an id; add a new one instead.
 
@@ -38,14 +39,33 @@ Ids are stable kebab-case strings (`kamakura-shogunate`, `nation-france`) and ar
 
 Fields follow `schemas/timeline.schema.json` (swim-lane items: `start`, `end`, `region` = a category id, `icon`, `description`, optional `sources` and `periods`). Years are numbers; negative = BCE.
 
+## Trade route file format (Day 53)
+
+`data/trade-routes.json` holds `{ "routes": [ … ] }`. One route:
+
+```json
+{
+  "id": "silk-roads", "name": "Silk Roads", "kind": "land",   // or "sea"
+  "start": -130, "end": 1450,                                  // years it is drawn (inclusive)
+  "color": "#f5c46b", "goods": "Silk, paper, …", "description": "…",
+  "confidence": { "level": "approximate", "reason": "…" },     // documented | approximate | conjectural
+  "related": ["economics:silk-road-roman", "event:Silk Road Trade Peaks"],  // timeline entries
+  "sources": [ { "title": "…", "url": "https://…" } ],
+  "paths": [ { "name": "Kashgar to Antioch", "points": [[39.47, 75.99], [40.51, 72.8]] } ]
+}
+```
+
+Points are `[lat, lng]` waypoints; the globe joins them with straight lat/lng segments, so sea lanes need enough waypoints to stay off the coast. A sea leg that goes up a river or overland can say `"via": "river"` or `"via": "overland"`. Dashes flow from the first point to the last, so list points in the direction goods moved. `scripts/check-routes.js` (in `npm run validate`) checks the fields, the related entries, land waypoints on land and every sea lane off land.
+
 ## How to add data
 
 1. **A new country:** add `data/countries/<id>.json` in the format above. Nothing else to register — the build lists it in the picker.
 2. **More items in a country:** edit its JSON file; give each item a new, unique id.
 3. **Topic or landing items:** edit the matching `src/<topic>.js` / `src/events.js` array (same fields).
 4. **Globe shapes, peoples, presence, cities, pins:** edit the matching `src/globe-*.js` module (they only load with the globe). After editing the nations tables, run `npm run build:nations`.
-5. **A new kind of dataset:** a JSON file under `data/`, loaded with a dynamic `import()` from the view that needs it (see `COUNTRY_FILES` in `src/main.js`). Don't add a static import to `main.js`.
-6. Run `npm run validate` (also part of `npm run build`): schema, unique ids, categories, dates, sources, links, borders, labels, cities and pins.
+5. **Trade routes (and, next, migrations):** edit `data/trade-routes.json` (format above).
+6. **A new kind of dataset:** a JSON file under `data/`, loaded with a dynamic `import()` from the view that needs it (see `COUNTRY_FILES` in `src/main.js`). Don't add a static import to `main.js`.
+7. Run `npm run validate` (also part of `npm run build`): schema, unique ids, categories, dates, sources, links, borders, labels, cities, pins and trade routes.
 
 `npm run dev` and `npm run build` run `scripts/build-data.mjs` first (it writes the generated index); there is nothing else to run.
 

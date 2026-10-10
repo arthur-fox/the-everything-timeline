@@ -16,6 +16,8 @@ export {
   setGlobeCitiesEnabled,
   setGlobeEventsEnabled,
   setGlobePinHandlers,
+  setGlobeFlowsEnabled,
+  setOnGlobeRouteClick,
   getGlobeCameraAt,
   prefetchGlobe,
   getGlobeLoadSteps,

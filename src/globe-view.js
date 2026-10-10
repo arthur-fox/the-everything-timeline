@@ -24,6 +24,9 @@
  *   fades towards it. Conjectural: dotted edge and a fill that fades out well inside it. The fade
  *   is a per-vertex distance-to-edge attribute on the refined cap mesh (hand-drawn shapes only;
  *   nations keep crisp fills so neighbours never show gaps). `&certainty=0` / the key turns it off.
+ * Day 53: trade routes (Phase 4c step 5.1) — dated route lines from data/trade-routes.json with
+ *   dashes flowing along them (Globe.gl paths layer, above every polygon band; squeezed toward the
+ *   surface with the polygons as you zoom). Key "Flows" toggle / `&flows=0`; a tap opens the route.
  * Mounted only while Globe mode is active; disposed on leave.
  */
 
@@ -54,6 +57,7 @@ import {
   areGlobeEventsEnabled,
   setGlobePinHandlers,
 } from './globe-labels.js';
+import { loadTradeRoutes, tradeRouteEntriesAtYear, areTradeRoutesLoaded, formatRouteYears } from './globe-routes.js';
 
 /** Day 43: dated cities (`&cities=0`) and event pins (`&events=0`) — see globe-labels.js. */
 export { setGlobeCitiesEnabled, areGlobeCitiesEnabled, setGlobeEventsEnabled, areGlobeEventsEnabled, setGlobePinHandlers };
@@ -1063,6 +1067,7 @@ function applyPolygonRenderOrder(scene, camera) {
     maybeUpdateFineBorders(camAlt);
     updateGlobeLabels(camera, camAlt);
   }
+  syncRouteLayer(scene);
   applyZoomCapOpacity();
   refineSpentMs = 0;
   if (!polygonLayerParent || !polygonLayerParent.parent) {
@@ -1254,6 +1259,125 @@ function capColorFor(d) {
   return hexToRgba(d.color || d.properties?.color, opacity);
 }
 
+// ------------------------------------------------------------
+// Day 53 — trade routes (see globe-routes.js). Three Globe.gl paths per route path: a soft wide
+// glow (also the tap target), a dark core, and a dashed "flow" line whose dashes travel from the
+// first waypoint to the last at ROUTE_SPEED_DEG_S on every route.
+// ------------------------------------------------------------
+const ROUTE_ALT = 0.016; // above the highest polygon band (polity 0.01 + slots ≈ 0.011, selected + 0.004)
+const ROUTE_DASH_DEG = 1.4;
+const ROUTE_GAP_DEG = 2.2;
+const ROUTE_SPEED_DEG_S = 3; // on-globe degrees per second, the same for every route
+const ROUTE_RENDER_ORDER = 2000; // after every polygon (polygons use 10 … ~520)
+// Line widths in CSS px: glow (colour halo + tap target), dark core, bright moving dashes.
+const ROUTE_STROKE = { desktop: { glow: 9, core: 4.5, flow: 2.6 }, mobile: { glow: 11, core: 5, flow: 2.8 } };
+const ROUTE_KIND_ORDER = { glow: 0, core: 1, flow: 2 };
+let flowsEnabled = true;
+let routeClickHandler = null;
+let routeKey = '';
+let routeLayerParent = null;
+
+/** Day 53: trade-route flows on or off (key "Flows" toggle, `&flows=0`). */
+export function setGlobeFlowsEnabled(on) {
+  flowsEnabled = Boolean(on);
+  refreshRoutes();
+}
+
+export function areGlobeFlowsEnabled() {
+  return flowsEnabled;
+}
+
+/** Day 53: what a tap on a route does — (routeId, route) → void. */
+export function setOnGlobeRouteClick(handler) {
+  routeClickHandler = typeof handler === 'function' ? handler : null;
+}
+
+function escapeHtml(str) {
+  return String(str ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+}
+
+function routeTooltip(d) {
+  const r = d.route;
+  const kind = r.kind === 'sea' ? 'Sea route' : 'Land route';
+  return `<div class="globe-route-tip"><b>${escapeHtml(r.name)}</b><span>${escapeHtml(formatRouteYears(r))} · ${kind}</span><span class="globe-route-tip-path">${escapeHtml(d.pathName)}</span></div>`;
+}
+
+function applyRouteLayer() {
+  if (!globe) return;
+  const mobile = isCoarsePointer();
+  globe
+    .pathPoints('points')
+    .pathPointLat((p) => p[0])
+    .pathPointLng((p) => p[1])
+    .pathPointAlt(ROUTE_ALT)
+    .pathResolution(1)
+    .pathColor((d) => {
+      if (d.kind === 'glow') return hexToRgba(d.route.color, d.via ? 0.16 : 0.3);
+      if (d.kind === 'core') return 'rgba(8, 12, 26, 0.6)';
+      return hexToRgba(d.route.color, d.via ? 0.75 : 1);
+    })
+    .pathStroke((d) => ROUTE_STROKE[mobile ? 'mobile' : 'desktop'][d.kind])
+    .pathDashLength((d) => (d.kind === 'flow' ? ROUTE_DASH_DEG / d.lengthDeg : 1))
+    .pathDashGap((d) => (d.kind === 'flow' ? ROUTE_GAP_DEG / d.lengthDeg : 0))
+    .pathDashInitialGap(0)
+    .pathDashAnimateTime((d) => (d.kind === 'flow' ? (d.lengthDeg / ROUTE_SPEED_DEG_S) * 1000 : 0))
+    .pathTransitionDuration(0)
+    .pathLabel(routeTooltip)
+    .onPathClick((d) => {
+      if (d?.route && routeClickHandler) routeClickHandler(d.route.id, d.route);
+    })
+    .onPathHover((d) => {
+      if (hostEl) hostEl.style.cursor = d ? 'pointer' : '';
+    });
+}
+
+/** Push the routes running in the current year (or none) to Globe.gl, only when the set changes. */
+function refreshRoutes() {
+  if (!globe || !mounted) return;
+  const y = currentPolygonYear;
+  const entries = flowsEnabled && areTradeRoutesLoaded() && Number.isFinite(y) ? tradeRouteEntriesAtYear(y) : [];
+  const key = [...new Set(entries.map((e) => e.route.id))].join(',');
+  if (key === routeKey) return;
+  routeKey = key;
+  try {
+    globe.pathsData(entries);
+  } catch (err) {
+    console.warn('Failed to update trade routes:', err);
+  }
+}
+
+/** Each frame: routes follow the polygons' zoom squeeze, draw after them and never write depth. */
+function syncRouteLayer(scene) {
+  if (!routeKey) return;
+  if (!routeLayerParent || !routeLayerParent.parent) {
+    routeLayerParent = null;
+    scene.traverse((obj) => {
+      if (!routeLayerParent && obj.__globeObjType === 'path' && obj.parent) routeLayerParent = obj.parent;
+    });
+    if (!routeLayerParent) return;
+  }
+  const s = (1 + zoomedAltitude(ROUTE_ALT)) / (1 + ROUTE_ALT);
+  for (const g of routeLayerParent.children) {
+    if (g.__globeObjType !== 'path') continue;
+    if (g.scale.x !== s) g.scale.setScalar(s);
+    const line = g.children[0];
+    if (!line) continue;
+    const d = g.__data?.data || g.__data;
+    const order = ROUTE_RENDER_ORDER + (ROUTE_KIND_ORDER[d?.kind] || 0);
+    if (line.renderOrder !== order) line.renderOrder = order;
+    if (line.material && line.material.depthWrite) line.material.depthWrite = false;
+  }
+}
+
+function loadRoutesForGlobe() {
+  loadTradeRoutes()
+    .then(() => {
+      routeKey = '\u0000'; // force the first push
+      refreshRoutes();
+    })
+    .catch((err) => console.warn('Trade routes failed to load:', err));
+}
+
 function applyPolygonLayer() {
   if (!globe) return;
   // Use Globe.gl colour accessors (not custom MeshBasicMaterial) — custom DoubleSide/
@@ -1348,6 +1472,7 @@ export function setGlobeOverlayYear(year) {
     console.warn('Failed to update globe polygons:', err);
   }
   setGlobeLabelFeatures(features, y);
+  refreshRoutes();
 }
 
 /**
@@ -1405,6 +1530,7 @@ export async function mountGlobe(container, opts = {}) {
 
   if (loaderEl) hostEl.appendChild(loaderEl);
   applyPolygonLayer();
+  applyRouteLayer();
   initGlobeLabels({ host: hostEl, globe, THREE, mobile, getSelected: () => selectedEntityId });
   attachLegend();
 
@@ -1483,7 +1609,10 @@ export async function mountGlobe(container, opts = {}) {
   );
 
   mounted = true;
+  routeKey = '';
   if (Number.isFinite(year)) setGlobeOverlayYear(year);
+  // Day 53: trade routes (~5 KB gzipped) load once the globe is up.
+  loadRoutesForGlobe();
   exposeGlobeDebugHandle();
   // Day 38/49: the nations TopoJSON (~155 KB gzipped) loads with the year that needs it (1815+),
   // otherwise shortly after the earth is up (see ensureNationsForYear).
@@ -1601,6 +1730,7 @@ export function destroyGlobe() {
 
     try {
       globe.polygonsData([]);
+      globe.pathsData([]);
     } catch (_) {
       // ignore
     }
@@ -1617,6 +1747,8 @@ export function destroyGlobe() {
     globe = null;
   }
   polygonLayerParent = null;
+  routeLayerParent = null;
+  routeKey = '';
   baseGlobeObj = null;
   tileEngineObj = null;
   tileState = 'off';

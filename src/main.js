@@ -292,6 +292,8 @@ let globeCertaintyOn = true;
 // Day 43: dated cities and event pins on the globe (key toggles; `&cities=0` / `&events=0`).
 let globeCitiesOn = true;
 let globeEventsOn = true;
+// Day 53: trade-route flows on the globe (key "Flows" toggle; `&flows=0` when off).
+let globeFlowsOn = true;
 let compareLeft = 'technology';
 let compareRight = 'wars';
 let compareShared = null; // { viewStart, viewEnd, targetStart, targetEnd, minYear, maxYear }
@@ -593,6 +595,7 @@ function syncDeepLinkUrl() {
       if (!globeCertaintyOn) params.set('certainty', '0');
       if (!globeCitiesOn) params.set('cities', '0');
       if (!globeEventsOn) params.set('events', '0');
+      if (!globeFlowsOn) params.set('flows', '0');
     } else {
       const selectedId = getSelectedDeepLinkId();
       if (selectedId) {
@@ -803,8 +806,9 @@ function applyDeepLinkFromUrl() {
   const certaintyRaw = params.get('certainty');
   const citiesRaw = params.get('cities');
   const eventsRaw = params.get('events');
+  const flowsRaw = params.get('flows');
 
-  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '') && (hideRaw == null || hideRaw === '') && (labelsRaw == null || labelsRaw === '') && (certaintyRaw == null || certaintyRaw === '') && (citiesRaw == null || citiesRaw === '') && (eventsRaw == null || eventsRaw === '')) {
+  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '') && (hideRaw == null || hideRaw === '') && (labelsRaw == null || labelsRaw === '') && (certaintyRaw == null || certaintyRaw === '') && (citiesRaw == null || citiesRaw === '') && (eventsRaw == null || eventsRaw === '') && (flowsRaw == null || flowsRaw === '')) {
     updateActiveViewChrome();
     updateFiltersUI();
     return;
@@ -870,6 +874,8 @@ function applyDeepLinkFromUrl() {
     // Day 43: ?cities=0 / ?events=0 switch the dated cities / event pins off.
     if (citiesRaw != null) setGlobeExtraShown('cities', !/^(0|off|false|no|none)$/i.test(citiesRaw.trim()), { syncUrl: false });
     if (eventsRaw != null) setGlobeExtraShown('events', !/^(0|off|false|no|none)$/i.test(eventsRaw.trim()), { syncUrl: false });
+    // Day 53: ?flows=0 hides the trade routes.
+    if (flowsRaw != null) setGlobeExtraShown('flows', !/^(0|off|false|no|none)$/i.test(flowsRaw.trim()), { syncUrl: false });
 
     // Globe entity deep link: restore after year + layer so activity check uses the right state
     if (entityRaw && isGlobeView()) {
@@ -1954,7 +1960,7 @@ function renderDetailConfidence(conf) {
   reason.textContent = ` ${conf.reason}`;
   const drawn = document.createElement('span');
   drawn.className = 'detail-confidence-drawn';
-  drawn.textContent = ` Drawn with a ${CONFIDENCE_DRAWING[conf.level]}.`;
+  drawn.textContent = conf.drawnSentence ? ` ${conf.drawnSentence}` : ` Drawn with a ${CONFIDENCE_DRAWING[conf.level]}.`;
   el.append(lead, badge, reason, drawn);
   el.classList.remove('hidden');
 }
@@ -3508,12 +3514,16 @@ document.querySelectorAll('.globe-legend-item[data-certainty]').forEach((btn) =>
 });
 syncGlobeCertaintyToggleUI();
 
-// Day 43 — "Cities" and "Events" key toggles (on by default).
+// Day 43 — "Cities" and "Events" key toggles (on by default). Day 53: + "Flows" (trade routes).
+const GLOBE_EXTRA_NOUN = { cities: 'cities', events: 'event pins', flows: 'trade routes' };
+function isGlobeExtraOn(which) {
+  return which === 'cities' ? globeCitiesOn : which === 'flows' ? globeFlowsOn : globeEventsOn;
+}
 function syncGlobeExtrasToggleUI() {
   document.querySelectorAll('.globe-legend-item[data-overlay]').forEach((btn) => {
     const which = btn.dataset.overlay;
-    const on = which === 'cities' ? globeCitiesOn : globeEventsOn;
-    const noun = which === 'cities' ? 'cities' : 'event pins';
+    const on = isGlobeExtraOn(which);
+    const noun = GLOBE_EXTRA_NOUN[which] || which;
     btn.classList.toggle('is-off', !on);
     btn.setAttribute('aria-pressed', on ? 'true' : 'false');
     btn.title = on ? `Hide ${noun}` : `Show ${noun}`;
@@ -3527,6 +3537,9 @@ function setGlobeExtraShown(which, on, { syncUrl = true } = {}) {
   } else if (which === 'events') {
     globeEventsOn = Boolean(on);
     globeSet('setGlobeEventsEnabled', globeEventsOn);
+  } else if (which === 'flows') {
+    globeFlowsOn = Boolean(on);
+    globeSet('setGlobeFlowsEnabled', globeFlowsOn);
   } else return;
   syncGlobeExtrasToggleUI();
   if (syncUrl && isGlobeView()) syncDeepLinkUrl();
@@ -3536,7 +3549,7 @@ document.querySelectorAll('.globe-legend-item[data-overlay]').forEach((btn) => {
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
     const which = btn.dataset.overlay;
-    setGlobeExtraShown(which, which === 'cities' ? !globeCitiesOn : !globeEventsOn);
+    setGlobeExtraShown(which, !isGlobeExtraOn(which));
   });
 });
 syncGlobeExtrasToggleUI();
@@ -3583,6 +3596,40 @@ globeSet('setGlobePinHandlers', {
     return info ? { icon: info.icon, title: info.title } : null;
   },
   click: showGlobePinDetail,
+});
+
+// Day 53 — a tap on a trade route opens its story (years, goods, sources, how sure).
+function formatRouteSpan(route) {
+  return `${formatGlobeYear(route.start)} — ${route.end >= 2025 ? 'today' : formatGlobeYear(route.end)}`;
+}
+
+function showGlobeRouteDetail(route) {
+  if (!route) return;
+  clearGlobeEntitySelection({ syncUrl: false, closeDetail: false });
+  const kind = route.kind === 'sea' ? 'Sea trade route' : 'Land trade route';
+  const relatedItems = (route.related || [])
+    .map((ref) => resolveGlobePinRef(ref))
+    .filter(Boolean)
+    .map((info) => ({ id: info.id, name: info.title, icon: info.icon, view: info.view }));
+  const description = `${route.description} What moved: ${route.goods}.`;
+  showDetail(`${route.kind === 'sea' ? '⛵' : '🐪'} ${route.name}`, `${formatRouteSpan(route)} · ${kind}`, description, route.sources, {
+    view: 'globe',
+    id: null, // routes aren't bookmarkable yet
+    icon: '',
+    name: route.name,
+    dateLabel: formatRouteSpan(route),
+    kind: 'globe-route',
+    relatedItems,
+    confidence: route.confidence
+      ? { ...route.confidence, drawnSentence: 'Drawn as a typical track; the moving dashes show which way goods went.' }
+      : null,
+  });
+  if (isGlobeView()) syncDeepLinkUrl();
+}
+
+globeSet('setOnGlobeRouteClick', (routeId, route) => {
+  if (!isGlobeView()) return;
+  showGlobeRouteDetail(route);
 });
 
 // Keep polygon-click handler registered even across remounts
