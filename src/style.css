@@ -2538,6 +2538,41 @@ body.globe-scrub-zoomed .globe-year-ticks {
   border: 1px solid rgba(253, 224, 71, 0.75);
 }
 
+/* Day 53: trade-route flows — a gold dashed line on a soft glow */
+.globe-legend-swatch.is-flows {
+  width: 16px;
+  height: 8px;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(90deg, #fde68a 0 4px, transparent 4px 7px) center / 100% 2px no-repeat,
+    rgba(245, 196, 107, 0.28);
+}
+
+/* Day 53: route hover tooltip (Globe.gl's float tooltip) */
+.globe-route-tip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 9px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  background: rgba(10, 16, 32, 0.92);
+  color: #f8fafc;
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+.globe-route-tip b {
+  font-weight: 700;
+  color: var(--accent);
+}
+.globe-route-tip span {
+  color: rgba(226, 232, 240, 0.85);
+}
+.globe-route-tip .globe-route-tip-path {
+  font-size: 0.74rem;
+  color: rgba(226, 232, 240, 0.65);
+}
+
 /* Day 40: key items are layer toggles (tap to hide / show) */
 .globe-legend-item {
   display: inline-flex;

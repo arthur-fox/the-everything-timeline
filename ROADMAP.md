@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** **Next for the daily ship routine: item 5 (trade routes and migrations), following docs/DATA.md** (data architecture merged in #57) — the aesthetics (#53), full-screen globe (#54) and load-speed (#55) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 has started: **step 5.1 (trade routes) is done (merged, PR #59, Day 53); next for the daily ship routine is step 5.2 (migrations), following docs/DATA.md** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -760,11 +760,20 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 - Built (the simplest version that captures most of the saving): country timelines moved to `data/countries/<id>.json` (one file each, loaded when opened; data identical, checked by deep-equal on every file); all globe code + content moved into one lazy chunk (`src/globe-app.js`). One small script (`scripts/build-data.mjs`) writes the country list. No new dependencies.
 - Measured: main bundle 295 → 114 KB gz; timeline landing 336 → 158 KB; phone timeline ready 2.4 → 1.4 s; globe 1565 → 1488 KB (desktop), interactive 5.1 → 3.8 s. Details + "how to add data": [docs/DATA.md](docs/DATA.md). **All future data follows that guide.**
 - Possible follow-up (not started): topic views as lazy files (landing JS ~114 → ~50 KB gz).
+- Merged 10 Oct; all new data (trade routes onwards) follows docs/DATA.md.
 
-### 5. Movement: trade routes and migrations — NEXT (daily routine starts here; all new data follows docs/DATA.md)
+### 5. Movement: trade routes and migrations — IN PROGRESS (step 5.1 done, merged PR #59; step 5.2 migrations NEXT for the daily routine)
 
 - **Step 5.1 — Trade routes.** Dated route lines with animated flow along them: the Silk Roads, Indian Ocean monsoon trade, trans-Saharan caravans, the Amber Road, the Hanseatic League, the Manila galleons and the Atlantic triangle. Each route has its own active years and a "Flows" toggle in the key.
 - **Step 5.2 — Migrations.** Major migrations as flows over time: out of Africa (schematic), the Bantu expansion, the Austronesian voyages, Indo-European spread, the Migration Period, the Atlantic slave trade, 19th-century European emigration, the 1947 Partition. Width hints at scale; each has sources and an uncertainty level.
+
+#### Day 53 — Trade routes (step 5.1) — done (merged, PR #59)
+
+- **Data (`data/trade-routes.json`, a static file per docs/DATA.md; ≈5 KB gzipped, loaded once the globe is up, never by the timeline landing):** the seven routes the step names, each with active years, land / sea, goods, a description, sources, a confidence level with a reason, links to existing timeline entries, and one or more named paths of [lat, lng] waypoints in the direction goods moved — Silk Roads (130 BCE – 1450 CE; Hexi corridor, north and south of the Taklamakan, Kashgar → Antioch, branches to India and Constantinople), Indian Ocean monsoon trade (100 BCE – 1800; Red Sea → Malabar, Persian Gulf → Gujarat, Malabar → Malacca → Guangzhou, Gulf of Aden → Kilwa), trans-Saharan caravans (700–1650; Fez–Sijilmasa–Taghaza–Walata–Timbuktu, Gao, Ghadames, Bilma–Murzuq to Tripoli), the Amber Road (1–450; Aquileia → Carnuntum → Baltic), the Hanseatic League (1250–1669; London/Bruges, Hamburg–Lübeck, Bergen, Visby, Riga, Danzig, Reval and Novgorod), the Manila galleons (1565–1815; both crossings), and the Atlantic triangular trade (1526–1867; Europe → West Africa, the Middle Passage, Angola → Brazil, Caribbean → Europe). 29 paths.
+- **Drawing (Globe.gl paths layer):** each path is a soft glow in the route's colour (also the tap target), a dark core so the track reads over any fill or terrain, and bright dashes that move from the first waypoint to the last at the same speed (3°/s) on every route. Lines sit above every polygon band and squeeze toward the surface with the polygons as you zoom; widths are in screen pixels.
+- **Key, hover, tap:** a "Flows · trade routes" key item turns them off and on; `&flows=0` starts with them off (kept in shared links). Hover shows the route, its years and the path; a tap opens the detail panel with the description, what moved, sources, "How sure" and related timeline entries (e.g. Silk Roads → Silk Road & Classical Trade, Silk Road Trade Peaks).
+- **Validate:** `scripts/check-routes.js` (in `npm run validate`): ids, years, colours, sources, confidence, paths; every related ref resolves; land waypoints on land; every sea lane, sampled every 0.25° the way the globe draws it, stays off the simplified coastline except the first / last 70 km (harbours up estuaries) and legs marked `via: river` (Neva–Ladoga–Volkhov to Novgorod).
+- **Honest caveats:** routes are typical tracks, not logged courses, and each route is on for its whole span (no rise and fall in volume yet). Dashes show the main direction only; most of these routes carried goods both ways. Route dash lengths are fixed on the globe, so they get long close up. Tap targets are ~9–11 px wide.
 
 ### 6. Better coverage between empires
 
@@ -814,7 +823,7 @@ Next steps (not started):
 - Privacy note rewritten: goes privately to the team, by email via Formspark; lists exactly what is attached.
 - Formspark's submission quota is shared with another product: test against `https://submit-form.com/echo` (echoes, stores nothing) or a mock, not the real form.
 
-#### Day 52 — Tip jar ("☕ Support") — IN REVIEW (PR #58; Arthur must verify the addresses before merging)
+#### Day 52 — Tip jar ("☕ Support") — done (merged, PR #58)
 - Arthur: a tip jar near the Feedback pill so people can give money before any monetisation plan exists.
 - "☕ Support" pill beside Feedback (secondary: dark + gold border) in every view, desktop + phone; both pills share one dock that lifts over the scrubber / minimap / credit.
 - Panel: warm line, primary "Tip on Ko-fi" (new tab, noopener), then Crypto: BTC, ETH (Ethereum + EVM chains) and SOL, each with Copy ("Copied ✓") and a build-time inline-SVG QR code. Accessible: focus trapped, Esc closes (full screen stays), ≥44 px targets.
@@ -954,9 +963,9 @@ A sensible near-term sequence:
 38. Aesthetics refresh + Timeline/Globe switch (Arthur, 9 Oct) — Day 47 ✅ (merged, #53).
 39. Globe opens full screen by default (Arthur, 9 Oct) — Day 48 ✅ (merged, #54).
 40. Globe load speed + globe/timeline loaders (Arthur, 9 Oct) — Day 49 ✅ (merged, #55).
-41. Data architecture — static data files (done, merged PR #57).
-42. **Next: Phase 4c item 5 — trade routes and migrations (daily routine starts here; follow docs/DATA.md).**
-43. Tip jar (PR #58, in review; Arthur verifies the addresses before merge).
+41. Data architecture — static data files (Day 51) ✅ (merged, #57).
+42. Tip jar (Day 52) ✅ (merged, #58; addresses guarded by scripts/check-support.js).
+43. **Now: Phase 4c item 5 — trade routes (Day 53) ✅ (merged, #59) → migrations (step 5.2, NEXT for the daily routine; follow docs/DATA.md).**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
