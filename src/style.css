@@ -6,39 +6,87 @@
   box-sizing: border-box;
 }
 
-/* --- Theme: Dark (default) --- */
+/* ============================================================
+   Day 47 — design tokens ("Gilded Night"): ink-navy space, warm gold brand,
+   Manrope throughout (800 for the wordmark / headings, 400–600 for UI).
+   ============================================================ */
 :root,
 [data-theme="dark"] {
-  --bg: #0F172A;
-  --bg-surface: #1E293B;
-  --bg-elevated: #334155;
-  --text: #F1F5F9;
-  --text-muted: #94A3B8;
-  --accent: #818CF8;
-  --accent-glow: rgba(129, 140, 248, 0.3);
-  --header-grad-start: rgba(15, 23, 42, 1);
-  --header-grad-end: rgba(15, 23, 42, 0);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --shadow-heavy: rgba(0, 0, 0, 0.5);
-  --shadow-tooltip: rgba(0, 0, 0, 0.4);
-  --minimap-border: rgba(255, 255, 255, 0.06);
+  /* type */
+  --font-display: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-ui: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fs-2xs: 0.68rem;
+  --fs-xs: 0.74rem;
+  --fs-sm: 0.82rem;
+  --fs-md: 0.9rem;
+  --fs-lg: 1.05rem;
+  --fs-xl: 1.35rem;
+  --fs-2xl: 1.75rem;
+  --fs-3xl: 2.2rem;
+  --tracking-caps: 0.08em;
+  /* space + shape */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+  /* colour */
+  --bg: #080C16;
+  --bg-surface: #111A2C;
+  --bg-elevated: #1E2A42;
+  --text: #F1EBDD;
+  --text-muted: #C6BFAE;
+  --accent: #E4B556;
+  --accent-strong: #F3CD7A;
+  --on-accent: #1B1305;
+  --accent-glow: rgba(228, 181, 86, 0.28);
+  --brand-1: #F8E5B5;
+  --brand-2: #E4B556;
+  --brand-3: #B07F2C;
+  --brand-gradient: linear-gradient(180deg, var(--brand-1) 0%, var(--brand-2) 58%, var(--brand-3) 100%);
+  --hairline: rgba(241, 235, 221, 0.09);
+  --hairline-accent: rgba(228, 181, 86, 0.32);
+  --surface-glass: rgba(17, 26, 44, 0.78);
+  --header-grad-start: rgba(8, 12, 22, 1);
+  --header-grad-end: rgba(8, 12, 22, 0);
+  --border-subtle: var(--hairline);
+  --shadow-heavy: rgba(0, 0, 0, 0.55);
+  --shadow-tooltip: rgba(0, 0, 0, 0.45);
+  --minimap-border: rgba(241, 235, 221, 0.06);
+  --globe-halo: rgba(228, 181, 86, 0.10);
+  --star: rgba(255, 244, 220, 0.5);
+  --theme-color: #080C16;
 }
 
-/* --- Theme: Light --- */
+/* --- Theme: Light ("parchment") --- */
 [data-theme="light"] {
-  --bg: #F8FAFC;
-  --bg-surface: #E2E8F0;
-  --bg-elevated: #CBD5E1;
-  --text: #0F172A;
-  --text-muted: #475569;
-  --accent: #6366F1;
-  --accent-glow: rgba(99, 102, 241, 0.2);
-  --header-grad-start: rgba(248, 250, 252, 1);
-  --header-grad-end: rgba(248, 250, 252, 0);
-  --border-subtle: rgba(0, 0, 0, 0.1);
-  --shadow-heavy: rgba(0, 0, 0, 0.15);
-  --shadow-tooltip: rgba(0, 0, 0, 0.12);
+  --bg: #F6F1E6;
+  --bg-surface: #ECE4D3;
+  --bg-elevated: #DCCFB6;
+  --text: #1C1A16;
+  --text-muted: #5C5446;
+  --accent: #8A5C10;
+  --accent-strong: #6F4A0C;
+  --on-accent: #FFF8EA;
+  --accent-glow: rgba(138, 92, 16, 0.2);
+  --brand-1: #A8741E;
+  --brand-2: #7E5410;
+  --brand-3: #5A3C0B;
+  --hairline: rgba(28, 26, 22, 0.12);
+  --hairline-accent: rgba(138, 92, 16, 0.35);
+  --surface-glass: rgba(236, 228, 211, 0.85);
+  --header-grad-start: rgba(246, 241, 230, 1);
+  --header-grad-end: rgba(246, 241, 230, 0);
+  --shadow-heavy: rgba(60, 40, 10, 0.16);
+  --shadow-tooltip: rgba(60, 40, 10, 0.12);
   --minimap-border: rgba(0, 0, 0, 0.08);
+  --globe-halo: rgba(138, 92, 16, 0.08);
+  --theme-color: #F6F1E6;
 }
 
 html, body {
@@ -46,7 +94,7 @@ html, body {
   overflow: hidden;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
 }
 
 #app {
@@ -69,10 +117,10 @@ html, body {
 }
 
 #header h1 {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--font-display);
   font-size: 2rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #818CF8, #C084FC, #F472B6);
+  background: var(--brand-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -154,12 +202,12 @@ html, body {
   border-radius: 8px;
   font-size: 0.8rem;
   font-weight: 500;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   cursor: pointer;
   transition: all 0.15s ease;
   appearance: none;
   -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' stroke='%2394A3B8' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' stroke='%23B3AC9B' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 8px center;
 }
@@ -262,7 +310,7 @@ html, body {
   color: var(--text);
   border-radius: 10px;
   font-size: 0.82rem;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   outline: none;
   -webkit-appearance: none;
 }
@@ -307,7 +355,7 @@ html, body {
   background: transparent;
   color: var(--text);
   text-align: left;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   cursor: pointer;
 }
 
@@ -354,7 +402,7 @@ html, body {
   border-radius: 10px;
   font-size: 0.82rem;
   font-weight: 500;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
@@ -391,7 +439,7 @@ html, body {
   padding: 0 5px;
   border-radius: 999px;
   background: var(--accent);
-  color: white;
+  color: var(--on-accent);
   font-size: 0.68rem;
   font-weight: 600;
   line-height: 1;
@@ -479,7 +527,7 @@ html, body {
   color: var(--text);
   font-size: 0.78rem;
   font-weight: 500;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   cursor: pointer;
   transition: all 0.12s ease;
 }
@@ -524,7 +572,7 @@ html, body {
   color: var(--accent);
   font-size: 0.78rem;
   font-weight: 500;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   cursor: pointer;
   padding: 6px 4px;
 }
@@ -557,7 +605,7 @@ html, body {
   border-radius: 10px;
   font-size: 0.82rem;
   font-weight: 500;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
@@ -607,7 +655,7 @@ html, body {
   height: 22px;
   border-radius: 6px;
   background: var(--accent);
-  color: white;
+  color: var(--on-accent);
   font-size: 0.72rem;
   font-weight: 700;
   flex-shrink: 0;
@@ -622,7 +670,7 @@ html, body {
   color: var(--text);
   border-radius: 10px;
   font-size: 0.82rem;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   cursor: pointer;
 }
 
@@ -649,7 +697,7 @@ html, body {
   border-radius: 10px;
   font-size: 0.78rem;
   font-weight: 500;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -692,7 +740,7 @@ body.compare-active .bookmarks-toggle {
   border-radius: 10px;
   font-size: 0.82rem;
   font-weight: 500;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
@@ -723,7 +771,7 @@ body.compare-active .bookmarks-toggle {
   padding: 0 5px;
   border-radius: 999px;
   background: var(--accent);
-  color: white;
+  color: var(--on-accent);
   font-size: 0.68rem;
   font-weight: 600;
   line-height: 1;
@@ -831,7 +879,7 @@ body.compare-active .bookmarks-toggle {
   border: 0;
   background: transparent;
   color: var(--text);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   text-align: left;
   cursor: pointer;
 }
@@ -893,7 +941,7 @@ body.compare-active .bookmarks-toggle {
   color: var(--accent);
   font-size: 0.78rem;
   font-weight: 500;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   cursor: pointer;
   padding: 6px 4px;
 }
@@ -924,7 +972,7 @@ body.compare-active .bookmarks-toggle {
   color: var(--text);
   font-size: 0.82rem;
   font-weight: 500;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -1113,7 +1161,7 @@ body.compare-active .bookmarks-toggle {
 }
 
 .event-detail h2 {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--font-display);
   font-size: 1.3rem;
   margin-bottom: 4px;
 }
@@ -1143,7 +1191,7 @@ body.compare-active .bookmarks-toggle {
 }
 
 .detail-sources-heading {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -1740,7 +1788,7 @@ body.compare-active .bookmarks-toggle {
   border-radius: 10px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
   overflow: hidden;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
 }
 
 .country-picker.hidden {
@@ -1763,7 +1811,7 @@ body.compare-active .bookmarks-toggle {
   border-radius: 6px;
   color: var(--text);
   font-size: 0.8rem;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   outline: none;
   transition: border-color 0.15s ease;
   -webkit-appearance: none;
@@ -1942,7 +1990,7 @@ body.globe-active .filters-toggle {
   isolation: isolate;
   border: 1px solid var(--border-subtle);
   background:
-    radial-gradient(ellipse at 50% 40%, rgba(129, 140, 248, 0.18), transparent 55%),
+    radial-gradient(ellipse at 50% 40%, var(--globe-halo), transparent 55%),
     var(--bg);
   box-shadow: 0 12px 28px color-mix(in srgb, var(--shadow-heavy) 55%, transparent);
   touch-action: none; /* let Globe.gl / orbit controls own gestures */
@@ -1986,18 +2034,18 @@ body.globe-active .filters-toggle {
 }
 
 .globe-title {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--font-display);
   font-size: 1.6rem;
   margin: 0;
   flex-shrink: 0;
-  background: linear-gradient(135deg, #818CF8, #C084FC, #F472B6);
+  background: var(--brand-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 [data-theme="light"] .globe-title {
-  background: linear-gradient(135deg, #4F46E5, #7C3AED, #DB2777);
+  background: var(--brand-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -2072,7 +2120,7 @@ body.globe-active .filters-toggle {
 }
 
 .globe-year-label {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--font-display);
   font-size: 1.35rem;
   font-weight: 700;
   color: var(--accent);
@@ -2108,7 +2156,7 @@ body.globe-scrub-zoomed .globe-scrub-range {
   border: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
   background: var(--bg-elevated);
   color: var(--text);
-  font: 600 0.95rem/1 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font: 600 0.95rem/1 var(--font-ui);
   cursor: pointer;
 }
 
@@ -2173,7 +2221,7 @@ body.globe-scrub-zoomed .globe-year-ticks {
   color: var(--text-muted);
   font-size: 0.75rem;
   font-weight: 500;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -2329,7 +2377,7 @@ body.globe-scrub-zoomed .globe-year-ticks {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font: 700 9px/1 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font: 700 9px/1 var(--font-ui);
   color: #fff;
   background: rgba(15, 23, 42, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.6);
@@ -2910,7 +2958,7 @@ body::before {
 
 /* Light mode title gradient - darker for contrast */
 [data-theme="light"] #header h1 {
-  background: linear-gradient(135deg, #4F46E5, #7C3AED, #DB2777);
+  background: var(--brand-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -2941,7 +2989,7 @@ body::before {
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   color: var(--text);
-  font: 600 0.75rem/1 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font: 600 0.75rem/1 var(--font-ui);
   letter-spacing: 0.02em;
   cursor: pointer;
   box-shadow: 0 4px 14px var(--shadow-tooltip);
@@ -3301,7 +3349,7 @@ body.globe-fullscreen .event-detail #detail-description {
   border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
   background: color-mix(in srgb, var(--bg-surface) 70%, transparent);
   color: var(--text-muted);
-  font: 500 0.78rem/1 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font: 500 0.78rem/1 var(--font-ui);
   cursor: pointer;
   transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
   white-space: nowrap;
@@ -3402,7 +3450,7 @@ body.globe-fullscreen .globe-canvas-host > .feedback-open-fs {
   border-radius: 16px;
   box-shadow: 0 18px 50px var(--shadow-heavy);
   padding: 16px 18px 14px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
 }
 
 .feedback-card:focus {
@@ -3417,7 +3465,7 @@ body.globe-fullscreen .globe-canvas-host > .feedback-open-fs {
 }
 
 .feedback-head h2 {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--font-display);
   font-size: 1.25rem;
   margin: 0;
 }
@@ -3506,7 +3554,7 @@ body.globe-fullscreen .globe-canvas-host > .feedback-open-fs {
   border: 1px solid var(--bg-elevated);
   background: var(--bg);
   color: var(--text);
-  font: 400 0.88rem/1.4 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font: 400 0.88rem/1.4 var(--font-ui);
 }
 
 textarea.feedback-input {
@@ -3614,7 +3662,7 @@ textarea.feedback-input {
   min-height: 38px;
   padding: 8px 14px;
   border-radius: 10px;
-  font: 600 0.84rem/1 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font: 600 0.84rem/1 var(--font-ui);
   cursor: pointer;
 }
 
@@ -3627,7 +3675,7 @@ textarea.feedback-input {
 .feedback-send {
   border: 1px solid transparent;
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 .feedback-send:disabled {
@@ -3686,5 +3734,504 @@ body.globe-fullscreen .globe-canvas-host > .globe-credit {
     left: auto;
     right: max(12px, env(safe-area-inset-right, 0px));
     max-width: 220px;
+  }
+}
+
+/* ============================================================
+   Day 47 — brand refresh: header with Timeline / Globe switch + wordmark,
+   component polish (all via the tokens at the top of this file).
+   ============================================================ */
+:root {
+  --canvas-axis: #2A3550;
+  --canvas-axis-light: #4A5570;
+}
+
+[data-theme="light"] {
+  --canvas-axis: #CDBFA0;
+  --canvas-axis-light: #9C8E72;
+}
+
+html,
+body {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'kern', 'liga';
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 85% -10%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(70, 110, 190, 0.10), transparent 60%),
+    var(--bg);
+}
+
+[data-theme="light"] body {
+  background: var(--bg);
+}
+
+/* --- Header: [mode switch] [wordmark] [feedback] --- */
+#header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  column-gap: var(--space-4);
+  padding: var(--space-4) var(--space-5) var(--space-2);
+  text-align: center;
+}
+
+#header > .mode-switch {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  align-self: center;
+}
+
+#header > .header-brand {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+#header > .active-view-label {
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: center;
+}
+
+#header > .feedback-open {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  align-self: center;
+  position: static;
+}
+
+#header .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+#header .brand-mark {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--accent) 35%, transparent));
+}
+
+#header h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-3xl);
+  line-height: 1;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--brand-2);
+  padding-top: 0.08em;
+}
+
+#header .subtitle {
+  margin-top: var(--space-2);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: var(--fs-lg);
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+}
+
+#header .active-view-label {
+  margin-top: var(--space-2);
+  border-color: var(--hairline);
+  background: color-mix(in srgb, var(--bg-surface) 70%, transparent);
+  font-size: var(--fs-xs);
+}
+
+#header .active-view-label::before {
+  color: var(--accent);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-caps);
+}
+
+/* --- Timeline / Globe segmented switch --- */
+.mode-switch {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--hairline-accent);
+  background: color-mix(in srgb, var(--bg-surface) 85%, transparent);
+  box-shadow: 0 6px 20px var(--shadow-tooltip), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.mode-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 0 16px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-muted);
+  font: 700 var(--fs-sm) / 1 var(--font-ui);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.mode-switch-btn:hover {
+  color: var(--text);
+}
+
+.mode-switch-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.mode-switch-btn[aria-pressed='true'] {
+  background: var(--brand-gradient);
+  color: var(--on-accent);
+  box-shadow: 0 2px 10px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/* --- Controls, buttons, chips --- */
+.view-select,
+.timeline-search,
+.filters-toggle,
+.compare-toggle,
+.bookmarks-toggle,
+.zoom-controls button,
+#theme-toggle {
+  border-color: var(--hairline) !important;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+}
+
+.view-select:hover,
+.filters-toggle:hover:not(:disabled),
+.compare-toggle:hover,
+.bookmarks-toggle:hover,
+.zoom-controls button:hover,
+#theme-toggle:hover {
+  border-color: var(--hairline-accent) !important;
+}
+
+.era-btn {
+  border-color: var(--hairline);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-ui);
+  letter-spacing: 0.01em;
+}
+
+.era-btn:hover {
+  color: #fff;
+}
+
+/* --- Panels: hairline + faint gold top edge --- */
+.event-detail,
+.bookmarks-panel,
+.filters-panel,
+.feedback-card,
+.globe-copy,
+.globe-scrubber,
+.country-picker {
+  border-color: var(--hairline);
+  box-shadow: 0 18px 50px var(--shadow-heavy), inset 0 1px 0 color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.event-detail h2,
+.feedback-head h2,
+.globe-title,
+.bookmarks-panel h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+}
+
+.event-detail h2 {
+  font-size: var(--fs-2xl);
+  line-height: 1.1;
+}
+
+.event-detail #detail-date {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.globe-title {
+  font-size: var(--fs-2xl);
+}
+
+.feedback-head h2 {
+  font-size: var(--fs-xl);
+}
+
+/* --- Globe: scrubber + key --- */
+.globe-year-heading {
+  color: var(--accent);
+  letter-spacing: var(--tracking-caps);
+}
+
+.globe-year-label {
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--text);
+}
+
+.globe-year-preset {
+  border-color: var(--hairline);
+  background: color-mix(in srgb, var(--bg-elevated) 70%, transparent);
+}
+
+.globe-canvas-host {
+  border-color: var(--hairline);
+}
+
+.globe-canvas-host > .globe-legend,
+.globe-canvas-host > .globe-fullscreen-toggle,
+.feedback-open {
+  border-color: var(--hairline);
+}
+
+.feedback-send {
+  background: var(--brand-gradient);
+  color: var(--on-accent);
+}
+
+/* Starfield: a touch warmer */
+body::before {
+  opacity: 0.85;
+}
+
+/* --- Phones --- */
+@media (max-width: 640px) {
+  #header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: 10px 12px 6px;
+  }
+
+  #header > .header-brand {
+    order: 2;
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  #header > .mode-switch {
+    order: 1;
+  }
+
+  #header > .feedback-open {
+    order: 3;
+    margin-left: 0;
+  }
+
+  #header > .active-view-label {
+    display: none;
+  }
+
+  #header .brand {
+    gap: 6px;
+    min-width: 0;
+  }
+
+  #header .brand-mark {
+    width: 24px;
+    height: 24px;
+  }
+
+  #header h1 {
+    font-size: 0.86rem;
+    line-height: 0.98;
+    letter-spacing: 0.08em;
+    text-align: left;
+    min-width: 0;
+  }
+
+  #header h1 .title-short {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mode-switch-btn {
+    min-height: 32px;
+    padding: 0 11px;
+    gap: 5px;
+    font-size: var(--fs-xs);
+  }
+}
+
+@media (max-width: 400px) {
+  .mode-switch-btn {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 370px) {
+  .mode-switch-btn svg {
+    display: none;
+  }
+}
+
+/* ============================================================
+   Day 47b — readability pass (Arthur: "make it easier to read")
+   ============================================================ */
+#header h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2.05rem;
+  letter-spacing: -0.015em;
+  text-transform: none;
+  line-height: 1.05;
+  padding-top: 0;
+}
+
+#header .subtitle {
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+
+#header .active-view-label {
+  font-size: var(--fs-sm);
+}
+
+.event-detail h2,
+.feedback-head h2,
+.globe-title,
+.bookmarks-panel h2 {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.event-detail h2 {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.globe-title {
+  font-size: 1.6rem;
+}
+
+.event-detail #detail-date {
+  font-size: var(--fs-sm);
+  letter-spacing: 0.05em;
+}
+
+.event-detail #detail-description,
+.globe-lede {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.globe-note,
+.globe-copy p {
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.globe-year-label {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.globe-year-heading {
+  font-size: var(--fs-xs);
+}
+
+.globe-year-ticks {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.globe-year-preset,
+.era-btn {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.globe-canvas-host > .globe-legend {
+  font-size: var(--fs-sm);
+}
+
+@media (max-width: 640px) {
+  .globe-canvas-host > .globe-legend {
+    font-size: var(--fs-xs);
+  }
+}
+
+.globe-legend-item {
+  font-weight: 600;
+}
+
+.globe-legend-sub {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.view-select,
+.timeline-search,
+.filters-toggle,
+.compare-toggle,
+.bookmarks-toggle {
+  font-size: var(--fs-sm);
+}
+
+.mode-switch-btn {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 640px) {
+  #header h1 {
+    font-size: 0.98rem;
+    letter-spacing: -0.005em;
+    line-height: 1.05;
+  }
+
+  .event-detail #detail-description {
+    font-size: 1rem;
+  }
+}
+
+/* Day 47c — gradient text is painted only inside the element box
+   (background-clip: text), so tight line-heights clipped descenders
+   ("g" in Everything). Give the glyphs room, cancel it with a negative
+   margin so the header height stays put. */
+#header h1,
+.globe-title {
+  line-height: 1.2;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+#header h1 {
+  margin-top: -0.06em;
+}
+
+@media (max-width: 640px) {
+  #header h1 {
+    line-height: 1.15;
+  }
+
+  #header h1 .title-short {
+    gap: 0;
   }
 }

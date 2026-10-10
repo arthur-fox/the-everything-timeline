@@ -101,9 +101,9 @@ export function drawSwimLaneView(ctx, w, h, viewStart, viewEnd, scrollY, hovered
   const regionIndent = Math.round(12 * s);
   const barLabelIndent = Math.round(6 * s);
   const barRadius = Math.round(4 * s);
-  const headerFontSize = Math.round(11 * s);
-  const barLabelFontSize = Math.round(11 * s);
-  const periodLabelFontSize = Math.round(9 * s);
+  const headerFontSize = Math.round(12 * s);
+  const barLabelFontSize = Math.round(12 * s);
+  const periodLabelFontSize = Math.round(10 * s);
 
   // Time axis at top
   drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort, s, timeAxisH);
@@ -123,7 +123,7 @@ export function drawSwimLaneView(ctx, w, h, viewStart, viewEnd, scrollY, hovered
       ctx.fillRect(0, y, w, regionHeaderH);
 
       ctx.fillStyle = category.color;
-      ctx.font = `600 ${headerFontSize}px Inter, sans-serif`;
+      ctx.font = `600 ${headerFontSize}px ${currentTheme().font}`;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
       ctx.fillText(category.name.toUpperCase(), regionIndent, y + regionHeaderH / 2);
@@ -175,7 +175,7 @@ export function drawSwimLaneView(ctx, w, h, viewStart, viewEnd, scrollY, hovered
             // Period label in lower portion — skip if overlaps previous label
             if (clampedX2 - clampedX1 > 50 * s) {
               ctx.fillStyle = theme.periodLabelColor;
-              ctx.font = `400 ${periodLabelFontSize}px Inter, sans-serif`;
+              ctx.font = `400 ${periodLabelFontSize}px ${currentTheme().font}`;
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
               const periodLabel = period.name;
@@ -193,7 +193,7 @@ export function drawSwimLaneView(ctx, w, h, viewStart, viewEnd, scrollY, hovered
         // Bar name label — top portion if periods exist, centred if not
         if (barW > 50 * s) {
           ctx.fillStyle = theme.text;
-          ctx.font = `500 ${barLabelFontSize}px Inter, sans-serif`;
+          ctx.font = `500 ${barLabelFontSize}px ${currentTheme().font}`;
           ctx.textAlign = 'left';
           ctx.textBaseline = 'middle';
           const label = bar.item.icon + ' ' + bar.item.name;
@@ -229,7 +229,7 @@ function drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort, scale, timeAx
   const s = scale || 1;
   const axisH = timeAxisH || Math.round(TIME_AXIS_HEIGHT * s);
   const axisY = axisH - 1;
-  const tickFontSize = Math.round(10 * s);
+  const tickFontSize = Math.round(11.5 * s);
   const tickHalf = Math.round(5 * s);
   const tickLabelOffset = Math.round(6 * s);
 
@@ -276,7 +276,7 @@ function drawTimeAxis(ctx, w, viewStart, viewEnd, formatYearShort, scale, timeAx
     ctx.stroke();
 
     ctx.fillStyle = theme.textMuted;
-    ctx.font = `400 ${tickFontSize}px Inter, sans-serif`;
+    ctx.font = `400 ${tickFontSize}px ${currentTheme().font}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'bottom';
     ctx.fillText(formatYearShort(year), x, axisY - tickLabelOffset);

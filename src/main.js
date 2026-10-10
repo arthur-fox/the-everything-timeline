@@ -1050,7 +1050,7 @@ function drawCosmicTimeline() {
   const baseOffset = Math.round(40 * s);
   const hoverGrow = Math.round(4 * s);
   const connectorDash = Math.round(3 * s);
-  const eraFontSize = Math.round(11 * s);
+  const eraFontSize = Math.round(12 * s);
   const iconFontSize = Math.max(10, Math.round(14 * s));
 
   // Era backgrounds
@@ -1068,7 +1068,7 @@ function drawCosmicTimeline() {
     if (x2 - x1 > 60 * s) {
       ctx.save();
       ctx.fillStyle = era.color + theme.eraLabelAlpha;
-      ctx.font = `600 ${eraFontSize}px Inter, sans-serif`;
+      ctx.font = `600 ${eraFontSize}px ${currentTheme().font}`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillText(era.name, midX, Math.round(8 * s));
@@ -1157,12 +1157,12 @@ function drawCosmicTimeline() {
 function drawTicks(w, h, axisY) {
   const theme = currentTheme();
   const s = uiScale;
-  const tickFontSize = Math.round(10 * s);
+  const tickFontSize = Math.round(11.5 * s);
   const tickHalf = Math.round(6 * s);
   const tickLabelOffset = Math.round(12 * s);
 
   ctx.fillStyle = theme.textMuted;
-  ctx.font = `400 ${tickFontSize}px Inter, sans-serif`;
+  ctx.font = `400 ${tickFontSize}px ${currentTheme().font}`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
 
@@ -1322,7 +1322,7 @@ function drawCompareView() {
   const labelB = 'B · ' + getCompareViewLabel(compareRight);
   const midLabel = 'vs';
   const fontSize = Math.round(11 * uiScale);
-  ctx.font = `600 ${fontSize}px Inter, sans-serif`;
+  ctx.font = `600 ${fontSize}px ${currentTheme().font}`;
   ctx.textBaseline = 'middle';
   ctx.fillStyle = theme.text;
   ctx.textAlign = 'left';
@@ -2058,7 +2058,38 @@ function updateActiveViewChrome() {
   // Country views have no dedicated <option>; map them onto the sentinel.
   const isCountry = Boolean(country);
   viewSelect.value = isCountry ? 'countries' : currentView;
+  syncModeSwitch();
 }
+
+// Day 47 — Timeline / Globe mode switch (top left). "Timeline" returns to the last
+// non-globe view (any topic or country timeline); the view select keeps every view.
+// `var` (not let/const): syncModeSwitch can run from updateActiveViewChrome before this line.
+var lastTimelineView = 'cosmic';
+
+function syncModeSwitch() {
+  if (currentView !== 'globe') lastTimelineView = currentView;
+  const mode = currentView === 'globe' ? 'globe' : 'timeline';
+  document.querySelectorAll('.mode-switch-btn').forEach((b) => {
+    const on = b.dataset.mode === mode;
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    b.classList.toggle('is-active', on);
+  });
+  document.documentElement.dataset.mode = mode;
+}
+
+document.querySelectorAll('.mode-switch-btn').forEach((b) =>
+  b.addEventListener('click', () => {
+    const want = b.dataset.mode;
+    if (want === 'globe') {
+      if (currentView !== 'globe') switchView('globe');
+      return;
+    }
+    if (currentView !== 'globe' && !compareMode) return;
+    const target = lastTimelineView && lastTimelineView !== 'globe' ? lastTimelineView : 'cosmic';
+    if (COUNTRY_REGISTRY.some((c) => c.id === target)) selectCountry(target);
+    else switchView(target);
+  }),
+);
 
 // Set the select to the correct option after picker closes.
 // When a country is active, currentView is e.g. 'us' which has no <option>,
@@ -2499,6 +2530,7 @@ function selectCountry(countryId) {
   getOrCreateCountryState(countryId);
   currentView = countryId;
   eraNav.style.display = 'none';
+  setGlobeModeActive(false); // Day 47: leaving the globe for a country timeline (switch or picker)
   updateActiveViewChrome();
   document.getElementById('event-detail').classList.add('hidden');
   tooltip.classList.remove('visible');
@@ -4214,6 +4246,8 @@ document.addEventListener('visibilitychange', () => {
 // Theme toggle
 // ============================================================
 initTheme();
+// Day 47: redraw the canvas once the brand web fonts have loaded.
+document.fonts?.ready?.then(() => draw());
 const themeToggleBtn = document.getElementById('theme-toggle');
 themeToggleBtn.textContent = currentTheme().name === 'dark' ? '🌙' : '☀️';
 themeToggleBtn.addEventListener('click', () => {

@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** Next unfinished item for the daily ship routine: item 5 (trade routes and migrations). Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** Next: **the daily ship routine must NOT start item 5 (trade routes) until Arthur has reviewed the Day 47 aesthetics PR (#53)** — see "Aesthetics refresh + Timeline/Globe switch" just above item 5. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -744,6 +744,14 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 - **Kept:** the phone full-screen credit moved above the scrubber (the key wraps to two rows now; same change as PR #49, so the two merge cleanly).
 - **Honest caveats:** confidence is per shape, not per border segment, so a state with one well-known coast and one guessed frontier gets one level. The defaults are by era and layer; only 11 polities have hand-written reasons. The fade follows the shape's own edge, including coasts, so a conjectural coastal people fades at the sea too.
 - **Follow-up:** per-segment confidence (coasts and rivers documented, steppe frontiers guessed); hand-written reasons for the biggest empires; a short "how sure" note in the timeline's own detail panel.
+
+### Aesthetics refresh + Timeline/Globe switch (Arthur, 9 Oct 2026) — CURRENT ITEM
+
+> "Before continuing with the roadmap I want us to improve the aesthetics, and I want Globe mode to be a button that we switch between right at the start … I don't like the current font and Purple title … more of a colour and branding thing and font sizes."
+
+- **Status: Day 47 — IN REVIEW (PR #53). Do not start this item again, and do NOT start item 5 (trade routes) until Arthur has reviewed and merged #53.** If #53 is still unmerged when the daily ship routine fires (9:24am BRT, 10 Oct), the routine should at most polish #53 per Arthur's review comments (push to its branch, no new feature PR).
+- Built: Timeline / Globe segmented switch top-left (desktop + phone; hidden in full-screen globe; `view=` deep links unchanged; topic + country timelines still in the view select, "Timeline" returns to the last one). "Gilded Night" identity: ink-navy space background, warm gold brand, Manrope throughout (bold 800 title-case wordmark and headings; Cormorant Garamond dropped on review as hard to read); gold mark (globe + timeline line + star) and favicon; design tokens (type scale, spacing, radii, colours) at the top of `src/style.css`, canvas reads them via `src/theme.js`; parchment light theme; new og-image + theme-color.  Arthur picked the gold palette (alternatives removed); readability pass: larger detail/panel text (16px), chips, key, scrubber ticks and canvas axis labels, brighter secondary text.
+- After review: continue with item 5.
 
 ### 5. Movement: trade routes and migrations
 
@@ -767,9 +775,9 @@ Arthur: replace the plain background with a starfield and space scene.
 
 ## Custom domain & sharing (Arthur, 9 Oct 2026)
 
-- **Status: step 1 built on Day 46 — IN REVIEW (PR #52). Do not start this item again.** Merge right after theeverythingtimeline.com is set in Settings → Pages.
+- **Status: step 1 done on Day 46 (merged, PR #52; live at https://theeverythingtimeline.com/ since 9 Oct).**
 
-#### Day 46 — theeverythingtimeline.com (step 1) — in review (PR #52)
+#### Day 46 — theeverythingtimeline.com (step 1) — done (merged, PR #52)
 - Site at the root (`base: '/'`, `public/CNAME`); PR previews at `/pr-preview/pr-N/` once the domain is live (base rewritten in `vite.config.js`, no workflow change); canonical + description + Open Graph / Twitter card with a 1200×630 globe image (`public/og-image.png`).
 
 Next steps (not started):
@@ -781,7 +789,7 @@ Next steps (not started):
 
 > "Can you add a feedback button so that people can give feedback … so we can eventually figure out how to have paid features for this." Also: the site will move to a proper domain soon.
 
-- **Status: step 1 done on Day 45 (merged, PR #51).** The daily ship routine should move on to Phase 4c item 5 (trade routes and migrations).
+- **Status: step 1 done on Day 45 (merged, PR #51).**
 
 #### Day 45 — Feedback button (step 1) — done (merged, PR #51)
 - Unobtrusive **Feedback** button in every view (header top-right on desktop, icon on phones; bottom-left in the full-screen globe). In-app panel: 1–5 emoji rating, "What would you love to see?", optional "Would you pay for…?" (ad-free + early access, saved custom timelines & sharing, classroom / teacher mode, high-res exports & posters, deeper data layers & map packs, offline / installable app, something else), optional email.
@@ -921,6 +929,7 @@ A sensible near-term sequence:
 34. Phase 4c (Arthur, 8 Oct) — real nations 1815–1914 (Day 41) ✅ (merged, #47) → labels by zoom (Day 42) ✅ (merged, #48) → dated cities + pinned events (Day 43) ✅ (merged, #49) → showing uncertainty (Day 44) ✅ (merged, #50) → trade routes and migrations → coverage between empires → space background (stars, Milky Way, constellations).
 35. Phase 5 continued — topic pack 1 (item 13, e.g. Medicine & disease or Climate history) or country pack 2, alternating; keep globe-entity links in sync; only revisit topology if a review spots stiff morphs.
 36. Feedback & paid features discovery (Arthur, 9 Oct) — Day 45 feedback button ✅ (merged, #51) → configure a real form endpoint → tally "would you pay for…?" answers.
-37. Custom domain theeverythingtimeline.com (Day 46, in review, #52; do not start again) → per-year share pages + og images.
+37. Custom domain theeverythingtimeline.com (Day 46) ✅ (merged, #52) → per-year share pages + og images.
+38. **Current: Aesthetics refresh + Timeline/Globe switch (Arthur, 9 Oct) — Day 47, IN REVIEW (#53).** Hold Phase 4c item 5 (trade routes) until Arthur has reviewed it.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
