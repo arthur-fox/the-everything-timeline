@@ -15,110 +15,63 @@ import { artItems, artCategories } from './art.js';
 import { economicsItems, economicsCategories } from './economics.js';
 import { warsItems, warsCategories } from './wars.js';
 import { cosmicHistoryItems, cosmicHistoryCategories, COSMIC_LOG_MIN, COSMIC_LOG_MAX } from './cosmic-history.js';
-import { ukItems, ukCategories } from './countries/uk.js';
-import { franceItems, franceCategories } from './countries/france.js';
-import { chinaItems, chinaCategories } from './countries/china.js';
-import { usItems, usCategories } from './countries/us.js';
-import { indiaItems, indiaCategories } from './countries/india.js';
-import { germanyItems, germanyCategories } from './countries/germany.js';
-import { russiaItems, russiaCategories } from './countries/russia.js';
-import { japanItems, japanCategories } from './countries/japan.js';
-import { italyItems, italyCategories } from './countries/italy.js';
-import { spainItems, spainCategories } from './countries/spain.js';
-import { turkeyItems, turkeyCategories } from './countries/turkey.js';
-import { egyptItems, egyptCategories } from './countries/egypt.js';
-import { iranItems, iranCategories } from './countries/iran.js';
-import { brazilItems, brazilCategories } from './countries/brazil.js';
-import { mexicoItems, mexicoCategories } from './countries/mexico.js';
-import { greeceItems, greeceCategories } from './countries/greece.js';
-import { portugalItems, portugalCategories } from './countries/portugal.js';
-import { netherlandsItems, netherlandsCategories } from './countries/netherlands.js';
-import { southKoreaItems, southKoreaCategories } from './countries/south-korea.js';
-import { australiaItems, australiaCategories } from './countries/australia.js';
-import { nigeriaItems, nigeriaCategories } from './countries/nigeria.js';
-import { ethiopiaItems, ethiopiaCategories } from './countries/ethiopia.js';
-import { southAfricaItems, southAfricaCategories } from './countries/south-africa.js';
-import { vietnamItems, vietnamCategories } from './countries/vietnam.js';
-import { indonesiaItems, indonesiaCategories } from './countries/indonesia.js';
-import { thailandItems, thailandCategories } from './countries/thailand.js';
-import { pakistanItems, pakistanCategories } from './countries/pakistan.js';
-import { saudiArabiaItems, saudiArabiaCategories } from './countries/saudi-arabia.js';
-import { polandItems, polandCategories } from './countries/poland.js';
-import { swedenItems, swedenCategories } from './countries/sweden.js';
-import { canadaItems, canadaCategories } from './countries/canada.js';
-import { argentinaItems, argentinaCategories } from './countries/argentina.js';
-import { peruItems, peruCategories } from './countries/peru.js';
-import { ghanaItems, ghanaCategories } from './countries/ghana.js';
-import { kenyaItems, kenyaCategories } from './countries/kenya.js';
-import { moroccoItems, moroccoCategories } from './countries/morocco.js';
-import { iraqItems, iraqCategories } from './countries/iraq.js';
-import { philippinesItems, philippinesCategories } from './countries/philippines.js';
+import COUNTRIES_INDEX from './generated/countries-index.json';
 import { currentTheme, initTheme, toggleTheme } from './theme.js';
-import { mountGlobe, pauseGlobe, destroyGlobe, setGlobeOverlayYear, setGlobeSelectedEntity, setOnGlobePolygonClick, setGlobeHiddenLayers, GLOBE_LAYER_KEYS, setGlobeLabelsEnabled, setGlobeCertaintyEnabled, setGlobeCitiesEnabled, setGlobeEventsEnabled, setGlobePinHandlers, getGlobeCameraAt, prefetchGlobe, getGlobeLoadSteps } from './globe-view.js';
+import { GLOBE_LAYER_KEYS, NATIONS_START as GLOBE_NATIONS_START } from './globe-constants.js';
+
+// Day 51: all globe code + content is one lazy chunk (src/globe-app.js). `G` is its module
+// once loaded; setter calls made before that are queued and replayed in order.
+let G = null;
+let globeAppPromise = null;
+const globeCallQueue = [];
+function loadGlobeApp() {
+  if (!globeAppPromise) {
+    // globe.gl + three are requested alongside (not after) the globe chunk so they download in parallel.
+    import('globe.gl').catch(() => {});
+    import('three').catch(() => {});
+    new Image().src = new URL('./data/earth-1024.webp', import.meta.url).href; // first-paint texture
+    globeAppPromise = import('./globe-app.js').then((m) => {
+      G = m;
+      for (const [name, args] of globeCallQueue.splice(0)) m[name](...args);
+      return m;
+    }, (err) => {
+      globeAppPromise = null;
+      throw err;
+    });
+  }
+  return globeAppPromise;
+}
+function globeSet(name, ...args) {
+  if (G) return G[name](...args);
+  globeCallQueue.push([name, args]);
+  return undefined;
+}
 import { initFeedback } from './feedback.js';
 import { confidenceForEntity, confidenceForNationPeriod, CONFIDENCE_LABEL, CONFIDENCE_DRAWING } from './globe-confidence.js';
-import {
-  getOverlayLayerFilter,
-  setOverlayLayerFilter,
-  formatOverlayYear,
-  getSpatialEntityById,
-  getEntityLifespan,
-  getActiveOverlaysAtYear,
-} from './globe-overlays.js';
-import {
-  getActiveSchematicOverlaysAtYear,
-  getActiveNationsAtYear,
-  getNationEntityById,
-  getNationPeriodAtYear,
-  isNationEntityId,
-  isNationActiveAtYear,
-  nearestNationYear,
-  NATIONS_HANDOFF_YEAR as GLOBE_NATIONS_START,
-} from './globe-nations.js';
 
 // ============================================================
 // Country registry — add new countries here to scale to 190+
 // ============================================================
-const COUNTRY_REGISTRY = [
-  { id: 'argentina',    name: 'Argentina',       flag: '🇦🇷', minYear: -11000,  maxYear: 2025, load: () => ({ items: argentinaItems,    categories: argentinaCategories }) },
-  { id: 'australia',    name: 'Australia',       flag: '🇦🇺', minYear: -65000,  maxYear: 2025, load: () => ({ items: australiaItems,    categories: australiaCategories }) },
-  { id: 'brazil',       name: 'Brazil',          flag: '🇧🇷', minYear: -12000,  maxYear: 2025, load: () => ({ items: brazilItems,       categories: brazilCategories }) },
-  { id: 'canada',       name: 'Canada',          flag: '🇨🇦', minYear: -15000,  maxYear: 2025, load: () => ({ items: canadaItems,       categories: canadaCategories }) },
-  { id: 'china',        name: 'China',           flag: '🇨🇳', minYear: -2100,  maxYear: 2025, load: () => ({ items: chinaItems,        categories: chinaCategories }) },
-  { id: 'egypt',        name: 'Egypt',           flag: '🇪🇬', minYear: -3100,   maxYear: 2025, load: () => ({ items: egyptItems,        categories: egyptCategories }) },
-  { id: 'ethiopia',     name: 'Ethiopia',        flag: '🇪🇹', minYear: -1000,   maxYear: 2025, load: () => ({ items: ethiopiaItems,     categories: ethiopiaCategories }) },
-  { id: 'france',       name: 'France',          flag: '🇫🇷', minYear: -51,     maxYear: 2025, load: () => ({ items: franceItems,       categories: franceCategories }) },
-  { id: 'germany',      name: 'Germany',         flag: '🇩🇪', minYear: -50,    maxYear: 2025, load: () => ({ items: germanyItems,      categories: germanyCategories }) },
-  { id: 'ghana',        name: 'Ghana',           flag: '🇬🇭', minYear: 1300,    maxYear: 2025, load: () => ({ items: ghanaItems,        categories: ghanaCategories }) },
-  { id: 'greece',       name: 'Greece',          flag: '🇬🇷', minYear: -3000,  maxYear: 2025, load: () => ({ items: greeceItems,       categories: greeceCategories }) },
-  { id: 'india',        name: 'India',           flag: '🇮🇳', minYear: -2600,   maxYear: 2025, load: () => ({ items: indiaItems,        categories: indiaCategories }) },
-  { id: 'indonesia',    name: 'Indonesia',       flag: '🇮🇩', minYear: -2500,   maxYear: 2025, load: () => ({ items: indonesiaItems,    categories: indonesiaCategories }) },
-  { id: 'iran',         name: 'Iran',            flag: '🇮🇷', minYear: -550,   maxYear: 2025, load: () => ({ items: iranItems,         categories: iranCategories }) },
-  { id: 'iraq',         name: 'Iraq',            flag: '🇮🇶', minYear: -4000,   maxYear: 2025, load: () => ({ items: iraqItems,         categories: iraqCategories }) },
-  { id: 'italy',        name: 'Italy',           flag: '🇮🇹', minYear: -753,   maxYear: 2025, load: () => ({ items: italyItems,        categories: italyCategories }) },
-  { id: 'japan',        name: 'Japan',           flag: '🇯🇵', minYear: -300,   maxYear: 2025, load: () => ({ items: japanItems,        categories: japanCategories }) },
-  { id: 'kenya',        name: 'Kenya',           flag: '🇰🇪', minYear: -3000,   maxYear: 2025, load: () => ({ items: kenyaItems,        categories: kenyaCategories }) },
-  { id: 'mexico',       name: 'Mexico',          flag: '🇲🇽', minYear: -2000,   maxYear: 2025, load: () => ({ items: mexicoItems,       categories: mexicoCategories }) },
-  { id: 'morocco',      name: 'Morocco',         flag: '🇲🇦', minYear: -500,    maxYear: 2025, load: () => ({ items: moroccoItems,      categories: moroccoCategories }) },
-  { id: 'netherlands',  name: 'Netherlands',     flag: '🇳🇱', minYear: 1477,    maxYear: 2025, load: () => ({ items: netherlandsItems,  categories: netherlandsCategories }) },
-  { id: 'nigeria',      name: 'Nigeria',         flag: '🇳🇬', minYear: -1500,   maxYear: 2025, load: () => ({ items: nigeriaItems,      categories: nigeriaCategories }) },
-  { id: 'pakistan',     name: 'Pakistan',        flag: '🇵🇰', minYear: -2600,   maxYear: 2025, load: () => ({ items: pakistanItems,     categories: pakistanCategories }) },
-  { id: 'peru',         name: 'Peru',            flag: '🇵🇪', minYear: -3000,   maxYear: 2025, load: () => ({ items: peruItems,         categories: peruCategories }) },
-  { id: 'philippines',  name: 'Philippines',     flag: '🇵🇭', minYear: 900,     maxYear: 2025, load: () => ({ items: philippinesItems,  categories: philippinesCategories }) },
-  { id: 'poland',       name: 'Poland',          flag: '🇵🇱', minYear: 960,     maxYear: 2025, load: () => ({ items: polandItems,       categories: polandCategories }) },
-  { id: 'portugal',     name: 'Portugal',        flag: '🇵🇹', minYear: 1139,    maxYear: 2025, load: () => ({ items: portugalItems,     categories: portugalCategories }) },
-  { id: 'russia',       name: 'Russia',          flag: '🇷🇺', minYear: 862,     maxYear: 2025, load: () => ({ items: russiaItems,       categories: russiaCategories }) },
-  { id: 'saudi-arabia', name: 'Saudi Arabia',    flag: '🇸🇦', minYear: -3000,   maxYear: 2025, load: () => ({ items: saudiArabiaItems,  categories: saudiArabiaCategories }) },
-  { id: 'south-africa', name: 'South Africa',    flag: '🇿🇦', minYear: -100000, maxYear: 2025, load: () => ({ items: southAfricaItems,  categories: southAfricaCategories }) },
-  { id: 'south-korea',  name: 'South Korea',     flag: '🇰🇷', minYear: -2333,   maxYear: 2025, load: () => ({ items: southKoreaItems,   categories: southKoreaCategories }) },
-  { id: 'spain',        name: 'Spain',           flag: '🇪🇸', minYear: -218,    maxYear: 2025, load: () => ({ items: spainItems,        categories: spainCategories }) },
-  { id: 'sweden',       name: 'Sweden',          flag: '🇸🇪', minYear: -8000,   maxYear: 2025, load: () => ({ items: swedenItems,       categories: swedenCategories }) },
-  { id: 'thailand',     name: 'Thailand',        flag: '🇹🇭', minYear: -3000,   maxYear: 2025, load: () => ({ items: thailandItems,     categories: thailandCategories }) },
-  { id: 'turkey',       name: 'Turkey',          flag: '🇹🇷', minYear: 1071,    maxYear: 2025, load: () => ({ items: turkeyItems,       categories: turkeyCategories }) },
-  { id: 'uk',           name: 'United Kingdom',  flag: '🇬🇧', minYear: -55,     maxYear: 2025, load: () => ({ items: ukItems,           categories: ukCategories }) },
-  { id: 'us',           name: 'United States',   flag: '🇺🇸', minYear: 1607,    maxYear: 2025, load: () => ({ items: usItems,           categories: usCategories }) },
-  { id: 'vietnam',      name: 'Vietnam',         flag: '🇻🇳', minYear: -2879,   maxYear: 2025, load: () => ({ items: vietnamItems,      categories: vietnamCategories }) },
-];
+// Day 51: country timelines live in data/countries/<id>.json (see docs/DATA.md). The list
+// (name, flag, years) and a light item index come from src/generated/countries-index.json
+// (scripts/build-data.mjs); each country's full file is fetched only when it is opened.
+const COUNTRY_FILES = import.meta.glob('../data/countries/*.json', { import: 'default' });
+const countryDataCache = new Map();
+function loadCountryData(id) {
+  if (!countryDataCache.has(id)) {
+    const loader = COUNTRY_FILES[`../data/countries/${id}.json`];
+    if (!loader) return Promise.reject(new Error(`Unknown country ${id}`));
+    countryDataCache.set(id, loader().catch((err) => {
+      countryDataCache.delete(id);
+      throw err;
+    }));
+  }
+  return countryDataCache.get(id);
+}
+const COUNTRY_REGISTRY = COUNTRIES_INDEX.map(({ id, name, flag, minYear, maxYear }) => ({ id, name, flag, minYear, maxYear }));
+/** id → { item: {id, name, icon}, country } for items in countries not opened yet (globe links). */
+const COUNTRY_ITEM_INDEX = new Map();
+for (const c of COUNTRIES_INDEX) for (const [id, name, icon] of c.items) if (!COUNTRY_ITEM_INDEX.has(id)) COUNTRY_ITEM_INDEX.set(id, { item: { id, name, icon }, country: c.id });
 
 // ============================================================
 // Logarithmic scale mapping (cosmic timeline)
@@ -266,14 +219,34 @@ const swimStates = {
   wars: createSwimLaneState(warsItems, warsCategories, -499, 2025),
 };
 
-// Lazy-initialise country swim states on first access
-function getOrCreateCountryState(countryId) {
+// Day 51: country swim states are created when the country's JSON arrives. Until then this
+// returns null (views draw empty behind the loader) and `then` (if given) runs once it's ready
+// (deep links, bookmarks, related links re-run themselves); otherwise the view just redraws.
+const countryReadyCallbacks = new Map();
+function getOrCreateCountryState(countryId, then = null) {
   if (swimStates[countryId]) return swimStates[countryId];
   const entry = COUNTRY_REGISTRY.find(c => c.id === countryId);
   if (!entry) return null;
-  const { items, categories } = entry.load();
-  swimStates[countryId] = createSwimLaneState(items, categories, entry.minYear, entry.maxYear);
-  return swimStates[countryId];
+  if (then) countryReadyCallbacks.set(countryId, then);
+  loadCountryData(countryId).then(({ items, categories }) => {
+    if (!swimStates[countryId]) swimStates[countryId] = createSwimLaneState(items, categories, entry.minYear, entry.maxYear);
+    const cb = countryReadyCallbacks.get(countryId);
+    countryReadyCallbacks.delete(countryId);
+    if (cb) cb();
+    else {
+      if (compareMode) rebuildCompareSharedRange();
+      updateFiltersUI();
+      draw();
+    }
+  }, (err) => console.warn('Country timeline failed to load:', countryId, err));
+  return null;
+}
+
+/** Promise for the data the current view still needs (null when nothing is pending). */
+function pendingViewData() {
+  const ids = compareMode ? [compareLeft, compareRight] : [currentView];
+  const waits = ids.filter((id) => isCountryViewId(id) && !swimStates[id]).map((id) => loadCountryData(id).catch(() => null));
+  return waits.length ? Promise.all(waits) : null;
 }
 
 function currentSwimState() {
@@ -840,6 +813,11 @@ function applyDeepLinkFromUrl() {
   _syncingFromUrl = true;
   try {
     if (comparePair) {
+      // Day 51: a compared country loads first, then the link is applied again.
+      const pendingSides = [comparePair.left, comparePair.right].filter((v) => isCountryViewId(v) && !swimStates[v]);
+      if (pendingSides.length) {
+        Promise.all(pendingSides.map((v) => new Promise((done) => getOrCreateCountryState(v, done)))).then(() => applyDeepLinkFromUrl());
+      }
       enterCompareMode(comparePair.left, comparePair.right, { fromDeepLink: true });
       if (id) {
         focusCompareItemById(id);
@@ -856,6 +834,9 @@ function applyDeepLinkFromUrl() {
 
     if (resolved) {
       activateViewForDeepLink(resolved.id, { clearSelection: true });
+      if (isCountryViewId(resolved.id) && !swimStates[resolved.id]) {
+        getOrCreateCountryState(resolved.id, () => applyDeepLinkFromUrl());
+      }
     } else {
       updateActiveViewChrome();
     }
@@ -868,7 +849,7 @@ function applyDeepLinkFromUrl() {
     // Day 35: layers are always shown together (Arthur's review) — legacy ?layer= links
     // (peoples / polities / presence) now open the combined view instead of a filtered one.
     if (layerRaw != null && layerRaw !== '') {
-      setOverlayLayerFilter('both');
+      globeSet('setOverlayLayerFilter', 'both');
       syncGlobeLayerToggleUI();
     }
 
@@ -1225,6 +1206,11 @@ function drawSwimView() {
   const w = parseFloat(canvas.style.width);
   const h = parseFloat(canvas.style.height);
   const state = currentSwimState();
+  if (!state) {
+    // Day 51: country data still downloading — the loader covers the canvas.
+    ctx.clearRect(0, 0, w, h);
+    return;
+  }
 
   // For cosmic-history the view coordinates are log-space values, not years.
   // Wrap formatYearShort so tick labels convert log → year first.
@@ -3060,6 +3046,13 @@ function renderBookmarksList() {
 
 function openBookmark(entry) {
   if (!entry) return;
+  const bmView = resolveViewParam(entry.view);
+  if (bmView && isCountryViewId(bmView.id) && !swimStates[bmView.id]) {
+    activateViewForDeepLink(bmView.id, { clearSelection: true });
+    getOrCreateCountryState(bmView.id, () => openBookmark(entry));
+    afterTimelineSwitch();
+    return;
+  }
   closeBookmarksPanel();
   closeFiltersPanel();
   closeCountryPicker();
@@ -3073,13 +3066,17 @@ function openBookmark(entry) {
       activateViewForDeepLink('cosmic', { clearSelection: true });
     }
     let focused = false;
-    if (resolved && resolved.id === 'globe' && isNationEntityId(entry.id)) {
+    if (resolved && resolved.id === 'globe' && !G) {
+      loadGlobeApp().then(() => openBookmark(entry)).catch(() => {});
+      return;
+    }
+    if (resolved && resolved.id === 'globe' && G.isNationEntityId(entry.id)) {
       // Day 38: nation bookmarks reopen at the nearest year the nation exists.
       focused = selectGlobeEntity(entry.id, { syncUrl: false, openDetail: true });
     } else if (resolved && resolved.id === 'globe') {
-      const entity = getSpatialEntityById(entry.id);
+      const entity = G.getSpatialEntityById(entry.id);
       if (entity) {
-        const life = getEntityLifespan(entity);
+        const life = G.getEntityLifespan(entity);
         const keyYears = (entity.keyYears || []).filter((y) => Number.isFinite(y));
         let y;
         if (keyYears.length) {
@@ -3304,7 +3301,7 @@ function setGlobeModeActive(active) {
   // Day 49: branded loading state + start the globe code / earth texture right away.
   if (active && !wasActive) {
     showGlobeLoading();
-    prefetchGlobe().catch(() => {});
+    loadGlobeApp().then((m) => m.prefetchGlobe()).catch(() => {});
   }
   if (!active) hideGlobeLoading({ immediate: true });
   if (globeViewEl) {
@@ -3313,10 +3310,11 @@ function setGlobeModeActive(active) {
   if (active) {
     updateGlobeYearUI();
     const host = document.getElementById('globe-canvas-host');
-    // Mount after layout so the host has non-zero size
-    requestAnimationFrame(() => {
+    // Mount after layout so the host has non-zero size (and once the globe chunk is here)
+    Promise.all([loadGlobeApp(), new Promise((r) => requestAnimationFrame(r))]).then(() => {
       if (!isGlobeView()) return;
-      mountGlobe(host, {
+      updateGlobeYearUI();
+      G.mountGlobe(host, {
         year: globeYear,
         onPolygonClick: (entityId) => {
           selectGlobeEntity(entityId, { syncUrl: true, openDetail: true });
@@ -3334,13 +3332,16 @@ function setGlobeModeActive(active) {
         }
       });
       // Re-apply selection highlight after mount
-      if (selectedGlobeEntityId) setGlobeSelectedEntity(selectedGlobeEntityId);
+      if (selectedGlobeEntityId) globeSet('setGlobeSelectedEntity', selectedGlobeEntityId);
+    }).catch((err) => {
+      hideGlobeLoading({ immediate: true });
+      console.error('Failed to load the globe:', err);
     });
   } else {
     setGlobeFullscreen(false, { syncUrl: false });
     // Full dispose so switching views never leaks a WebGL context
     clearGlobeEntitySelection({ syncUrl: false, closeDetail: false });
-    destroyGlobe();
+    G?.destroyGlobe();
   }
 }
 
@@ -3425,11 +3426,11 @@ function setGlobeLayersHidden(keys, { syncUrl = true } = {}) {
   // A selected shape on a layer that just went away is deselected (its popover closes).
   if (selectedGlobeEntityId) {
     const sel = selectedGlobeEntityId;
-    const type = isNationEntityId(sel) ? 'nation' : getSpatialEntityById(sel)?.type;
+    const type = !G ? null : G.isNationEntityId(sel) ? 'nation' : G.getSpatialEntityById(sel)?.type;
     const key = type === 'people' ? 'peoples' : type === 'presence' ? 'presence' : 'polities';
     if (globeHiddenLayers.has(key)) clearGlobeEntitySelection({ syncUrl: false, closeDetail: true });
   }
-  setGlobeHiddenLayers(globeHiddenLayers);
+  globeSet('setGlobeHiddenLayers', globeHiddenLayers);
   syncGlobeLegendToggleUI();
   updateGlobeOverlayPanel();
   if (syncUrl && isGlobeView()) syncDeepLinkUrl();
@@ -3468,7 +3469,7 @@ function syncGlobeLabelsToggleUI() {
 
 function setGlobeLabelsShown(on, { syncUrl = true } = {}) {
   globeLabelsOn = Boolean(on);
-  setGlobeLabelsEnabled(globeLabelsOn);
+  globeSet('setGlobeLabelsEnabled', globeLabelsOn);
   syncGlobeLabelsToggleUI();
   if (syncUrl && isGlobeView()) syncDeepLinkUrl();
 }
@@ -3494,7 +3495,7 @@ function syncGlobeCertaintyToggleUI() {
 
 function setGlobeCertaintyShown(on, { syncUrl = true } = {}) {
   globeCertaintyOn = Boolean(on);
-  setGlobeCertaintyEnabled(globeCertaintyOn);
+  globeSet('setGlobeCertaintyEnabled', globeCertaintyOn);
   syncGlobeCertaintyToggleUI();
   if (syncUrl && isGlobeView()) syncDeepLinkUrl();
 }
@@ -3522,10 +3523,10 @@ function syncGlobeExtrasToggleUI() {
 function setGlobeExtraShown(which, on, { syncUrl = true } = {}) {
   if (which === 'cities') {
     globeCitiesOn = Boolean(on);
-    setGlobeCitiesEnabled(globeCitiesOn);
+    globeSet('setGlobeCitiesEnabled', globeCitiesOn);
   } else if (which === 'events') {
     globeEventsOn = Boolean(on);
-    setGlobeEventsEnabled(globeEventsOn);
+    globeSet('setGlobeEventsEnabled', globeEventsOn);
   } else return;
   syncGlobeExtrasToggleUI();
   if (syncUrl && isGlobeView()) syncDeepLinkUrl();
@@ -3576,7 +3577,7 @@ function showGlobePinDetail(pin) {
   if (isGlobeView()) syncDeepLinkUrl();
 }
 
-setGlobePinHandlers({
+globeSet('setGlobePinHandlers', {
   resolve: (ref) => {
     const info = resolveGlobePinRef(ref);
     return info ? { icon: info.icon, title: info.title } : null;
@@ -3585,7 +3586,7 @@ setGlobePinHandlers({
 });
 
 // Keep polygon-click handler registered even across remounts
-setOnGlobePolygonClick((entityId) => {
+globeSet('setOnGlobePolygonClick', (entityId) => {
   if (!isGlobeView()) return;
   selectGlobeEntity(entityId, { syncUrl: true, openDetail: true });
 });
@@ -3620,11 +3621,8 @@ function findTimelineCatalogueItem(itemId) {
   }
   // Countries not opened yet — country data is bundled, so peek at the registry
   // without creating view state (keeps globe → country links working cold).
-  for (const country of COUNTRY_REGISTRY) {
-    if (swimStates[country.id]) continue;
-    const item = country.load().items.find((i) => i.id === itemId);
-    if (item) return { item, view: 'country:' + country.id };
-  }
+  const hit = COUNTRY_ITEM_INDEX.get(itemId);
+  if (hit && !swimStates[hit.country]) return { item: hit.item, view: 'country:' + hit.country };
   return null;
 }
 
@@ -3655,6 +3653,12 @@ function jumpToRelatedTimelineItem(viewParam, itemId) {
   if (!viewParam || !itemId) return;
   const resolved = resolveViewParam(viewParam);
   const viewId = resolved ? resolved.id : viewParam;
+  if (isCountryViewId(viewId) && !swimStates[viewId]) {
+    activateViewForDeepLink(viewId, { clearSelection: true });
+    getOrCreateCountryState(viewId, () => jumpToRelatedTimelineItem(viewParam, itemId));
+    afterTimelineSwitch();
+    return;
+  }
   activateViewForDeepLink(viewId, { clearSelection: true });
   clearGlobeEntitySelection({ syncUrl: false, closeDetail: false });
   const focused = focusItemById(itemId);
@@ -3666,7 +3670,8 @@ function jumpToRelatedTimelineItem(viewParam, itemId) {
 }
 
 function formatGlobeEntityDateLabel(entity) {
-  const life = getEntityLifespan(entity);
+  if (!G) return '';
+  const life = G.getEntityLifespan(entity);
   const start = Number.isFinite(life.start) ? life.start : null;
   const end = Number.isFinite(life.end) ? life.end : null;
   if (start != null && end != null && Number.isFinite(start) && Number.isFinite(end)) {
@@ -3686,19 +3691,20 @@ function formatGlobeEntityDateLabel(entity) {
 }
 
 function isEntityActiveAtGlobeYear(entityId, year = globeYear) {
-  if (isNationEntityId(entityId)) return isNationActiveAtYear(entityId, year);
+  if (!G) return false;
+  if (G.isNationEntityId(entityId)) return G.isNationActiveAtYear(entityId, year);
   // Day 38: schematic empires hand off to the nations layer (from 1815 since Day 41).
-  const active = getActiveSchematicOverlaysAtYear(year);
+  const active = G.getActiveSchematicOverlaysAtYear(year);
   return active.some(({ entity }) => entity.id === entityId);
 }
 
 function clearGlobeEntitySelection({ syncUrl = true, closeDetail = false } = {}) {
   if (!selectedGlobeEntityId && !closeDetail) {
-    setGlobeSelectedEntity(null);
+    globeSet('setGlobeSelectedEntity', null);
     return;
   }
   selectedGlobeEntityId = null;
-  setGlobeSelectedEntity(null);
+  globeSet('setGlobeSelectedEntity', null);
   updateGlobeOverlayPanelSelectionOnly();
   if (closeDetail) {
     const panel = document.getElementById('event-detail');
@@ -3720,8 +3726,13 @@ function clearGlobeEntitySelection({ syncUrl = true, closeDetail = false } = {})
  */
 function selectGlobeEntity(entityId, { syncUrl = true, openDetail = true, fromDeepLink = false } = {}) {
   if (!entityId) return false;
-  if (isNationEntityId(entityId)) return selectGlobeNation(entityId, { syncUrl, openDetail, fromDeepLink });
-  const entity = getSpatialEntityById(entityId);
+  if (!G) {
+    // Day 51: globe chunk still loading — select once it's here.
+    loadGlobeApp().then(() => selectGlobeEntity(entityId, { syncUrl, openDetail, fromDeepLink })).catch(() => {});
+    return true;
+  }
+  if (G.isNationEntityId(entityId)) return selectGlobeNation(entityId, { syncUrl, openDetail, fromDeepLink });
+  const entity = G.getSpatialEntityById(entityId);
   if (!entity) return false;
 
   // Deep links: only select if active at the restored year
@@ -3733,22 +3744,22 @@ function selectGlobeEntity(entityId, { syncUrl = true, openDetail = true, fromDe
   revealGlobeLayerFor(entity.type === 'people' ? 'peoples' : entity.type === 'presence' ? 'presence' : 'polities');
 
   // Ensure layer shows this entity type when selecting from a filtered view
-  const layer = getOverlayLayerFilter();
+  const layer = G.getOverlayLayerFilter();
   if (layer === 'polities' && (entity.type === 'people' || entity.type === 'presence')) {
-    setOverlayLayerFilter('both');
+    globeSet('setOverlayLayerFilter', 'both');
     syncGlobeLayerToggleUI();
   } else if (layer === 'peoples' && entity.type !== 'people') {
-    setOverlayLayerFilter('both');
+    globeSet('setOverlayLayerFilter', 'both');
     syncGlobeLayerToggleUI();
   } else if (layer === 'presence' && entity.type !== 'presence') {
-    setOverlayLayerFilter('both');
+    globeSet('setOverlayLayerFilter', 'both');
     syncGlobeLayerToggleUI();
   }
 
   // If not active at current year (sidebar/manual), jump year to a sensible key year
   if (!isEntityActiveAtGlobeYear(entity.id)) {
     const keyYears = (entity.keyYears || []).filter((y) => Number.isFinite(y));
-    const life = getEntityLifespan(entity);
+    const life = G.getEntityLifespan(entity);
     let y;
     if (keyYears.length) {
       y = keyYears.reduce((best, k) =>
@@ -3762,7 +3773,7 @@ function selectGlobeEntity(entityId, { syncUrl = true, openDetail = true, fromDe
   }
 
   selectedGlobeEntityId = entity.id;
-  setGlobeSelectedEntity(entity.id);
+  globeSet('setGlobeSelectedEntity', entity.id);
   updateGlobeOverlayPanel();
 
   if (openDetail) {
@@ -3783,7 +3794,7 @@ function selectGlobeEntity(entityId, { syncUrl = true, openDetail = true, fromDe
         dateLabel,
         kind: 'globe-entity',
         relatedItems,
-        confidence: confidenceForEntity(entity, globeYear, getActiveOverlaysAtYear(globeYear, [entity])[0]?.overlay || null),
+        confidence: confidenceForEntity(entity, globeYear, G.getActiveOverlaysAtYear(globeYear, [entity])[0]?.overlay || null),
       },
     );
   }
@@ -3797,17 +3808,18 @@ function selectGlobeEntity(entityId, { syncUrl = true, openDetail = true, fromDe
  * current year (e.g. "Gold Coast (British)" in 1950, "Ghana" in 1960).
  */
 function selectGlobeNation(entityId, { syncUrl = true, openDetail = true, fromDeepLink = false } = {}) {
-  if (!getNationEntityById(entityId)) return false;
-  if (!isNationActiveAtYear(entityId, globeYear)) {
+  if (!G) return false;
+  if (!G.getNationEntityById(entityId)) return false;
+  if (!G.isNationActiveAtYear(entityId, globeYear)) {
     if (fromDeepLink) return false;
-    const y = nearestNationYear(entityId, globeYear);
+    const y = G.nearestNationYear(entityId, globeYear);
     if (y == null) return false;
     setGlobeYear(y, { syncUrl: false });
   }
-  const entity = getNationEntityById(entityId, globeYear);
+  const entity = G.getNationEntityById(entityId, globeYear);
   revealGlobeLayerFor('polities');
   selectedGlobeEntityId = entity.id;
-  setGlobeSelectedEntity(entity.id);
+  globeSet('setGlobeSelectedEntity', entity.id);
   updateGlobeOverlayPanel();
   if (openDetail) showGlobeNationDetail(entity);
   if (syncUrl) syncDeepLinkUrl();
@@ -3841,9 +3853,9 @@ function updateGlobeOverlayPanelSelectionOnly() {
 }
 
 function updateGlobeOverlayPanel() {
-  if (!globeOverlayList) return;
-  const active = getActiveSchematicOverlaysAtYear(globeYear);
-  const nations = getActiveNationsAtYear(globeYear);
+  if (!globeOverlayList || !G) return;
+  const active = G.getActiveSchematicOverlaysAtYear(globeYear);
+  const nations = G.getActiveNationsAtYear(globeYear);
   const yearLabel = formatGlobeYear(globeYear);
 
   if (globeOverlayPanelHeading) {
@@ -3911,7 +3923,7 @@ function updateGlobeOverlayPanel() {
     if (overlay) {
       // Day 44: the list says how sure the shape is (was the drawing detail level).
       const conf = confidenceForEntity(entity, globeYear, overlay);
-      const label = overlay.label || formatOverlayYear(overlay.year);
+      const label = overlay.label || G.formatOverlayYear(overlay.year);
       meta.textContent = `${label} · ${conf.level}`;
       meta.title = conf.reason;
     } else {
@@ -4002,7 +4014,7 @@ function updateGlobeYearUI() {
     btn.classList.toggle('is-active', y === globeYear);
   });
   updateGlobeOverlayPanel();
-  setGlobeOverlayYear(globeYear);
+  globeSet('setGlobeOverlayYear', globeYear);
 }
 
 function setGlobeYear(yearRaw, { syncUrl = true } = {}) {
@@ -4014,13 +4026,13 @@ function setGlobeYear(yearRaw, { syncUrl = true } = {}) {
   // Drop selection if the entity is no longer active at the new year
   if (selectedGlobeEntityId && !isEntityActiveAtGlobeYear(selectedGlobeEntityId, year)) {
     clearGlobeEntitySelection({ syncUrl: false, closeDetail: true });
-  } else if (selectedGlobeEntityId && isNationEntityId(selectedGlobeEntityId)) {
+  } else if (G && selectedGlobeEntityId && G.isNationEntityId(selectedGlobeEntityId)) {
     // Day 38: a nation's name / status can change while scrubbing (colony → independent).
-    const before = getNationPeriodAtYear(selectedGlobeEntityId, prevYear);
-    const after = getNationPeriodAtYear(selectedGlobeEntityId, year);
+    const before = G.getNationPeriodAtYear(selectedGlobeEntityId, prevYear);
+    const after = G.getNationPeriodAtYear(selectedGlobeEntityId, year);
     const panel = document.getElementById('event-detail');
     if (before !== after && panel && !panel.classList.contains('hidden') && detailContext?.kind === 'globe-entity') {
-      showGlobeNationDetail(getNationEntityById(selectedGlobeEntityId, year));
+      showGlobeNationDetail(G.getNationEntityById(selectedGlobeEntityId, year));
     }
   }
   updateGlobeYearUI();
@@ -4234,17 +4246,17 @@ document.querySelectorAll('.globe-year-preset').forEach((btn) => {
 });
 
 function syncGlobeLayerToggleUI() {
-  const active = getOverlayLayerFilter();
+  const active = G ? G.getOverlayLayerFilter() : 'both';
   document.querySelectorAll('.globe-layer-btn').forEach((btn) => {
     btn.classList.toggle('is-active', btn.dataset.layer === active);
   });
 }
 
 function setGlobeOverlayLayer(layer, { syncUrl = true } = {}) {
-  setOverlayLayerFilter(layer);
+  globeSet('setOverlayLayerFilter', layer);
   syncGlobeLayerToggleUI();
   updateGlobeOverlayPanel();
-  setGlobeOverlayYear(globeYear);
+  globeSet('setGlobeOverlayYear', globeYear);
   if (syncUrl && isGlobeView()) syncDeepLinkUrl();
 }
 
@@ -4255,10 +4267,11 @@ syncGlobeLayerToggleUI();
 
 document.addEventListener('visibilitychange', () => {
   if (!isGlobeView()) return;
-  if (document.hidden) pauseGlobe();
+  if (!G) return;
+  if (document.hidden) G.pauseGlobe();
   else {
     const host = document.getElementById('globe-canvas-host');
-    mountGlobe(host, { year: globeYear }).catch(() => {});
+    G.mountGlobe(host, { year: globeYear }).catch(() => {});
   }
 });
 
@@ -4299,7 +4312,7 @@ initFeedback({
     return {
       view: currentView,
       year: globe ? globeYear : null,
-      at: globe ? getGlobeCameraAt() : null,
+      at: globe && G ? G.getGlobeCameraAt() : null,
       entity: globe ? selectedGlobeEntityId : null,
       item: globe ? null : getSelectedDeepLinkId?.() || null,
       fullscreen: globe && globeFullscreen,
@@ -4350,7 +4363,7 @@ function hideGlobeLoading({ immediate = false } = {}) {
 function syncGlobeLoading() {
   const el = globeLoadingEl();
   if (!el || !el.classList.contains('is-visible') || el.classList.contains('is-leaving')) return;
-  const steps = new Set(getGlobeLoadSteps());
+  const steps = new Set(G ? G.getGlobeLoadSteps() : []);
   el.querySelectorAll('[data-step]').forEach((li) => li.classList.toggle('is-done', steps.has(li.dataset.step)));
   const title = el.querySelector('.globe-loading-title');
   if (steps.has('earth')) title.textContent = globeLoadingText('earth');
@@ -4366,7 +4379,7 @@ window.addEventListener('et-globe-load', () => syncGlobeLoading());
 
 for (const btn of document.querySelectorAll('.mode-switch-btn[data-mode="globe"]')) {
   const warm = () => {
-    if (!isGlobeView()) prefetchGlobe().catch(() => {});
+    if (!isGlobeView()) loadGlobeApp().then((m) => m.prefetchGlobe()).catch(() => {});
   };
   btn.addEventListener('pointerenter', warm, { passive: true });
   btn.addEventListener('focus', warm);
@@ -4399,7 +4412,7 @@ function finishAppLoader() {
     fadeOutAndRemove(el);
     return;
   }
-  fontsSettled().then(() => {
+  Promise.all([fontsSettled(), pendingViewData()]).then(() => {
     draw();
     requestAnimationFrame(() =>
       requestAnimationFrame(() => {
@@ -4430,14 +4443,14 @@ function showTimelineLoading() {
     '<path d="M1.5 16h29" stroke-width="1.7" stroke-linecap="round"/><circle cx="16" cy="16" r="2.4" fill="currentColor" stroke="none"/></svg></div>' +
     '<p class="globe-loading-title">Loading the timeline…</p>';
   host.appendChild(el);
-  fontsSettled().then(() => {
+  Promise.all([fontsSettled(), pendingViewData()]).then(() => {
     draw();
     requestAnimationFrame(() => fadeOutAndRemove(el));
   });
 }
 
 function afterTimelineSwitch() {
-  if (!isGlobeView() && timelineNeedsWait()) showTimelineLoading();
+  if (!isGlobeView() && (timelineNeedsWait() || pendingViewData())) showTimelineLoading();
 }
 
 finishAppLoader();

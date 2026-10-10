@@ -4,15 +4,16 @@
   "description": "An interactive timeline from the Big Bang to modern day",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "npm run validate && vite build",
+    "dev": "node scripts/build-data.mjs && vite",
+    "build": "node scripts/build-data.mjs && npm run validate && vite build",
     "preview": "vite preview",
     "validate": "node scripts/validate-data.js && node scripts/check-overlay-lifespan.js && node scripts/check-nations.js && node scripts/check-labels.js && node scripts/check-confidence.js && node scripts/check-cities.js",
     "validate:strict": "node scripts/validate-data.js --strict",
     "validate:schema": "node scripts/validate-data.js",
     "build:nations": "node scripts/build-nations.mjs && node scripts/build-nations.mjs --fine",
     "build:nations:fine": "node scripts/build-nations.mjs --fine",
-    "build:places": "node scripts/build-places.mjs"
+    "build:places": "node scripts/build-places.mjs",
+    "build:data": "node scripts/build-data.mjs"
   },
   "repository": {
     "type": "git",

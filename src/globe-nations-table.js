@@ -30,7 +30,7 @@
  * removes units.
  */
 
-export const NATIONS_START = 1815;
+export { NATIONS_START };
 export const NATIONS_END = 2025;
 /**
  * Day 41: from this year every land unit must be claimed (the build fails on gaps). Before it
@@ -40,6 +40,7 @@ export const NATIONS_END = 2025;
  */
 export const NATIONS_FULL_COVERAGE_START = 1914;
 
+import { NATIONS_START } from './globe-constants.js';
 import {
   AL,
   FR_OVS,

@@ -28,7 +28,9 @@ import { getOverlayPolygonFeatures, getActiveOverlaysAtYear } from './globe-over
 
 export { NATIONS_START, NATIONS_END, NATIONS_FULL_COVERAGE_START, NATION_ENTITIES };
 
-export const NATION_ID_PREFIX = 'nation-';
+import { NATION_ID_PREFIX } from './globe-constants.js';
+
+export { NATION_ID_PREFIX };
 
 /** Day 38: schematic polities (empires) are replaced by the nations layer from this year (1815 since Day 41). */
 export const NATIONS_HANDOFF_YEAR = NATIONS_START;

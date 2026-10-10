@@ -27,6 +27,7 @@
  * Mounted only while Globe mode is active; disposed on leave.
  */
 
+import { GLOBE_LAYER_KEYS } from './globe-constants.js';
 import {
   getGlobePolygonFeatures,
   loadNationsTopology,
@@ -647,7 +648,7 @@ function densifyFeature(f) {
  * Day 40: map-key layer toggles (Arthur: "toggle on/off Polities/Peoples/Presence in
  * full-screen mode"). 'polities' covers the hand-drawn empires and, from 1815, the nations.
  */
-export const GLOBE_LAYER_KEYS = ['polities', 'peoples', 'presence'];
+export { GLOBE_LAYER_KEYS };
 let hiddenLayers = new Set();
 
 function layerKeyForFeature(d) {
