@@ -48,8 +48,8 @@
   <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="./favicon-32.png" type="image/png" sizes="32x32" />
   <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
-  <script type="module" crossorigin src="/assets/index-DYRmmequ.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-CscFHBHv.css">
+  <script type="module" crossorigin src="/assets/index-B2I3aNp4.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-C5m-4OpN.css">
 </head>
 <body>
   <div id="app-loader" class="app-loader" role="status" aria-live="polite">
@@ -87,6 +87,8 @@
         <p class="subtitle">From the Big Bang to the age of AI</p>
       </div>
       <p id="active-view-label" class="active-view-label" aria-live="polite">Timeline</p>
+      <!-- Day 54: phones only — opens the controls as a bottom sheet (hidden on desktop) -->
+      <button type="button" id="mobile-menu-toggle" class="mobile-menu-toggle" aria-expanded="false" aria-controls="controls" aria-label="Open menu: views, search, filters"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11"/></svg><span class="mobile-menu-label">Timeline</span></button>
     </header>
 
     <div id="controls">
@@ -189,7 +191,7 @@
       <canvas id="timeline-canvas"></canvas>
       <div id="tooltip" class="tooltip"></div>
       <div id="gesture-hint" class="gesture-hint hidden" role="status" aria-live="polite">
-        <span>Drag to pan · Pinch to zoom · Tap items for details</span>
+        <span>Drag to pan · Pinch to zoom · Tap for details</span>
         <button id="gesture-hint-close" type="button" aria-label="Dismiss gesture hint">&times;</button>
       </div>
     </div>
@@ -330,8 +332,8 @@
 
     <!-- Day 50/52: floating pills for every view (timeline, globe, full-screen globe): ☕ Support (secondary) + 💬 Feedback (primary) -->
     <div class="fab-dock" id="fab-dock">
-    <button type="button" id="support-open" class="fab-pill support-fab" data-support-open aria-haspopup="dialog" title="Support The Everything Timeline"><span class="support-fab-icon" aria-hidden="true">☕</span><span class="support-open-label">Support</span></button>
-    <button type="button" id="feedback-open" class="fab-pill feedback-open feedback-fab" data-feedback-open aria-haspopup="dialog" title="Send feedback or ideas"><span class="feedback-fab-icon" aria-hidden="true">💬</span><span class="feedback-open-label">Feedback</span></button>
+    <button type="button" id="support-open" class="fab-pill support-fab" data-support-open aria-haspopup="dialog" aria-label="Support" title="Support The Everything Timeline"><span class="support-fab-icon" aria-hidden="true">☕</span><span class="support-open-label">Support</span></button>
+    <button type="button" id="feedback-open" class="fab-pill feedback-open feedback-fab" data-feedback-open aria-haspopup="dialog" aria-label="Feedback" title="Send feedback or ideas"><span class="feedback-fab-icon" aria-hidden="true">💬</span><span class="feedback-open-label">Feedback</span></button>
     </div>
 </body>
 </html>
