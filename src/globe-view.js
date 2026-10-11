@@ -24,6 +24,9 @@
  *   fades towards it. Conjectural: dotted edge and a fill that fades out well inside it. The fade
  *   is a per-vertex distance-to-edge attribute on the refined cap mesh (hand-drawn shapes only;
  *   nations keep crisp fills so neighbours never show gaps). `&certainty=0` / the key turns it off.
+ * Day 55: migrations (Phase 4c step 5.2) — data/migrations.json drawn on the same paths layer,
+ *   under the trade routes: long slow dashes the way people moved, width by scale, paths unroll
+ *   stage by stage with their own years. Key "Migrations" toggle / `&migrations=0`.
  * Day 53: trade routes (Phase 4c step 5.1) — dated route lines from data/trade-routes.json with
  *   dashes flowing along them (Globe.gl paths layer, above every polygon band; squeezed toward the
  *   surface with the polygons as you zoom). Key "Flows" toggle / `&flows=0`; a tap opens the route.
@@ -58,6 +61,7 @@ import {
   setGlobePinHandlers,
 } from './globe-labels.js';
 import { loadTradeRoutes, tradeRouteEntriesAtYear, areTradeRoutesLoaded, formatRouteYears } from './globe-routes.js';
+import { loadMigrations, migrationEntriesAtYear, areMigrationsLoaded, formatMigrationYears } from './globe-migrations.js';
 
 /** Day 43: dated cities (`&cities=0`) and event pins (`&events=0`) — see globe-labels.js. */
 export { setGlobeCitiesEnabled, areGlobeCitiesEnabled, setGlobeEventsEnabled, areGlobeEventsEnabled, setGlobePinHandlers };
@@ -1272,8 +1276,20 @@ const ROUTE_RENDER_ORDER = 2000; // after every polygon (polygons use 10 … ~52
 // Line widths in CSS px: glow (colour halo + tap target), dark core, bright moving dashes.
 const ROUTE_STROKE = { desktop: { glow: 9, core: 4.5, flow: 2.6 }, mobile: { glow: 11, core: 5, flow: 2.8 } };
 const ROUTE_KIND_ORDER = { glow: 0, core: 1, flow: 2 };
+// Day 55 — migrations share the paths layer. They draw under the trade routes, with longer,
+// slower dashes; width grows with scale (1 ≈ unknown / under a million … 4 ≈ over 20 million).
+const MIGRATION_DASH_DEG = 2.6;
+const MIGRATION_GAP_DEG = 1.8;
+const MIGRATION_SPEED_DEG_S = 1.6;
+const MIGRATION_RENDER_ORDER = 1990;
+const MIGRATION_STROKE = {
+  desktop: { 1: { glow: 9, core: 4, flow: 2.4 }, 2: { glow: 12, core: 5.5, flow: 3.2 }, 3: { glow: 16, core: 7.5, flow: 4.2 }, 4: { glow: 21, core: 10, flow: 5.4 } },
+  mobile: { 1: { glow: 11, core: 4.5, flow: 2.6 }, 2: { glow: 14, core: 6, flow: 3.4 }, 3: { glow: 18, core: 8, flow: 4.4 }, 4: { glow: 23, core: 10.5, flow: 5.6 } },
+};
 let flowsEnabled = true;
+let migrationsEnabled = true;
 let routeClickHandler = null;
+let migrationClickHandler = null;
 let routeKey = '';
 let routeLayerParent = null;
 
@@ -1287,6 +1303,17 @@ export function areGlobeFlowsEnabled() {
   return flowsEnabled;
 }
 
+/** Day 55: migrations on or off (key "Migrations" toggle, `&migrations=0`). */
+export function setGlobeMigrationsEnabled(on) {
+  migrationsEnabled = Boolean(on);
+  refreshRoutes();
+}
+
+/** Day 55: what a tap on a migration does — (migrationId, migration, pathName) → void. */
+export function setOnGlobeMigrationClick(handler) {
+  migrationClickHandler = typeof handler === 'function' ? handler : null;
+}
+
 /** Day 53: what a tap on a route does — (routeId, route) → void. */
 export function setOnGlobeRouteClick(handler) {
   routeClickHandler = typeof handler === 'function' ? handler : null;
@@ -1296,8 +1323,21 @@ function escapeHtml(str) {
   return String(str ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 }
 
+/** Day 55: `hex` mixed `mix` of the way to white, at `opacity` (not clamped like hexToRgba). */
+function migrationRgba(hex, mix, opacity) {
+  const n = parseHex(hex);
+  const ch = (v) => Math.round(v + (255 - v) * mix);
+  return `rgba(${ch((n >> 16) & 255)},${ch((n >> 8) & 255)},${ch(n & 255)},${opacity})`;
+}
+
 function routeTooltip(d) {
   const r = d.route;
+  if (d.layer === 'migration') {
+    const what = r.forced ? 'Forced migration' : 'Migration';
+    const span = formatMigrationYears(r.start, r.end);
+    const stage = d.pathStart !== r.start || d.pathEnd !== r.end ? ` (${formatMigrationYears(d.pathStart, d.pathEnd)})` : '';
+    return `<div class="globe-route-tip is-migration"><b>${escapeHtml(r.icon || '')} ${escapeHtml(r.name)}</b><span>${escapeHtml(span)} · ${what}</span><span class="globe-route-tip-path">${escapeHtml(d.pathName)}${escapeHtml(stage)}</span></div>`;
+  }
   const kind = r.kind === 'sea' ? 'Sea route' : 'Land route';
   return `<div class="globe-route-tip"><b>${escapeHtml(r.name)}</b><span>${escapeHtml(formatRouteYears(r))} · ${kind}</span><span class="globe-route-tip-path">${escapeHtml(d.pathName)}</span></div>`;
 }
@@ -1312,31 +1352,52 @@ function applyRouteLayer() {
     .pathPointAlt(ROUTE_ALT)
     .pathResolution(1)
     .pathColor((d) => {
+      if (d.layer === 'migration') {
+        // A strong dark core and pale, colour-tinted dashes keep migrations readable on any fill.
+        if (d.kind === 'glow') return migrationRgba(d.route.color, 0, 0.42);
+        if (d.kind === 'core') return 'rgba(6, 9, 20, 0.78)';
+        return migrationRgba(d.route.color, 0.45, 1);
+      }
       if (d.kind === 'glow') return hexToRgba(d.route.color, d.via ? 0.16 : 0.3);
       if (d.kind === 'core') return 'rgba(8, 12, 26, 0.6)';
       return hexToRgba(d.route.color, d.via ? 0.75 : 1);
     })
-    .pathStroke((d) => ROUTE_STROKE[mobile ? 'mobile' : 'desktop'][d.kind])
-    .pathDashLength((d) => (d.kind === 'flow' ? ROUTE_DASH_DEG / d.lengthDeg : 1))
-    .pathDashGap((d) => (d.kind === 'flow' ? ROUTE_GAP_DEG / d.lengthDeg : 0))
+    .pathStroke((d) =>
+      d.layer === 'migration'
+        ? MIGRATION_STROKE[mobile ? 'mobile' : 'desktop'][d.scale || 1][d.kind]
+        : ROUTE_STROKE[mobile ? 'mobile' : 'desktop'][d.kind],
+    )
+    .pathDashLength((d) => (d.kind === 'flow' ? (d.layer === 'migration' ? MIGRATION_DASH_DEG : ROUTE_DASH_DEG) / d.lengthDeg : 1))
+    .pathDashGap((d) => (d.kind === 'flow' ? (d.layer === 'migration' ? MIGRATION_GAP_DEG : ROUTE_GAP_DEG) / d.lengthDeg : 0))
     .pathDashInitialGap(0)
-    .pathDashAnimateTime((d) => (d.kind === 'flow' ? (d.lengthDeg / ROUTE_SPEED_DEG_S) * 1000 : 0))
+    .pathDashAnimateTime((d) =>
+      d.kind === 'flow' ? (d.lengthDeg / (d.layer === 'migration' ? MIGRATION_SPEED_DEG_S : ROUTE_SPEED_DEG_S)) * 1000 : 0,
+    )
     .pathTransitionDuration(0)
     .pathLabel(routeTooltip)
     .onPathClick((d) => {
-      if (d?.route && routeClickHandler) routeClickHandler(d.route.id, d.route);
+      if (!d?.route) return;
+      if (d.layer === 'migration') {
+        if (migrationClickHandler) migrationClickHandler(d.route.id, d.route, d.pathName);
+      } else if (routeClickHandler) routeClickHandler(d.route.id, d.route);
     })
     .onPathHover((d) => {
       if (hostEl) hostEl.style.cursor = d ? 'pointer' : '';
     });
 }
 
-/** Push the routes running in the current year (or none) to Globe.gl, only when the set changes. */
+/**
+ * Push the routes and migration paths running in the current year (or none) to Globe.gl, only
+ * when the set changes. Migrations go first so the trade routes draw on top of them.
+ */
 function refreshRoutes() {
   if (!globe || !mounted) return;
   const y = currentPolygonYear;
-  const entries = flowsEnabled && areTradeRoutesLoaded() && Number.isFinite(y) ? tradeRouteEntriesAtYear(y) : [];
-  const key = [...new Set(entries.map((e) => e.route.id))].join(',');
+  const ok = Number.isFinite(y);
+  const migrationEntries = migrationsEnabled && areMigrationsLoaded() && ok ? migrationEntriesAtYear(y) : [];
+  const routeEntries = flowsEnabled && areTradeRoutesLoaded() && ok ? tradeRouteEntriesAtYear(y) : [];
+  const entries = migrationEntries.concat(routeEntries);
+  const key = [...new Set(entries.map((e) => (e.layer === 'migration' ? `m:${e.route.id}|${e.pathName}` : e.route.id)))].join(',');
   if (key === routeKey) return;
   routeKey = key;
   try {
@@ -1363,7 +1424,7 @@ function syncRouteLayer(scene) {
     const line = g.children[0];
     if (!line) continue;
     const d = g.__data?.data || g.__data;
-    const order = ROUTE_RENDER_ORDER + (ROUTE_KIND_ORDER[d?.kind] || 0);
+    const order = (d?.layer === 'migration' ? MIGRATION_RENDER_ORDER : ROUTE_RENDER_ORDER) + (ROUTE_KIND_ORDER[d?.kind] || 0);
     if (line.renderOrder !== order) line.renderOrder = order;
     if (line.material && line.material.depthWrite) line.material.depthWrite = false;
   }
@@ -1376,6 +1437,13 @@ function loadRoutesForGlobe() {
       refreshRoutes();
     })
     .catch((err) => console.warn('Trade routes failed to load:', err));
+  // Day 55: migrations (~6 KB gzipped) load alongside.
+  loadMigrations()
+    .then(() => {
+      routeKey = '\u0000';
+      refreshRoutes();
+    })
+    .catch((err) => console.warn('Migrations failed to load:', err));
 }
 
 function applyPolygonLayer() {

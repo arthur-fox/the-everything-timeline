@@ -18,6 +18,8 @@ export {
   setGlobePinHandlers,
   setGlobeFlowsEnabled,
   setOnGlobeRouteClick,
+  setGlobeMigrationsEnabled,
+  setOnGlobeMigrationClick,
   getGlobeCameraAt,
   prefetchGlobe,
   getGlobeLoadSteps,
