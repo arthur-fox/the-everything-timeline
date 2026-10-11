@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 has started: **step 5.1 (trade routes) is done (merged, PR #59, Day 53); next for the daily ship routine is step 5.2 (migrations), following docs/DATA.md** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is in review (PR #61, Day 55); next for the daily ship routine is item 6, step 6.1 (the early medieval world, 500–1000)** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -762,7 +762,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 - Possible follow-up (not started): topic views as lazy files (landing JS ~114 → ~50 KB gz).
 - Merged 10 Oct; all new data (trade routes onwards) follows docs/DATA.md.
 
-### 5. Movement: trade routes and migrations — IN PROGRESS (step 5.1 done, merged PR #59; step 5.2 migrations NEXT for the daily routine)
+### 5. Movement: trade routes and migrations — built (step 5.1 merged, PR #59; step 5.2 in review, PR #61)
 
 - **Step 5.1 — Trade routes.** Dated route lines with animated flow along them: the Silk Roads, Indian Ocean monsoon trade, trans-Saharan caravans, the Amber Road, the Hanseatic League, the Manila galleons and the Atlantic triangle. Each route has its own active years and a "Flows" toggle in the key.
 - **Step 5.2 — Migrations.** Major migrations as flows over time: out of Africa (schematic), the Bantu expansion, the Austronesian voyages, Indo-European spread, the Migration Period, the Atlantic slave trade, 19th-century European emigration, the 1947 Partition. Width hints at scale; each has sources and an uncertainty level.
@@ -774,6 +774,21 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 - **Key, hover, tap:** a "Flows · trade routes" key item turns them off and on; `&flows=0` starts with them off (kept in shared links). Hover shows the route, its years and the path; a tap opens the detail panel with the description, what moved, sources, "How sure" and related timeline entries (e.g. Silk Roads → Silk Road & Classical Trade, Silk Road Trade Peaks).
 - **Validate:** `scripts/check-routes.js` (in `npm run validate`): ids, years, colours, sources, confidence, paths; every related ref resolves; land waypoints on land; every sea lane, sampled every 0.25° the way the globe draws it, stays off the simplified coastline except the first / last 70 km (harbours up estuaries) and legs marked `via: river` (Neva–Ladoga–Volkhov to Novgorod).
 - **Honest caveats:** routes are typical tracks, not logged courses, and each route is on for its whole span (no rise and fall in volume yet). Dashes show the main direction only; most of these routes carried goods both ways. Route dash lengths are fixed on the globe, so they get long close up. Tap targets are ~9–11 px wide.
+
+#### Day 55 — Migrations (step 5.2) — in review (PR #61)
+
+- **Data (`data/migrations.json`, a static file per docs/DATA.md; ≈6 KB gzipped, loaded once the globe is up, never by the timeline landing):** seven migrations, each with years, who moved (`people`), a scale 1–4 that sets the line width, forced or not, a description, sources, a confidence level with a reason, related timeline entries and named paths. Paths can carry their own years, so long expansions unroll stage by stage as you move the slider:
+  - Bantu expansion (3000 BCE – 500 CE; western stream to the lower Congo and Angola, eastern stream to the Great Lakes, then south to KwaZulu-Natal).
+  - Austronesian voyages (2500 BCE – 1300 CE; out of Taiwan, the Moluccas, along New Guinea, Lapita into the open Pacific, then Samoa → Society Islands → Hawaiʻi, Rapa Nui and Aotearoa, plus Borneo → Madagascar).
+  - Indo-European spread (3000–1200 BCE; Yamnaya along the Danube, Corded Ware north of the Carpathians, Sintashta/Andronovo east, Indo-Iranian south into South Asia).
+  - Migration Period (370–600; Huns, Visigoths, Vandals, Ostrogoths, Anglo-Saxons by sea, Lombards).
+  - Atlantic slave trade (1526–1867; four forced crossings, ~12.5 million embarked).
+  - European mass emigration (1815–1914; Liverpool, Hamburg/Bremen, Genoa/Naples and Britain → Australia lanes).
+  - Partition of India (1947–1951; Punjab both ways, Sindh, Bengal both ways).
+- **Drawing:** the same Globe.gl paths layer as the trade routes, drawn just under them: a wide colour glow, a strong dark core and pale, colour-tinted dashes that move slowly the way people went. Width follows scale (1 unknown or under a million, 2 one to five million, 3 five to twenty million, 4 over twenty million). Hover shows the migration, its years, forced or not, and the stage under the pointer. A tap opens the story: description, who moved, the stage you tapped, sources, "How sure" and related timeline entries.
+- **Key:** a "Migrations · wider = more people" item turns them off and on; `&migrations=0` starts with them off (kept in shared links).
+- **Validate:** `scripts/check-migrations.js` (in `npm run validate`): fields, years (each path's years inside its migration's), scale, related refs, land waypoints on land, sea paths off land. The land/sea geometry now lives in `scripts/flow-geo.js`, shared with `check-routes.js`.
+- **Honest caveats:** out of Africa is not drawn because it happened long before the globe's earliest year (3000 BCE); it needs a deep-time globe first. The prehistoric expansions (Bantu, Austronesian, Indo-European) were slow spreads over generations, not marches, so their arrows are schematic, and their scale is "unknown" (thinnest line). Greek and Anatolian Indo-European arrivals are debated and not drawn. Tap targets are the glow width (about 9–23 px).
 
 ### 6. Better coverage between empires
 
@@ -965,7 +980,8 @@ A sensible near-term sequence:
 40. Globe load speed + globe/timeline loaders (Arthur, 9 Oct) — Day 49 ✅ (merged, #55).
 41. Data architecture — static data files (Day 51) ✅ (merged, #57).
 42. Tip jar (Day 52) ✅ (merged, #58; addresses guarded by scripts/check-support.js).
-43. **Now: Phase 4c item 5 — trade routes (Day 53) ✅ (merged, #59) → migrations (step 5.2, NEXT for the daily routine; follow docs/DATA.md).**
+43. Phase 4c item 5 — trade routes (Day 53) ✅ (merged, #59) → migrations (Day 55, step 5.2) ✅ (in review, #61).
+44. **Now: Phase 4c item 6 — step 6.1 the early medieval world (500–1000), NEXT for the daily routine.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 

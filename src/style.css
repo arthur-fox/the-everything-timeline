@@ -2548,6 +2548,16 @@ body.globe-scrub-zoomed .globe-year-ticks {
     rgba(245, 196, 107, 0.28);
 }
 
+/* Day 55: migrations — a thicker coral line with long dashes */
+.globe-legend-swatch.is-migrations {
+  width: 18px;
+  height: 10px;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(90deg, #fecdd3 0 7px, transparent 7px 10px) center / 100% 3px no-repeat,
+    rgba(244, 114, 182, 0.3);
+}
+
 /* Day 53: route hover tooltip (Globe.gl's float tooltip) */
 .globe-route-tip {
   display: flex;

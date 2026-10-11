@@ -16,6 +16,7 @@ The Everything Timeline is a static site: all content is plain files in this rep
 | Borders | `src/data/nations.topo.json`, `nations-fine.topo.json` (TopoJSON, built by `npm run build:nations`) | with the globe; fine borders at close zoom |
 | Cities, event pins, physical places | `src/globe-cities.js`, `src/globe-event-pins.js`, `src/data/places.json` | with the globe, after first paint |
 | Trade routes (Day 53) | `data/trade-routes.json` (see below) | with the globe, once it is up (≈5 KB gzipped chunk) |
+| Migrations (Day 55) | `data/migrations.json` (see below) | with the globe, once it is up (≈6 KB gzipped chunk) |
 
 Ids are stable kebab-case strings (`kamakura-shogunate`, `nation-france`) and are used in deep links (`?view=country:japan&id=kamakura-shogunate`), bookmarks and globe ↔ timeline links (`timelineItemIds`). Never rename an id; add a new one instead.
 
@@ -57,15 +58,38 @@ Fields follow `schemas/timeline.schema.json` (swim-lane items: `start`, `end`, `
 
 Points are `[lat, lng]` waypoints; the globe joins them with straight lat/lng segments, so sea lanes need enough waypoints to stay off the coast. A sea leg that goes up a river or overland can say `"via": "river"` or `"via": "overland"`. Dashes flow from the first point to the last, so list points in the direction goods moved. `scripts/check-routes.js` (in `npm run validate`) checks the fields, the related entries, land waypoints on land and every sea lane off land.
 
+## Migration file format (Day 55)
+
+`data/migrations.json` holds `{ "migrations": [ … ] }`. One migration:
+
+```json
+{
+  "id": "partition-1947", "name": "Partition of India", "icon": "🚶",
+  "kind": "land",                     // land | sea | mixed (mixed: every path says its own kind)
+  "start": 1947, "end": 1951,         // years it is drawn (inclusive)
+  "color": "#fde047", "forced": true,
+  "scale": 3,                         // line width: 1 unknown / < 1M, 2 = 1–5M, 3 = 5–20M, 4 = > 20M people
+  "people": "Between 12 and 20 million people displaced; …",
+  "description": "…",
+  "confidence": { "level": "documented", "reason": "…" },
+  "related": ["event:Indian Independence & Partition"],
+  "sources": [ { "title": "…", "url": "https://…" } ],
+  "paths": [ { "name": "Hindus and Sikhs from west Punjab to India", "start": 1947, "end": 1948,
+               "points": [[33.6, 73.05], [31.45, 74.3], [28.55, 77.3]] } ]
+}
+```
+
+Paths follow the trade-route rules (points in the direction people moved; sea paths need enough waypoints to stay off the coast; `via` for river / overland legs). A path's own `start` / `end` (optional) must sit inside the migration's years; use them to unroll a long expansion stage by stage. `scripts/check-migrations.js` (in `npm run validate`) checks it all; the land / sea geometry is shared with the routes in `scripts/flow-geo.js`.
+
 ## How to add data
 
 1. **A new country:** add `data/countries/<id>.json` in the format above. Nothing else to register — the build lists it in the picker.
 2. **More items in a country:** edit its JSON file; give each item a new, unique id.
 3. **Topic or landing items:** edit the matching `src/<topic>.js` / `src/events.js` array (same fields).
 4. **Globe shapes, peoples, presence, cities, pins:** edit the matching `src/globe-*.js` module (they only load with the globe). After editing the nations tables, run `npm run build:nations`.
-5. **Trade routes (and, next, migrations):** edit `data/trade-routes.json` (format above).
+5. **Trade routes and migrations:** edit `data/trade-routes.json` / `data/migrations.json` (formats above).
 6. **A new kind of dataset:** a JSON file under `data/`, loaded with a dynamic `import()` from the view that needs it (see `COUNTRY_FILES` in `src/main.js`). Don't add a static import to `main.js`.
-7. Run `npm run validate` (also part of `npm run build`): schema, unique ids, categories, dates, sources, links, borders, labels, cities, pins and trade routes.
+7. Run `npm run validate` (also part of `npm run build`): schema, unique ids, categories, dates, sources, links, borders, labels, cities, pins, trade routes and migrations.
 
 `npm run dev` and `npm run build` run `scripts/build-data.mjs` first (it writes the generated index); there is nothing else to run.
 

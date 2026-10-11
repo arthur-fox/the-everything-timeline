@@ -296,6 +296,8 @@ let globeCitiesOn = true;
 let globeEventsOn = true;
 // Day 53: trade-route flows on the globe (key "Flows" toggle; `&flows=0` when off).
 let globeFlowsOn = true;
+// Day 55: migrations on the globe (key "Migrations" toggle; `&migrations=0` when off).
+let globeMigrationsOn = true;
 let compareLeft = 'technology';
 let compareRight = 'wars';
 let compareShared = null; // { viewStart, viewEnd, targetStart, targetEnd, minYear, maxYear }
@@ -598,6 +600,7 @@ function syncDeepLinkUrl() {
       if (!globeCitiesOn) params.set('cities', '0');
       if (!globeEventsOn) params.set('events', '0');
       if (!globeFlowsOn) params.set('flows', '0');
+      if (!globeMigrationsOn) params.set('migrations', '0');
     } else {
       const selectedId = getSelectedDeepLinkId();
       if (selectedId) {
@@ -809,8 +812,9 @@ function applyDeepLinkFromUrl() {
   const citiesRaw = params.get('cities');
   const eventsRaw = params.get('events');
   const flowsRaw = params.get('flows');
+  const migrationsRaw = params.get('migrations');
 
-  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '') && (hideRaw == null || hideRaw === '') && (labelsRaw == null || labelsRaw === '') && (certaintyRaw == null || certaintyRaw === '') && (citiesRaw == null || citiesRaw === '') && (eventsRaw == null || eventsRaw === '') && (flowsRaw == null || flowsRaw === '')) {
+  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '') && (hideRaw == null || hideRaw === '') && (labelsRaw == null || labelsRaw === '') && (certaintyRaw == null || certaintyRaw === '') && (citiesRaw == null || citiesRaw === '') && (eventsRaw == null || eventsRaw === '') && (flowsRaw == null || flowsRaw === '') && (migrationsRaw == null || migrationsRaw === '')) {
     updateActiveViewChrome();
     updateFiltersUI();
     return;
@@ -878,6 +882,8 @@ function applyDeepLinkFromUrl() {
     if (eventsRaw != null) setGlobeExtraShown('events', !/^(0|off|false|no|none)$/i.test(eventsRaw.trim()), { syncUrl: false });
     // Day 53: ?flows=0 hides the trade routes.
     if (flowsRaw != null) setGlobeExtraShown('flows', !/^(0|off|false|no|none)$/i.test(flowsRaw.trim()), { syncUrl: false });
+    // Day 55: ?migrations=0 hides the migrations.
+    if (migrationsRaw != null) setGlobeExtraShown('migrations', !/^(0|off|false|no|none)$/i.test(migrationsRaw.trim()), { syncUrl: false });
 
     // Globe entity deep link: restore after year + layer so activity check uses the right state
     if (entityRaw && isGlobeView()) {
@@ -3522,8 +3528,10 @@ document.querySelectorAll('.globe-legend-item[data-certainty]').forEach((btn) =>
 syncGlobeCertaintyToggleUI();
 
 // Day 43 — "Cities" and "Events" key toggles (on by default). Day 53: + "Flows" (trade routes).
-const GLOBE_EXTRA_NOUN = { cities: 'cities', events: 'event pins', flows: 'trade routes' };
+// Day 55: + "Migrations".
+const GLOBE_EXTRA_NOUN = { cities: 'cities', events: 'event pins', flows: 'trade routes', migrations: 'migrations' };
 function isGlobeExtraOn(which) {
+  if (which === 'migrations') return globeMigrationsOn;
   return which === 'cities' ? globeCitiesOn : which === 'flows' ? globeFlowsOn : globeEventsOn;
 }
 function syncGlobeExtrasToggleUI() {
@@ -3547,6 +3555,9 @@ function setGlobeExtraShown(which, on, { syncUrl = true } = {}) {
   } else if (which === 'flows') {
     globeFlowsOn = Boolean(on);
     globeSet('setGlobeFlowsEnabled', globeFlowsOn);
+  } else if (which === 'migrations') {
+    globeMigrationsOn = Boolean(on);
+    globeSet('setGlobeMigrationsEnabled', globeMigrationsOn);
   } else return;
   syncGlobeExtrasToggleUI();
   if (syncUrl && isGlobeView()) syncDeepLinkUrl();
@@ -3637,6 +3648,44 @@ function showGlobeRouteDetail(route) {
 globeSet('setOnGlobeRouteClick', (routeId, route) => {
   if (!isGlobeView()) return;
   showGlobeRouteDetail(route);
+});
+
+// Day 55 — a tap on a migration opens its story (who moved, when, sources, how sure).
+function formatMigrationSpan(m) {
+  return `${formatGlobeYear(m.start)} — ${m.end >= 2025 ? 'today' : formatGlobeYear(m.end)}`;
+}
+
+function showGlobeMigrationDetail(m, pathName) {
+  if (!m) return;
+  clearGlobeEntitySelection({ syncUrl: false, closeDetail: false });
+  const kind = m.forced ? 'Forced migration' : 'Migration';
+  const relatedItems = (m.related || [])
+    .map((ref) => resolveGlobePinRef(ref))
+    .filter(Boolean)
+    .map((info) => ({ id: info.id, name: info.title, icon: info.icon, view: info.view }));
+  const path = (m.paths || []).find((p) => p.name === pathName);
+  const stage = path
+    ? ` You tapped: ${path.name} (${formatGlobeYear(path.start ?? m.start)} — ${formatGlobeYear(path.end ?? m.end)}).`
+    : '';
+  const description = `${m.description} Who moved: ${m.people}${stage}`;
+  showDetail(`${m.icon ? m.icon + ' ' : ''}${m.name}`, `${formatMigrationSpan(m)} · ${kind}`, description, m.sources, {
+    view: 'globe',
+    id: null, // migrations aren't bookmarkable yet
+    icon: '',
+    name: m.name,
+    dateLabel: formatMigrationSpan(m),
+    kind: 'globe-migration',
+    relatedItems,
+    confidence: m.confidence
+      ? { ...m.confidence, drawnSentence: 'Drawn as broad arrows: dashes move the way people went, and a wider line means more people.' }
+      : null,
+  });
+  if (isGlobeView()) syncDeepLinkUrl();
+}
+
+globeSet('setOnGlobeMigrationClick', (id, m, pathName) => {
+  if (!isGlobeView()) return;
+  showGlobeMigrationDetail(m, pathName);
 });
 
 // Keep polygon-click handler registered even across remounts
