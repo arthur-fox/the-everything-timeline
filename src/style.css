@@ -4628,3 +4628,331 @@ body.has-support-panel .fab-dock {
   }
 }
 
+
+/* ============================================================
+   Day 54 — Phones (< 700px): the timeline canvas is the main thing on screen.
+   Arthur: "there's a lot more info around the timeline than the timeline itself".
+   - one compact header row: Timeline/Globe switch, logo mark, "☰ <view>" menu button;
+   - every other control (view picker, search, filters, compare, bookmarks, era chips)
+     lives in #controls, shown as a bottom sheet when the menu is open;
+   - a slim toolbar row under the canvas: zoom / fit / theme left, icon-only ☕ 💬 right,
+     so nothing floats over the canvas;
+   - detail panel stays a dismissible bottom sheet (now also swipe-down).
+   Desktop is untouched: everything below is inside this media query, and the menu
+   button is display:none outside it.
+   ============================================================ */
+.mobile-menu-toggle {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --m-header-h: 52px;
+    --m-toolbar-h: 56px;
+    --m-minimap-h: 44px;
+  }
+
+  html,
+  body {
+    overscroll-behavior: none; /* no pull-to-refresh / bounce fighting the canvas */
+  }
+
+  #app {
+    height: 100dvh; /* the visible viewport, not the one behind the URL bar */
+  }
+
+  /* --- compact header row --- */
+  #header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    min-height: var(--m-header-h);
+    padding: 6px max(10px, env(safe-area-inset-right, 0px)) 6px max(10px, env(safe-area-inset-left, 0px));
+    text-align: left;
+  }
+
+  #header .mode-switch {
+    order: 1;
+    flex: none;
+    margin: 0;
+  }
+
+  #header .mode-switch-btn {
+    min-height: 38px;
+    padding: 0 12px;
+    gap: 6px;
+  }
+
+  #header .header-brand {
+    order: 2;
+    flex: none;
+    margin: 0;
+  }
+
+  #header .brand {
+    gap: 0;
+  }
+
+  #header .brand-mark {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* title kept for screen readers, mark only on screen */
+  #header h1 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  #header .subtitle,
+  #header .active-view-label {
+    display: none;
+  }
+
+  .mobile-menu-toggle {
+    order: 3;
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 44px;
+    min-height: 40px;
+    max-width: 46vw;
+    padding: 0 12px;
+    border-radius: var(--radius-pill, 999px);
+    border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+    background: color-mix(in srgb, var(--bg-surface) 88%, transparent);
+    color: var(--text);
+    font: 700 0.9rem/1 var(--font-ui);
+    cursor: pointer;
+  }
+
+  .mobile-menu-toggle svg {
+    flex: none;
+    color: var(--accent);
+  }
+
+  .mobile-menu-label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .mobile-menu-toggle[aria-expanded='true'] {
+    background: color-mix(in srgb, var(--accent) 18%, var(--bg-surface));
+  }
+
+  /* --- #controls becomes the menu sheet (hidden until opened) --- */
+  #controls {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 900; /* under the search-results sheet (1000) and dialogs */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    max-height: min(78dvh, 640px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 10px 14px calc(16px + env(safe-area-inset-bottom, 0px));
+    border-radius: 18px 18px 0 0;
+    border-top: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    box-shadow: 0 -16px 48px var(--shadow-heavy);
+    visibility: hidden; /* children like the toolbar opt back in */
+  }
+
+  #controls::before {
+    content: '';
+    flex: 0 0 100%;
+    height: 4px;
+    max-width: 40px;
+    margin: 0 auto 4px;
+    border-radius: 999px;
+    background: var(--bg-elevated);
+  }
+
+  body.mobile-menu-open #controls {
+    visibility: visible;
+    animation: mobileMenuUp 0.2s ease;
+  }
+
+  @keyframes mobileMenuUp {
+    from {
+      bottom: -40px;
+    }
+    to {
+      bottom: 0;
+    }
+  }
+
+  .mobile-menu-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 890;
+    background: rgba(5, 8, 20, 0.5);
+  }
+
+  #controls .view-select {
+    order: 1;
+    flex: 1 0 100%;
+    min-height: 46px;
+    font-size: 1rem;
+  }
+
+  #controls .timeline-search-wrap {
+    order: 2;
+    flex: 1 0 100%;
+  }
+
+  #controls .filters-wrap,
+  #controls .compare-wrap,
+  #controls .bookmarks-wrap {
+    order: 3;
+    flex: 1 1 0;
+  }
+
+  #controls .filters-toggle,
+  #controls .compare-toggle,
+  #controls .bookmarks-toggle {
+    width: 100%;
+    min-height: 46px;
+    font-size: 0.95rem;
+  }
+
+  #controls #era-nav {
+    order: 4;
+    flex: 1 0 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    overflow: visible;
+    padding: 0;
+  }
+
+  #controls #era-nav:empty {
+    display: none;
+  }
+
+  #controls #era-nav button {
+    min-height: 40px;
+    font-size: 0.9rem;
+  }
+
+  /* --- slim toolbar row under the canvas (zoom / fit / theme) --- */
+  .thumb-bar {
+    visibility: visible;
+    position: fixed;
+    left: max(8px, env(safe-area-inset-left, 0px));
+    right: auto;
+    transform: none;
+    bottom: calc(var(--m-minimap-h) + 6px + env(safe-area-inset-bottom, 0px));
+    z-index: 160;
+    gap: 6px;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .zoom-controls {
+    gap: 6px;
+  }
+
+  .zoom-controls button,
+  #theme-toggle {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+  }
+
+  #zoom-fit {
+    width: auto;
+    padding: 0 12px;
+  }
+
+  body.mobile-menu-open .thumb-bar,
+  body.globe-active .thumb-bar {
+    visibility: hidden;
+  }
+
+  /* reserve the toolbar row so the canvas ends above it */
+  body:not(.globe-active) #timeline-container {
+    margin-bottom: var(--m-toolbar-h);
+  }
+
+  #minimap {
+    height: var(--m-minimap-h);
+  }
+
+  #timeline-canvas {
+    touch-action: none; /* the canvas owns drag + pinch; the page never scrolls or zooms */
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* --- Support / Feedback: icon-only in the toolbar row on the timeline (labels stay on the globe) --- */
+  body:not(.globe-active) .fab-dock {
+    gap: 8px;
+  }
+
+  body:not(.globe-active) .fab-pill {
+    width: 44px;
+    min-height: 44px;
+    height: 44px;
+    padding: 0;
+    justify-content: center;
+    gap: 0;
+  }
+
+  body:not(.globe-active) .fab-pill .support-open-label,
+  body:not(.globe-active) #feedback-open.feedback-fab .feedback-open-label {
+    display: none;
+  }
+
+  body:not(.globe-active) #feedback-open.feedback-fab {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.32);
+  }
+
+  body.mobile-menu-open .fab-dock {
+    visibility: hidden;
+  }
+
+  /* the detail sheet gets the bottom of the screen to itself (toolbar + ☕ 💬 come back when it closes) */
+  body:has(#event-detail:not(.hidden)) .thumb-bar,
+  body:has(#event-detail:not(.hidden)) .fab-dock,
+  body.mobile-menu-open .gesture-hint {
+    visibility: hidden;
+  }
+
+  /* --- one-line gesture hint at the top of the canvas --- */
+  .gesture-hint {
+    top: 8px;
+    bottom: auto;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: calc(100vw - 24px);
+    padding: 6px 6px 6px 12px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  .gesture-hint button {
+    width: 32px;
+    height: 32px;
+  }
+}

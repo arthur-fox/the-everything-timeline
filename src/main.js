@@ -48,6 +48,7 @@ function globeSet(name, ...args) {
 }
 import { initFeedback } from './feedback.js';
 import { initSupport } from './support.js';
+import { initMobileMenu } from './mobile-menu.js';
 import { confidenceForEntity, confidenceForNationPeriod, CONFIDENCE_LABEL, CONFIDENCE_DRAWING } from './globe-confidence.js';
 
 // ============================================================
@@ -945,6 +946,11 @@ function focusCompareItemById(id) {
 
 // Responsive scale factor (1 on desktop, smaller on mobile)
 let uiScale = 1;
+// Day 54: on phones the swim-lane text was ~6 px (uiScale = width / 700, floor 0.55). Lanes keep
+// a 0.9 floor below 700px, so bar labels are ~11 px and rows tall enough to tap; desktop is unchanged.
+function swimScale() {
+  return uiScale < 1 ? Math.max(uiScale, 0.9) : uiScale;
+}
 
 // Shared interaction state
 let isDragging = false;
@@ -1232,7 +1238,7 @@ function drawSwimView() {
     ctx, w, h,
     state.viewStart, state.viewEnd,
     state.scrollY, state.hoveredItem,
-    formatFn, uiScale,
+    formatFn, swimScale(),
     visibleItems, visibleCategories
   );
 
@@ -1287,7 +1293,7 @@ function drawCompareView() {
       ctx, w, panel.box.h,
       shared.viewStart, shared.viewEnd,
       compareScroll[panel.key], hovered,
-      formatYearShort, uiScale,
+      formatYearShort, swimScale(),
       items, categories,
       { clear: false }
     );
@@ -4355,6 +4361,7 @@ canvas.style.cursor = 'grab';
 
 // Day 45 — Feedback button + panel (src/feedback.js; where it goes is set in src/feedback-config.js).
 initSupport();
+initMobileMenu();
 initFeedback({
   getContext: () => {
     const globe = isGlobeView();
