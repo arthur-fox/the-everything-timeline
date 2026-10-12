@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62); next for the daily ship routine is item 6, step 6.1 (the early medieval world, 500–1000)** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #TBD); next for the daily ship routine is step 6.2 (inland Africa)** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -803,9 +803,21 @@ Done ahead of step 6.1, which stays next for the daily routine.
 - **Size:** globe chunk +26 KB gz (104 → 130 KB), timeline landing +6 KB gz (timeline text), pins/cities +3 KB gz.
 - **Honest caveats:** borders are hand-drawn at ~10–30 km from atlases; small city-state territories are drawn by region; Egypt under Persia (525–404) still shows the old Egypt shape underneath; Greek communities outside the drawn coasts are not shown.
 
+### The early medieval world, 500–1000 (Phase 4c step 6.1) — Day 57, done-in-PR (PR #TBD)
+
+Stacked on the Greek world PR (#62). Do not merge until Arthur approves.
+
+- **Audit first:** before this the globe had a thin Merovingian→Carolingian blob, schematic Tang / Byzantine / Umayyad / Abbasid / Srivijaya shapes, and nothing for Visigoths, Anglo-Saxon kingdoms, Avars, Khazars, Göktürks, Uyghurs, Tibetan Empire, Nanzhao or Silla.
+- **Shapes (`src/globe-early-medieval.js`, lazy globe chunk):** 11 polities with dated keyframes — Frankish / Carolingian realm (Merovingian partitions → Charlemagne → Verdun), Visigothic Kingdom (Toulouse → Toledo, hands off before Umayyad Spain 711), Anglo-Saxon kingdoms (Heptarchy regions → Wessex → Æthelstan’s England), Avar Khaganate, Khazar Khaganate, Göktürk Khaganate (First / Second), Uyghur Khaganate, Tibetan Empire (beside Tang, not over China proper), Nanzhao, Silla / Unified Silla, and a redrawn Srivijaya (island / peninsula footholds, no ocean blob). Extra keyframes for Umayyad Al-Andalus (715) and mid-Tang (700) so neighbours sit beside existing empires. Each has sources and a confidence level with a reason (steppe = conjectural; Francia / Iberia / Britain / Tibet / East Asia / maritime = approximate).
+- **Era names:** `nameAt` (Merovingian Francia → Carolingian Empire → after Verdun; Visigothic Toulouse → Toledo; Heptarchy → Kingdom of the English; First / Second Türk; Silla → Unified Silla). Short `edgeGrace` where successors hand off quickly (Visigoths → Al-Andalus, Göktürks → Uyghurs).
+- **Timeline:** Merovingian period on the existing Frankish entry; new entries for Visigothic Kingdom, Anglo-Saxon Kingdoms, Avar Khaganate, Göktürk Khaganate, Uyghur Khaganate, Khazar Khaganate, Tibetan Empire, Nanzhao, Silla.
+- **Cities and pins:** Atil, Ordu-Baliq, Dali (Yunnan), Regensburg; pins for Charlemagne’s crowning, Reccared / Guadalete, Whitby / Edington / Æthelstan, Avar–Sasanian siege, Khazar Atil, Ötüken, Ordu-Baliq, Tibetans in Chang’an / Lhasa, Nanzhao, Unified Silla.
+- **Validate:** `scripts/check-early-medieval.js` (in `npm run validate`): closed non-crossing rings, era names, who-is-on / who-is-gone at 600 / 750 / 800 / 900.
+- **Honest caveats:** early medieval frontiers were fluid (especially steppe khaganates); rings are schematic pastoral / tribute zones, not surveyed borders. Tang neighbours are drawn beside Tang’s existing schematic shape (which still reaches the Tarim and north fringe). Visigoths end by 711; Umayyad Spain appears from the existing caliphate overlays plus a 715 Al-Andalus keyframe. Anglo-Saxon coverage stops at Æthelstan (927) on the globe even though the timeline entry runs to 1066. Inland Africa and deeper SE Asia wait for steps 6.2–6.3.
+
 ### 6. Better coverage between empires
 
-- **Step 6.1 — The early medieval world (500–1000).** Merovingian and Carolingian Francia, Anglo-Saxon kingdoms, the Visigoths, the Avars, the Khazars, the Göktürks and Uyghurs, Tang neighbours (Tibetan Empire, Nanzhao, Silla), Srivijaya.
+- **Step 6.1 — The early medieval world (500–1000).** ✅ Day 57, done-in-PR (PR #TBD). Merovingian and Carolingian Francia, Anglo-Saxon kingdoms, the Visigoths, the Avars, the Khazars, the Göktürks and Uyghurs, Tang neighbours (Tibetan Empire, Nanzhao, Silla), Srivijaya — see the Day 57 write-up below.
 - **Step 6.2 — Inland Africa.** Kanem–Bornu, Kongo, Great Zimbabwe and Mutapa, Luba and Lunda, Oyo, Benin, Asante, the Sokoto Caliphate, Buganda, and Ethiopia over time.
 - **Step 6.3 — Southeast Asia.** Funan, Champa, the Khmer Empire, Pagan, Majapahit, Ayutthaya, Đại Việt, Malacca, Mataram.
 - **Step 6.4 — Native American nations after 1500.** The Haudenosaunee, Cherokee, Muscogee, Powhatan, Lakota and Comanche, the Mapuche and others, with dated territories, removals (1830s) and reservations. Sourced carefully, with tribal nations' own histories where available and uncertainty shown honestly.
@@ -995,7 +1007,8 @@ A sensible near-term sequence:
 42. Tip jar (Day 52) ✅ (merged, #58; addresses guarded by scripts/check-support.js).
 43. Phase 4c item 5 — trade routes (Day 53) ✅ (merged, #59) → migrations (Day 55, step 5.2) ✅ (in review, #61).
 44. Ancient Greek world 1600–146 BCE (Arthur, 11 Oct; Day 56) ✅ (done-in-PR, #62).
-45. **Now: Phase 4c item 6 — step 6.1 the early medieval world (500–1000), NEXT for the daily routine.**
+45. Early medieval world 500–1000 (Phase 4c step 6.1; Day 57) ✅ (done-in-PR, #TBD; stacks on #62).
+46. **Now: Phase 4c step 6.2 inland Africa, NEXT for the daily routine.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
