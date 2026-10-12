@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is in review (PR #61, Day 55); next for the daily ship routine is item 6, step 6.1 (the early medieval world, 500–1000)** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62); next for the daily ship routine is item 6, step 6.1 (the early medieval world, 500–1000)** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -789,6 +789,19 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 - **Key:** a "Migrations · wider = more people" item turns them off and on; `&migrations=0` starts with them off (kept in shared links).
 - **Validate:** `scripts/check-migrations.js` (in `npm run validate`): fields, years (each path's years inside its migration's), scale, related refs, land waypoints on land, sea paths off land. The land/sea geometry now lives in `scripts/flow-geo.js`, shared with `check-routes.js`.
 - **Honest caveats:** out of Africa is not drawn because it happened long before the globe's earliest year (3000 BCE); it needs a deep-time globe first. The prehistoric expansions (Bantu, Austronesian, Indo-European) were slow spreads over generations, not marches, so their arrows are schematic, and their scale is "unknown" (thinnest line). Greek and Anatolian Indo-European arrivals are debated and not drawn. Tap targets are the glow width (about 9–23 px).
+
+### The ancient Greek world, 1600–146 BCE (Arthur, 11 Oct 2026: "Can you do Greeks and that period next") — Day 56, done-in-PR (PR #62)
+
+Done ahead of step 6.1, which stays next for the daily routine.
+
+- **Audit first:** before this the globe had one blob for "Classical Greece" (480–350 BCE), rough Achaemenid, Seleucid and Carthage shapes, and nothing for the Bronze Age Aegean, Macedon, Alexander or the other successor kingdoms; the timeline had no Minoans, Mycenaeans, Hittites, Etruscans, Roman Republic, Macedon, Ptolemies, Pergamon or Bactrian Greeks.
+- **Shapes (`src/globe-med-pieces.js`, `src/globe-greek-world.js`, lazy globe chunk):** the land from Spain to the Punjab is cut into ~95 small pieces (Attica, Laconia, Ionia, Cilicia, Media, Latium …) that share borders point for point, so allies, satrapies and provinces fit edge to edge and `mergeRings` fuses them into clean outlines. 24 polities with dated keyframes: Minoan Crete, Mycenaean Greece (palace by palace), the Hittite empire, Lydia, Achaemenid Persia, Carthage, the Etruscans, the Roman Republic (to 50 BCE), Archaic/Classical Greece, Athens and the Delian League, Sparta and the Peloponnesian League, Thebes, Syracuse, Epirus, Argead Macedon, Alexander's empire, the Ptolemaic, Seleucid, Antigonid, Attalid, Greco-Bactrian and Indo-Greek kingdoms, the Achaean and Aetolian leagues. Plus the Hellenes as a people (Greek speakers, Mycenaeans → 1923 → today) and extra keyframes for Assyria/Babylon and early Parthia. Each has sources and a confidence level with a reason (Bronze Age = conjectural).
+- **Era names:** `nameAt` (e.g. Archaic Greece → Independent Greek states; Athens → Athens and the Delian League → Athenian Empire → Second Athenian League) on the map label, the key and the detail panel; short map labels for long names. `edgeGrace` gives these fast-changing states a 6-year fade instead of 20 so successors don't double up.
+- **Timeline:** 13 new entries (Minoan Crete, Mycenaean Greece, Archaic Greece, Etruscans, Macedon, Roman Republic, Hittites, Lydia, Alexander's empire, Ptolemaic Kingdom, Pergamon, Greco-Bactria, Indo-Greeks), 9 wars (Greek–Punic Sicily, Corinthian, Boeotian, Philip II, Diadochi, Pyrrhic, Syrian, Macedonian, Achaean), 2 world events (Late Bronze Age collapse, first Olympics).
+- **Cities and pins:** 74 dated cities with era names (Taras → Tarentum → Taranto, Zancle → Messana → Messina, Tomis → Constanța …), 46 new event pins (Knossos, Thera, Kadesh, colonies founded, Plataea, Leuctra, Chaeronea, Alexandria founded, Ipsus, Raphia, Pydna, Mummius at Corinth …).
+- **Validate:** `scripts/check-greek-world.js` (in `npm run validate`): every merge gives one outline, no ring crosses itself, era names switch at the right years, the right states are on (and gone) at sample years.
+- **Size:** globe chunk +26 KB gz (104 → 130 KB), timeline landing +6 KB gz (timeline text), pins/cities +3 KB gz.
+- **Honest caveats:** borders are hand-drawn at ~10–30 km from atlases; small city-state territories are drawn by region; Egypt under Persia (525–404) still shows the old Egypt shape underneath; Greek communities outside the drawn coasts are not shown.
 
 ### 6. Better coverage between empires
 
@@ -981,7 +994,8 @@ A sensible near-term sequence:
 41. Data architecture — static data files (Day 51) ✅ (merged, #57).
 42. Tip jar (Day 52) ✅ (merged, #58; addresses guarded by scripts/check-support.js).
 43. Phase 4c item 5 — trade routes (Day 53) ✅ (merged, #59) → migrations (Day 55, step 5.2) ✅ (in review, #61).
-44. **Now: Phase 4c item 6 — step 6.1 the early medieval world (500–1000), NEXT for the daily routine.**
+44. Ancient Greek world 1600–146 BCE (Arthur, 11 Oct; Day 56) ✅ (done-in-PR, #62).
+45. **Now: Phase 4c item 6 — step 6.1 the early medieval world (500–1000), NEXT for the daily routine.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
