@@ -77,6 +77,7 @@ const ANATOLIA_INNER = M('anatolia-inner', P.PHRYGIA, P.CAPPADOCIA, P.BITHYNIA, 
 const ANATOLIA_ALEX = M('anatolia-alexander', P.HELLESPONT, P.IONIA, P.CARIA, P.LYCIA, P.PHRYGIA, P.CILICIA);
 const ANATOLIA_GREEK = M('anatolia-greek', P.PHRYGIA, P.BITHYNIA, P.LYCIA, P.CILICIA, P.CAPPADOCIA);
 const SEL_ANATOLIA = M('seleucid-anatolia', P.PHRYGIA, P.IONIA, P.CARIA);
+const SEL_INLAND = M('seleucid-inland', P.PHRYGIA, P.CARIA);
 const LYDIA_REALM = M('lydia-realm', P.PHRYGIA, P.HELLESPONT, P.BITHYNIA);
 const PERG_WEST = M('pergamon-west', P.HELLESPONT, P.IONIA);
 const ASIA_PROVINCE = M('asia-province', P.HELLESPONT, P.IONIA, P.CARIA, P.PHRYGIA);
@@ -694,6 +695,7 @@ const SEL = {
   syria: R('syria', 'Syria (Seleucis)', P.SYRIA),
   cilicia: R('cilicia', 'Cilicia', P.CILICIA),
   anatolia: R('anatolia', 'Asia Minor', SEL_ANATOLIA),
+  inland: R('anatolia-inland', 'Inland Asia Minor and Caria (Ionia under Pergamon)', SEL_INLAND),
   coele: R('coele-syria', 'Coele-Syria and Judaea', P.COELE_SYRIA),
 };
 const seleucid = {
@@ -710,8 +712,8 @@ const seleucid = {
     K(-281, 'Corupedium: Asia Minor won', [SEL.babylonia, SEL.media, SEL.parthia, SEL.bactria, SEL.syria, SEL.cilicia, SEL.anatolia]),
     K(-261, 'Antiochus I', [SEL.babylonia, SEL.media, SEL.parthia, SEL.bactria, SEL.syria, SEL.cilicia, SEL.anatolia]),
     K(-246, 'Bactria breaks away', [SEL.babylonia, SEL.media, SEL.parthia, SEL.syria, SEL.cilicia, SEL.anatolia]),
-    K(-220, 'Parthia lost; Antiochus III', [SEL.babylonia, SEL.media, SEL.syria, SEL.cilicia, SEL.anatolia]),
-    K(-200, 'Panium: Coele-Syria taken', [SEL.babylonia, SEL.media, SEL.syria, SEL.cilicia, SEL.anatolia, SEL.coele]),
+    K(-220, 'Parthia lost; Antiochus III', [SEL.babylonia, SEL.media, SEL.syria, SEL.cilicia, SEL.inland]),
+    K(-200, 'Panium: Coele-Syria taken', [SEL.babylonia, SEL.media, SEL.syria, SEL.cilicia, SEL.inland, SEL.coele]),
     K(-188, 'Treaty of Apamea: Asia Minor lost', [SEL.babylonia, SEL.media, SEL.syria, SEL.cilicia, SEL.coele]),
     K(-150, 'Media threatened by Parthia', [SEL.babylonia, SEL.media, SEL.syria, SEL.cilicia, SEL.coele]),
     K(-129, 'Babylonia lost for good; Judaea independent', [SEL.syria, SEL.cilicia]),
@@ -892,6 +894,8 @@ export const greekWorldPolities = [
   argeadMacedon, alexander, ptolemaic, seleucid, antigonid, pergamon, grecoBactria, indoGreek,
   achaeanLeague, aetolianLeague,
 ];
+/** Short fades (years) at first/last keyframe: these states succeed each other quickly. */
+for (const e of greekWorldPolities) e.edgeGrace = 6;
 
 // The Hellenes (people layer) ------------------------------------------------------------------
 const H = {

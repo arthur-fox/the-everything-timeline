@@ -6628,7 +6628,7 @@ export function getOverlayPolygonFeatures(year, entities = entitiesForLayer()) {
       y,
       resolveRegionRing,
       lifespan,
-      OVERLAY_EDGE_GRACE,
+      entityEdgeGrace(entity),
       resolveRegionHoles,
     );
     if (!morphed.length) continue;
@@ -6718,6 +6718,15 @@ for (const item of warsItems) timelineItemById.set(item.id, item);
  * @param {SpatialEntity} entity
  * @returns {{ start: number, end: number }}
  */
+/**
+ * Day 56 — fade length (years) at an entity's first/last keyframe. Fast-changing ancient states
+ * (Philip's Macedon → Alexander's empire) set a short `edgeGrace` so successors don't double up.
+ */
+export function entityEdgeGrace(entity) {
+  const g = Number(entity?.edgeGrace);
+  return Number.isFinite(g) && g >= 1 && g <= OVERLAY_EDGE_GRACE ? g : OVERLAY_EDGE_GRACE;
+}
+
 export function getEntityLifespan(entity) {
   let start = -Infinity;
   let end = Infinity;
@@ -6726,8 +6735,9 @@ export function getEntityLifespan(entity) {
     .map((o) => Number(o?.year))
     .filter((y) => Number.isFinite(y));
   if (overlayYears.length) {
-    start = Math.min(...overlayYears) - OVERLAY_EDGE_GRACE;
-    end = Math.max(...overlayYears) + OVERLAY_EDGE_GRACE;
+    const g = entityEdgeGrace(entity);
+    start = Math.min(...overlayYears) - g;
+    end = Math.max(...overlayYears) + g;
   }
 
   const ids = entity?.timelineItemIds || [];

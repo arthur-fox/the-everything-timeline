@@ -107,7 +107,7 @@ const EXPECT = {
 };
 const GONE = {
   [-480]: ['macedonian-empire', 'mycenaean-greece'],
-  [-310]: ['classical-greece', 'athens-delian-league', 'achaemenid-empire', 'argead-macedon'],
+  [-323]: ['classical-greece', 'athens-delian-league', 'thebes-boeotian-league', 'achaemenid-empire', 'argead-macedon'],
   [-140]: ['carthage', 'achaean-league', 'antigonid-macedon'],
 };
 for (const [y, ids] of Object.entries(EXPECT)) {
