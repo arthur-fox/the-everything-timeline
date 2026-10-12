@@ -385,6 +385,56 @@
           "items": {
             "$ref": "#/definitions/source"
           }
+        },
+        "nameAt": {
+          "type": "array",
+          "description": "Day 56: era names, [fromYear, name] pairs in ascending order; the globe shows the last one at or before the year (default: name).",
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "minLength": 1
+              }
+            ],
+            "items": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "minLength": 1
+              }
+            ]
+          }
+        },
+        "confidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "level",
+            "reason"
+          ],
+          "description": "Day 56: how sure we are of this entity's shapes (see src/globe-confidence.js).",
+          "properties": {
+            "level": {
+              "type": "string",
+              "enum": [
+                "documented",
+                "approximate",
+                "conjectural"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
         }
       }
     }

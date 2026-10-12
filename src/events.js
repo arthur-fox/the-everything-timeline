@@ -297,6 +297,27 @@ export const events = [
     icon: '🗡️',
   },
   {
+    year: -1_177,
+    title: 'Late Bronze Age Collapse',
+    description: 'Within a few decades around 1200–1150 BCE the palace civilisations of the eastern Mediterranean fell: Mycenaean Greece, the Hittite empire, Ugarit and other Levantine cities were destroyed or abandoned, and Egypt barely fought off the "Sea Peoples". Drought, earthquakes, broken trade networks and migrations probably all played a part. Writing vanished from Greece for four centuries.',
+    sources: [
+      { title: 'Wikipedia — Late Bronze Age collapse', url: 'https://en.wikipedia.org/wiki/Late_Bronze_Age_collapse' },
+      { title: 'Cline, 1177 B.C.: The Year Civilization Collapsed (Princeton, 2014)', url: 'https://press.princeton.edu/books/paperback/9780691208015/1177-bc' },
+    ],
+    era: 'Ancient Civilisations',
+    icon: '🔥',
+  },
+  {
+    year: -776,
+    title: 'First Olympic Games',
+    description: 'By tradition the first Olympic Games were held at Olympia in 776 BCE, in honour of Zeus; later Greeks counted years in four-year Olympiads from this date. Athletes from every Greek city competed under a sacred truce, and the games ran for over a thousand years.',
+    sources: [
+      { title: 'Wikipedia — Ancient Olympic Games', url: 'https://en.wikipedia.org/wiki/Ancient_Olympic_Games' },
+    ],
+    era: 'Ancient Civilisations',
+    icon: '🏅',
+  },
+  {
     year: -600,
     title: 'Thales & the Birth of Philosophy',
     description: 'Thales of Miletus seeks natural explanations for the world rather than mythological ones, pioneering rational inquiry and earning his place as the first Western philosopher.',

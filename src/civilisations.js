@@ -61,7 +61,122 @@ export const civilisations = [
     region: 'middle-east',
     icon: '⚔️',
     description: 'One of the successor states of Alexander the Great\'s empire. Ruled a vast territory from Anatolia to Central Asia, blending Greek and Eastern cultures in the Hellenistic tradition.',
+    sources: [
+      { title: 'Wikipedia — Seleucid Empire', url: 'https://en.wikipedia.org/wiki/Seleucid_Empire' },
+    ],
+    periods: [
+      { name: 'Antiochus III the Great', start: -222, end: -187 },
+    ],
+  },
+  // Day 56 — Bronze Age Anatolia, Lydia, Alexander and the Hellenistic kingdoms.
+  {
+    id: 'hittite-empire',
+    name: 'Hittite Empire',
+    start: -1650,
+    end: -1180,
+    region: 'middle-east',
+    icon: '🏹',
+    description: 'An Anatolian great power ruled from Hattusa, writing the oldest recorded Indo-European language. The Hittites sacked Babylon (c. 1595 BCE), took north Syria under Suppiluliuma I, fought Ramesses II at Kadesh (1274 BCE) with thousands of chariots, and then signed the oldest surviving peace treaty with Egypt. The empire collapsed around 1180 BCE; "Neo-Hittite" kingdoms lived on in Syria.',
+    sources: [
+      { title: 'Wikipedia — Hittites', url: 'https://en.wikipedia.org/wiki/Hittites' },
+      { title: 'Wikipedia — Battle of Kadesh', url: 'https://en.wikipedia.org/wiki/Battle_of_Kadesh' },
+    ],
+    periods: [
+      { name: 'Old Kingdom', start: -1650, end: -1500 },
+      { name: 'New Kingdom (empire)', start: -1400, end: -1180 },
+    ],
+  },
+  {
+    id: 'lydia',
+    name: 'Kingdom of Lydia',
+    start: -680,
+    end: -546,
+    region: 'middle-east',
+    icon: '🪙',
+    description: 'A rich western Anatolian kingdom ruled from Sardis by the Mermnad kings Gyges, Alyattes and Croesus. The Lydians are credited with the first coins (electrum, 7th century BCE); they made the Ionian Greek cities tributary and gave lavishly to Delphi. Cyrus the Great of Persia captured Sardis and Croesus in 547/546 BCE.',
+    sources: [
+      { title: 'Wikipedia — Lydia', url: 'https://en.wikipedia.org/wiki/Lydia' },
+      { title: 'Wikipedia — Croesus', url: 'https://en.wikipedia.org/wiki/Croesus' },
+    ],
     periods: [],
+  },
+  {
+    id: 'macedonian-empire',
+    name: 'Empire of Alexander the Great',
+    start: -336,
+    end: -306,
+    region: 'middle-east',
+    icon: '⚔️',
+    description: 'Alexander III of Macedon conquered the Persian Empire in eleven years (334–323 BCE), from Egypt to the Punjab, and founded cities named Alexandria across it. He died at Babylon in 323 BCE, aged 32. His generals governed in the name of his half-brother and young son until both were killed; in 306–305 BCE they took the title of king, and the empire was formally gone.',
+    sources: [
+      { title: 'Wikipedia — Alexander the Great', url: 'https://en.wikipedia.org/wiki/Alexander_the_Great' },
+      { title: 'Wikipedia — Diadochi', url: 'https://en.wikipedia.org/wiki/Diadochi' },
+    ],
+    periods: [
+      { name: 'Conquest of Persia', start: -334, end: -323 },
+      { name: 'Regency and the first Diadochi wars', start: -323, end: -306 },
+    ],
+  },
+  {
+    id: 'ptolemaic-egypt',
+    name: 'Ptolemaic Kingdom',
+    start: -305,
+    end: -30,
+    region: 'africa',
+    icon: '📜',
+    description: 'The Macedonian dynasty founded by Ptolemy I, ruling Egypt from Alexandria for three centuries. Alexandria’s Library and Museum made it the intellectual capital of the Greek world (Euclid, Eratosthenes, the Septuagint), and the Pharos was one of the Seven Wonders. The kingdom also held Cyprus, Cyrenaica and, until 200 BCE, Coele-Syria. It ended with Cleopatra VII in 30 BCE.',
+    sources: [
+      { title: 'Wikipedia — Ptolemaic Kingdom', url: 'https://en.wikipedia.org/wiki/Ptolemaic_Kingdom' },
+      { title: 'Britannica — Ptolemaic dynasty', url: 'https://www.britannica.com/topic/Ptolemaic-dynasty' },
+    ],
+    periods: [
+      { name: 'Height (Ptolemy I–III)', start: -305, end: -222 },
+      { name: 'Cleopatra VII', start: -51, end: -30 },
+    ],
+  },
+  {
+    id: 'attalid-pergamon',
+    name: 'Kingdom of Pergamon',
+    start: -282,
+    end: -133,
+    region: 'middle-east',
+    icon: '🏛️',
+    description: 'The Attalid kingdom of north-west Asia Minor, ruled from the hill city of Pergamon. It beat the invading Galatians, sided with Rome against Macedon and the Seleucids, and after 188 BCE ruled most of western Asia Minor. Pergamon’s library rivalled Alexandria’s (parchment, "pergamena", is named after it) and its Great Altar is now in Berlin. Attalus III bequeathed the kingdom to Rome in 133 BCE.',
+    sources: [
+      { title: 'Wikipedia — Attalid kingdom', url: 'https://en.wikipedia.org/wiki/Attalid_kingdom' },
+      { title: 'Wikipedia — Pergamon', url: 'https://en.wikipedia.org/wiki/Pergamon' },
+    ],
+    periods: [],
+  },
+  {
+    id: 'greco-bactria',
+    name: 'Greco-Bactrian Kingdom',
+    start: -256,
+    end: -120,
+    region: 'central-asia',
+    icon: '🪙',
+    description: 'A Greek kingdom in Bactria (northern Afghanistan and southern Uzbekistan and Tajikistan) that broke away from the Seleucids around 250 BCE. Its cities, like Ai-Khanoum on the Oxus, had theatres, gymnasia and Greek inscriptions, and its silver coins are among the finest of antiquity. Its kings crossed into India about 180 BCE; nomadic Saka and Yuezhi overran Bactria around 145–120 BCE.',
+    sources: [
+      { title: 'Wikipedia — Greco-Bactrian Kingdom', url: 'https://en.wikipedia.org/wiki/Greco-Bactrian_Kingdom' },
+      { title: 'Wikipedia — Ai-Khanoum', url: 'https://en.wikipedia.org/wiki/Ai-Khanoum' },
+    ],
+    periods: [],
+  },
+  {
+    id: 'indo-greek',
+    name: 'Indo-Greek Kingdom',
+    start: -180,
+    end: 10,
+    region: 'south-asia',
+    icon: '☸️',
+    description: 'Greek kings ruling in today’s Afghanistan, Pakistan and north-west India, from Demetrius’ invasion about 180 BCE to about 10 CE. The best known, Menander I (Milinda), appears in a Buddhist dialogue, the Milindapanha. Their bilingual Greek–Indian coins and the Greco-Buddhist art of Gandhara show the two cultures mixing.',
+    sources: [
+      { title: 'Wikipedia — Indo-Greek Kingdom', url: 'https://en.wikipedia.org/wiki/Indo-Greek_Kingdom' },
+      { title: 'Wikipedia — Menander I', url: 'https://en.wikipedia.org/wiki/Menander_I' },
+    ],
+    periods: [
+      { name: 'Menander I', start: -165, end: -130 },
+    ],
   },
   {
     id: 'parthian',
@@ -265,6 +380,112 @@ export const civilisations = [
   // =========================================================
   // EUROPE
   // =========================================================
+  // Day 56 — the Greek world and its neighbours, c. 1950–146 BCE.
+  {
+    id: 'minoan-crete',
+    name: 'Minoan Crete',
+    start: -1950,
+    end: -1450,
+    region: 'europe',
+    icon: '🐂',
+    description: 'Europe’s first palace civilisation, on Crete. Great palaces at Knossos, Phaistos, Malia and Zakros stored crops and kept accounts in Linear A, a script still undeciphered; frescoes show bull-leaping, processions and sea life. Minoan traders and culture reached the Cyclades, Egypt and the Levant. The eruption of Thera (Santorini), about 1600 BCE by radiocarbon, buried Akrotiri; around 1450 BCE most palaces burned and Mycenaean Greeks took over Knossos.',
+    sources: [
+      { title: 'Wikipedia — Minoan civilization', url: 'https://en.wikipedia.org/wiki/Minoan_civilization' },
+      { title: 'Wikipedia — Minoan eruption', url: 'https://en.wikipedia.org/wiki/Minoan_eruption' },
+    ],
+    periods: [
+      { name: 'Old Palace period', start: -1950, end: -1700 },
+      { name: 'New Palace period', start: -1700, end: -1450 },
+    ],
+  },
+  {
+    id: 'mycenaean-greece',
+    name: 'Mycenaean Greece',
+    start: -1600,
+    end: -1100,
+    region: 'europe',
+    icon: '🦁',
+    description: 'The first Greek-speaking civilisation, named after Mycenae with its Lion Gate and gold-filled Shaft Graves. By 1400 BCE palace kingdoms at Mycenae, Tiryns, Pylos, Thebes, Athens and Knossos kept records in Linear B, the earliest written Greek, and traded across the Mediterranean; the Hittites knew them as Ahhiyawa. Around 1200–1180 BCE, in the wider Late Bronze Age collapse, the palaces were destroyed, writing was lost, and Greece entered its "Dark Age" — the world later remembered in Homer’s epics.',
+    sources: [
+      { title: 'Wikipedia — Mycenaean Greece', url: 'https://en.wikipedia.org/wiki/Mycenaean_Greece' },
+      { title: 'Wikipedia — Late Bronze Age collapse', url: 'https://en.wikipedia.org/wiki/Late_Bronze_Age_collapse' },
+      { title: 'Wikipedia — Linear B', url: 'https://en.wikipedia.org/wiki/Linear_B' },
+    ],
+    periods: [
+      { name: 'Shaft Grave era', start: -1600, end: -1450 },
+      { name: 'Palace kingdoms', start: -1400, end: -1200 },
+      { name: 'Collapse and post-palatial', start: -1200, end: -1100 },
+    ],
+  },
+  {
+    id: 'archaic-greece',
+    name: 'Archaic Greece',
+    start: -800,
+    end: -480,
+    region: 'europe',
+    icon: '🏺',
+    description: 'Greece re-emerged from its Dark Age as hundreds of independent city-states (poleis). They borrowed the Phoenician alphabet, held the first Olympic Games (776 BCE by tradition), and between about 750 and 550 BCE founded colonies from Spain to the Black Sea — Syracuse, Taras, Massalia, Byzantion, Cyrene, Olbia. Homer’s epics were written down, hoplite armies and stone temples appeared, tyrants rose and fell, and Athens became a democracy in 508 BCE. The age ends with the Persian invasions of 490 and 480 BCE.',
+    sources: [
+      { title: 'Wikipedia — Archaic Greece', url: 'https://en.wikipedia.org/wiki/Archaic_Greece' },
+      { title: 'Wikipedia — Greek colonisation', url: 'https://en.wikipedia.org/wiki/Greek_colonisation' },
+    ],
+    periods: [
+      { name: 'Age of colonisation', start: -750, end: -550 },
+      { name: 'Age of tyrants', start: -650, end: -510 },
+    ],
+  },
+  {
+    id: 'etruscans',
+    name: 'Etruscan Civilisation',
+    start: -800,
+    end: -264,
+    region: 'europe',
+    icon: '🏺',
+    description: 'A league of city-states in central Italy (Etruria, today Tuscany and northern Lazio) speaking a non-Indo-European language. Rich from metals and trade, they spread to the Po valley and Campania, allied with Carthage against the Greeks, and gave early Rome kings, engineering and religious rites. Their power faded under Greek, Celtic and Roman pressure; Rome took Veii in 396 BCE and the last independent city, Volsinii, in 264 BCE.',
+    sources: [
+      { title: 'Wikipedia — Etruscan civilization', url: 'https://en.wikipedia.org/wiki/Etruscan_civilization' },
+      { title: 'Britannica — Etruscan', url: 'https://www.britannica.com/topic/Etruscan' },
+    ],
+    periods: [
+      { name: 'Orientalising and Archaic height', start: -700, end: -474 },
+      { name: 'Decline and Roman conquest', start: -396, end: -264 },
+    ],
+  },
+  {
+    id: 'macedon',
+    name: 'Kingdom of Macedon',
+    start: -700,
+    end: -146,
+    region: 'europe',
+    icon: '🛡️',
+    description: 'The northern Greek kingdom of the Argead dynasty (from Aigai and later Pella). Philip II (359–336 BCE) built the sarissa phalanx and made Macedon master of Greece at Chaeronea (338); his son Alexander conquered Persia. After Alexander the Antigonid dynasty (from 277 BCE) ruled Macedon and held key Greek fortresses until Rome defeated Philip V at Cynoscephalae (197) and Perseus at Pydna (168). Macedonia became a Roman province in 146 BCE.',
+    sources: [
+      { title: 'Wikipedia — Macedonia (ancient kingdom)', url: 'https://en.wikipedia.org/wiki/Macedonia_(ancient_kingdom)' },
+      { title: 'Wikipedia — Antigonid dynasty', url: 'https://en.wikipedia.org/wiki/Antigonid_dynasty' },
+    ],
+    periods: [
+      { name: 'Philip II', start: -359, end: -336 },
+      { name: 'Antigonid kings', start: -277, end: -168 },
+    ],
+  },
+  {
+    id: 'roman-republic',
+    name: 'Roman Republic',
+    start: -509,
+    end: -27,
+    region: 'europe',
+    icon: '🦅',
+    description: 'Rome after its kings: governed by two annual consuls, the Senate and popular assemblies. It conquered Italy by 264 BCE, beat Carthage in the Punic Wars, then broke the Hellenistic kingdoms — Macedon, the Seleucids and finally the Achaean League, destroying Corinth and Carthage in the same year, 146 BCE. Civil wars in the 1st century BCE (Marius and Sulla, Caesar and Pompey, Octavian and Antony) ended with Augustus as the first emperor in 27 BCE.',
+    sources: [
+      { title: 'Wikipedia — Roman Republic', url: 'https://en.wikipedia.org/wiki/Roman_Republic' },
+      { title: 'Britannica — Roman Republic', url: 'https://www.britannica.com/place/Roman-Republic' },
+    ],
+    periods: [
+      { name: 'Conquest of Italy', start: -509, end: -264 },
+      { name: 'Punic and Macedonian Wars', start: -264, end: -146 },
+      { name: 'Late Republic', start: -133, end: -27 },
+    ],
+  },
   {
     id: 'classical-greece',
     name: 'Classical Greece',
@@ -276,6 +497,10 @@ export const civilisations = [
     periods: [
       { name: 'Golden Age of Athens', start: -480, end: -404 },
       { name: 'Hellenistic Period', start: -323, end: -146 },
+    ],
+    sources: [
+      { title: 'Wikipedia — Classical Greece', url: 'https://en.wikipedia.org/wiki/Classical_Greece' },
+      { title: 'Wikipedia — Hellenistic period', url: 'https://en.wikipedia.org/wiki/Hellenistic_period' },
     ],
   },
   {

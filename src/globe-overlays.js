@@ -25,6 +25,7 @@ import { peopleEntities, PEOPLE_PACK_IDS } from './globe-people.js';
 import { presenceEntities, PRESENCE_PACK_IDS } from './globe-presence.js';
 import { resolveRegionHoles, SEA_HOLE_RINGS } from './globe-holes.js';
 import { confidenceForEntity } from './globe-confidence.js';
+import { greekWorldPolities, extraKeyframes as greekWorldExtraKeyframes } from './globe-greek-world.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6211,6 +6212,37 @@ export const spatialEntities = [
   },
 ];
 
+// Day 56 — the ancient Greek world (globe-greek-world.js): redrawn entities replace the old shapes
+// in place (same ids), new ones are appended, and a few neighbours get extra keyframes.
+for (const ent of greekWorldPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+for (const [id, frames] of Object.entries(greekWorldExtraKeyframes)) {
+  const ent = spatialEntities.find((e) => e.id === id);
+  if (!ent) continue;
+  const have = new Set(ent.overlays.map((o) => o.year));
+  for (const kf of frames) if (!have.has(kf.year)) ent.overlays.push(kf);
+  ent.overlays.sort((a, b) => a.year - b.year);
+  ent.keyYears = [...new Set([...(ent.keyYears || []), ...frames.map((k) => k.year)])].sort((a, b) => a - b);
+}
+
+/**
+ * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
+ * the Delian League" from 478). Entities without `nameAt` always use `name`.
+ * @param {{ name: string, nameAt?: [number, string][] }} entity
+ * @param {number} year
+ */
+export function entityNameAt(entity, year) {
+  if (!entity) return '';
+  const list = entity.nameAt;
+  if (!Array.isArray(list) || !list.length || !Number.isFinite(Number(year))) return entity.name;
+  let name = entity.name;
+  for (const [from, n] of list) if (Number(year) >= from) name = n;
+  return name;
+}
+
 // Day 27 — append people-pack entities (type: 'people') into the shared catalogue.
 for (const person of peopleEntities) {
   spatialEntities.push(person);
@@ -6632,7 +6664,7 @@ export function getOverlayPolygonFeatures(year, entities = entitiesForLayer()) {
         },
         holeIds: (part.holes || []).map((h) => h.id),
         entityId: entity.id,
-        name: entity.name,
+        name: entityNameAt(entity, y),
         regionId: part.regionId,
         regionName: part.regionName,
         color: entity.color,
@@ -6645,7 +6677,7 @@ export function getOverlayPolygonFeatures(year, entities = entitiesForLayer()) {
         morphT: part.morphT,
         properties: {
           entityId: entity.id,
-          name: entity.name,
+          name: entityNameAt(entity, y),
           regionId: part.regionId,
           regionName: part.regionName,
           color: entity.color,

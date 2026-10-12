@@ -3884,8 +3884,9 @@ function selectGlobeEntity(entityId, { syncUrl = true, openDetail = true, fromDe
     const relatedItems = resolveRelatedTimelineItems(entity);
     const typeLabel =
       entity.type === 'people' ? 'People' : entity.type === 'presence' ? 'Presence' : 'Polity';
+    const eraName = G.entityNameAt(entity, globeYear);
     showDetail(
-      entity.name,
+      eraName,
       `${dateLabel} · ${typeLabel}`,
       entity.description || '',
       entity.sources,
@@ -3893,7 +3894,7 @@ function selectGlobeEntity(entityId, { syncUrl = true, openDetail = true, fromDe
         view: 'globe',
         id: entity.id,
         icon: '',
-        name: entity.name,
+        name: eraName,
         dateLabel,
         kind: 'globe-entity',
         relatedItems,
@@ -4012,7 +4013,7 @@ function updateGlobeOverlayPanel() {
 
     const name = document.createElement('div');
     name.className = 'globe-overlay-item-name';
-    name.textContent = entity.name;
+    name.textContent = G.entityNameAt(entity, globeYear);
 
     const badge = document.createElement('span');
     badge.className = 'globe-overlay-type-badge';

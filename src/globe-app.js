@@ -24,7 +24,7 @@ export {
   prefetchGlobe,
   getGlobeLoadSteps,
 } from './globe-view.js';
-export { getOverlayLayerFilter, setOverlayLayerFilter, formatOverlayYear, getSpatialEntityById, getEntityLifespan, getActiveOverlaysAtYear } from './globe-overlays.js';
+export { getOverlayLayerFilter, setOverlayLayerFilter, formatOverlayYear, getSpatialEntityById, getEntityLifespan, getActiveOverlaysAtYear, entityNameAt } from './globe-overlays.js';
 export {
   getActiveSchematicOverlaysAtYear,
   getActiveNationsAtYear,
