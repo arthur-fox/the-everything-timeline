@@ -86,7 +86,7 @@ Paths follow the trade-route rules (points in the direction people moved; sea pa
 1. **A new country:** add `data/countries/<id>.json` in the format above. Nothing else to register — the build lists it in the picker.
 2. **More items in a country:** edit its JSON file; give each item a new, unique id.
 3. **Topic or landing items:** edit the matching `src/<topic>.js` / `src/events.js` array (same fields).
-4. **Globe shapes, peoples, presence, cities, pins:** edit the matching `src/globe-*.js` module (they only load with the globe). After editing the nations tables, run `npm run build:nations`.
+4. **Globe shapes, peoples, presence, cities, pins:** edit the matching `src/globe-*.js` module (they only load with the globe). Ancient Mediterranean / Near East shapes are built from shared pieces in `src/globe-med-pieces.js` (borders shared point for point; `scripts/check-greek-world.js` checks merges). After editing the nations tables, run `npm run build:nations`.
 5. **Trade routes and migrations:** edit `data/trade-routes.json` / `data/migrations.json` (formats above).
 6. **A new kind of dataset:** a JSON file under `data/`, loaded with a dynamic `import()` from the view that needs it (see `COUNTRY_FILES` in `src/main.js`). Don't add a static import to `main.js`.
 7. Run `npm run validate` (also part of `npm run build`): schema, unique ids, categories, dates, sources, links, borders, labels, cities, pins, trade routes and migrations.

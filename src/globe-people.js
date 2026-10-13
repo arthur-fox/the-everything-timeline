@@ -10,6 +10,7 @@
  */
 
 import { applyPeoplePersistence } from './globe-people-modern.js';
+import { hellenesPeople } from './globe-greek-world.js';
 
 /**
  * @typedef {import('./globe-overlays.js').SpatialEntity} SpatialEntity
@@ -39,6 +40,8 @@ export const PEOPLE_PACK_IDS = [
   'maya-peoples',
   'andean-peoples',
   'nilotic-peoples',
+  // Day 56
+  'hellenes',
 ];
 
 /** @type {SpatialEntity[]} */
@@ -2106,4 +2109,6 @@ export const peopleEntities = [
 ];
 
 // Day 35: carry continuing peoples forward to 2025 (Scythians intentionally not extended).
+// Day 56 — Greek speakers, Mycenaeans to today (built from the shared Mediterranean pieces).
+peopleEntities.push(hellenesPeople);
 applyPeoplePersistence(peopleEntities);

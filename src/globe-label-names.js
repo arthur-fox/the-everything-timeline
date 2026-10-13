@@ -124,9 +124,27 @@ export function shortNationLabel(name, kind = 'state') {
   return tag ? `${base} (${tag})` : base;
 }
 
+/** Day 56: map labels for long ancient names (the detail panel keeps the full name). */
+const OVERLAY_SHORT = {
+  'Athens and the Delian League': 'Delian League',
+  'Athens and the Second Athenian League': 'Second Athenian League',
+  'Sparta and the Peloponnesian League': 'Peloponnesian League',
+  'Thebes and the Boeotian League': 'Boeotian League',
+  'Empire of Alexander the Great': 'Empire of Alexander',
+  'Achaemenid Persian Empire': 'Persian Empire',
+  'Independent Greek states': 'Greek states',
+  'Etruscan city-states': 'Etruscans',
+  'Kingdom of Macedon': 'Macedon',
+  'Antigonid Macedon': 'Macedon',
+  'Kingdom of Epirus': 'Epirus',
+  'Kingdom of Lydia': 'Lydia',
+  'Greco-Bactrian Kingdom': 'Greco-Bactria',
+  'Attalid Pergamon': 'Pergamon',
+};
+
 /** Labels for the hand-drawn polities / peoples (pre-1815 and peoples layer): drop parentheses only. */
 export function shortOverlayLabel(name) {
-  return String(name || '')
-    .replace(/\s*\([^()]*\)\s*$/, '')
-    .trim();
+  const raw = String(name || '').trim();
+  if (Object.prototype.hasOwnProperty.call(OVERLAY_SHORT, raw)) return OVERLAY_SHORT[raw];
+  return raw.replace(/\s*\([^()]*\)\s*$/, '').trim();
 }
