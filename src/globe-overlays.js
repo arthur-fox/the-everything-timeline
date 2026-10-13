@@ -26,6 +26,7 @@ import { presenceEntities, PRESENCE_PACK_IDS } from './globe-presence.js';
 import { resolveRegionHoles, SEA_HOLE_RINGS } from './globe-holes.js';
 import { confidenceForEntity } from './globe-confidence.js';
 import { greekWorldPolities, extraKeyframes as greekWorldExtraKeyframes } from './globe-greek-world.js';
+import { inlandAfricaPolities } from './globe-inland-africa.js';
 import { earlyMedievalPolities, extraKeyframes as earlyMedievalExtraKeyframes } from './globe-early-medieval.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
@@ -6243,6 +6244,14 @@ for (const [id, frames] of Object.entries(earlyMedievalExtraKeyframes)) {
   for (const kf of frames) if (!have.has(kf.year)) ent.overlays.push(kf);
   ent.overlays.sort((a, b) => a.year - b.year);
   ent.keyYears = [...new Set([...(ent.keyYears || []), ...frames.map((k) => k.year)])].sort((a, b) => a - b);
+}
+
+// Day 58 — inland Africa (globe-inland-africa.js): redrawn Ghana / Mali / Songhai / Kongo /
+// Great Zimbabwe / Aksum / Ethiopia replace the old schematic shapes; the rest are appended.
+for (const ent of inlandAfricaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
 }
 
 /**
