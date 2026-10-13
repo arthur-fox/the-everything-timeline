@@ -237,7 +237,7 @@ const khmer = E({
 });
 
 const champa = E({
-  id: 'champa', name: 'Champa', color: '#DC2626', type: 'state',
+  id: 'champa', name: 'Champa', color: '#C81E4A', type: 'state',
   description: 'A group of Cham principalities along the central Vietnamese coast — Indrapura, Amaravati, Vijaya, Kauthara and Panduranga — rich from sea trade, with Hindu temples at Mỹ Sơn. Champa sacked Angkor in 1177 but lost ground steadily to Đại Việt moving south: Vijaya fell in 1471, and the last Cham principality, Panduranga, survived as a Vietnamese vassal into the 1830s.',
   nameAt: [[192, 'Champa (Lâm Ấp)'], [800, 'Champa'], [1471, 'Champa (Panduranga)']],
   keyYears: [200, 400, 1000, 1306, 1471, 1700, 1800],
@@ -517,7 +517,7 @@ const aceh = E({
 });
 
 const brunei = E({
-  id: 'brunei-sultanate', name: 'Brunei Sultanate', color: '#FACC15', type: 'state',
+  id: 'brunei-sultanate', name: 'Brunei Sultanate', color: '#D4A017', type: 'state',
   description: 'A Muslim sultanate on Borneo’s north-west coast. At its height under Bolkiah (early 16th c.) its influence ran along Borneo’s north coast and into the Philippines; Pigafetta, with Magellan’s fleet, described the city in 1521. Civil war and the cession of north-east Borneo to Sulu (1704) shrank it.',
   keyYears: [1400, 1520, 1600, 1700, 1800],
   overlays: [
@@ -547,7 +547,7 @@ const tondo = E({
 });
 
 const sulu = E({
-  id: 'sulu-sultanate', name: 'Sulu Sultanate', color: '#FB923C', type: 'state',
+  id: 'sulu-sultanate', name: 'Sulu Sultanate', color: '#E8793A', type: 'state',
   description: 'A Muslim sultanate of the Sulu archipelago founded in the mid-15th century, a hub for pearls, sea cucumber and later slave raiding. It resisted Spain for three centuries and gained north-east Borneo from Brunei in 1704.',
   keyYears: [1450, 1600, 1704, 1800],
   overlays: [
@@ -561,7 +561,7 @@ const sulu = E({
 });
 
 const maguindanao = E({
-  id: 'maguindanao-sultanate', name: 'Maguindanao Sultanate', color: '#FDBA74', type: 'state',
+  id: 'maguindanao-sultanate', name: 'Maguindanao Sultanate', color: '#D9A066', type: 'state',
   description: 'A sultanate of the Cotabato basin in Mindanao, founded by Shariff Kabungsuwan in the early 16th century. Sultan Kudarat (c. 1619–71) led its resistance to the Spanish and made it the strongest power in Mindanao.',
   keyYears: [1520, 1640, 1800],
   overlays: [
