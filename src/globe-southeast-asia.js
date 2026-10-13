@@ -66,10 +66,10 @@ const KHMER_LATE = [[102.5, 12.0], [103.0, 14.3], [105.5, 14.5], [106.5, 12.5], 
 // ---- Vietnam coast: Champa, Đại Việt -----------------------------------------------------
 
 const CHAMPA_FULL = [
-  [106.6, 17.0], [107.3, 17.8], [108.4, 16.0], [109.2, 13.5], [109.3, 11.8], [108.6, 11.0],
+  [106.6, 17.0], [107.3, 17.8], [108.4, 16.0], [109.35, 13.5], [109.3, 11.8], [108.6, 11.0],
   [108.0, 11.6], [108.0, 13.5], [107.2, 15.5], [106.6, 17.0],
 ];
-const CHAMPA_1306 = [[107.6, 16.0], [108.3, 16.1], [109.2, 13.5], [109.3, 11.8], [108.6, 11.0], [108.0, 11.6], [108.0, 13.5], [107.6, 16.0]];
+const CHAMPA_1306 = [[107.6, 16.0], [108.3, 16.1], [109.35, 13.5], [109.3, 11.8], [108.6, 11.0], [108.0, 11.6], [108.0, 13.5], [107.6, 16.0]];
 const CHAMPA_SOUTH = [[107.9, 11.2], [108.5, 12.8], [109.3, 12.8], [109.3, 11.6], [108.6, 10.9], [107.9, 11.2]];
 const PANDURANGA = [[108.0, 11.0], [108.3, 12.0], [109.2, 11.9], [109.0, 11.0], [108.4, 10.8], [108.0, 11.0]];
 
@@ -100,7 +100,7 @@ const BURMA_TENASSERIM = [
   [93.5, 17.0], [94.0, 24.5], [97.5, 25.0], [99.5, 21.0], [98.8, 17.0], [99.2, 12.0],
   [98.4, 10.0], [98.0, 13.5], [97.6, 16.0], [95.0, 15.8], [93.5, 17.0],
 ];
-const ARAKAN = [[92.3, 20.8], [92.8, 21.6], [93.4, 20.0], [93.4, 17.6], [92.9, 18.4], [92.3, 20.8]];
+const ARAKAN = [[92.3, 20.8], [92.8, 21.6], [93.65, 20.2], [93.4, 17.6], [92.9, 18.4], [92.3, 20.8]];
 
 // ---- Thai and Lao kingdoms ---------------------------------------------------------------
 
@@ -387,13 +387,13 @@ const lanXang = E({
   id: 'lan-xang', name: 'Lan Xang', color: '#A855F7', type: 'state',
   description: 'The “Land of a Million Elephants”, a Lao kingdom founded by Fa Ngum in 1353 at Luang Prabang. Setthathirath moved the capital to Vientiane in 1560. After King Sourigna Vongsa died, it split into Luang Prabang, Vientiane and Champasak (1707–13), which Siam made vassals in 1779.',
   nameAt: [[1353, 'Lan Xang'], [1707, 'Lao kingdoms (Luang Prabang, Vientiane, Champasak)']],
-  keyYears: [1360, 1560, 1690, 1713, 1800],
+  keyYears: [1360, 1560, 1690, 1713, 1779],
   overlays: [
     K(1360, 'Fa Ngum’s Lan Xang', [R('lanxang', 'Lan Xang', LAN_XANG)]),
     K(1560, 'Capital moves to Vientiane', [R('lanxang', 'Lan Xang', LAN_XANG)]),
     K(1690, 'Sourigna Vongsa’s golden age', [R('lanxang', 'Lan Xang', LAN_XANG)]),
     K(1713, 'Split into three kingdoms', [R('luang-prabang', 'Luang Prabang', LUANG_PRABANG), R('vientiane', 'Vientiane', VIENTIANE), R('champasak', 'Champasak', CHAMPASAK)]),
-    K(1800, 'Lao kingdoms under Siam', [R('luang-prabang', 'Luang Prabang', LUANG_PRABANG), R('vientiane', 'Vientiane', VIENTIANE), R('champasak', 'Champasak', CHAMPASAK)]),
+    K(1779, 'Siam makes the Lao kingdoms vassals', [R('luang-prabang', 'Luang Prabang', LUANG_PRABANG), R('vientiane', 'Vientiane', VIENTIANE), R('champasak', 'Champasak', CHAMPASAK)]),
   ],
   timelineItemIds: ['lan-xang'], confidence: CONF.mandala,
   sources: [W('Lan Xang'), W('Fa Ngum'), W('Setthathirath')],
@@ -462,13 +462,12 @@ const mataram = E({
   id: 'mataram-sultanate', name: 'Mataram Sultanate', color: '#7E22CE', type: 'empire',
   description: 'A Muslim Javanese kingdom founded by Senapati in the 1580s near today’s Yogyakarta. Sultan Agung (1613–45) conquered most of Java and twice besieged Dutch Batavia (1628–29). The VOC gained territory in every succession war, and the Treaty of Giyanti (1755) split what was left into Surakarta and Yogyakarta.',
   nameAt: [[1587, 'Mataram Sultanate'], [1755, 'Surakarta and Yogyakarta']],
-  keyYears: [1590, 1640, 1680, 1755, 1800],
+  keyYears: [1590, 1640, 1680, 1755],
   overlays: [
     K(1590, 'Senapati’s Mataram', [R('mataram', 'Mataram (Kotagede)', MATARAM_CORE)]),
     K(1640, 'Sultan Agung rules most of Java', [R('mataram', 'Mataram', MATARAM_PEAK)]),
     K(1680, 'After the Trunajaya revolt', [R('mataram', 'Mataram', MATARAM_1680)]),
     K(1755, 'Treaty of Giyanti', [R('mataram', 'Surakarta and Yogyakarta', MATARAM_SPLIT)]),
-    K(1800, 'The two courts under the Dutch', [R('mataram', 'Surakarta and Yogyakarta', MATARAM_SPLIT)]),
   ],
   timelineItemIds: ['mataram-sultanate'], confidence: CONF.chronicle,
   sources: [W('Mataram Sultanate'), W('Sultan Agung of Mataram'), W('Treaty of Giyanti')],

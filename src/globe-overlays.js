@@ -26,6 +26,7 @@ import { presenceEntities, PRESENCE_PACK_IDS } from './globe-presence.js';
 import { resolveRegionHoles, SEA_HOLE_RINGS } from './globe-holes.js';
 import { confidenceForEntity } from './globe-confidence.js';
 import { greekWorldPolities, extraKeyframes as greekWorldExtraKeyframes } from './globe-greek-world.js';
+import { southeastAsiaPolities } from './globe-southeast-asia.js';
 import { inlandAfricaPolities } from './globe-inland-africa.js';
 import { earlyMedievalPolities, extraKeyframes as earlyMedievalExtraKeyframes } from './globe-early-medieval.js';
 
@@ -6249,6 +6250,14 @@ for (const [id, frames] of Object.entries(earlyMedievalExtraKeyframes)) {
 // Day 58 — inland Africa (globe-inland-africa.js): redrawn Ghana / Mali / Songhai / Kongo /
 // Great Zimbabwe / Aksum / Ethiopia replace the old schematic shapes; the rest are appended.
 for (const ent of inlandAfricaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
+// Day 59 — Southeast Asia (globe-southeast-asia.js): redrawn Khmer / Majapahit / Srivijaya replace
+// earlier shapes (including Day 57's Srivijaya); the rest are appended.
+for (const ent of southeastAsiaPolities) {
   const i = spatialEntities.findIndex((e) => e.id === ent.id);
   if (i >= 0) spatialEntities[i] = ent;
   else spatialEntities.push(ent);
