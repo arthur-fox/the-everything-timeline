@@ -46,8 +46,9 @@ function globeSet(name, ...args) {
   globeCallQueue.push([name, args]);
   return undefined;
 }
-import { initFeedback } from './feedback.js';
+import { initFeedback, openFeedback } from './feedback.js';
 import { initSupport } from './support.js';
+import { initShare } from './share.js';
 import { initMobileMenu } from './mobile-menu.js';
 import { confidenceForEntity, confidenceForNationPeriod, CONFIDENCE_LABEL, CONFIDENCE_DRAWING } from './globe-confidence.js';
 
@@ -4412,6 +4413,31 @@ canvas.style.cursor = 'grab';
 // Day 45 — Feedback button + panel (src/feedback.js; where it goes is set in src/feedback-config.js).
 initSupport();
 initMobileMenu();
+// Day 60 — 🔗 Share: this exact view (deep link + caption), copy, social links, globe PNG.
+initShare({
+  getShare: () => {
+    syncDeepLinkUrl();
+    const globe = isGlobeView();
+    const url = new URL(window.location.href);
+    for (const k of ['globeDebug', 'feedback', 'support', 'share']) url.searchParams.delete(k);
+    if (globe && G) {
+      const at = G.getGlobeCameraAt();
+      if (at) url.searchParams.set('at', at);
+    }
+    const detail = document.getElementById('event-detail');
+    const title = detail && !detail.classList.contains('hidden') ? document.getElementById('detail-title')?.textContent.trim() : '';
+    const date = title ? document.getElementById('detail-date')?.textContent.trim() : '';
+    const yearLabel = globe ? formatGlobeYear(globeYear) : '';
+    let caption;
+    if (title) caption = `${title}${date ? ` (${date})` : ''}, on The Everything Timeline`;
+    else if (globe) caption = `The world in ${yearLabel}, on The Everything Timeline`;
+    else if (currentView === 'cosmic') caption = 'From the Big Bang to today, on The Everything Timeline';
+    else caption = `${viewLabelForParam(getDeepLinkViewParam()).replace(/^Countries › /, '')} through time, on The Everything Timeline`;
+    return { url: url.toString().replace(/%2C/gi, ','), caption, globe, yearLabel, title };
+  },
+  snapshot: () => (isGlobeView() && G && G.snapshotGlobeCanvas ? G.snapshotGlobeCanvas() : null),
+  openFeedback: (prefill) => openFeedback({ prefill }),
+});
 initFeedback({
   getContext: () => {
     const globe = isGlobeView();

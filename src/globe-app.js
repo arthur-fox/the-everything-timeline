@@ -23,6 +23,7 @@ export {
   getGlobeCameraAt,
   prefetchGlobe,
   getGlobeLoadSteps,
+  snapshotGlobeCanvas,
 } from './globe-view.js';
 export { getOverlayLayerFilter, setOverlayLayerFilter, formatOverlayYear, getSpatialEntityById, getEntityLifespan, getActiveOverlaysAtYear, entityNameAt } from './globe-overlays.js';
 export {
