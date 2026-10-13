@@ -272,6 +272,7 @@ export const CITIES = [
   C('cologne', 50.94, 6.96, 3, 50, null, 'Colonia Agrippina', 500, 'Cologne'),
   C('mainz', 50.00, 8.27, 4, -13, null, 'Mogontiacum', 500, 'Mainz'),
   C('aachen', 50.78, 6.08, 3, 765, null, 'Aachen', { ranks: [[900, 4]] }),
+  C('regensburg', 49.01, 12.10, 4, 179, null, 'Castra Regina', 700, 'Regensburg'),
   C('frankfurt', 50.11, 8.68, 3, 794, null, 'Frankfurt', { ne: 'Frankfurt' }),
   C('hamburg', 53.55, 9.99, 2, 808, null, 'Hamburg', { ranks: [[808, 3], [1850, 2]] }),
   C('lubeck', 53.87, 10.69, 3, 1143, null, 'Lübeck', { ne: 'Lubeck', ranks: [[1700, 4]] }),
@@ -352,6 +353,9 @@ export const CITIES = [
   C('karakorum', 47.20, 102.83, 2, 1220, 1388, 'Karakorum'),
   C('ulaanbaatar', 47.92, 106.92, 3, 1639, null, 'Urga', 1924, 'Ulaanbaatar', { ne: 'Ulaanbaatar' }),
   C('lhasa', 29.65, 91.13, 3, 637, null, 'Lhasa'),
+  C('dali-yunnan', 25.68, 100.23, 3, 738, null, 'Dali', { ne: 'Dali' }),
+  C('ordu-baliq', 47.43, 102.66, 3, 744, 840, 'Ordu-Baliq'),
+  C('atil', 46.10, 47.75, 3, 730, 969, 'Atil'),
   // ---- South Asia -------------------------------------------------------------------------
   C('mohenjo-daro', 27.33, 68.14, 1, -2500, -1700, 'Mohenjo-daro'),
   C('harappa', 30.63, 72.86, 2, -2600, -1700, 'Harappa'),
