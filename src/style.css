@@ -5116,3 +5116,46 @@ body.globe-active .fab-dock:focus-within {
     background: var(--brand-gradient);
   }
 }
+
+/* Day 60 (#66 feedback, round 3): desktop sizes per view. Timeline + windowed Globe: top-right in the
+   header, wider pills (same height). Full-screen Globe: bigger pills, bottom-right. */
+@media (min-width: 700px) {
+  body:not(.globe-fullscreen) .fab-dock {
+    top: max(14px, env(safe-area-inset-top, 0px));
+    bottom: auto;
+    right: max(18px, env(safe-area-inset-right, 0px));
+    translate: none;
+  }
+  body:not(.globe-fullscreen) .fab-dock > .fab-pill,
+  body:not(.globe-fullscreen) #support-open.support-fab,
+  body:not(.globe-fullscreen) #share-open.share-fab,
+  body:not(.globe-fullscreen) #feedback-open.feedback-fab {
+    min-width: 140px;
+    padding: 0 18px 0 14px;
+  }
+  body.globe-fullscreen .fab-dock {
+    gap: 6px;
+    padding: 7px;
+    border-radius: 18px;
+  }
+  body.globe-fullscreen .fab-dock > .fab-pill,
+  body.globe-fullscreen #support-open.support-fab,
+  body.globe-fullscreen #share-open.share-fab,
+  body.globe-fullscreen #feedback-open.feedback-fab {
+    height: 40px;
+    min-height: 40px;
+    min-width: 150px;
+    padding: 0 18px 0 14px;
+    gap: 10px;
+    border-radius: 12px;
+    font-size: 0.97rem;
+  }
+  body.globe-fullscreen .fab-dock .fab-pill > span:first-child {
+    font-size: 1.15rem;
+  }
+}
+@media (min-width: 700px) {
+  body.globe-active:not(.globe-fullscreen) .fab-dock {
+    opacity: 1; /* only dimmed over the full-screen globe */
+  }
+}
