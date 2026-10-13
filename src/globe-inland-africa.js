@@ -361,7 +361,7 @@ const asante = {
 const kongo = {
   id: 'kongo',
   name: 'Kingdom of Kongo',
-  color: '#0E7490',
+  color: '#13708A',
   type: 'state',
   description:
     'A kingdom south of the lower Congo River, ruled by the Manikongo from Mbanza Kongo. Its king was baptised in 1491, and Afonso I (1509–42) wrote to the kings of Portugal about the slave trade. Kongo lost the battle of Mbwila to Portuguese Angola in 1665 and then split into rival factions for decades; the kingdom survived in weaker form into the colonial era.',
@@ -444,7 +444,7 @@ const greatZimbabwe = {
 const mutapa = {
   id: 'mutapa',
   name: 'Kingdom of Mutapa',
-  color: '#A3A3A3',
+  color: '#8A6F4E',
   type: 'state',
   description:
     'Founded by Nyatsimba Mutota around 1430 north of Great Zimbabwe, Mutapa ruled the Zambezi plateau and its gold. The Portuguese pushed up the Zambezi from the 1530s and made the Mwenemutapa a vassal in 1629. The Rozvi took the south in the 1680s and Mutapa shrank to the Zambezi valley until the 1760s.',

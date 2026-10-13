@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); next for the daily ship routine is step 6.2 (inland Africa)** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); step 6.2 inland Africa (Day 58) is in review; next for the daily ship routine is step 6.3 (Southeast Asia)** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -815,10 +815,22 @@ Stacked on the Greek world PR (#62). Do not merge until Arthur approves.
 - **Validate:** `scripts/check-early-medieval.js` (in `npm run validate`): closed non-crossing rings, era names, who-is-on / who-is-gone at 600 / 750 / 800 / 900.
 - **Honest caveats:** early medieval frontiers were fluid (especially steppe khaganates); rings are schematic pastoral / tribute zones, not surveyed borders. Tang neighbours are drawn beside Tang’s existing schematic shape (which still reaches the Tarim and north fringe). Visigoths end by 711; Umayyad Spain appears from the existing caliphate overlays plus a 715 Al-Andalus keyframe. Anglo-Saxon coverage stops at Æthelstan (927) on the globe even though the timeline entry runs to 1066. Inland Africa and deeper SE Asia wait for steps 6.2–6.3.
 
+### Inland Africa, 100–1815 (Phase 4c step 6.2) — Day 58, done-in-PR
+
+Do not merge until Arthur approves.
+
+- **Audit first:** before this the globe had seven thin schematic African blobs (Ghana, Mali, Songhai, Axum, Ethiopia, Great Zimbabwe, Kongo) and nothing for Kanem–Bornu, the Hausa states, Benin, Oyo, Asante, Sokoto, Mutapa, Luba, Lunda, Zagwe, the Swahili coast or Buganda.
+- **Shapes (`src/globe-inland-africa.js`, lazy globe chunk):** 19 polities, 101 dated outlines. Redrawn: Ghana/Wagadu (700–1200), Mali (Sundiata → Mansa Musa → Mande remnant 1600), Songhai (Sunni Ali → Askia → Tondibi), Kongo (1400–1800, Mbwila), Great Zimbabwe (1150–1440), Aksum (with Himyar in the 520s), Ethiopia (Solomonic 1270 → Adal invasion 1535 → Gondar → Era of the Princes). New: Kanem–Bornu (Kanem → Fezzan peak → move to Bornu → Idris Alooma), Hausa city-states, Sokoto Caliphate (1804–15), Benin, Oyo (with Dahomey tributary 1750), Asante (1701–1815), Luba, Lunda (with Kazembe), Mutapa (1450–1760), Zagwe, the Swahili city-states (coastal strips and islands only: Lamu–Mombasa, Zanzibar, Kilwa, Sofala) and Buganda. Each has sources and a confidence level with a reason (Wagadu, Luba, Lunda, Zagwe, Buganda = conjectural; Swahili towns = documented; the rest approximate). Everything hands off to the nations layer at 1815 (Sokoto, Bornu, Ashanti, Kongo, Buganda, Ethiopia are already there).
+- **Era names:** Kanem → Bornu (1380); Ethiopian Empire (Solomonic) → (Gondar, 1636) → Era of the Princes (1769).
+- **Timeline:** 12 new Africa entries — Kanem–Bornu (with Kanem / Bornu periods), Hausa City-States, Sokoto Caliphate, Kingdom of Benin, Oyo Empire, Asante Empire, Luba Kingdom, Lunda Empire, Kingdom of Mutapa, Zagwe Kingdom, Swahili City-States, Kingdom of Buganda.
+- **Cities and pins:** Katsina, Zazzau → Zaria, Ngazargamu, Oyo-Ile, Mapungubwe, Malindi, Lamu, Sofala, Adulis; 20 pins (Mansa Musa leaves Niani, Ngazargamu, Idris Alooma, Muhammad Rumfa of Kano, Sokoto founded, Portuguese at Benin / Benin City sacked, Dahomey tribute to Oyo, the Golden Stool, Mbwila, the Mutapa vassal treaty, Mapungubwe, Lalibela's churches, Wayna Daga, Gondar, Kaleb in Himyar, Ibn Battuta at Kilwa, da Gama at Malindi, Oman takes Fort Jesus, Speke in Buganda).
+- **Validate:** `scripts/check-inland-africa.js` (in `npm run validate`): closed non-crossing rings, sources + confidence + ≥3 keyframes + no keyframe after 1815, timeline links exist, era names, 19 capitals inside their polity at real dates (Koumbi Saleh 1000, Niani and Timbuktu 1324, Gao 1500, Kilwa 1300 …), who is on / gone at sample years.
+- **Honest caveats:** most of these states ruled people and tribute, not lines; rings are zones of known towns, campaigns and tributaries. Hausa is one ring for a group of rival cities. Pre-1700 dates for Luba, Lunda and Buganda rest on oral king-lists. Neighbouring rings can overlap slightly where tribute zones did. Not yet drawn: Dahomey before 1815, Bunyoro, Rwanda/Burundi before 1815, Adal, Mapungubwe as a polity, Torwa/Rozvi, Ndongo/Matamba, Madagascar's Merina before 1815.
+
 ### 6. Better coverage between empires
 
 - **Step 6.1 — The early medieval world (500–1000).** ✅ Day 57, done-in-PR (PR #63). Merovingian and Carolingian Francia, Anglo-Saxon kingdoms, the Visigoths, the Avars, the Khazars, the Göktürks and Uyghurs, Tang neighbours (Tibetan Empire, Nanzhao, Silla), Srivijaya — see the Day 57 write-up below.
-- **Step 6.2 — Inland Africa.** Kanem–Bornu, Kongo, Great Zimbabwe and Mutapa, Luba and Lunda, Oyo, Benin, Asante, the Sokoto Caliphate, Buganda, and Ethiopia over time.
+- **Step 6.2 — Inland Africa.** ✅ Day 58, done-in-PR. Ghana/Wagadu, Mali, Songhai, Kanem–Bornu, the Hausa states, the Sokoto Caliphate, Benin, Oyo, Asante, Kongo, Luba and Lunda, Great Zimbabwe and Mutapa, Aksum, Zagwe and Ethiopia over time, the Swahili city-states, Buganda — see the Day 58 write-up below.
 - **Step 6.3 — Southeast Asia.** Funan, Champa, the Khmer Empire, Pagan, Majapahit, Ayutthaya, Đại Việt, Malacca, Mataram.
 - **Step 6.4 — Native American nations after 1500.** The Haudenosaunee, Cherokee, Muscogee, Powhatan, Lakota and Comanche, the Mapuche and others, with dated territories, removals (1830s) and reservations. Sourced carefully, with tribal nations' own histories where available and uncertainty shown honestly.
 
@@ -1008,7 +1020,8 @@ A sensible near-term sequence:
 43. Phase 4c item 5 — trade routes (Day 53) ✅ (merged, #59) → migrations (Day 55, step 5.2) ✅ (in review, #61).
 44. Ancient Greek world 1600–146 BCE (Arthur, 11 Oct; Day 56) ✅ (done-in-PR, #62).
 45. Early medieval world 500–1000 (Phase 4c step 6.1; Day 57) ✅ (done-in-PR, #63; stacks on #62).
-46. **Now: Phase 4c step 6.2 inland Africa, NEXT for the daily routine.**
+46. Inland Africa (Phase 4c step 6.2; Day 58) ✅ (done-in-PR).
+47. **Now: Phase 4c step 6.3 Southeast Asia, NEXT for the daily routine.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
