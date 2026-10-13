@@ -1100,6 +1100,7 @@ function applyPolygonRenderOrder(scene, camera) {
     syncCapRefinement(cap, d);
     applyZoomToPolygon(obj, cap, stroke);
   }
+  sweepRemovedCaps(polygonLayerParent);
 }
 
 /** Day 39: radial re-scale (Globe.gl's own altitude mechanism) + zoom-aware stroke opacity. */
@@ -1209,6 +1210,28 @@ function refineCapGeometry(src, maxEdge) {
 let refineSpentMs = 0;
 
 /**
+ * Caps that hold our extra refined meshes. When a polygon leaves the data (new year, layer off),
+ * Globe.gl frees only the mesh it is drawing, so the other LOD copies (src / coarse / fine) would
+ * stay on the GPU for the rest of the session. Swept about once a second.
+ */
+const refinedCaps = new Set();
+let capSweepAt = 0;
+
+function sweepRemovedCaps(layerParent) {
+  const now = performance.now();
+  if (now - capSweepAt < 1000) return;
+  capSweepAt = now;
+  for (const cap of refinedCaps) {
+    const obj = cap.parent;
+    if (obj && obj.parent && obj.parent === layerParent) continue;
+    const rec = cap.__etRefine;
+    if (rec) for (const g of [rec.src, rec.coarse, rec.fine]) if (g) g.dispose();
+    cap.__etRefine = null;
+    refinedCaps.delete(cap);
+  }
+}
+
+/**
  * Swap in the refined cap mesh for the current LOD (built lazily, within a frame budget).
  * Day 44: feathered (approximate / conjectural) caps are refined finer and carry a
  * distance-to-edge attribute for the fill fade.
@@ -1221,6 +1244,7 @@ function syncCapRefinement(cap, d) {
     // Globe.gl built (or rebuilt) this cap; it already disposed our previous mesh in use.
     if (rec) for (const g of [rec.src, rec.coarse, rec.fine]) if (g && g !== cap.geometry) g.dispose();
     rec = cap.__etRefine = { src: cap.geometry, coarse: null, fine: null, feather };
+    refinedCaps.add(cap);
   }
   if (rec.feather !== feather && (rec.src || rec.coarse)) {
     // Certainty changed for the same mesh (toggle, or a new era): rebuild from the plainest mesh.
