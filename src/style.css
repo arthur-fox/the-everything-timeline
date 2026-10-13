@@ -5039,11 +5039,55 @@ body.globe-active .fab-dock:hover,
 body.globe-active .fab-dock:focus-within {
   opacity: 1;
 }
-@media (min-width: 641px) {
+@media (min-width: 641px) and (max-width: 699px) {
   body:not(.globe-active) .fab-dock {
     top: max(16px, env(safe-area-inset-top, 0px));
     bottom: auto;
     right: max(20px, env(safe-area-inset-right, 0px));
+  }
+}
+/* Desktop (≥700px): a slim vertical stack of equal-width labelled pills (🔗 Share / ☕ Support / 💬 Feedback). */
+@media (min-width: 700px) {
+  .fab-dock {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding: 5px;
+    border-radius: 14px;
+  }
+  .fab-dock > .fab-pill,
+  #support-open.support-fab,
+  #share-open.share-fab,
+  #feedback-open.feedback-fab {
+    width: auto;
+    height: 28px;
+    min-height: 28px;
+    padding: 0 12px 0 9px;
+    gap: 7px;
+    justify-content: flex-start;
+    border-radius: 9px;
+    font: 700 0.84rem/1 var(--font-ui);
+    color: var(--accent);
+  }
+  #feedback-open.feedback-fab {
+    color: var(--on-accent);
+  }
+  .fab-dock .share-open-label,
+  .fab-dock .support-open-label,
+  .fab-dock #feedback-open.feedback-fab .feedback-open-label {
+    display: inline;
+  }
+  .feedback-fab-icon,
+  .support-fab-icon,
+  .share-fab-icon {
+    font-size: 0.95rem;
+    width: 1.2em;
+    text-align: center;
+  }
+  body:not(.globe-active) .fab-dock {
+    top: max(14px, env(safe-area-inset-top, 0px));
+    bottom: auto;
+    right: max(18px, env(safe-area-inset-right, 0px));
   }
 }
 @media (max-width: 640px) {
