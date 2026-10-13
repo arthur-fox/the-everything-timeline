@@ -26,6 +26,7 @@ import { presenceEntities, PRESENCE_PACK_IDS } from './globe-presence.js';
 import { resolveRegionHoles, SEA_HOLE_RINGS } from './globe-holes.js';
 import { confidenceForEntity } from './globe-confidence.js';
 import { greekWorldPolities, extraKeyframes as greekWorldExtraKeyframes } from './globe-greek-world.js';
+import { earlyMedievalPolities, extraKeyframes as earlyMedievalExtraKeyframes } from './globe-early-medieval.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6220,6 +6221,22 @@ for (const ent of greekWorldPolities) {
   else spatialEntities.push(ent);
 }
 for (const [id, frames] of Object.entries(greekWorldExtraKeyframes)) {
+  const ent = spatialEntities.find((e) => e.id === id);
+  if (!ent) continue;
+  const have = new Set(ent.overlays.map((o) => o.year));
+  for (const kf of frames) if (!have.has(kf.year)) ent.overlays.push(kf);
+  ent.overlays.sort((a, b) => a.year - b.year);
+  ent.keyYears = [...new Set([...(ent.keyYears || []), ...frames.map((k) => k.year)])].sort((a, b) => a - b);
+}
+
+// Day 57 — early medieval world (globe-early-medieval.js): redrawn Francia / Srivijaya replace
+// old shapes; Visigoths, Anglo-Saxons, steppe powers and Tang neighbours are appended.
+for (const ent of earlyMedievalPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+for (const [id, frames] of Object.entries(earlyMedievalExtraKeyframes)) {
   const ent = spatialEntities.find((e) => e.id === id);
   if (!ent) continue;
   const have = new Set(ent.overlays.map((o) => o.year));
