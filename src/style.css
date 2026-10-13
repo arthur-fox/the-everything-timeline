@@ -4972,3 +4972,103 @@ body.has-share-panel .fab-dock {
     height: 32px;
   }
 }
+
+/* ============================================================
+   Day 60 (#66 feedback) — 🔗 ☕ 💬 as one compact capsule of icon pills in a corner instead of
+   three big labelled pills. Desktop Timeline: top-right of the header (clear of the canvas).
+   Globe: bottom-right, lifted over the scrubber / credit by feedback.js, dimmed until hovered.
+   Phone Timeline: unchanged slim bottom row.
+   ============================================================ */
+.fab-dock {
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, #0b1226 78%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
+}
+.fab-dock > .fab-pill,
+#support-open.support-fab,
+#share-open.share-fab,
+#feedback-open.feedback-fab {
+  width: 36px;
+  height: 36px;
+  min-height: 36px;
+  padding: 0;
+  gap: 0;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+#feedback-open.feedback-fab {
+  background: var(--brand-gradient);
+}
+#support-open.support-fab:hover,
+#share-open.share-fab:hover,
+#support-open.support-fab:focus-visible,
+#share-open.share-fab:focus-visible {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  transform: none;
+}
+#feedback-open.feedback-fab:hover,
+#feedback-open.feedback-fab:focus-visible {
+  transform: none;
+  box-shadow: none;
+}
+.fab-dock .share-open-label,
+.fab-dock .support-open-label,
+.fab-dock #feedback-open.feedback-fab .feedback-open-label {
+  display: none;
+}
+.feedback-fab-icon,
+.support-fab-icon,
+.share-fab-icon {
+  font-size: 1.05rem;
+}
+body.globe-active .fab-dock {
+  opacity: 0.72;
+  transition: opacity 0.15s ease;
+}
+body.globe-active .fab-dock:hover,
+body.globe-active .fab-dock:focus-within {
+  opacity: 1;
+}
+@media (min-width: 641px) {
+  body:not(.globe-active) .fab-dock {
+    top: max(16px, env(safe-area-inset-top, 0px));
+    bottom: auto;
+    right: max(20px, env(safe-area-inset-right, 0px));
+  }
+}
+@media (max-width: 640px) {
+  /* phone Timeline: plain icons in the toolbar row (no capsule), like PR #60 */
+  body:not(.globe-active) .fab-dock {
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    gap: 8px;
+  }
+  body:not(.globe-active) .fab-dock > .fab-pill,
+  body:not(.globe-active) #share-open.share-fab,
+  body:not(.globe-active) #support-open.support-fab,
+  body:not(.globe-active) #feedback-open.feedback-fab {
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    border: 1.5px solid var(--accent);
+    background: color-mix(in srgb, #0b1226 86%, transparent);
+  }
+  body:not(.globe-active) #feedback-open.feedback-fab {
+    border: none;
+    background: var(--brand-gradient);
+  }
+}
