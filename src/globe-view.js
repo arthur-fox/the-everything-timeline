@@ -1849,3 +1849,21 @@ export function destroyGlobe() {
 export function isGlobeMounted() {
   return mounted && Boolean(globe);
 }
+
+/**
+ * Day 60 — Share › Save image. Renders one frame on demand and reads it back in the same task,
+ * so the WebGL canvas never needs preserveDrawingBuffer (no per-frame cost). Returns null when
+ * the globe isn't mounted.
+ * @returns {HTMLCanvasElement|null} a 2D copy of the current globe view
+ */
+export function snapshotGlobeCanvas() {
+  if (!globe || !mounted) return null;
+  const renderer = globe.renderer();
+  renderer.render(globe.scene(), globe.camera());
+  const src = renderer.domElement;
+  const out = document.createElement('canvas');
+  out.width = src.width;
+  out.height = src.height;
+  out.getContext('2d').drawImage(src, 0, 0);
+  return out;
+}

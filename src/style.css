@@ -4583,7 +4583,8 @@ body.globe-fullscreen .globe-canvas-host > .globe-legend {
 }
 
 /* secondary: dark glass with a gold border + gold text, so Feedback stays the primary pill */
-#support-open.support-fab {
+#support-open.support-fab,
+#share-open.share-fab {
   border: 1.5px solid var(--accent);
   background: color-mix(in srgb, #0b1226 86%, transparent);
   color: var(--accent);
@@ -4593,7 +4594,9 @@ body.globe-fullscreen .globe-canvas-host > .globe-legend {
 }
 
 #support-open.support-fab:hover,
-#support-open.support-fab:focus-visible {
+#support-open.support-fab:focus-visible,
+#share-open.share-fab:hover,
+#share-open.share-fab:focus-visible {
   background: color-mix(in srgb, var(--accent) 16%, #0b1226 84%);
   transform: translateY(-1px);
 }
@@ -4608,13 +4611,15 @@ body.globe-fullscreen .globe-canvas-host > .globe-legend {
 }
 
 .feedback-fab-icon,
-.support-fab-icon {
+.support-fab-icon,
+.share-fab-icon {
   font-size: 1.15rem;
   line-height: 1;
 }
 
 body.has-feedback-panel .fab-dock,
-body.has-support-panel .fab-dock {
+body.has-support-panel .fab-dock,
+body.has-share-panel .fab-dock {
   visibility: hidden;
 }
 
@@ -4928,6 +4933,7 @@ body.has-support-panel .fab-dock {
   }
 
   body:not(.globe-active) .fab-pill .support-open-label,
+  body:not(.globe-active) .fab-pill .share-open-label,
   body:not(.globe-active) #feedback-open.feedback-fab .feedback-open-label {
     display: none;
   }

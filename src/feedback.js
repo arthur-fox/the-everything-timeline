@@ -348,8 +348,11 @@ function syncButtons() {
   });
 }
 
-export function openFeedback() {
+export function openFeedback(opts = {}) {
   if (!panel) panel = buildPanel();
+  // Day 60: Share › "Tell us" opens this with a starter line, e.g. "Share ideas: "
+  const wish = panel.querySelector('#feedback-wish');
+  if (opts.prefill && wish && !wish.value.trim()) wish.value = opts.prefill;
   lastFocus = document.activeElement;
   const s = readStore();
   const note = panel.querySelector('.feedback-sent-note');
@@ -366,7 +369,12 @@ export function openFeedback() {
   document.body.classList.add('has-feedback-panel');
   writeStore({ openedAt: new Date().toISOString() });
   syncButtons();
-  requestAnimationFrame(() => panel.querySelector('.feedback-card')?.focus({ preventScroll: true }));
+  requestAnimationFrame(() => {
+    if (opts.prefill && wish) {
+      wish.focus({ preventScroll: true });
+      wish.setSelectionRange(wish.value.length, wish.value.length);
+    } else panel.querySelector('.feedback-card')?.focus({ preventScroll: true });
+  });
 }
 
 export function closeFeedback() {
