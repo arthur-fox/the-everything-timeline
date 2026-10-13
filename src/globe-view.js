@@ -184,7 +184,12 @@ function ensureNationsForYear(year, { soon = false } = {}) {
  * close (TILE_SHOW_ALT), and the textured globe stays underneath (a touch smaller) so a tile
  * that fails or is still loading shows the old texture instead of a hole.
  */
-const GIBS_LAYER = 'BlueMarble_ShadedRelief';
+// Sea flicker fix: plain `BlueMarble_ShadedRelief` paints every ocean pixel a flat near-black
+// (rgb 2,5,20) from z4 up, while the base texture (and this layer's z0–z3) has blue bathymetry.
+// So as you zoomed in, each tile that landed (or got re-planned) flipped the sea between blue
+// and black. The `_Bathymetry` variant is the same land imagery with a blue sea that matches the
+// base texture at every level (~7,22,53 vs ~5,14,38), and its tiles are about as small.
+const GIBS_LAYER = 'BlueMarble_ShadedRelief_Bathymetry';
 const GIBS_MAX_LEVEL = 8;
 function gibsTileUrl(x, y, level) {
   return `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/${GIBS_LAYER}/default/GoogleMapsCompatible_Level${GIBS_MAX_LEVEL}/${level}/${y}/${x}.jpeg`;
