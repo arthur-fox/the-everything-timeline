@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); step 6.2 inland Africa (Day 58) is in review; step 6.3 Southeast Asia (Day 59) is in review; next for the daily ship routine is step 6.4 (Native American nations after 1500)** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); next for the daily ship routine is item 7 (space background)** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -844,7 +844,7 @@ Do not merge until Arthur approves.
 - **Step 6.1 — The early medieval world (500–1000).** ✅ Day 57, done-in-PR (PR #63). Merovingian and Carolingian Francia, Anglo-Saxon kingdoms, the Visigoths, the Avars, the Khazars, the Göktürks and Uyghurs, Tang neighbours (Tibetan Empire, Nanzhao, Silla), Srivijaya — see the Day 57 write-up below.
 - **Step 6.2 — Inland Africa.** ✅ Day 58, done-in-PR. Ghana/Wagadu, Mali, Songhai, Kanem–Bornu, the Hausa states, the Sokoto Caliphate, Benin, Oyo, Asante, Kongo, Luba and Lunda, Great Zimbabwe and Mutapa, Aksum, Zagwe and Ethiopia over time, the Swahili city-states, Buganda — see the Day 58 write-up below.
 - **Step 6.3 — Southeast Asia.** ✅ Day 59, done-in-PR. Funan, Chenla, Khmer, Champa, Đại Việt, Pagan, Ava, Toungoo, Konbaung, Sukhothai, Ayutthaya → Siam, Lan Na, Lan Xang, Srivijaya (refined), Medang, Majapahit, Mataram, Malacca, Johor, Aceh, Brunei, Tondo, Sulu, Maguindanao — see the Day 59 write-up below.
-- **Step 6.4 — Native American nations after 1500.** The Haudenosaunee, Cherokee, Muscogee, Powhatan, Lakota and Comanche, the Mapuche and others, with dated territories, removals (1830s) and reservations. Sourced carefully, with tribal nations' own histories where available and uncertainty shown honestly.
+- **Step 6.4 — Native American nations after 1500.** ✅ Day 60, done-in-PR. Haudenosaunee, Cherokee, Muscogee, Powhatan, Choctaw, Chickasaw, Seminole, Lakota, Comanche, Diné (Navajo), Ndee (Apache), Mapuche — dated territories, 1830s removals and reservations; `type: indigenous` so they persist past the 1815 nations handoff — see the Day 60 write-up below.
 
 ### 7. Space background
 
@@ -1034,7 +1034,8 @@ A sensible near-term sequence:
 45. Early medieval world 500–1000 (Phase 4c step 6.1; Day 57) ✅ (done-in-PR, #63; stacks on #62).
 46. Inland Africa (Phase 4c step 6.2; Day 58) ✅ (done-in-PR).
 47. Southeast Asia (Phase 4c step 6.3; Day 59) ✅ (done-in-PR).
-48. **Now: Phase 4c step 6.4 Native American nations after 1500, NEXT for the daily routine.**
+48. Native American nations after 1500 (Phase 4c step 6.4; Day 60) ✅ (done-in-PR).
+49. **Now: Phase 4c item 7 — space background (stars / Milky Way, then constellations), NEXT for the daily routine.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 

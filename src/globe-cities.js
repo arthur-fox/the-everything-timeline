@@ -590,6 +590,21 @@ export const CITIES = [
   C('halifax', 44.65, -63.58, 4, 1749, null, 'Halifax'),
   C('winnipeg', 49.90, -97.14, 4, 1873, null, 'Winnipeg'),
   C('vancouver', 49.28, -123.12, 3, 1886, null, 'Vancouver'),
+
+  // Day 60: Native American nations (capitals, councils, reservation seats)
+  C('onondaga', 42.95, -76.15, 4, 1450, null, 'Onondaga'),
+  C('new-echota', 34.54, -84.91, 4, 1825, 1838, 'New Echota'),
+  C('tahlequah', 35.92, -94.97, 4, 1839, null, 'Tahlequah'),
+  C('okmulgee', 35.62, -95.96, 4, 1868, null, 'Okmulgee'),
+  C('werowocomoco', 37.41, -76.65, 4, 1500, 1650, 'Werowocomoco'),
+  C('nanih-waiya', 32.92, -88.95, 4, 1500, null, 'Nanih Waiya'),
+  C('tishomingo', 34.24, -96.68, 4, 1856, null, 'Tishomingo'),
+  C('wewoka', 35.16, -96.49, 4, 1866, null, 'Wewoka'),
+  C('pine-ridge', 43.03, -102.56, 4, 1878, null, 'Pine Ridge'),
+  C('fort-sill', 34.67, -98.42, 4, 1869, null, 'Fort Sill'),
+  C('window-rock', 35.68, -109.05, 4, 1936, null, 'Window Rock'),
+  C('bosque-redondo', 33.40, -104.35, 4, 1863, 1868, 'Bosque Redondo'),
+  C('temuco', -38.74, -72.59, 3, 1881, null, 'Temuco'),
   // ---- Oceania ----------------------------------------------------------------------------
   C('sydney', -33.87, 151.21, 2, 1788, null, 'Sydney'),
   C('melbourne', -37.81, 144.96, 2, 1835, null, 'Melbourne'),
