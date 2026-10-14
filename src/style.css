@@ -5159,3 +5159,86 @@ body.globe-active .fab-dock:focus-within {
     opacity: 1; /* only dimmed over the full-screen globe */
   }
 }
+
+/* ============================================================
+   Mobile timeline v2 — phones get a scrollable row of view tabs under the header
+   (one tap to switch timeline type). Desktop never shows it.
+   ============================================================ */
+.view-tabs {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .view-tabs {
+    display: flex;
+    flex: none;
+    gap: 6px;
+    padding: 0 10px 8px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+    scroll-padding: 0 10px;
+    mask-image: linear-gradient(90deg, transparent 0, #000 10px, #000 calc(100% - 18px), transparent 100%);
+  }
+
+  .view-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .view-tabs button {
+    flex: none;
+    min-height: 36px;
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border-subtle);
+    background: color-mix(in srgb, var(--bg-surface) 85%, transparent);
+    color: var(--text-muted, var(--text));
+    font: 600 0.88rem/1 var(--font-ui);
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .view-tabs button[aria-pressed='true'] {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 22%, var(--bg-surface));
+    color: var(--text);
+  }
+
+  body.globe-active .view-tabs {
+    display: none;
+  }
+
+  /* the tabs cover view switching; the select stays in the menu for Countries… etc. */
+  #controls .view-select {
+    min-height: 44px;
+  }
+
+  /* the ☰ button sits above the backdrop so it can close the sheet it opened */
+  body.mobile-menu-open #header {
+    position: relative;
+    z-index: 895;
+  }
+
+  /* search results open inline inside the menu, not as a second sheet covering it */
+  #controls .timeline-search-wrap {
+    order: 0;
+  }
+
+  #controls .timeline-search-results {
+    position: static !important;
+    width: 100% !important;
+    max-height: 42dvh !important;
+    margin-top: 6px;
+    padding: 4px !important;
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+  }
+
+  #controls .timeline-search-results::before {
+    display: none;
+  }
+}

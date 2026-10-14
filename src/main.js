@@ -2827,6 +2827,8 @@ document.addEventListener('click', (e) => {
   const wrap = document.getElementById('filters-wrap');
   if (filtersPanel.contains(e.target)) return;
   if (wrap && wrap.contains(e.target)) return;
+  // a chip re-renders on tap, so its target is detached by now; that tap was still inside the panel
+  if (!e.target.isConnected || e.composedPath().includes(filtersPanel)) return;
   closeFiltersPanel();
 });
 
@@ -3154,7 +3156,7 @@ if (bookmarksClear) {
 document.addEventListener('click', (e) => {
   if (!bookmarksPanel || bookmarksPanel.classList.contains('hidden')) return;
   const wrap = document.getElementById('bookmarks-wrap');
-  if (bookmarksPanel.contains(e.target)) return;
+  if (bookmarksPanel.contains(e.target) || !e.target.isConnected) return;
   if (wrap && wrap.contains(e.target)) return;
   if (detailBookmarkBtn && detailBookmarkBtn.contains(e.target)) return;
   closeBookmarksPanel();
