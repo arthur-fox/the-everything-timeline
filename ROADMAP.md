@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); step 6.2 inland Africa (Day 58) is in review; next for the daily ship routine is step 6.3 (Southeast Asia)** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); step 6.2 inland Africa (Day 58) is in review; step 6.3 Southeast Asia (Day 59) is in review; next for the daily ship routine is step 6.4 (Native American nations after 1500)** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -815,6 +815,18 @@ Stacked on the Greek world PR (#62). Do not merge until Arthur approves.
 - **Validate:** `scripts/check-early-medieval.js` (in `npm run validate`): closed non-crossing rings, era names, who-is-on / who-is-gone at 600 / 750 / 800 / 900.
 - **Honest caveats:** early medieval frontiers were fluid (especially steppe khaganates); rings are schematic pastoral / tribute zones, not surveyed borders. Tang neighbours are drawn beside Tang’s existing schematic shape (which still reaches the Tarim and north fringe). Visigoths end by 711; Umayyad Spain appears from the existing caliphate overlays plus a 715 Al-Andalus keyframe. Anglo-Saxon coverage stops at Æthelstan (927) on the globe even though the timeline entry runs to 1066. Inland Africa and deeper SE Asia wait for steps 6.2–6.3.
 
+### Southeast Asia, 100–1815 (Phase 4c step 6.3) — Day 59, done-in-PR
+
+Do not merge until Arthur approves.
+
+- **Audit first:** before this the globe had three Southeast Asian shapes (a schematic Khmer, Majapahit and the Day 57 Srivijaya) and nothing for Funan, Chenla, Champa, Đại Việt, the Burmese and Thai kingdoms, Lan Na, Lan Xang, Mataram, Malacca, Johor, Aceh, Brunei or the Philippine sultanates.
+- **Shapes (`src/globe-southeast-asia.js`, lazy globe chunk):** 24 polities, 153 dated outlines. Mainland: Funan, Chenla (Land/Water), Khmer (802 → Jayavarman VII peak → 1431), Champa (Lâm Ấp → Vijaya → Panduranga), Đại Việt (Lý → Trần → Lê → Trịnh/Nguyễn with Gia Định → Gia Long 1802), Pagan, Ava, Toungoo (Bayinnaung's 1570 empire with vassals → Restored Toungoo), Konbaung (Tenasserim 1767, Arakan 1785), Sukhothai, Ayutthaya → Thonburi → Rattanakosin Siam, Lan Na, Lan Xang → three Lao kingdoms. Islands: Srivijaya refined (Palembang → strait and isthmus ports → Chola raid 1025 → Jambi/Malayu → Dharmasraya), Medang (Borobudur era, move to East Java 929), Majapahit (only Java, Madura and Bali — the Nagarakretagama tributary list is not drawn), Mataram Sultanate (Sultan Agung → Giyanti 1755), Malacca, Johor–Riau, Aceh, Brunei, Tondo/Maynila, Sulu (with north-east Borneo from 1704), Maguindanao. Each has sources and a confidence level with a reason (Funan, Chenla and the Philippine polities = conjectural; the rest approximate). Hands off to the nations layer at 1815.
+- **Era names:** Chenla → Land and Water Chenla (707); Champa → Panduranga (1471); Đại Việt Lý / Trần / Lê / Trịnh–Nguyễn → Vietnam (1802); Toungoo → Restored Toungoo (1599); Ayutthaya → Siam (Thonburi, 1768) → Siam (Rattanakosin, 1782); Lan Na Burmese vassal (1558) → Siamese vassal (1775); Lan Xang → three Lao kingdoms (1707); Srivijaya → Malayu (Jambi) → Dharmasraya; Mataram → Surakarta and Yogyakarta (1755).
+- **Timeline:** 22 new Southeast Asia entries (Funan, Chenla, Champa, Đại Việt, Pagan, Ava, Toungoo, Konbaung, Sukhothai, Ayutthaya, Thonburi/Rattanakosin Siam, Lan Na, Lan Xang, Medang, Mataram, Malacca, Johor, Aceh, Brunei, Tondo, Sulu, Maguindanao).
+- **Cities and pins:** Óc Eo, Isanapura, Vijaya, Simhapura, Ava, Pegu, Mrauk U, Luang Prabang, Thonburi, Aceh (Kutaraja → Banda Aceh), Jambi, Kotagede, Jolo, Cotabato, Tondo; 37 pins (Jayavarman II, the Cham sack of Angkor, Bạch Đằng 1288, Lê Lợi, Anawrahta at Thaton, Bayinnaung at Ayutthaya, Ayutthaya destroyed 1767, Bangkok founded, Fa Ngum, the Chola raid, Borobudur, Prambanan, Gajah Mada's oath, Batavia 1628, Giyanti, Zheng He and the Portuguese at Malacca, Pigafetta at Brunei, the Laguna Copperplate, Legazpi at Maynila, Kudarat …).
+- **Validate:** `scripts/check-southeast-asia.js` (in `npm run validate`): clean rings, sources + confidence + ≥3 keyframes + no keyframe after 1815, timeline links, 14 era-name samples, 27 capitals inside their polity at real dates, who is on / gone at sample years.
+- **Honest caveats:** these were mandala states — rings are cores plus tribute zones, and overlapping rings where one court paid tribute to two (Lan Na, Cambodia, the Lao kingdoms) are deliberate. Bayinnaung's 1570 ring includes vassals. Not yet drawn: Hanthawaddy (Pegu) and Mrauk U as their own kingdoms, post-Angkor Cambodia 1431–1815, Singhasari and Kediri, Demak and Banten, Makassar (Gowa), Ternate and Tidore, the Rajahnate of Cebu.
+
 ### Inland Africa, 100–1815 (Phase 4c step 6.2) — Day 58, done-in-PR
 
 Do not merge until Arthur approves.
@@ -831,7 +843,7 @@ Do not merge until Arthur approves.
 
 - **Step 6.1 — The early medieval world (500–1000).** ✅ Day 57, done-in-PR (PR #63). Merovingian and Carolingian Francia, Anglo-Saxon kingdoms, the Visigoths, the Avars, the Khazars, the Göktürks and Uyghurs, Tang neighbours (Tibetan Empire, Nanzhao, Silla), Srivijaya — see the Day 57 write-up below.
 - **Step 6.2 — Inland Africa.** ✅ Day 58, done-in-PR. Ghana/Wagadu, Mali, Songhai, Kanem–Bornu, the Hausa states, the Sokoto Caliphate, Benin, Oyo, Asante, Kongo, Luba and Lunda, Great Zimbabwe and Mutapa, Aksum, Zagwe and Ethiopia over time, the Swahili city-states, Buganda — see the Day 58 write-up below.
-- **Step 6.3 — Southeast Asia.** Funan, Champa, the Khmer Empire, Pagan, Majapahit, Ayutthaya, Đại Việt, Malacca, Mataram.
+- **Step 6.3 — Southeast Asia.** ✅ Day 59, done-in-PR. Funan, Chenla, Khmer, Champa, Đại Việt, Pagan, Ava, Toungoo, Konbaung, Sukhothai, Ayutthaya → Siam, Lan Na, Lan Xang, Srivijaya (refined), Medang, Majapahit, Mataram, Malacca, Johor, Aceh, Brunei, Tondo, Sulu, Maguindanao — see the Day 59 write-up below.
 - **Step 6.4 — Native American nations after 1500.** The Haudenosaunee, Cherokee, Muscogee, Powhatan, Lakota and Comanche, the Mapuche and others, with dated territories, removals (1830s) and reservations. Sourced carefully, with tribal nations' own histories where available and uncertainty shown honestly.
 
 ### 7. Space background
@@ -1021,7 +1033,8 @@ A sensible near-term sequence:
 44. Ancient Greek world 1600–146 BCE (Arthur, 11 Oct; Day 56) ✅ (done-in-PR, #62).
 45. Early medieval world 500–1000 (Phase 4c step 6.1; Day 57) ✅ (done-in-PR, #63; stacks on #62).
 46. Inland Africa (Phase 4c step 6.2; Day 58) ✅ (done-in-PR).
-47. **Now: Phase 4c step 6.3 Southeast Asia, NEXT for the daily routine.**
+47. Southeast Asia (Phase 4c step 6.3; Day 59) ✅ (done-in-PR).
+48. **Now: Phase 4c step 6.4 Native American nations after 1500, NEXT for the daily routine.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
