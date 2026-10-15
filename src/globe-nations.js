@@ -177,7 +177,7 @@ export function getActiveNationsAtYear(year) {
 
 /** Schematic polities stop at the handoff year so empires never double-paint over nations. */
 export function isSupersededByNations(entity, year) {
-  if (!entity || entity.type === 'people' || entity.type === 'presence' || entity.type === 'nation') return false;
+  if (!entity || entity.type === 'people' || entity.type === 'presence' || entity.type === 'nation' || entity.type === 'indigenous') return false;
   return Math.round(Number(year)) >= NATIONS_HANDOFF_YEAR;
 }
 
@@ -431,9 +431,10 @@ export function getNationPolygonFeatures(year, fineShapes = null) {
 
 /**
  * Everything the globe draws at `year`: schematic presence / peoples / pre-1815 polities,
- * plus nations from 1815. `hidePolities` (Day 40 layer toggle) drops nations and keeps the
- * peoples / presence undimmed. Polities are dropped from the handoff year on (no double-painting
- * of, say, the British Empire over independent nations).
+ * plus nations from 1815, plus Day 60 indigenous nations (which persist past the handoff).
+ * `hidePolities` (Day 40 layer toggle) drops nations and keeps peoples / presence / indigenous
+ * undimmed. Other polities are dropped from the handoff year on (no double-painting of, say,
+ * the British Empire over independent nations).
  */
 export function getGlobePolygonFeatures(year, { hidePolities = false, fineShapes = null } = {}) {
   const y = Math.round(Number(year));
@@ -441,14 +442,21 @@ export function getGlobePolygonFeatures(year, { hidePolities = false, fineShapes
   // Until the TopoJSON arrives, keep the schematic empires so the globe is never empty.
   if (y < NATIONS_HANDOFF_YEAR || !topo) return schematic;
   const kept = [];
+  const indigenous = [];
   for (const f of schematic) {
+    // Day 60: Indigenous nations keep full colour after 1815 (removals, reservations, Mapuche).
+    if (f.entityType === 'indigenous') {
+      indigenous.push(f);
+      continue;
+    }
     if (f.entityType !== 'people' && f.entityType !== 'presence') continue;
     // Day 40: with Polities / Nations switched off, peoples and presence come back to full
     // strength and their own band, so they can be tapped on land again.
     kept.push(hidePolities ? f : dimmedForNationsEra(f, y));
   }
-  if (hidePolities) return kept;
-  return [...kept, ...getNationPolygonFeatures(y, fineShapes)];
+  if (hidePolities) return [...kept, ...indigenous];
+  // Indigenous on top of nations so Removal / reservation shapes stay visible over US/Chile fills.
+  return [...kept, ...getNationPolygonFeatures(y, fineShapes), ...indigenous];
 }
 
 /**

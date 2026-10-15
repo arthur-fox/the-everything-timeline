@@ -28,11 +28,12 @@ import { confidenceForEntity } from './globe-confidence.js';
 import { greekWorldPolities, extraKeyframes as greekWorldExtraKeyframes } from './globe-greek-world.js';
 import { southeastAsiaPolities } from './globe-southeast-asia.js';
 import { inlandAfricaPolities } from './globe-inland-africa.js';
+import { nativeNationsPolities } from './globe-native-nations.js';
 import { earlyMedievalPolities, extraKeyframes as earlyMedievalExtraKeyframes } from './globe-early-medieval.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
-/** @typedef {'empire' | 'civilization' | 'state' | 'people' | 'presence' | 'other'} SpatialEntityType */
+/** @typedef {'empire' | 'civilization' | 'state' | 'people' | 'presence' | 'indigenous' | 'other'} SpatialEntityType */
 /** @typedef {'rough' | 'simplified' | 'schematic'} ApproximationLevel */
 
 /**
@@ -6258,6 +6259,14 @@ for (const ent of inlandAfricaPolities) {
 // Day 59 — Southeast Asia (globe-southeast-asia.js): redrawn Khmer / Majapahit / Srivijaya replace
 // earlier shapes (including Day 57's Srivijaya); the rest are appended.
 for (const ent of southeastAsiaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
+// Day 60 — Native American / Indigenous nations after 1500 (globe-native-nations.js).
+// type: 'indigenous' so shapes keep drawing after the 1815 nations handoff (removals & reservations).
+for (const ent of nativeNationsPolities) {
   const i = spatialEntities.findIndex((e) => e.id === ent.id);
   if (i >= 0) spatialEntities[i] = ent;
   else spatialEntities.push(ent);

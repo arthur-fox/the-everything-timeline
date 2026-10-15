@@ -194,15 +194,20 @@ for (const y of STEP_YEARS) {
 }
 
 // 4. Handoff: no schematic empires from the handoff (1815 since Day 41), still there the year before.
-const polityAt = (y) => getGlobePolygonFeatures(y).filter((f) => !['people', 'presence', 'nation'].includes(f.entityType));
+// Day 60: indigenous nations (removals / reservations) are allowed beside the nations layer.
+const polityAt = (y) => getGlobePolygonFeatures(y).filter((f) => !['people', 'presence', 'nation', 'indigenous'].includes(f.entityType));
 if (!polityAt(NATIONS_HANDOFF_YEAR - 1).some((f) => f.entityId === 'british-empire')) fail(`${NATIONS_HANDOFF_YEAR - 1}: schematic British Empire should still be drawn`);
 for (const y of [NATIONS_HANDOFF_YEAR, 1848, 1871, 1900, 1913, 1920, 1960, 2025]) {
   const leftover = polityAt(y);
   if (leftover.length) fail(`${y}: schematic polities double-paint over nations: ${[...new Set(leftover.map((f) => f.entityId))].join(', ')}`);
-  if (getActiveSchematicOverlaysAtYear(y).some(({ entity }) => entity.type !== 'people' && entity.type !== 'presence')) {
+  if (getActiveSchematicOverlaysAtYear(y).some(({ entity }) => !['people', 'presence', 'indigenous'].includes(entity.type))) {
     fail(`${y}: sidebar still lists schematic polities`);
   }
   if (!getGlobePolygonFeatures(y).some((f) => f.entityType === 'presence')) fail(`${y}: presence wash missing`);
+  // Day 60: at least one indigenous nation still drawn in the Removal / reservation era.
+  if (y >= 1830 && y <= 1900 && !getGlobePolygonFeatures(y).some((f) => f.entityType === 'indigenous')) {
+    fail(`${y}: indigenous nations missing after handoff`);
+  }
 }
 
 // 5. Real dates: breakups and decolonisation.
