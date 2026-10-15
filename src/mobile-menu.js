@@ -27,7 +27,9 @@ export function initMobileMenu() {
     backdrop = document.createElement('div');
     backdrop.className = 'mobile-menu-backdrop';
     backdrop.addEventListener('click', () => close());
-    document.body.append(backdrop);
+    // Same stacking context as the sheet: #app has z-index:1, so a backdrop on <body> sat above
+    // the whole sheet and ate every tap in it (the menu just closed again).
+    sheet.before(backdrop);
     sheet.scrollTop = 0;
     requestAnimationFrame(() => sheet.querySelector('select, input, button')?.focus({ preventScroll: true }));
   }
@@ -82,17 +84,66 @@ export function initMobileMenu() {
     if (!PHONE.matches) close({ restoreFocus: false });
   });
 
-  // Mirror the current view name ("Technology", "Countries › 🇧🇷 Brazil") onto the button.
+  const tabs = initViewTabs();
+  // The view name lives in the tabs now; the button is just "Menu".
   const syncLabel = () => {
     const t = (viewLabel?.textContent || '').replace(/\s+/g, ' ').trim();
-    if (label) label.textContent = t || 'Menu';
-    btn.setAttribute('aria-label', `Menu: ${t || 'views'}, search, filters`);
+    if (label) label.textContent = 'Menu';
+    btn.setAttribute('aria-label', `Menu: search, filters, compare, bookmarks, eras (viewing ${t || 'Timeline'})`);
+    tabs?.sync();
   };
   if (viewLabel) new MutationObserver(syncLabel).observe(viewLabel, { childList: true, characterData: true, subtree: true });
   syncLabel();
 
   initSheetSwipe();
   autoHideGestureHint();
+}
+
+/**
+ * Phones: a scrollable row of view tabs under the header, so switching timeline type is one tap
+ * (it used to be a <select> inside the ☰ sheet). Built from #view-select's options and drives it
+ * through its normal change event, so all existing view logic stays in one place.
+ */
+function initViewTabs() {
+  const select = document.getElementById('view-select');
+  const header = document.getElementById('header');
+  if (!select || !header) return null;
+  const nav = document.createElement('nav');
+  nav.className = 'view-tabs';
+  nav.setAttribute('aria-label', 'Timeline views');
+  const short = { cosmic: 'All', 'cosmic-history': 'Cosmic', civilisations: 'Civilisations', art: 'Art', wars: 'Wars', countries: 'Countries' };
+  for (const o of select.options) {
+    if (o.value === 'globe') continue; // the Timeline/Globe switch covers it
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.dataset.view = o.value;
+    b.textContent = short[o.value] || o.textContent.replace(/\.\.\.$/, '');
+    b.title = o.value === 'countries' ? 'Pick a country timeline' : o.textContent;
+    b.addEventListener('click', () => {
+      // "Countries" always opens the picker, even when a country is already showing
+      if (select.value === o.value && o.value !== 'countries') return;
+      select.value = o.value;
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    nav.append(b);
+  }
+  header.after(nav);
+  const sync = () => {
+    const v = select.value;
+    let active = null;
+    for (const b of nav.children) {
+      const on = b.dataset.view === v;
+      b.setAttribute('aria-pressed', String(on));
+      if (on) active = b;
+    }
+    if (active && PHONE.matches) {
+      const r = active.getBoundingClientRect(), n = nav.getBoundingClientRect();
+      if (r.left < n.left || r.right > n.right) nav.scrollBy({ left: r.left - n.left - (n.width - r.width) / 2, behavior: 'smooth' });
+    }
+  };
+  select.addEventListener('change', () => requestAnimationFrame(sync));
+  sync();
+  return { sync };
 }
 
 /** Swipe the detail sheet down (from its top, or when scrolled to the top) to close it. */
