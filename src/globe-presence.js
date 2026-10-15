@@ -975,15 +975,22 @@ export const presenceEntities = [
           {
             id: 'gm-e-us',
             name: 'Eastern North America',
+            // Follows the Atlantic / Gulf coast (was a rough box whose east edge at -69°
+            // sat ~500 km out in the Atlantic off the Carolinas and Florida).
             ring: [
-              [-90, 28], [-89, 44], [-70, 44], [-69, 32], [-78, 27], [-90, 28],
+              [-90, 30.2], [-89.5, 44], [-84, 46.5], [-82.5, 45.3], [-79, 43.3], [-75, 45],
+              [-71.5, 45], [-67, 47], [-67, 44.5], [-70, 41.5], [-74, 40.2], [-76, 37],
+              [-75.5, 35.3], [-78, 33.8], [-81.2, 31.5], [-80.1, 26.5], [-80.5, 25.2],
+              [-82, 26.5], [-83, 29.5], [-85.5, 29.8], [-90, 30.2],
             ],
           },
           {
             id: 'gm-se-brazil',
             name: 'SE South America fringe',
             ring: [
-              [-50, -30], [-49, -18], [-40, -18], [-39, -28], [-44, -32], [-50, -30],
+              // Hugs the Brazilian coast (the old [-39,-28] / [-44,-32] corners sat in the Atlantic).
+              [-52, -30], [-50.5, -18], [-40, -18], [-41, -22], [-44.5, -23.2], [-48.5, -26.5],
+              [-50.2, -30], [-52, -30],
             ],
           },
         ],
