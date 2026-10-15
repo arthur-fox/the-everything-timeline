@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); next for the daily ship routine is item 7 (space background)** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); step 7.1 stars/Milky Way is done-in-PR (Day 61); next is step 7.2 constellations; PR #72 coast spill still awaiting review** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -850,9 +850,14 @@ Do not merge until Arthur approves.
 
 Arthur: replace the plain background with a starfield and space scene.
 
-- **Step 7.1 — Stars and the Milky Way.** A celestial sphere behind the globe: stars from the Yale Bright Star Catalogue (~9,100 naked-eye stars; generally treated as public domain, confirm before bundling) or HYG (CC BY-SA, so only if we accept share-alike for that data file), sized and tinted by magnitude and colour index, plus a Milky Way band from a public-domain NASA sky map (e.g. NASA SVS Deep Star Maps). Aligned to the celestial sphere (Earth's axis = the celestial pole), so the sky rotates consistently as you spin the globe.
-- **Step 7.2 — Constellations.** Constellation lines and names in roughly correct positions, from a public-domain / CC0 source where one exists (otherwise a permissive one such as d3-celestial's BSD-3 data, checked against our ISC licence), with a toggle. Optional: precession by year, so the pole star is Thuban around 3000 BCE and Polaris today.
-- **Phone budget:** one point cloud and one texture; no per-frame CPU work.
+- **Step 7.1 — Stars and the Milky Way.** ✅ Day 61, done-in-PR. A celestial sphere behind the globe: Yale BSC stars (mag ≤ 6.5, public-domain JSON → `public/sky/bsc-stars.bin`) sized/tinted by magnitude and spectral class, plus a Milky Way equirectangular from NASA SVS Deep Star Maps 2020 (`public/sky/milkyway-celestial.webp`). Earth's axis = celestial pole; one Points mesh + one texture; see Day 61 write-up and `docs/ATTRIBUTION-sky.md`.
+- **Step 7.2 — Constellations.** Constellation lines and names in roughly correct positions, from a public-domain / CC0 source where one exists (otherwise a permissive one such as d3-celestial's BSD-3 data, checked against our ISC licence), with a toggle. Optional: precession by year, so the pole star is Thuban around 3000 BCE and Polaris today. **Next** after Day 61.
+- **Phone budget:** one point cloud and one texture; no per-frame CPU work. ✅ met in step 7.1.
+
+#### Day 61 — Stars and the Milky Way (step 7.1) — done-in-PR
+- `src/globe-sky.js` (lazy with the globe): inward-facing Milky Way sphere + Yale BSC `THREE.Points`, fixed in world space with the earth so camera orbit reveals different sky; CSS body starfield muted while `body.globe-active`.
+- Assets under `public/sky/` (~50 KB WebP + ~168 KB star binary); rebuild via `scripts/build-sky.py`. HYG (CC BY-SA) not used. Step 7.2 constellations left open.
+- PR #72 (coast spill) stays separate / awaiting review — this branch is from `main` only.
 
 ## Custom domain & sharing (Arthur, 9 Oct 2026)
 
@@ -1035,7 +1040,8 @@ A sensible near-term sequence:
 46. Inland Africa (Phase 4c step 6.2; Day 58) ✅ (done-in-PR).
 47. Southeast Asia (Phase 4c step 6.3; Day 59) ✅ (done-in-PR).
 48. Native American nations after 1500 (Phase 4c step 6.4; Day 60) ✅ (done-in-PR).
-49. **Now: Phase 4c item 7 — space background (stars / Milky Way, then constellations), NEXT for the daily routine.**
+49. Phase 4c step 7.1 — stars / Milky Way (Day 61) ✅ (done-in-PR).
+50. **Now: Phase 4c step 7.2 — constellations (toggle + optional precession), NEXT for the daily routine.** PR #72 (coast spill) remains open/unrelated.
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 

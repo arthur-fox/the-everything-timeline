@@ -30,6 +30,8 @@
  * Day 53: trade routes (Phase 4c step 5.1) — dated route lines from data/trade-routes.json with
  *   dashes flowing along them (Globe.gl paths layer, above every polygon band; squeezed toward the
  *   surface with the polygons as you zoom). Key "Flows" toggle / `&flows=0`; a tap opens the route.
+ * Day 61: space background (Phase 4c step 7.1) — Yale BSC star Points + NASA SVS Milky Way
+ *   celestial sphere behind the globe (globe-sky.js); step 7.2 constellations left for later.
  * Mounted only while Globe mode is active; disposed on leave.
  */
 
@@ -62,6 +64,7 @@ import {
 } from './globe-labels.js';
 import { loadTradeRoutes, tradeRouteEntriesAtYear, areTradeRoutesLoaded, formatRouteYears } from './globe-routes.js';
 import { loadMigrations, migrationEntriesAtYear, areMigrationsLoaded, formatMigrationYears } from './globe-migrations.js';
+import { initGlobeSky, destroyGlobeSky } from './globe-sky.js';
 
 /** Day 43: dated cities (`&cities=0`) and event pins (`&events=0`) — see globe-labels.js. */
 export { setGlobeCitiesEnabled, areGlobeCitiesEnabled, setGlobeEventsEnabled, areGlobeEventsEnabled, setGlobePinHandlers };
@@ -1630,6 +1633,13 @@ export async function mountGlobe(container, opts = {}) {
   applyRouteLayer();
   initGlobeLabels({ host: hostEl, globe, THREE, mobile, getSelected: () => selectedEntityId });
   attachLegend();
+  // Day 61: celestial sphere (stars + Milky Way). Lazy with the globe; one Points + one texture.
+  try {
+    const scene = globe.scene();
+    initGlobeSky({ THREE, scene, mobile }).catch(() => {});
+  } catch (_) {
+    // ignore — CSS body starfield remains as fallback
+  }
 
   try {
     const scene = globe.scene();
@@ -1858,6 +1868,7 @@ export function destroyGlobe() {
   zoomF = 1;
   zoomStyleKey = '';
 
+  destroyGlobeSky();
   destroyGlobeLabels();
   detachLegend();
   if (hostEl) {

@@ -3051,6 +3051,12 @@ body::before {
   display: none;
 }
 
+/* Day 61: mute the cheap CSS starfield while the real celestial sphere is on the globe */
+body.globe-active::before {
+  opacity: 0;
+  visibility: hidden;
+}
+
 /* Light mode title gradient - darker for contrast */
 [data-theme="light"] #header h1 {
   background: var(--brand-gradient);
