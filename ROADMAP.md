@@ -859,6 +859,11 @@ Arthur: replace the plain background with a starfield and space scene.
 - Assets under `public/sky/` (~50 KB WebP + ~168 KB star binary); rebuild via `scripts/build-sky.py`. HYG (CC BY-SA) not used. Step 7.2 constellations left open.
 - PR #72 (coast spill) stays separate / awaiting review — this branch is from `main` only.
 
+### Item 8 — Lidar finds (Arthur, 15 Oct 2026) — after step 7.2
+Inspired by [lidar lost-cities write-up](https://bakerbench.substack.com/p/i-went-looking-for-lost-cities-with). Static data only, no new tech.
+- **Step 8.1 — "Hidden cities" pins.** A new event-pin type for major lidar discoveries (e.g. Valeriana and the Maya lowlands, greater Angkor, Amazonian settlements such as Llanos de Mojos / Upano valley), each with date of discovery, the period of the site, sources, and a short "what this changed" note. Toggle in the key.
+- **Step 8.2 — Honest shape updates.** Where those finds change what we draw (e.g. denser Maya lowland presence, Angkor's urban sprawl, pre-Columbian Amazon), update polity/presence shapes and certainty notes, citing the survey.
+
 ## Custom domain & sharing (Arthur, 9 Oct 2026)
 
 - **Status: step 1 done on Day 46 (merged, PR #52; live at https://theeverythingtimeline.com/ since 9 Oct).**
@@ -1041,7 +1046,7 @@ A sensible near-term sequence:
 47. Southeast Asia (Phase 4c step 6.3; Day 59) ✅ (done-in-PR).
 48. Native American nations after 1500 (Phase 4c step 6.4; Day 60) ✅ (done-in-PR).
 49. Phase 4c step 7.1 — stars / Milky Way (Day 61) ✅ (done-in-PR).
-50. **Now: Phase 4c step 7.2 — constellations (toggle + optional precession), NEXT for the daily routine.** PR #72 (coast spill) remains open/unrelated.
+50. **Now: Phase 4c step 7.2 — constellations (toggle + optional precession), NEXT for the daily routine.** Then item 8 (lidar finds: 8.1 hidden-cities pins, 8.2 shape updates).
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
