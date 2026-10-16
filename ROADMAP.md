@@ -911,6 +911,8 @@ Next steps (not started):
 
 **Top priority, long-running (Arthur, 15 Oct 2026).** The project's structure is now set: the Timeline and the Globe exist and are linked. From here, most growth comes from adding data and refining it, again and again. Accounts and similar features wait until there are users. After Phase 4c step 7.2 and item 8, this is the daily routine's default work.
 
+**Explicit goal: every place, both views (Arthur, 15 Oct 2026).** Every ISO 3166-1 entry should be covered on **both** the Timeline and the Globe. That is about 195 sovereign states plus dependent territories, 249 entries in all. Progress is tracked row by row in [docs/COVERAGE.md](docs/COVERAGE.md), with Timeline and Globe status (none/partial/done) and the pack or region responsible. Small territories batch with their region pack. Every pack PR updates its rows.
+
 Rules for every Phase 5 PR: data stays static, split into small lazy-loaded files (docs/DATA.md), every item sourced, validation passes on build, and no over-engineering.
 
 ### 12. Country packs: Timeline and Globe together
