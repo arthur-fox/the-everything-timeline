@@ -907,24 +907,51 @@ Next steps (not started):
 3. After ~2–4 weeks, tally the "Would you pay for…?" answers and wishes into a short ranking; prototype the top idea behind a flag (e.g. saved custom timelines, or poster export) before any payment plumbing.
 4. Only then: pricing test (e.g. a "notify me / pre-order" button on the top idea) and a privacy note page.
 
-## Phase 5 — Content expansion
+## Phase 5 — Content expansion: more and better data (MAIN TRACK)
 
-Expand content after the navigation and data foundations are stronger.
+**Top priority, long-running (Arthur, 15 Oct 2026).** The project's structure is now set: the Timeline and the Globe exist and are linked. From here, most growth comes from adding data and refining it, again and again. Accounts and similar features wait until there are users. After Phase 4c step 7.2 and item 8, this is the daily routine's default work.
 
-### 12. Country coverage
+Rules for every Phase 5 PR: data stays static, split into small lazy-loaded files (docs/DATA.md), every item sourced, validation passes on build, and no over-engineering.
 
-Move toward comprehensive country coverage, but only with validation in place.
+### 12. Country packs: Timeline and Globe together
 
-Goals:
+Each pack takes one country (or a small group of neighbours) and refines **both views at once**. While we research a country's timeline, we also refine its whole history on the globe:
 
-- consistent data shape
-- good coverage across regions, not only Europe/US
-- major political, cultural, scientific, economic, and conflict events
-- sources for contentious or modern claims
+- **Timeline:** major political, cultural, scientific, economic and conflict events, with sources for contentious or modern claims.
+- **Globe shapes over time:** kingdoms, dynasties and regions, with borders before 1815 drawn as keyframes, and certainty levels on every shape.
+- **Dated cities:** founding, peak and decline, and renames.
+- **Pinned events:** battles, treaties, foundings and discoveries placed on the map.
+- **Links:** Timeline ↔ Globe links both ways (country items ↔ polities/cities/events).
 
-**Country pack 1 — Day 33 ✅.** Added Peru, Ghana, Kenya, Morocco, Iraq, and the Philippines (32 → 38 countries; 42 new items, every item sourced, 73 source links checked). Picks fill thin regions: Andean South America, West and East Africa, the Maghreb, Mesopotamia, and island Southeast Asia. Globe links kept in sync: Inca → Peru, Abbasid → Iraq, Mesopotamia → Iraq (Sumer/Akkad, Babylon/Assyria), Parthian → Iraq. Related-on-timeline links now resolve country items even before that country has been opened. Next country packs: Central Asia, Caribbean/Central America, Central Africa, Southeast Europe, and more South Asia.
+**Country pack 1 — Day 33 ✅ (timeline-only).** Added Peru, Ghana, Kenya, Morocco, Iraq, and the Philippines (32 → 38 countries; 42 new items, every item sourced, 73 source links checked). Picks fill thin regions: Andean South America, West and East Africa, the Maghreb, Mesopotamia, and island Southeast Asia. Globe links kept in sync: Inca → Peru, Abbasid → Iraq, Mesopotamia → Iraq (Sumer/Akkad, Babylon/Assyria), Parthian → Iraq. Related-on-timeline links now resolve country items even before that country has been opened. It added **no new globe territory**.
 
-### 13. Topic packs
+Proposed order:
+
+1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs.
+2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates).
+3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits).
+4. **Central Africa:** DR Congo, Angola, Cameroon, Chad (Kongo, Luba, Lunda, Kanem-Bornu).
+5. **Southeast Europe:** Serbia, Bulgaria, Romania, Croatia, Albania, Greece refinement (Byzantine/Ottoman/medieval kingdoms).
+6. **South Asia:** Pakistan, Bangladesh, Sri Lanka, Nepal, India refinement (Mauryan → Mughal regional kingdoms).
+7. **Globe refinement of the existing 38 countries**, one or a few per day, biggest gaps first. These packs are mostly globe work, as their timelines already exist.
+
+### 13. Fill the globe, region by region (after the packs above)
+
+Once packs reach a region, do a pass over the whole region to fill gaps between countries:
+
+- Central Asia and the steppe
+- The Caucasus
+- The Andes before the Inca (Chavín, Moche, Nazca, Wari, Tiwanaku, Chimú)
+- Central Africa
+- Pacific islands (Lapita, Polynesian voyaging, Tonga, Hawaiʻi)
+- Siberia and Arctic peoples
+- Also: the Horn of Africa, Tibet and the Himalaya, Mongolia and Manchuria, the Amazon basin, Australia beyond the Aboriginal band, and Madagascar
+
+**City and pinned-event density.** Each pass also adds cities and pinned events, so zooming in anywhere usually turns up something.
+
+**Density check (cheap).** Add a small script, `scripts/density-report`, to run by hand, not in the build. It prints a grid of regions × centuries with shape, city and event counts and flags empty cells. That empty-cell list is what the regional passes work from. It only reads the existing static data and does not change the data format.
+
+### 14. Topic packs (later)
 
 Potential topic packs:
 
@@ -938,7 +965,7 @@ Potential topic packs:
 - Computing and AI
 - Energy transitions
 
-### 14. Richer modern history
+### 15. Richer modern history (later)
 
 The 1900–present period could become much deeper:
 
@@ -954,7 +981,7 @@ The 1900–present period could become much deeper:
 
 ## Phase 6 — Product polish and accessibility
 
-### 15. Visual polish
+### 16. Visual polish
 
 Make the project feel like a polished interactive atlas.
 
@@ -964,7 +991,7 @@ Make the project feel like a polished interactive atlas.
 - improved typography and spacing
 - more intentional color system
 
-### 16. Performance
+### 17. Performance
 
 As datasets grow, optimize rendering and interaction.
 
@@ -974,7 +1001,7 @@ As datasets grow, optimize rendering and interaction.
 - reduced label density on small screens
 - profiling for mobile devices
 
-### 17. Accessibility
+### 18. Accessibility
 
 Canvas-heavy interfaces need a semantic layer.
 
@@ -984,7 +1011,7 @@ Canvas-heavy interfaces need a semantic layer.
 - reduced-motion options
 - high-contrast improvements
 
-### 18. PWA/offline support
+### 19. PWA/offline support
 
 Make the app installable and usable offline.
 
@@ -1046,7 +1073,7 @@ A sensible near-term sequence:
 47. Southeast Asia (Phase 4c step 6.3; Day 59) ✅ (done-in-PR).
 48. Native American nations after 1500 (Phase 4c step 6.4; Day 60) ✅ (done-in-PR).
 49. Phase 4c step 7.1 — stars / Milky Way (Day 61) ✅ (done-in-PR).
-50. **Now: Phase 4c step 7.2 — constellations (toggle + optional precession), NEXT for the daily routine.** Then item 8 (lidar finds: 8.1 hidden-cities pins, 8.2 shape updates).
+50. **Now: Phase 4c step 7.2 — constellations (toggle + optional precession), NEXT for the daily routine.** Then item 8 (lidar finds: 8.1 hidden-cities pins, 8.2 shape updates). **Then Phase 5 country packs covering both views (Timeline + Globe), starting with the pack 1 globe backfill. This is the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
