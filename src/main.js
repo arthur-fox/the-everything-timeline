@@ -299,6 +299,8 @@ let globeEventsOn = true;
 let globeFlowsOn = true;
 // Day 55: migrations on the globe (key "Migrations" toggle; `&migrations=0` when off).
 let globeMigrationsOn = true;
+// Day 62: constellation lines/names on the globe (key "Constellations" toggle; `&constellations=0` when off).
+let globeConstellationsOn = true;
 let compareLeft = 'technology';
 let compareRight = 'wars';
 let compareShared = null; // { viewStart, viewEnd, targetStart, targetEnd, minYear, maxYear }
@@ -602,6 +604,7 @@ function syncDeepLinkUrl() {
       if (!globeEventsOn) params.set('events', '0');
       if (!globeFlowsOn) params.set('flows', '0');
       if (!globeMigrationsOn) params.set('migrations', '0');
+      if (!globeConstellationsOn) params.set('constellations', '0');
     } else {
       const selectedId = getSelectedDeepLinkId();
       if (selectedId) {
@@ -814,8 +817,9 @@ function applyDeepLinkFromUrl() {
   const eventsRaw = params.get('events');
   const flowsRaw = params.get('flows');
   const migrationsRaw = params.get('migrations');
+  const constellationsRaw = params.get('constellations');
 
-  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '') && (hideRaw == null || hideRaw === '') && (labelsRaw == null || labelsRaw === '') && (certaintyRaw == null || certaintyRaw === '') && (citiesRaw == null || citiesRaw === '') && (eventsRaw == null || eventsRaw === '') && (flowsRaw == null || flowsRaw === '') && (migrationsRaw == null || migrationsRaw === '')) {
+  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '') && (hideRaw == null || hideRaw === '') && (labelsRaw == null || labelsRaw === '') && (certaintyRaw == null || certaintyRaw === '') && (citiesRaw == null || citiesRaw === '') && (eventsRaw == null || eventsRaw === '') && (flowsRaw == null || flowsRaw === '') && (migrationsRaw == null || migrationsRaw === '') && (constellationsRaw == null || constellationsRaw === '')) {
     updateActiveViewChrome();
     updateFiltersUI();
     return;
@@ -885,6 +889,8 @@ function applyDeepLinkFromUrl() {
     if (flowsRaw != null) setGlobeExtraShown('flows', !/^(0|off|false|no|none)$/i.test(flowsRaw.trim()), { syncUrl: false });
     // Day 55: ?migrations=0 hides the migrations.
     if (migrationsRaw != null) setGlobeExtraShown('migrations', !/^(0|off|false|no|none)$/i.test(migrationsRaw.trim()), { syncUrl: false });
+    // Day 62: ?constellations=0 hides constellation lines and names.
+    if (constellationsRaw != null) setGlobeExtraShown('constellations', !/^(0|off|false|no|none)$/i.test(constellationsRaw.trim()), { syncUrl: false });
 
     // Globe entity deep link: restore after year + layer so activity check uses the right state
     if (entityRaw && isGlobeView()) {
@@ -3531,10 +3537,11 @@ document.querySelectorAll('.globe-legend-item[data-certainty]').forEach((btn) =>
 syncGlobeCertaintyToggleUI();
 
 // Day 43 — "Cities" and "Events" key toggles (on by default). Day 53: + "Flows" (trade routes).
-// Day 55: + "Migrations".
-const GLOBE_EXTRA_NOUN = { cities: 'cities', events: 'event pins', flows: 'trade routes', migrations: 'migrations' };
+// Day 55: + "Migrations". Day 62: + "Constellations".
+const GLOBE_EXTRA_NOUN = { cities: 'cities', events: 'event pins', flows: 'trade routes', migrations: 'migrations', constellations: 'constellations' };
 function isGlobeExtraOn(which) {
   if (which === 'migrations') return globeMigrationsOn;
+  if (which === 'constellations') return globeConstellationsOn;
   return which === 'cities' ? globeCitiesOn : which === 'flows' ? globeFlowsOn : globeEventsOn;
 }
 function syncGlobeExtrasToggleUI() {
@@ -3561,6 +3568,9 @@ function setGlobeExtraShown(which, on, { syncUrl = true } = {}) {
   } else if (which === 'migrations') {
     globeMigrationsOn = Boolean(on);
     globeSet('setGlobeMigrationsEnabled', globeMigrationsOn);
+  } else if (which === 'constellations') {
+    globeConstellationsOn = Boolean(on);
+    globeSet('setGlobeConstellationsEnabled', globeConstellationsOn);
   } else return;
   syncGlobeExtrasToggleUI();
   if (syncUrl && isGlobeView()) syncDeepLinkUrl();

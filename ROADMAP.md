@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); step 7.1 stars/Milky Way is done-in-PR (Day 61); next is step 7.2 constellations; PR #72 coast spill still awaiting review** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); step 7.1 stars/Milky Way is done (Day 61); step 7.2 constellations is done-in-PR (Day 62); next is item 8 lidar / hidden cities; PR #72 coast spill still awaiting review** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -851,13 +851,20 @@ Do not merge until Arthur approves.
 Arthur: replace the plain background with a starfield and space scene.
 
 - **Step 7.1 — Stars and the Milky Way.** ✅ Day 61, done-in-PR. A celestial sphere behind the globe: Yale BSC stars (mag ≤ 6.5, public-domain JSON → `public/sky/bsc-stars.bin`) sized/tinted by magnitude and spectral class, plus a Milky Way equirectangular from NASA SVS Deep Star Maps 2020 (`public/sky/milkyway-celestial.webp`). Earth's axis = celestial pole; one Points mesh + one texture; see Day 61 write-up and `docs/ATTRIBUTION-sky.md`.
-- **Step 7.2 — Constellations.** Constellation lines and names in roughly correct positions, from a public-domain / CC0 source where one exists (otherwise a permissive one such as d3-celestial's BSD-3 data, checked against our ISC licence), with a toggle. Optional: precession by year, so the pole star is Thuban around 3000 BCE and Polaris today. **Next** after Day 61.
-- **Phone budget:** one point cloud and one texture; no per-frame CPU work. ✅ met in step 7.1.
+- **Step 7.2 — Constellations.** ✅ Day 62, done-in-PR. Constellation lines and names in roughly correct positions from d3-celestial BSD-3 GeoJSON → `public/sky/constellations.bin` (same celestial frame as Day 61 stars); key toggle on by default (`&constellations=0` when off); lightweight axial precession by year (ecliptic-pole quaternion; Thuban ≈ 3000 BCE, Polaris today). See Day 62 write-up and `docs/ATTRIBUTION-sky.md`.
+- **Phone budget:** one point cloud and one texture; no per-frame CPU work. ✅ met in step 7.1; step 7.2 adds one static `LineSegments` + sprites (rebuilt only on toggle / year for precession quaternion).
 
 #### Day 61 — Stars and the Milky Way (step 7.1) — done-in-PR
 - `src/globe-sky.js` (lazy with the globe): inward-facing Milky Way sphere + Yale BSC `THREE.Points`, fixed in world space with the earth so camera orbit reveals different sky; CSS body starfield muted while `body.globe-active`.
-- Assets under `public/sky/` (~50 KB WebP + ~168 KB star binary); rebuild via `scripts/build-sky.py`. HYG (CC BY-SA) not used. Step 7.2 constellations left open.
+- Assets under `public/sky/` (~50 KB WebP + ~168 KB star binary); rebuild via `scripts/build-sky.py`. HYG (CC BY-SA) not used. Step 7.2 done on Day 62.
 - PR #72 (coast spill) stays separate / awaiting review — this branch is from `main` only.
+
+
+#### Day 62 — Constellations (step 7.2) — done-in-PR
+- `src/globe-sky.js`: d3-celestial stick figures as one `THREE.LineSegments` mesh + short IAU abbreviation sprites; same world-fixed celestial frame as Day 61; light theme still hides the whole sky group.
+- Key **"Constellations"** toggle (on by default; `&constellations=0`); axial precession is one quaternion on the sky group when the year changes (no per-frame CPU).
+- Asset `public/sky/constellations.bin` (~20 KB, 88 IAU constellations); rebuild `python3 scripts/build-sky.py --constellations`. Attribution in `docs/ATTRIBUTION-sky.md` (BSD-3 © Olaf Frohn / d3-celestial).
+- **Next:** Item 8 lidar finds (8.1 hidden-cities pins).
 
 ### Item 8 — Lidar finds (Arthur, 15 Oct 2026) — after step 7.2
 Inspired by [lidar lost-cities write-up](https://bakerbench.substack.com/p/i-went-looking-for-lost-cities-with). Static data only, no new tech.
@@ -909,7 +916,7 @@ Next steps (not started):
 
 ## Phase 5 — Content expansion: more and better data (MAIN TRACK)
 
-**Top priority, long-running (Arthur, 15 Oct 2026).** The project's structure is now set: the Timeline and the Globe exist and are linked. From here, most growth comes from adding data and refining it, again and again. Accounts and similar features wait until there are users. After Phase 4c step 7.2 and item 8, this is the daily routine's default work.
+**Top priority, long-running (Arthur, 15 Oct 2026).** The project's structure is now set: the Timeline and the Globe exist and are linked. From here, most growth comes from adding data and refining it, again and again. Accounts and similar features wait until there are users. After Phase 4c step 7.2 (done Day 62) and item 8, this is the daily routine's default work.
 
 **Explicit goal: every place, both views (Arthur, 15 Oct 2026).** Every ISO 3166-1 entry should be covered on **both** the Timeline and the Globe. That is about 195 sovereign states plus dependent territories, 249 entries in all. Progress is tracked row by row in [docs/COVERAGE.md](docs/COVERAGE.md), with Timeline and Globe status (none/partial/done) and the pack or region responsible. Small territories batch with their region pack. Every pack PR updates its rows.
 
@@ -1081,7 +1088,8 @@ A sensible near-term sequence:
 47. Southeast Asia (Phase 4c step 6.3; Day 59) ✅ (done-in-PR).
 48. Native American nations after 1500 (Phase 4c step 6.4; Day 60) ✅ (done-in-PR).
 49. Phase 4c step 7.1 — stars / Milky Way (Day 61) ✅ (done-in-PR).
-50. **Now: Phase 4c step 7.2 — constellations (toggle + optional precession), NEXT for the daily routine.** Then item 8 (lidar finds: 8.1 hidden-cities pins, 8.2 shape updates). **Then Phase 5 country packs covering both views (Timeline + Globe), starting with the pack 1 globe backfill. This is the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
+50. Phase 4c step 7.2 — constellations (Day 62) ✅ (done-in-PR).
+51. **Now: Item 8 — lidar finds (8.1 hidden-cities pins, then 8.2 shape updates), NEXT for the daily routine.** **Then Phase 5 country packs covering both views (Timeline + Globe), starting with the pack 1 globe backfill. This is the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
