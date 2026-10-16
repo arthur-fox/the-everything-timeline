@@ -913,6 +913,12 @@ Next steps (not started):
 
 **Explicit goal: every place, both views (Arthur, 15 Oct 2026).** Every ISO 3166-1 entry should be covered on **both** the Timeline and the Globe. That is about 195 sovereign states plus dependent territories, 249 entries in all. Progress is tracked row by row in [docs/COVERAGE.md](docs/COVERAGE.md), with Timeline and Globe status (none/partial/done) and the pack or region responsible. Small territories batch with their region pack. Every pack PR updates its rows.
 
+**Places with nothing drawn yet: 53 entries (Arthur, 15 Oct 2026).** These are the Globe `none` rows in [docs/COVERAGE.md](docs/COVERAGE.md). Each one is scheduled with its region pack:
+
+- **Tiny islands and microstates** (Caribbean, Pacific, Indian Ocean, Gibraltar, the Holy See and similar): use higher-resolution outlines from a permissively licensed source, e.g. Natural Earth 10m, lazy-loaded only at close zoom so the base globe stays light. Where a shape isn't practical, use a tappable dot or marker with a label as the fallback. Either way, the place gets its own timeline links.
+- **Antarctica:** research stations as dated pins, plus dated territorial claims (UK 1908, NZ 1923, France 1924, Australia 1933, Norway 1939, Chile 1940, Argentina 1943), drawn faintly, with the Antarctic Treaty (1959, in force 1961) freezing them.
+- **Remote territories** (Bouvet, Heard & McDonald, South Georgia, French Southern Lands, Svalbard and similar): handled in the same way as the islands, batched in the "Polar & remote" pass.
+
 Rules for every Phase 5 PR: data stays static, split into small lazy-loaded files (docs/DATA.md), every item sourced, validation passes on build, and no over-engineering.
 
 ### 12. Country packs: Timeline and Globe together

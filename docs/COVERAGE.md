@@ -14,6 +14,8 @@ Built once from the ISO 3166-1 list (UN M49 regions) and the repo data on 15 Oct
 
 Honest caveat: no country is Globe `done` yet. Pack 1 (Peru, Ghana, Kenya, Morocco, Iraq, Philippines) was timeline-only, and the first Phase 5 job is its globe backfill.
 
+**All 53 Globe `none` rows are scheduled** (ROADMAP Phase 5, "Places with nothing drawn yet"). Each will get a high-res close-zoom outline, or a tappable labelled marker where a shape isn't practical, in its region pack. Antarctica gets research stations plus dated territorial claims and the 1959 Antarctic Treaty. Their Notes say `scheduled: outline or marker`.
+
 | Place | ISO | Timeline | Globe | Pack / region | Notes |
 |---|---|---|---|---|---|
 | Australia | AU | done | partial | Australia and New Zealand | modern borders 1815/1914–2025 |
