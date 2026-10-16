@@ -20,42 +20,42 @@ Honest caveat: no country is Globe `done` yet. Pack 1 (Peru, Ghana, Kenya, Moroc
 |---|---|---|---|---|---|
 | Australia | AU | done | partial | Australia and New Zealand | modern borders 1815/1914–2025 |
 | New Zealand | NZ | none | partial | Australia and New Zealand | modern borders 1815/1914–2025 |
-| Anguilla | AI | none | none | Caribbean & Central America |  |
-| Antigua and Barbuda | AG | none | none | Caribbean & Central America |  |
-| Aruba | AW | none | none | Caribbean & Central America |  |
+| Anguilla | AI | none | none | Caribbean & Central America | scheduled: outline or marker |
+| Antigua and Barbuda | AG | none | none | Caribbean & Central America | scheduled: outline or marker |
+| Aruba | AW | none | none | Caribbean & Central America | scheduled: outline or marker |
 | Bahamas | BS | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
-| Barbados | BB | none | none | Caribbean & Central America |  |
+| Barbados | BB | none | none | Caribbean & Central America | scheduled: outline or marker |
 | Belize | BZ | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
-| Bonaire, Sint Eustatius and Saba | BQ | none | none | Caribbean & Central America |  |
-| Cayman Islands | KY | none | none | Caribbean & Central America |  |
+| Bonaire, Sint Eustatius and Saba | BQ | none | none | Caribbean & Central America | scheduled: outline or marker |
+| Cayman Islands | KY | none | none | Caribbean & Central America | scheduled: outline or marker |
 | Costa Rica | CR | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
 | Cuba | CU | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
-| Curaçao | CW | none | none | Caribbean & Central America |  |
-| Dominica | DM | none | none | Caribbean & Central America |  |
+| Curaçao | CW | none | none | Caribbean & Central America | scheduled: outline or marker |
+| Dominica | DM | none | none | Caribbean & Central America | scheduled: outline or marker |
 | Dominican Republic | DO | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
 | El Salvador | SV | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
-| Grenada | GD | none | none | Caribbean & Central America |  |
-| Guadeloupe | GP | none | none | Caribbean & Central America |  |
+| Grenada | GD | none | none | Caribbean & Central America | scheduled: outline or marker |
+| Guadeloupe | GP | none | none | Caribbean & Central America | scheduled: outline or marker |
 | Guatemala | GT | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
 | Haiti | HT | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
 | Honduras | HN | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
 | Jamaica | JM | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
-| Martinique | MQ | none | none | Caribbean & Central America |  |
+| Martinique | MQ | none | none | Caribbean & Central America | scheduled: outline or marker |
 | Mexico | MX | done | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
-| Montserrat | MS | none | none | Caribbean & Central America |  |
+| Montserrat | MS | none | none | Caribbean & Central America | scheduled: outline or marker |
 | Nicaragua | NI | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
 | Panama | PA | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
 | Puerto Rico | PR | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
-| Saint Barthélemy | BL | none | none | Caribbean & Central America |  |
-| Saint Kitts and Nevis | KN | none | none | Caribbean & Central America |  |
-| Saint Lucia | LC | none | none | Caribbean & Central America |  |
-| Saint Martin (French part) | MF | none | none | Caribbean & Central America |  |
-| Saint Vincent and the Grenadines | VC | none | none | Caribbean & Central America |  |
-| Sint Maarten (Dutch part) | SX | none | none | Caribbean & Central America |  |
+| Saint Barthélemy | BL | none | none | Caribbean & Central America | scheduled: outline or marker |
+| Saint Kitts and Nevis | KN | none | none | Caribbean & Central America | scheduled: outline or marker |
+| Saint Lucia | LC | none | none | Caribbean & Central America | scheduled: outline or marker |
+| Saint Martin (French part) | MF | none | none | Caribbean & Central America | scheduled: outline or marker |
+| Saint Vincent and the Grenadines | VC | none | none | Caribbean & Central America | scheduled: outline or marker |
+| Sint Maarten (Dutch part) | SX | none | none | Caribbean & Central America | scheduled: outline or marker |
 | Trinidad and Tobago | TT | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
-| Turks and Caicos Islands | TC | none | none | Caribbean & Central America |  |
-| Virgin Islands (British) | VG | none | none | Caribbean & Central America |  |
-| Virgin Islands (U.S.) | VI | none | none | Caribbean & Central America |  |
+| Turks and Caicos Islands | TC | none | none | Caribbean & Central America | scheduled: outline or marker |
+| Virgin Islands (British) | VG | none | none | Caribbean & Central America | scheduled: outline or marker |
+| Virgin Islands (U.S.) | VI | none | none | Caribbean & Central America | scheduled: outline or marker |
 | Armenia | AM | none | partial | Caucasus | modern borders 1815/1914–2025 |
 | Azerbaijan | AZ | none | partial | Caucasus | modern borders 1815/1914–2025 |
 | Georgia | GE | none | partial | Caucasus | modern borders 1815/1914–2025 |
@@ -74,7 +74,7 @@ Honest caveat: no country is Globe `done` yet. Pack 1 (Peru, Ghana, Kenya, Moroc
 | Tajikistan | TJ | none | partial | Central Asia | modern borders 1815/1914–2025 |
 | Turkmenistan | TM | none | partial | Central Asia | modern borders 1815/1914–2025 |
 | Uzbekistan | UZ | none | partial | Central Asia | modern borders 1815/1914–2025 |
-| British Indian Ocean Territory | IO | none | none | Eastern Africa |  |
+| British Indian Ocean Territory | IO | none | none | Eastern Africa | scheduled: outline or marker |
 | Burundi | BI | none | partial | Eastern Africa | modern borders 1815/1914–2025 |
 | Comoros | KM | none | partial | Eastern Africa | modern borders 1815/1914–2025 |
 | Djibouti | DJ | none | partial | Eastern Africa | modern borders 1815/1914–2025 |
@@ -83,11 +83,11 @@ Honest caveat: no country is Globe `done` yet. Pack 1 (Peru, Ghana, Kenya, Moroc
 | Madagascar | MG | none | partial | Eastern Africa | modern borders 1815/1914–2025 |
 | Malawi | MW | none | partial | Eastern Africa | modern borders 1815/1914–2025 |
 | Mauritius | MU | none | partial | Eastern Africa | modern borders 1815/1914–2025 |
-| Mayotte | YT | none | none | Eastern Africa |  |
+| Mayotte | YT | none | none | Eastern Africa | scheduled: outline or marker |
 | Mozambique | MZ | none | partial | Eastern Africa | modern borders 1815/1914–2025 |
 | Rwanda | RW | none | partial | Eastern Africa | modern borders 1815/1914–2025 |
-| Réunion | RE | none | none | Eastern Africa |  |
-| Seychelles | SC | none | none | Eastern Africa |  |
+| Réunion | RE | none | none | Eastern Africa | scheduled: outline or marker |
+| Seychelles | SC | none | none | Eastern Africa | scheduled: outline or marker |
 | Somalia | SO | none | partial | Eastern Africa | modern borders 1815/1914–2025 |
 | South Sudan | SS | none | partial | Eastern Africa | modern borders 2011–2025 |
 | Tanzania, United Republic of | TZ | none | partial | Eastern Africa | modern borders 1815/1914–2025 |
@@ -114,10 +114,10 @@ Honest caveat: no country is Globe `done` yet. Pack 1 (Peru, Ghana, Kenya, Moroc
 | Sudan | SD | none | partial | Northern Africa | modern borders 1815/1914–2025 |
 | Tunisia | TN | none | partial | Northern Africa | modern borders 1815/1914–2025 |
 | Western Sahara | EH | none | partial | Northern Africa | modern borders (disputed, grey) |
-| Bermuda | BM | none | none | Northern America |  |
+| Bermuda | BM | none | none | Northern America | scheduled: outline or marker |
 | Canada | CA | done | partial | Northern America | modern borders 1815/1914–2025 |
 | Greenland | GL | none | partial | Northern America | modern borders 1815/1914–2025 |
-| Saint Pierre and Miquelon | PM | none | none | Northern America |  |
+| Saint Pierre and Miquelon | PM | none | none | Northern America | scheduled: outline or marker |
 | United States of America | US | done | partial | Northern America | modern borders 1815/1914–2025 |
 | Denmark | DK | none | partial | Northern Europe | modern borders 1815/1914–2025 |
 | Estonia | EE | none | partial | Northern Europe | modern borders 1815/1914–2025 |
@@ -131,45 +131,45 @@ Honest caveat: no country is Globe `done` yet. Pack 1 (Peru, Ghana, Kenya, Moroc
 | Latvia | LV | none | partial | Northern Europe | modern borders 1815/1914–2025 |
 | Lithuania | LT | none | partial | Northern Europe | modern borders 1815/1914–2025 |
 | Norway | NO | none | partial | Northern Europe | modern borders 1815/1914–2025 |
-| Svalbard and Jan Mayen | SJ | none | none | Northern Europe |  |
+| Svalbard and Jan Mayen | SJ | none | none | Northern Europe | scheduled: outline or marker |
 | Sweden | SE | done | partial | Northern Europe | modern borders 1815/1914–2025 |
 | United Kingdom of Great Britain and Northern Ireland | GB | done | partial | Northern Europe | modern borders 1815/1914–2025 |
-| Åland Islands | AX | none | none | Northern Europe |  |
-| American Samoa | AS | none | none | Pacific islands |  |
-| Christmas Island | CX | none | none | Pacific islands |  |
-| Cocos (Keeling) Islands | CC | none | none | Pacific islands |  |
-| Cook Islands | CK | none | none | Pacific islands |  |
+| Åland Islands | AX | none | none | Northern Europe | scheduled: outline or marker |
+| American Samoa | AS | none | none | Pacific islands | scheduled: outline or marker |
+| Christmas Island | CX | none | none | Pacific islands | scheduled: outline or marker |
+| Cocos (Keeling) Islands | CC | none | none | Pacific islands | scheduled: outline or marker |
+| Cook Islands | CK | none | none | Pacific islands | scheduled: outline or marker |
 | Fiji | FJ | none | partial | Pacific islands | modern borders 1815/1914–2025 |
 | French Polynesia | PF | none | partial | Pacific islands | modern borders 1815/1914–2025 |
-| Guam | GU | none | none | Pacific islands |  |
-| Heard Island and McDonald Islands | HM | none | none | Pacific islands |  |
-| Kiribati | KI | none | none | Pacific islands |  |
-| Marshall Islands | MH | none | none | Pacific islands |  |
-| Micronesia, Federated States of | FM | none | none | Pacific islands |  |
-| Nauru | NR | none | none | Pacific islands |  |
+| Guam | GU | none | none | Pacific islands | scheduled: outline or marker |
+| Heard Island and McDonald Islands | HM | none | none | Pacific islands | scheduled: outline or marker |
+| Kiribati | KI | none | none | Pacific islands | scheduled: outline or marker |
+| Marshall Islands | MH | none | none | Pacific islands | scheduled: outline or marker |
+| Micronesia, Federated States of | FM | none | none | Pacific islands | scheduled: outline or marker |
+| Nauru | NR | none | none | Pacific islands | scheduled: outline or marker |
 | New Caledonia | NC | none | partial | Pacific islands | modern borders 1815/1914–2025 |
-| Niue | NU | none | none | Pacific islands |  |
-| Norfolk Island | NF | none | none | Pacific islands |  |
-| Northern Mariana Islands | MP | none | none | Pacific islands |  |
-| Palau | PW | none | none | Pacific islands |  |
+| Niue | NU | none | none | Pacific islands | scheduled: outline or marker |
+| Norfolk Island | NF | none | none | Pacific islands | scheduled: outline or marker |
+| Northern Mariana Islands | MP | none | none | Pacific islands | scheduled: outline or marker |
+| Palau | PW | none | none | Pacific islands | scheduled: outline or marker |
 | Papua New Guinea | PG | none | partial | Pacific islands | modern borders 1815/1914–2025 |
-| Pitcairn | PN | none | none | Pacific islands |  |
+| Pitcairn | PN | none | none | Pacific islands | scheduled: outline or marker |
 | Samoa | WS | none | partial | Pacific islands | modern borders 1815/1914–2025 |
 | Solomon Islands | SB | none | partial | Pacific islands | modern borders 1815/1914–2025 |
-| Tokelau | TK | none | none | Pacific islands |  |
+| Tokelau | TK | none | none | Pacific islands | scheduled: outline or marker |
 | Tonga | TO | none | partial | Pacific islands | modern borders 1815/1914–2025 |
-| Tuvalu | TV | none | none | Pacific islands |  |
-| United States Minor Outlying Islands | UM | none | none | Pacific islands |  |
+| Tuvalu | TV | none | none | Pacific islands | scheduled: outline or marker |
+| United States Minor Outlying Islands | UM | none | none | Pacific islands | scheduled: outline or marker |
 | Vanuatu | VU | none | partial | Pacific islands | modern borders 1815/1914–2025 |
-| Wallis and Futuna | WF | none | none | Pacific islands |  |
+| Wallis and Futuna | WF | none | none | Pacific islands | scheduled: outline or marker |
 | Ghana | GH | done | partial | Pack 1 globe backfill | modern borders 1815/1914–2025 |
 | Iraq | IQ | done | partial | Pack 1 globe backfill | modern borders 1815/1914–2025 |
 | Kenya | KE | done | partial | Pack 1 globe backfill | modern borders 1815/1914–2025 |
 | Morocco | MA | done | partial | Pack 1 globe backfill | modern borders 1815/1914–2025 |
 | Peru | PE | done | partial | Pack 1 globe backfill | modern borders 1815/1914–2025 |
 | Philippines | PH | done | partial | Pack 1 globe backfill | modern borders 1815/1914–2025 |
-| Antarctica | AQ | none | none | Polar & remote (batch) |  |
-| Bouvet Island | BV | none | none | Polar & remote (batch) |  |
+| Antarctica | AQ | none | none | Polar & remote (batch) | scheduled: stations + dated claims (1959 Treaty) |
+| Bouvet Island | BV | none | none | Polar & remote (batch) | scheduled: outline or marker |
 | French Southern Territories | TF | none | partial | Polar & remote (batch) | modern borders 1815/1914–2025 |
 | South Georgia and the South Sandwich Islands | GS | none | partial | Polar & remote (batch) | modern borders 1815/1914–2025 |
 | Taiwan, Province of China | TW | none | partial | Polar & remote (batch) | modern borders 1815/1914–2025 |
@@ -221,8 +221,8 @@ Honest caveat: no country is Globe `done` yet. Pack 1 (Peru, Ghana, Kenya, Moroc
 | Namibia | NA | none | partial | Southern Africa | modern borders 1815/1914–2025 |
 | South Africa | ZA | done | partial | Southern Africa | modern borders 1815/1914–2025 |
 | Andorra | AD | none | partial | Southern Europe | modern borders 1815/1914–2025 |
-| Gibraltar | GI | none | none | Southern Europe |  |
-| Holy See | VA | none | none | Southern Europe |  |
+| Gibraltar | GI | none | none | Southern Europe | scheduled: outline or marker |
+| Holy See | VA | none | none | Southern Europe | scheduled: outline or marker |
 | Italy | IT | done | partial | Southern Europe | modern borders 1815/1914–2025 |
 | Malta | MT | none | partial | Southern Europe | modern borders 1815/1914–2025 |
 | Portugal | PT | done | partial | Southern Europe | modern borders 1815/1914–2025 |
@@ -240,7 +240,7 @@ Honest caveat: no country is Globe `done` yet. Pack 1 (Peru, Ghana, Kenya, Moroc
 | Mauritania | MR | none | partial | Western Africa | modern borders 1815/1914–2025 |
 | Niger | NE | none | partial | Western Africa | modern borders 1815/1914–2025 |
 | Nigeria | NG | done | partial | Western Africa | modern borders 1815/1914–2025 |
-| Saint Helena, Ascension and Tristan da Cunha | SH | none | none | Western Africa |  |
+| Saint Helena, Ascension and Tristan da Cunha | SH | none | none | Western Africa | scheduled: outline or marker |
 | Senegal | SN | none | partial | Western Africa | modern borders 1815/1914–2025 |
 | Sierra Leone | SL | none | partial | Western Africa | modern borders 1815/1914–2025 |
 | Togo | TG | none | partial | Western Africa | modern borders 1815/1914–2025 |
