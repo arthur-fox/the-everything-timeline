@@ -17,6 +17,7 @@ The Everything Timeline is a static site: all content is plain files in this rep
 | Cities, event pins, physical places | `src/globe-cities.js`, `src/globe-event-pins.js`, `src/data/places.json` | with the globe, after first paint |
 | Trade routes (Day 53) | `data/trade-routes.json` (see below) | with the globe, once it is up (≈5 KB gzipped chunk) |
 | Migrations (Day 55) | `data/migrations.json` (see below) | with the globe, once it is up (≈6 KB gzipped chunk) |
+| Lidar finds / hidden cities (Day 63) | `data/lidar-finds.json` (see below) | with the globe, after cities + pins (≈5 KB gzipped chunk); key toggle `&lidar=0` |
 | Celestial sky (Days 61–62) | `public/sky/bsc-stars.bin` + `milkyway-celestial.webp` + `constellations.bin` (see ATTRIBUTION-sky.md) | with the globe (`globe-sky.js`); Points + texture + LineSegments/names; key toggle `&constellations=0` |
 
 Ids are stable kebab-case strings (`kamakura-shogunate`, `nation-france`) and are used in deep links (`?view=country:japan&id=kamakura-shogunate`), bookmarks and globe ↔ timeline links (`timelineItemIds`). Never rename an id; add a new one instead.
@@ -82,13 +83,34 @@ Points are `[lat, lng]` waypoints; the globe joins them with straight lat/lng se
 
 Paths follow the trade-route rules (points in the direction people moved; sea paths need enough waypoints to stay off the coast; `via` for river / overland legs). A path's own `start` / `end` (optional) must sit inside the migration's years; use them to unroll a long expansion stage by stage. `scripts/check-migrations.js` (in `npm run validate`) checks it all; the land / sea geometry is shared with the routes in `scripts/flow-geo.js`.
 
+## Lidar finds file format (Day 63)
+
+`data/lidar-finds.json` holds `{ "finds": [ … ] }`. One find:
+
+```json
+{
+  "id": "valeriana", "name": "Valeriana", "label": "Valeriana",   // label: short pin text, ≤ 24 chars
+  "place": "Campeche, Mexico (near Xpujil)", "lat": 18.53, "lng": -89.38,
+  "locationKm": 10,                       // how precisely the pin is placed (1–60 km)
+  "start": 250, "end": 900,               // years the site was lived in (pin shows then)
+  "period": "Classic Maya city; …",
+  "discovered": 2024,                     // year lidar revealed it (pin shows again from then)
+  "survey": "Lidar flown in 2013 …", "description": "…", "changed": "What this changed …",
+  "confidence": { "level": "approximate", "reason": "…" },
+  "related": ["civilisations:maya"],
+  "sources": [ { "title": "…", "url": "https://…" } ]
+}
+```
+
+`scripts/check-lidar.js` (in `npm run validate`) checks the fields, that discovery comes after the site ended, that pins sit on land and that related entries resolve. Only add finds published in a peer-reviewed paper or reported from one; don't guess exact coordinates for sites whose location is withheld (use a nearby town and a larger `locationKm`).
+
 ## How to add data
 
 1. **A new country:** add `data/countries/<id>.json` in the format above. Nothing else to register — the build lists it in the picker.
 2. **More items in a country:** edit its JSON file; give each item a new, unique id.
 3. **Topic or landing items:** edit the matching `src/<topic>.js` / `src/events.js` array (same fields).
 4. **Globe shapes, peoples, presence, cities, pins:** edit the matching `src/globe-*.js` module (they only load with the globe). Ancient Mediterranean / Near East shapes are built from shared pieces in `src/globe-med-pieces.js` (borders shared point for point; `scripts/check-greek-world.js` checks merges). Early medieval Eurasia (500–1000) lives in `src/globe-early-medieval.js` (hand-drawn rings with confidence; `scripts/check-early-medieval.js` checks outlines and sample years). Inland Africa (Day 58), Southeast Asia (Day 59) and Native American / Indigenous nations after 1500 (Day 60, `src/globe-native-nations.js`, `type: 'indigenous'` so they persist past the 1815 nations handoff; `scripts/check-native-nations.js`) follow the same pattern. After editing the nations tables, run `npm run build:nations`.
-5. **Trade routes and migrations:** edit `data/trade-routes.json` / `data/migrations.json` (formats above).
+5. **Trade routes, migrations and lidar finds:** edit `data/trade-routes.json` / `data/migrations.json` / `data/lidar-finds.json` (formats above).
 5b. **Celestial sky (stars / Milky Way / constellations):** regenerate with `node scripts/build-sky.mjs --constellations` (and `--bsc` / `--cubemap` when rebuilding those); do not invent star coordinates or asterism geometry — rebuild from the Yale BSC JSON and d3-celestial GeoJSON. License notes in `docs/ATTRIBUTION-sky.md`.
 6. **A new kind of dataset:** a JSON file under `data/`, loaded with a dynamic `import()` from the view that needs it (see `COUNTRY_FILES` in `src/main.js`). Don't add a static import to `main.js`.
 7. Run `npm run validate` (also part of `npm run build`): schema, unique ids, categories, dates, sources, links, borders, labels, cities, pins, trade routes and migrations.

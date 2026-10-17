@@ -2538,6 +2538,40 @@ body.globe-scrub-zoomed .globe-year-ticks {
   border: 1px solid rgba(253, 224, 71, 0.75);
 }
 
+/* Day 63: lidar "hidden cities" pins — teal, so they read as finds rather than timeline events */
+.globe-pin.is-lidar {
+  border-color: rgba(94, 234, 212, 0.8);
+  background: rgba(8, 30, 36, 0.82);
+  color: #ccfbf1;
+}
+
+.globe-pin.is-lidar::after {
+  border-top-color: rgba(94, 234, 212, 0.85);
+}
+
+.globe-pin.is-lidar.is-below::after {
+  border-bottom-color: rgba(94, 234, 212, 0.85);
+}
+
+.globe-pin.is-lidar:hover,
+.globe-pin.is-lidar:focus-visible {
+  background: rgba(15, 52, 60, 0.95);
+  border-color: #5eead4;
+  color: #fff;
+}
+
+.globe-pin.is-lidar .globe-pin-dot {
+  background: #14b8a6;
+  box-shadow: 0 0 0 2px rgba(94, 234, 212, 0.35);
+}
+
+.globe-legend-swatch.is-lidar {
+  width: 12px;
+  border-radius: 999px;
+  background: radial-gradient(circle, #14b8a6 0 3px, transparent 3.5px), rgba(8, 30, 36, 0.82);
+  border: 1px solid rgba(94, 234, 212, 0.8);
+}
+
 /* Day 53: trade-route flows — a gold dashed line on a soft glow */
 .globe-legend-swatch.is-flows {
   width: 16px;
