@@ -301,6 +301,8 @@ let globeFlowsOn = true;
 let globeMigrationsOn = true;
 // Day 62: constellation lines/names on the globe (key "Constellations" toggle; `&constellations=0` when off).
 let globeConstellationsOn = true;
+// Day 63: lidar "hidden cities" pins on the globe (key "Lidar finds" toggle; `&lidar=0` when off).
+let globeLidarOn = true;
 let compareLeft = 'technology';
 let compareRight = 'wars';
 let compareShared = null; // { viewStart, viewEnd, targetStart, targetEnd, minYear, maxYear }
@@ -605,6 +607,7 @@ function syncDeepLinkUrl() {
       if (!globeFlowsOn) params.set('flows', '0');
       if (!globeMigrationsOn) params.set('migrations', '0');
       if (!globeConstellationsOn) params.set('constellations', '0');
+      if (!globeLidarOn) params.set('lidar', '0');
     } else {
       const selectedId = getSelectedDeepLinkId();
       if (selectedId) {
@@ -818,8 +821,9 @@ function applyDeepLinkFromUrl() {
   const flowsRaw = params.get('flows');
   const migrationsRaw = params.get('migrations');
   const constellationsRaw = params.get('constellations');
+  const lidarRaw = params.get('lidar');
 
-  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '') && (hideRaw == null || hideRaw === '') && (labelsRaw == null || labelsRaw === '') && (certaintyRaw == null || certaintyRaw === '') && (citiesRaw == null || citiesRaw === '') && (eventsRaw == null || eventsRaw === '') && (flowsRaw == null || flowsRaw === '') && (migrationsRaw == null || migrationsRaw === '') && (constellationsRaw == null || constellationsRaw === '')) {
+  if (!comparePair && !resolved && !id && (year == null || year === '') && (filtersRaw == null || filtersRaw === '') && (layerRaw == null || layerRaw === '') && (entityRaw == null || entityRaw === '') && (fullscreenRaw == null || fullscreenRaw === '') && (hideRaw == null || hideRaw === '') && (labelsRaw == null || labelsRaw === '') && (certaintyRaw == null || certaintyRaw === '') && (citiesRaw == null || citiesRaw === '') && (eventsRaw == null || eventsRaw === '') && (flowsRaw == null || flowsRaw === '') && (migrationsRaw == null || migrationsRaw === '') && (constellationsRaw == null || constellationsRaw === '') && (lidarRaw == null || lidarRaw === '')) {
     updateActiveViewChrome();
     updateFiltersUI();
     return;
@@ -891,6 +895,8 @@ function applyDeepLinkFromUrl() {
     if (migrationsRaw != null) setGlobeExtraShown('migrations', !/^(0|off|false|no|none)$/i.test(migrationsRaw.trim()), { syncUrl: false });
     // Day 62: ?constellations=0 hides constellation lines and names.
     if (constellationsRaw != null) setGlobeExtraShown('constellations', !/^(0|off|false|no|none)$/i.test(constellationsRaw.trim()), { syncUrl: false });
+    // Day 63: ?lidar=0 hides the lidar "hidden cities" pins.
+    if (lidarRaw != null) setGlobeExtraShown('lidar', !/^(0|off|false|no|none)$/i.test(lidarRaw.trim()), { syncUrl: false });
 
     // Globe entity deep link: restore after year + layer so activity check uses the right state
     if (entityRaw && isGlobeView()) {
@@ -3537,9 +3543,10 @@ document.querySelectorAll('.globe-legend-item[data-certainty]').forEach((btn) =>
 syncGlobeCertaintyToggleUI();
 
 // Day 43 — "Cities" and "Events" key toggles (on by default). Day 53: + "Flows" (trade routes).
-// Day 55: + "Migrations". Day 62: + "Constellations".
-const GLOBE_EXTRA_NOUN = { cities: 'cities', events: 'event pins', flows: 'trade routes', migrations: 'migrations', constellations: 'constellations' };
+// Day 55: + "Migrations". Day 62: + "Constellations". Day 63: + "Lidar finds".
+const GLOBE_EXTRA_NOUN = { cities: 'cities', events: 'event pins', flows: 'trade routes', migrations: 'migrations', constellations: 'constellations', lidar: 'lidar finds' };
 function isGlobeExtraOn(which) {
+  if (which === 'lidar') return globeLidarOn;
   if (which === 'migrations') return globeMigrationsOn;
   if (which === 'constellations') return globeConstellationsOn;
   return which === 'cities' ? globeCitiesOn : which === 'flows' ? globeFlowsOn : globeEventsOn;
@@ -3571,6 +3578,9 @@ function setGlobeExtraShown(which, on, { syncUrl = true } = {}) {
   } else if (which === 'constellations') {
     globeConstellationsOn = Boolean(on);
     globeSet('setGlobeConstellationsEnabled', globeConstellationsOn);
+  } else if (which === 'lidar') {
+    globeLidarOn = Boolean(on);
+    globeSet('setGlobeLidarEnabled', globeLidarOn);
   } else return;
   syncGlobeExtrasToggleUI();
   if (syncUrl && isGlobeView()) syncDeepLinkUrl();
@@ -3600,7 +3610,36 @@ function resolveGlobePinRef(ref) {
   return { view: kind, id: it.id, item: it, icon: it.icon || '', title: it.name, description: it.description || '', sources: it.sources };
 }
 
+// Day 63 — a tap on a lidar pin opens the find's story (site period, when lidar found it, what it changed).
+function showGlobeLidarDetail(f) {
+  if (!f) return;
+  clearGlobeEntitySelection({ syncUrl: false, closeDetail: false });
+  const span = `${formatGlobeYear(f.start)} — ${formatGlobeYear(f.end)}`;
+  const relatedItems = (f.related || [])
+    .map((ref) => resolveGlobePinRef(ref))
+    .filter(Boolean)
+    .map((info) => ({ id: info.id, name: info.title, icon: info.icon, view: info.view }));
+  const description = `${f.description} When: ${f.period}. Found by lidar in ${f.discovered}: ${f.survey}. What this changed: ${f.changed}`;
+  showDetail(`🔍 ${f.name}`, `${f.place} · ${span} · lidar find, ${f.discovered}`, description, f.sources, {
+    view: 'globe',
+    id: null, // lidar finds aren't bookmarkable yet
+    icon: '',
+    name: f.name,
+    dateLabel: span,
+    kind: 'globe-lidar',
+    relatedItems,
+    confidence: f.confidence
+      ? { ...f.confidence, drawnSentence: `Drawn as a pin, placed to about ${f.locationKm} km. It shows while the site was lived in and again from ${f.discovered}, when lidar revealed it.` }
+      : null,
+  });
+  if (isGlobeView()) syncDeepLinkUrl();
+}
+
 function showGlobePinDetail(pin) {
+  if (pin?.lidar) {
+    showGlobeLidarDetail(pin.lidar);
+    return;
+  }
   const info = resolveGlobePinRef(pin.ref);
   if (!info) return;
   clearGlobeEntitySelection({ syncUrl: false, closeDetail: false });

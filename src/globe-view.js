@@ -61,6 +61,8 @@ import {
   setGlobeEventsEnabled,
   areGlobeEventsEnabled,
   setGlobePinHandlers,
+  setGlobeLidarEnabled,
+  areGlobeLidarEnabled,
 } from './globe-labels.js';
 import { loadTradeRoutes, tradeRouteEntriesAtYear, areTradeRoutesLoaded, formatRouteYears } from './globe-routes.js';
 import { loadMigrations, migrationEntriesAtYear, areMigrationsLoaded, formatMigrationYears } from './globe-migrations.js';
@@ -68,6 +70,8 @@ import { initGlobeSky, destroyGlobeSky, setGlobeConstellationsEnabled, areGlobeC
 
 /** Day 43: dated cities (`&cities=0`) and event pins (`&events=0`) — see globe-labels.js. */
 export { setGlobeCitiesEnabled, areGlobeCitiesEnabled, setGlobeEventsEnabled, areGlobeEventsEnabled, setGlobePinHandlers };
+/** Day 63: lidar "hidden cities" pins (`&lidar=0`) — see globe-labels.js. */
+export { setGlobeLidarEnabled, areGlobeLidarEnabled };
 export { setGlobeConstellationsEnabled, areGlobeConstellationsEnabled };
 
 /** Day 42: country / place labels on or off (legend "Labels" toggle, `&labels=0`). */

@@ -18,6 +18,12 @@
  *   - event pins (src/globe-event-pins.js): clickable markers for timeline entries that happened
  *     near the slider year (`&events=0` hides them). A click opens the entry's detail panel.
  * Both are point labels (no fit test): they only need room on screen and to win the collision.
+ *
+ * Day 63 (Phase 4c step 8.1) adds "hidden cities": lidar discoveries (data/lidar-finds.json, a
+ * small lazy JSON file) drawn as teal pins. A find shows while the site was lived in (its
+ * `start`–`end`) and again from the year lidar revealed it (`discovered`, labelled "found 2024"),
+ * so today's globe shows where lidar has rewritten the map. `&lidar=0` hides them; a click opens
+ * the find's own story (main.js).
  */
 import { geometryLabelAnchor } from './geo-label-point.js';
 import { shortNationLabel, shortOverlayLabel } from './globe-label-names.js';
@@ -38,6 +44,7 @@ let container = null;
 let enabled = true;
 let citiesEnabled = true;
 let eventsEnabled = true;
+let lidarEnabled = true;
 let getSelected = () => null;
 let pinResolve = null; // (ref) → { icon, title } | null — set by main.js
 let pinClick = null; // (pin) → void
@@ -49,6 +56,11 @@ let cityCands = [];
 let pinCands = [];
 const cityCandCache = new Map();
 const pinCandCache = new Map();
+// Day 63: lidar "hidden cities"
+let lidarFinds = null;
+let lidarState = 'idle'; // idle | loading | ready | error
+let lidarCands = [];
+const lidarCandCache = new Map();
 
 let featureCands = [];
 let placeCands = [];
@@ -92,7 +104,7 @@ export function initGlobeLabels(opts) {
 }
 
 function anyOn() {
-  return enabled || citiesEnabled || eventsEnabled;
+  return enabled || citiesEnabled || eventsEnabled || lidarEnabled;
 }
 
 function onContainerClick(e) {
@@ -143,6 +155,18 @@ export function areGlobeEventsEnabled() {
   return eventsEnabled;
 }
 
+/** Day 63: lidar "hidden cities" pins on or off (`&lidar=0`). */
+export function setGlobeLidarEnabled(on) {
+  lidarEnabled = Boolean(on);
+  if (container) container.hidden = !anyOn();
+  if (lidarEnabled) loadLidarFinds();
+  dirty = true;
+}
+
+export function areGlobeLidarEnabled() {
+  return lidarEnabled;
+}
+
 /** Day 43: how pins find their timeline entry, and what a click does. */
 export function setGlobePinHandlers({ resolve, click } = {}) {
   pinResolve = typeof resolve === 'function' ? resolve : null;
@@ -179,10 +203,12 @@ export function getGlobeLabelsDebug() {
     shown.push({ id, text: r.cand.display, kind: r.cand.kind, x: r.x + (r.cand.dx || 0), y: r.y + r.cand.dys[r.v || 0], w: r.cand.w, h: r.cand.h });
   }
   return {
-    enabled, citiesEnabled, eventsEnabled, year: curYear, placesState, extrasState, ...stats,
+    enabled, citiesEnabled, eventsEnabled, lidarEnabled, year: curYear, placesState, extrasState, lidarState, ...stats,
     featureCandidates: featureCands.length, placeCandidates: placeCands.length,
     cityCandidates: cityCands.length, pinCandidates: pinCands.length,
+    lidarCandidates: lidarCands.length,
     cities: shown.filter((s) => s.kind === 'city').length, pins: shown.filter((s) => s.kind === 'pin').length,
+    lidarPins: shown.filter((s) => s.id.startsWith('lidar:')).length,
     shown,
   };
 }
@@ -383,6 +409,29 @@ async function loadExtras() {
   }
   rebuildExtras();
   announcePlaces();
+  if (lidarEnabled) loadLidarFinds();
+}
+
+/** Day 63: the lidar finds file (~4 KB gzipped), fetched once cities + pins are in. */
+async function loadLidarFinds() {
+  if (lidarState !== 'idle') return;
+  lidarState = 'loading';
+  try {
+    const m = await import('../data/lidar-finds.json');
+    lidarFinds = (m.default || m).finds || [];
+    lidarState = 'ready';
+  } catch (err) {
+    console.warn('Globe lidar finds unavailable:', err);
+    lidarState = 'error';
+  }
+  rebuildExtras();
+}
+
+/** Day 63: is a lidar find on the globe in `y`? 'site' while lived in, 'found' after discovery. */
+export function lidarFindStateAtYear(f, y) {
+  if (y >= f.start && y <= f.end) return 'site';
+  if (y >= f.discovered) return 'found';
+  return null;
 }
 
 /** Day 49: tells the globe loader (via globe-view) that cities + event pins are in. */
@@ -442,6 +491,28 @@ function rebuildExtras() {
     out.push(c);
   });
   pinCands = out;
+  lidarCands = [];
+  if (lidarState === 'ready') {
+    for (const f of lidarFinds) {
+      const st = lidarFindStateAtYear(f, y);
+      if (!st) continue;
+      const key = `${f.id}|${st}`;
+      let c = lidarCandCache.get(key);
+      if (!c) {
+        c = makeCandidate({
+          key: `lidar:${f.id}`, kind: 'pin', text: `🔍 ${f.label}${st === 'found' ? ` · found ${f.discovered}` : ''}`,
+          lat: f.lat, lng: f.lng, point: true, size: mobile ? 10.5 : 11, upper: false, spacing: 0,
+          weight: 600, italic: false, tier: 'pin', fitKm: 1, fit: 0, prio: st === 'site' ? 650 : 600,
+          extraW: 24, extraH: 6, dotX: 9, cls: 'is-pin is-lidar', entityId: `lidar:${f.id}`,
+          pin: { lidar: f, label: f.label, place: f.place, year: st === 'site' ? f.start : f.discovered, title: f.name, state: st },
+        });
+        lidarCandCache.set(key, c);
+      }
+      c.near = 1;
+      c.faded = false;
+      lidarCands.push(c);
+    }
+  }
   dirty = true;
 }
 
@@ -601,6 +672,7 @@ function place(camera, camAlt, now) {
   // City-states (Singapore, Venice, Monaco …): the state label already names the place.
   if (citiesEnabled) for (const c of cityCands) if (!stateTexts.has(c.text.toLowerCase())) consider(c);
   if (eventsEnabled) for (const c of pinCands) consider(c);
+  if (lidarEnabled) for (const c of lidarCands) consider(c);
   list.sort((a, b) => b.score - a.score);
 
   const max = MAX_LABELS[mobile ? 'mobile' : 'desktop'];
@@ -805,8 +877,14 @@ function createLabelEl(c) {
     el.type = 'button';
     el.className = `globe-label globe-pin ${c.cls}`;
     el.dataset.id = c.id;
-    el.title = `${c.pin.title} — ${c.pin.place}, ${formatPinYear(c.pin.year)}`;
-    el.setAttribute('aria-label', `${c.pin.label}, ${c.pin.place}, ${formatPinYear(c.pin.year)}: open ${c.pin.title}`);
+    if (c.pin.lidar) {
+      const f = c.pin.lidar;
+      el.title = `${f.name} — ${f.place}. ${f.period}. Found by lidar, ${f.discovered}`;
+      el.setAttribute('aria-label', `Lidar find: ${f.name}, ${f.place}, found ${f.discovered}: open its story`);
+    } else {
+      el.title = `${c.pin.title} — ${c.pin.place}, ${formatPinYear(c.pin.year)}`;
+      el.setAttribute('aria-label', `${c.pin.label}, ${c.pin.place}, ${formatPinYear(c.pin.year)}: open ${c.pin.title}`);
+    }
     const dot = document.createElement('span');
     dot.className = 'globe-pin-dot';
     dot.setAttribute('aria-hidden', 'true');

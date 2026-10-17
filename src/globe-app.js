@@ -21,6 +21,7 @@ export {
   setGlobeMigrationsEnabled,
   setOnGlobeMigrationClick,
   setGlobeConstellationsEnabled,
+  setGlobeLidarEnabled,
   getGlobeCameraAt,
   prefetchGlobe,
   getGlobeLoadSteps,
