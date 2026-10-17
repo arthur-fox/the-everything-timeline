@@ -20,6 +20,7 @@ export {
   setOnGlobeRouteClick,
   setGlobeMigrationsEnabled,
   setOnGlobeMigrationClick,
+  setGlobeConstellationsEnabled,
   getGlobeCameraAt,
   prefetchGlobe,
   getGlobeLoadSteps,

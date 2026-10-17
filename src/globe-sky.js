@@ -1,26 +1,44 @@
 /**
- * Day 61 / Phase 4c step 7.1 — celestial sphere behind the globe.
+ * Day 61–62 / Phase 4c steps 7.1–7.2 — celestial sphere behind the globe.
  *
- * One Points mesh (Yale Bright Star Catalogue subset, mag ≤ 6.5) + one inward-facing
- * Milky Way texture (NASA SVS Deep Star Maps 2020 → celestial equirectangular WebP).
- * No per-frame CPU work. Earth's axis = celestial pole; camera orbit reveals different
- * sky as you go around Earth (sky is fixed in world space with the globe).
+ * 7.1: One Points mesh (Yale Bright Star Catalogue subset, mag ≤ 6.5) + one inward-facing
+ *      Milky Way texture (NASA SVS Deep Star Maps 2020 → celestial equirectangular WebP).
+ * 7.2: Constellation stick figures + short names (d3-celestial BSD-3 GeoJSON → compact binary),
+ *      key toggle (`&constellations=0`), lightweight axial precession by year.
  *
- * Step 7.2 (constellation lines / names) is intentionally not here.
+ * No per-frame CPU work. Earth's axis = celestial pole (J2000); camera orbit reveals different
+ * sky. Precession rotates the whole sky group only when the year changes.
  */
 
 const STAR_URL = `${import.meta.env.BASE_URL || '/'}sky/bsc-stars.bin`;
 const MILKY_WAY_URL = `${import.meta.env.BASE_URL || '/'}sky/milkyway-celestial.webp`;
+const CONSTELLATIONS_URL = `${import.meta.env.BASE_URL || '/'}sky/constellations.bin`;
 
 /** Past max camera distance (≈500) so the viewer never clips the sky. Globe.gl earth ≈ 100. */
 const SKY_RADIUS = 900;
 const STAR_RADIUS = 880;
+const CONST_LINE_RADIUS = 860;
+const CONST_NAME_RADIUS = 850;
+
+/** Sidereal year-ish precession period (tropical ≈ 25771.5 yr). */
+const PRECESSION_PERIOD_YR = 25771.5;
+/** Ecliptic north pole in J2000 equatorial (degrees). */
+const ECL_POLE_RA_DEG = 270.0;
+const ECL_POLE_DEC_DEG = 66.5607;
+const J2000_YEAR = 2000;
 
 let skyGroup = null;
 let milkyWayMesh = null;
 let starPoints = null;
+let constellationGroup = null;
+let constellationLines = null;
+let constellationNames = null;
 let attachedScene = null;
 let themeObserver = null;
+let constellationsEnabled = true;
+let skyYear = J2000_YEAR;
+let THREE_REF = null;
+let precessAxis = null;
 
 function softCircleTexture(THREE) {
   const size = 64;
@@ -40,16 +58,83 @@ function softCircleTexture(THREE) {
   return tex;
 }
 
+function nameSpriteTexture(THREE, text, rank) {
+  const padX = 10;
+  const padY = 6;
+  const fontPx = rank <= 1 ? 28 : rank === 2 ? 24 : 20;
+  const c = document.createElement('canvas');
+  const ctx = c.getContext('2d');
+  ctx.font = `600 ${fontPx}px "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif`;
+  const w = Math.ceil(ctx.measureText(text).width) + padX * 2;
+  const h = fontPx + padY * 2;
+  c.width = w;
+  c.height = h;
+  ctx.font = `600 ${fontPx}px "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  // Soft dark plate so gold text stays readable over the Milky Way.
+  ctx.fillStyle = 'rgba(8, 12, 24, 0.45)';
+  const r = 8;
+  ctx.beginPath();
+  ctx.moveTo(r, 0);
+  ctx.arcTo(w, 0, w, h, r);
+  ctx.arcTo(w, h, 0, h, r);
+  ctx.arcTo(0, h, 0, 0, r);
+  ctx.arcTo(0, 0, w, 0, r);
+  ctx.closePath();
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(253, 224, 71, 0.22)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.fillStyle = rank <= 2 ? 'rgba(253, 230, 180, 0.92)' : 'rgba(226, 232, 240, 0.78)';
+  ctx.fillText(text, w / 2, h / 2 + 0.5);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.needsUpdate = true;
+  return { tex, aspect: w / h };
+}
+
+function ensurePrecessAxis(THREE) {
+  if (precessAxis) return precessAxis;
+  const ra = (ECL_POLE_RA_DEG * Math.PI) / 180;
+  const dec = (ECL_POLE_DEC_DEG * Math.PI) / 180;
+  precessAxis = new THREE.Vector3(
+    Math.cos(dec) * Math.sin(ra),
+    Math.sin(dec),
+    Math.cos(dec) * Math.cos(ra),
+  ).normalize();
+  return precessAxis;
+}
+
+/** Apply approximate axial precession for `year` (rotate sky about the ecliptic pole). */
+function applySkyPrecession(year) {
+  if (!skyGroup || !THREE_REF) return;
+  const y = Number.isFinite(year) ? year : J2000_YEAR;
+  skyYear = y;
+  const axis = ensurePrecessAxis(THREE_REF);
+  // Angle from J2000; negative years (BCE) move the pole toward Thuban.
+  const angle = ((y - J2000_YEAR) / PRECESSION_PERIOD_YR) * Math.PI * 2;
+  skyGroup.quaternion.setFromAxisAngle(axis, -angle);
+}
+
+function syncConstellationVisibility() {
+  if (!constellationGroup) return;
+  // Follow sky theme (light theme hides the whole skyGroup) and the key toggle.
+  constellationGroup.visible = Boolean(constellationsEnabled);
+}
+
 /**
  * @param {object} opts
  * @param {import('three')} opts.THREE
  * @param {import('three').Scene} opts.scene
  * @param {boolean} [opts.mobile]
+ * @param {number} [opts.year]
  */
-export async function initGlobeSky({ THREE, scene, mobile = false }) {
+export async function initGlobeSky({ THREE, scene, mobile = false, year = J2000_YEAR } = {}) {
   if (!THREE || !scene) return null;
   destroyGlobeSky();
   attachedScene = scene;
+  THREE_REF = THREE;
 
   const group = new THREE.Group();
   group.name = 'et-celestial-sky';
@@ -154,15 +239,116 @@ export async function initGlobeSky({ THREE, scene, mobile = false }) {
       return null;
     });
 
-  await Promise.all([mwPromise, starsPromise]);
+  const constPromise = fetch(CONSTELLATIONS_URL)
+    .then((r) => {
+      if (!r.ok) throw new Error(`constellations HTTP ${r.status}`);
+      return r.arrayBuffer();
+    })
+    .then((buf) => {
+      const view = new DataView(buf);
+      const magic = String.fromCharCode(view.getUint8(0), view.getUint8(1), view.getUint8(2), view.getUint8(3));
+      if (magic !== 'ETC1') throw new Error(`bad constellation magic ${magic}`);
+      let o = 4;
+      const nLineVerts = view.getUint32(o, true);
+      o += 4;
+      const positions = new Float32Array(nLineVerts * 3);
+      for (let i = 0; i < nLineVerts; i++) {
+        positions[i * 3] = view.getFloat32(o, true) * CONST_LINE_RADIUS;
+        positions[i * 3 + 1] = view.getFloat32(o + 4, true) * CONST_LINE_RADIUS;
+        positions[i * 3 + 2] = view.getFloat32(o + 8, true) * CONST_LINE_RADIUS;
+        o += 12;
+      }
+
+      const cGroup = new THREE.Group();
+      cGroup.name = 'et-constellations';
+
+      const lineGeo = new THREE.BufferGeometry();
+      lineGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      const lineMat = new THREE.LineBasicMaterial({
+        color: 0xf5e6c8,
+        transparent: true,
+        opacity: mobile ? 0.38 : 0.48,
+        depthWrite: false,
+        depthTest: true,
+        fog: false,
+      });
+      const lines = new THREE.LineSegments(lineGeo, lineMat);
+      lines.name = 'et-constellation-lines';
+      lines.frustumCulled = false;
+      lines.renderOrder = -18;
+      constellationLines = lines;
+      cGroup.add(lines);
+
+      const nNames = view.getUint32(o, true);
+      o += 4;
+      const namesGroup = new THREE.Group();
+      namesGroup.name = 'et-constellation-names';
+      // Phone: only rank 1–2 labels to keep draw calls modest; desktop gets all 88.
+      const maxRank = mobile ? 2 : 3;
+      for (let i = 0; i < nNames; i++) {
+        const x = view.getFloat32(o, true);
+        const y = view.getFloat32(o + 4, true);
+        const z = view.getFloat32(o + 8, true);
+        o += 12;
+        const rank = view.getUint8(o);
+        o += 1;
+        const desigLen = view.getUint8(o);
+        o += 1;
+        let desig = '';
+        for (let k = 0; k < desigLen; k++) desig += String.fromCharCode(view.getUint8(o + k));
+        o += desigLen;
+        const nameLen = view.getUint8(o);
+        o += 1;
+        let fullName = '';
+        for (let k = 0; k < nameLen; k++) fullName += String.fromCharCode(view.getUint8(o + k));
+        o += nameLen;
+
+        if (rank > maxRank) continue;
+        // Short IAU abbreviation — readable without cluttering the sphere.
+        const label = desig || fullName;
+        const { tex, aspect } = nameSpriteTexture(THREE, label, rank);
+        const mat = new THREE.SpriteMaterial({
+          map: tex,
+          transparent: true,
+          depthWrite: false,
+          depthTest: true,
+          fog: false,
+          opacity: rank <= 1 ? 0.9 : rank === 2 ? 0.75 : 0.55,
+          sizeAttenuation: true,
+        });
+        const sprite = new THREE.Sprite(mat);
+        sprite.name = `et-const-${desig || i}`;
+        sprite.position.set(x * CONST_NAME_RADIUS, y * CONST_NAME_RADIUS, z * CONST_NAME_RADIUS);
+        // World units: keep labels modest against the sky radius.
+        const base = mobile ? 14 : rank <= 1 ? 18 : rank === 2 ? 15 : 12;
+        sprite.scale.set(base * aspect, base, 1);
+        sprite.renderOrder = -17;
+        namesGroup.add(sprite);
+      }
+      constellationNames = namesGroup;
+      cGroup.add(namesGroup);
+
+      constellationGroup = cGroup;
+      syncConstellationVisibility();
+      group.add(cGroup);
+      return cGroup;
+    })
+    .catch((err) => {
+      console.warn('[globe-sky] Constellations skipped:', err?.message || err);
+      return null;
+    });
+
+  await Promise.all([mwPromise, starsPromise, constPromise]);
 
   if (group.children.length === 0) {
     skyGroup = null;
     attachedScene = null;
+    THREE_REF = null;
     return null;
   }
 
   scene.add(group);
+  applySkyPrecession(year);
   syncSkyTheme();
   watchTheme();
   return group;
@@ -195,6 +381,26 @@ export function syncSkyTheme() {
   skyGroup.visible = !light;
 }
 
+/** Day 62: constellation lines/names on or off (key toggle, `&constellations=0`). */
+export function setGlobeConstellationsEnabled(on) {
+  constellationsEnabled = Boolean(on);
+  syncConstellationVisibility();
+}
+
+export function areGlobeConstellationsEnabled() {
+  return constellationsEnabled;
+}
+
+/**
+ * Day 62: update axial precession when the globe year changes.
+ * Cheap — one quaternion write; no geometry rebuild.
+ */
+export function setSkyYear(year) {
+  if (!Number.isFinite(year)) return;
+  if (Math.round(year) === Math.round(skyYear) && skyGroup) return;
+  applySkyPrecession(Math.round(year));
+}
+
 export function destroyGlobeSky() {
   if (themeObserver) {
     try {
@@ -221,8 +427,22 @@ export function destroyGlobeSky() {
   };
   disposeObj(milkyWayMesh);
   disposeObj(starPoints);
+  disposeObj(constellationLines);
+  if (constellationNames) {
+    constellationNames.children.forEach((spr) => {
+      if (spr.material) {
+        if (spr.material.map) spr.material.map.dispose();
+        spr.material.dispose();
+      }
+    });
+  }
   milkyWayMesh = null;
   starPoints = null;
+  constellationLines = null;
+  constellationNames = null;
+  constellationGroup = null;
   skyGroup = null;
   attachedScene = null;
+  THREE_REF = null;
+  precessAxis = null;
 }

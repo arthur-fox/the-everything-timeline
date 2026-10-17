@@ -17,7 +17,7 @@ The Everything Timeline is a static site: all content is plain files in this rep
 | Cities, event pins, physical places | `src/globe-cities.js`, `src/globe-event-pins.js`, `src/data/places.json` | with the globe, after first paint |
 | Trade routes (Day 53) | `data/trade-routes.json` (see below) | with the globe, once it is up (≈5 KB gzipped chunk) |
 | Migrations (Day 55) | `data/migrations.json` (see below) | with the globe, once it is up (≈6 KB gzipped chunk) |
-| Celestial sky (Day 61) | `public/sky/bsc-stars.bin` + `public/sky/milkyway-celestial.webp` (see ATTRIBUTION-sky.md) | with the globe (`globe-sky.js`); one Points mesh + one texture |
+| Celestial sky (Days 61–62) | `public/sky/bsc-stars.bin` + `milkyway-celestial.webp` + `constellations.bin` (see ATTRIBUTION-sky.md) | with the globe (`globe-sky.js`); Points + texture + LineSegments/names; key toggle `&constellations=0` |
 
 Ids are stable kebab-case strings (`kamakura-shogunate`, `nation-france`) and are used in deep links (`?view=country:japan&id=kamakura-shogunate`), bookmarks and globe ↔ timeline links (`timelineItemIds`). Never rename an id; add a new one instead.
 
@@ -89,7 +89,7 @@ Paths follow the trade-route rules (points in the direction people moved; sea pa
 3. **Topic or landing items:** edit the matching `src/<topic>.js` / `src/events.js` array (same fields).
 4. **Globe shapes, peoples, presence, cities, pins:** edit the matching `src/globe-*.js` module (they only load with the globe). Ancient Mediterranean / Near East shapes are built from shared pieces in `src/globe-med-pieces.js` (borders shared point for point; `scripts/check-greek-world.js` checks merges). Early medieval Eurasia (500–1000) lives in `src/globe-early-medieval.js` (hand-drawn rings with confidence; `scripts/check-early-medieval.js` checks outlines and sample years). Inland Africa (Day 58), Southeast Asia (Day 59) and Native American / Indigenous nations after 1500 (Day 60, `src/globe-native-nations.js`, `type: 'indigenous'` so they persist past the 1815 nations handoff; `scripts/check-native-nations.js`) follow the same pattern. After editing the nations tables, run `npm run build:nations`.
 5. **Trade routes and migrations:** edit `data/trade-routes.json` / `data/migrations.json` (formats above).
-5b. **Celestial sky (stars / Milky Way):** regenerate with `node scripts/build-sky.mjs` (or the Python recipe in that file); do not invent star coordinates — rebuild from the Yale BSC JSON. License notes in `docs/ATTRIBUTION-sky.md`.
+5b. **Celestial sky (stars / Milky Way / constellations):** regenerate with `node scripts/build-sky.mjs --constellations` (and `--bsc` / `--cubemap` when rebuilding those); do not invent star coordinates or asterism geometry — rebuild from the Yale BSC JSON and d3-celestial GeoJSON. License notes in `docs/ATTRIBUTION-sky.md`.
 6. **A new kind of dataset:** a JSON file under `data/`, loaded with a dynamic `import()` from the view that needs it (see `COUNTRY_FILES` in `src/main.js`). Don't add a static import to `main.js`.
 7. Run `npm run validate` (also part of `npm run build`): schema, unique ids, categories, dates, sources, links, borders, labels, cities, pins, trade routes and migrations.
 
