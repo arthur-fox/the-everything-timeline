@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); step 7.1 stars/Milky Way is done (Day 61); step 7.2 constellations is done-in-PR (Day 62); step 8.1 lidar hidden-cities pins is done-in-PR (Day 63, stacked on #76); next is step 8.2 honest shape updates; PR #72 coast spill still awaiting review** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); step 7.1 stars/Milky Way is done (Day 61); step 7.2 constellations is done-in-PR (Day 62); steps 7.2 constellations and 8.1 lidar hidden-cities pins are merged (#76, #77, 17 Oct) and PR #72 coast spill is merged; step 8.2 honest shape updates is done-in-PR (Day 64); next is Phase 5 country packs covering both views, starting with the pack 1 globe backfill** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -876,6 +876,29 @@ Inspired by [lidar lost-cities write-up](https://bakerbench.substack.com/p/i-wen
 - **Globe:** teal 🔍 pins in the same label pass as event pins. A find shows while the site was lived in and again from the year lidar revealed it ("found 2024"), so today's globe shows where lidar has rewritten the map. Tap for its story. Key **"Lidar finds"** toggle (on by default; `&lidar=0`).
 - **Validate:** `scripts/check-lidar.js` (in `npm run validate`): fields, years, discovery after the site ended, pins on land, label length, sources, related entries resolve.
 - **Next:** step 8.2 (denser Maya / Angkor / Amazon presence shapes citing these surveys), then Phase 5 country packs.
+
+#### Day 64 — Honest shape updates from lidar (step 8.2) — done-in-PR
+- **Data (`src/globe-lidar-shapes.js`, lazy globe chunk):** six lidar-mapped landscapes are drawn as teal presence shapes. Each matches its published area to within 1%, but the outline is hand-traced:
+  - **Central Maya lowlands**, 650–900. 95,000 km², the area Canuto et al. 2018 extrapolate the PACUNAM survey to. Valeriana sits inside it (Auld-Thomas et al. 2024).
+  - **Mirador–Calakmul Karst Basin**, 1000 BCE–150 CE. 4,533 km² (Ensley et al. 2021), with the causeway network in Hansen et al. 2022.
+  - **Greater Angkor**, 1100–1431. The ~1,000 km² low-density urban complex in Evans et al. 2013.
+  - **Mahendraparvata** on Phnom Kulen, 802–900. 40–50 km² (Chevance et al. 2019).
+  - **Upano valley**, 500 BCE–450 CE. The 300 km² studied by Rostain et al. 2024.
+  - **Casarabe towns of the Llanos de Mojos**, 500–1400. The 4,500 km² culture area in Prümers et al. 2022.
+- **Certainty notes:** the existing shapes now say in "How sure" what the surveys showed, and list them as sources.
+  - **Maya:** a new 1000 BCE keyframe (Aguada Fénix, Inomata et al. 2020). The Preclassic note cites Mirador (Hansen et al. 2022). The Classic note cites PACUNAM and Valeriana. The Classic Maya polity no longer spreads across West and Central Mexico, which other cultures held (Angamuco is one of them).
+  - **Khmer Empire:** 802 (Mahendraparvata) and 1200 (Greater Angkor). Lidar changed our picture of the capital, not the frontier.
+  - **Mesoamerican presence:** 500 BCE and 500 CE.
+  - **Amazonian presence:** 500 and 1200, citing Rostain, Prümers and Peripato et al. 2023.
+- **Schema:** keyframes can carry `confidence` (globe-confidence.js already read it). Lidar shapes carry `lidar: { finds, km2, areaNote, cite }`. `data/lidar-finds.json`: Valeriana's structure count corrected to 6,764.
+- **Validate:** `scripts/check-lidar-shapes.js` (in `npm run validate`) checks that:
+  - linked finds exist and the sources are the survey papers;
+  - rings are closed, ≤ 24 vertices, don't cross themselves, and sit on land;
+  - drawn areas are within 10% of the published figure, and find pins are inside their shapes;
+  - keyframe years fall within the finds' site years, and shapes are on or off at sample years;
+  - the notes reached their shapes, and the Maya polity stays east of 94° W;
+  - the set stays within a small budget (6 shapes, 44 vertices).
+- **Next:** Phase 5 country packs covering both views (Timeline + Globe), starting with the pack 1 globe backfill (Peru, Ghana, Kenya, Morocco, Iraq, Philippines).
 
 ## Custom domain & sharing (Arthur, 9 Oct 2026)
 
@@ -1095,7 +1118,8 @@ A sensible near-term sequence:
 48. Native American nations after 1500 (Phase 4c step 6.4; Day 60) ✅ (done-in-PR).
 49. Phase 4c step 7.1 — stars / Milky Way (Day 61) ✅ (done-in-PR).
 50. Phase 4c step 7.2 — constellations (Day 62) ✅ (done-in-PR).
-51. **Now: Item 8 — lidar finds (8.1 hidden-cities pins, then 8.2 shape updates), NEXT for the daily routine.** **Then Phase 5 country packs covering both views (Timeline + Globe), starting with the pack 1 globe backfill. This is the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
+51. Item 8 — lidar finds: 8.1 hidden-cities pins (Day 63) ✅ (merged, #77) → 8.2 honest shape updates (Day 64) ✅ (done-in-PR).
+52. **Now: Phase 5 country packs covering both views (Timeline + Globe), starting with the pack 1 globe backfill. This is the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 

@@ -28,6 +28,7 @@ import {
 } from '../src/globe-overlays.js';
 import { geoArea, geoContains } from 'd3-geo';
 import { civilisations } from '../src/civilisations.js';
+import { lidarPresenceEntities } from '../src/globe-lidar-shapes.js';
 import {
   lerpRings,
   MORPH_RING_SAMPLES,
@@ -676,7 +677,8 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   // Layer filter
   setOverlayLayerFilter('presence');
   const presenceOnly = entitiesForLayer('presence');
-  assert(presenceOnly.length === presenceEntities.length, `presence layer size ${presenceOnly.length}`);
+  // Day 64: plus the lidar-mapped presence shapes (globe-lidar-shapes.js).
+  assert(presenceOnly.length === presenceEntities.length + lidarPresenceEntities.length, `presence layer size ${presenceOnly.length}`);
   assert(presenceOnly.every((e) => e.type === 'presence'), 'presence layer is only type=presence');
   setOverlayLayerFilter('polities');
   assert(entitiesForLayer('polities').every((e) => e.type !== 'presence'), 'polities layer excludes presence');

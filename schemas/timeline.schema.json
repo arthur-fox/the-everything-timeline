@@ -195,7 +195,7 @@
       }
     },
     "regionRef": {
-      "description": "Named region reference. May be a string id or { id, name?, bbox?, ring?, holes? }. Rings/bboxes are schematic \u2014 not precise historical borders.",
+      "description": "Named region reference. May be a string id or { id, name?, bbox?, ring?, holes? }. Rings/bboxes are schematic — not precise historical borders.",
       "oneOf": [
         {
           "type": "string",
@@ -218,7 +218,7 @@
             },
             "bbox": {
               "type": "array",
-              "description": "Optional approximate bounding box [west, south, east, north] in degrees. Placeholder only \u2014 not precise borders.",
+              "description": "Optional approximate bounding box [west, south, east, north] in degrees. Placeholder only — not precise borders.",
               "minItems": 4,
               "maxItems": 4,
               "items": {
@@ -316,6 +316,29 @@
             "$ref": "#/definitions/regionRef"
           },
           "description": "Named region references. Optional bbox/ring for schematic globe polygons (PR D)."
+        },
+        "confidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "level",
+            "reason"
+          ],
+          "description": "Day 44/64: how sure we are of this keyframe's shapes; wins over the entity's confidence (see src/globe-confidence.js).",
+          "properties": {
+            "level": {
+              "type": "string",
+              "enum": [
+                "documented",
+                "approximate",
+                "conjectural"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
         }
       }
     },
@@ -438,6 +461,39 @@
               ]
             },
             "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "lidar": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "finds",
+            "km2",
+            "areaNote",
+            "cite"
+          ],
+          "description": "Day 64: a lidar-mapped landscape (src/globe-lidar-shapes.js) — its finds in data/lidar-finds.json, the published area it is drawn to and the survey it cites (checked by scripts/check-lidar-shapes.js).",
+          "properties": {
+            "finds": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "km2": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "areaNote": {
+              "type": "string",
+              "minLength": 1
+            },
+            "cite": {
               "type": "string",
               "minLength": 1
             }
