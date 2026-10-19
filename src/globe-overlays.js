@@ -13,6 +13,7 @@
  * Day 27–28: people packs (human-atlas layer 2) — cultural/ethnolinguistic overlays via globe-people.js (20 entities).
  * Day 29: human presence layer (human-atlas layer 3) — inhabited-footprint overlays via globe-presence.js (~10 entities).
  * Day 32: ocean gaps — optional region `holes` (inland seas / lakes) rendered as GeoJSON Polygon inner rings.
+ * Day 64: lidar-mapped presence shapes + certainty notes from the surveys (globe-lidar-shapes.js).
  *
  * Spatial entities + schematic region rings for Globe polygons.
  * Rings are intentionally rough — not GIS-accurate ancient borders.
@@ -30,6 +31,7 @@ import { southeastAsiaPolities } from './globe-southeast-asia.js';
 import { inlandAfricaPolities } from './globe-inland-africa.js';
 import { nativeNationsPolities } from './globe-native-nations.js';
 import { earlyMedievalPolities, extraKeyframes as earlyMedievalExtraKeyframes } from './globe-early-medieval.js';
+import { lidarPresenceEntities, applyLidarShapeNotes } from './globe-lidar-shapes.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6296,6 +6298,14 @@ for (const person of peopleEntities) {
 for (const presence of presenceEntities) {
   spatialEntities.push(presence);
 }
+
+// Day 64 — honest shape updates from lidar (globe-lidar-shapes.js): lidar-mapped landscapes drawn
+// at their published extents (presence layer), plus certainty notes and sources on the Maya, Khmer,
+// Mesoamerica and Amazonia shapes the surveys speak to.
+for (const shape of lidarPresenceEntities) {
+  spatialEntities.push(shape);
+}
+applyLidarShapeNotes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

@@ -18,6 +18,7 @@ The Everything Timeline is a static site: all content is plain files in this rep
 | Trade routes (Day 53) | `data/trade-routes.json` (see below) | with the globe, once it is up (≈5 KB gzipped chunk) |
 | Migrations (Day 55) | `data/migrations.json` (see below) | with the globe, once it is up (≈6 KB gzipped chunk) |
 | Lidar finds / hidden cities (Day 63) | `data/lidar-finds.json` (see below) | with the globe, after cities + pins (≈5 KB gzipped chunk); key toggle `&lidar=0` |
+| Lidar-mapped shapes (Day 64) | `src/globe-lidar-shapes.js` (see below) | lazy globe chunk, with the other presence shapes (6 shapes, 44 vertices) |
 | Celestial sky (Days 61–62) | `public/sky/bsc-stars.bin` + `milkyway-celestial.webp` + `constellations.bin` (see ATTRIBUTION-sky.md) | with the globe (`globe-sky.js`); Points + texture + LineSegments/names; key toggle `&constellations=0` |
 
 Ids are stable kebab-case strings (`kamakura-shogunate`, `nation-france`) and are used in deep links (`?view=country:japan&id=kamakura-shogunate`), bookmarks and globe ↔ timeline links (`timelineItemIds`). Never rename an id; add a new one instead.
@@ -104,6 +105,24 @@ Paths follow the trade-route rules (points in the direction people moved; sea pa
 
 `scripts/check-lidar.js` (in `npm run validate`) checks the fields, that discovery comes after the site ended, that pins sit on land and that related entries resolve. Only add finds published in a peer-reviewed paper or reported from one; don't guess exact coordinates for sites whose location is withheld (use a nearby town and a larger `locationKm`).
 
+### Lidar-mapped shapes (Day 64)
+
+Where a lidar find changes what the globe draws, `src/globe-lidar-shapes.js` holds:
+
+- **`lidarPresenceEntities`**: ordinary presence shapes (`type: 'presence'`, teal like the pins) drawn to the published extent of a surveyed landscape. Each has a `lidar` field: `{ finds: ['<id in lidar-finds.json>'], km2: <published area>, areaNote: '<what the figure is>', cite: 'Author et al. YEAR' }`. Each keyframe has a `confidence` (allowed on any keyframe, and it wins over the entity's) that cites the survey.
+- **`lidarShapeNotes`**: certainty notes, extra keyframes, dropped regions and sources for shapes that already exist (`maya`, `khmer-empire`, `mesoamerica-presence`, `amazonia-presence`). `applyLidarShapeNotes()` applies them by id in `globe-overlays.js`, and throws if a target is missing.
+
+`scripts/check-lidar-shapes.js` (in `npm run validate`) checks:
+
+- the linked finds exist, and the sources are the survey papers;
+- rings are closed, with no more than 24 vertices, don't cross themselves, and lie on land;
+- each drawn area is within 10% of `km2`, and each find's pin lies inside its shape;
+- keyframe years fall within the finds' site years, and the shapes are on or off at sample years;
+- the notes reached their targets, and the Maya polity doesn't spread over West Mexico;
+- the whole set stays within a small budget (8 shapes, 120 vertices).
+
+Only use a published area. The outline itself is drawn by hand, so it is never `documented`.
+
 ## How to add data
 
 1. **A new country:** add `data/countries/<id>.json` in the format above. Nothing else to register — the build lists it in the picker.
@@ -113,7 +132,7 @@ Paths follow the trade-route rules (points in the direction people moved; sea pa
 5. **Trade routes, migrations and lidar finds:** edit `data/trade-routes.json` / `data/migrations.json` / `data/lidar-finds.json` (formats above).
 5b. **Celestial sky (stars / Milky Way / constellations):** regenerate with `node scripts/build-sky.mjs --constellations` (and `--bsc` / `--cubemap` when rebuilding those); do not invent star coordinates or asterism geometry — rebuild from the Yale BSC JSON and d3-celestial GeoJSON. License notes in `docs/ATTRIBUTION-sky.md`.
 6. **A new kind of dataset:** a JSON file under `data/`, loaded with a dynamic `import()` from the view that needs it (see `COUNTRY_FILES` in `src/main.js`). Don't add a static import to `main.js`.
-7. Run `npm run validate` (also part of `npm run build`): schema, unique ids, categories, dates, sources, links, borders, labels, cities, pins, trade routes and migrations.
+7. Run `npm run validate` (also part of `npm run build`): schema, unique ids, categories, dates, sources, links, borders, labels, cities, pins, trade routes, migrations, lidar finds and lidar-mapped shapes.
 
 `npm run dev` and `npm run build` run `scripts/build-data.mjs` first (it writes the generated index); there is nothing else to run.
 

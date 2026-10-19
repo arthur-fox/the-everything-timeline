@@ -739,7 +739,7 @@ function polygonRenderOrder(d) {
  * Day 35: peoples vs polities read differently when shown together.
  * Polities: solid translucent fill + thin solid edge. Peoples: diagonal hatch fill (geographic,
  * anti-aliased, fades to a flat tint when stripes would go sub-pixel) + dashed edge.
- * Presence: soft wash, no edge.
+ * Presence: soft wash, no edge (Day 64: lidar-mapped shapes get a teal edge).
  */
 const HATCH_PERIOD_DEG = 1.1;
 // Day 39: one shared uniform, so the stripes keep roughly the same on-screen spacing as you zoom
@@ -786,6 +786,12 @@ export function setGlobeCertaintyEnabled(on) {
 }
 export function isGlobeCertaintyEnabled() {
   return certaintyEnabled;
+}
+
+/** Day 64: a lidar-mapped presence shape (src/globe-lidar-shapes.js; ids start with "lidar-"). */
+function isLidarShape(d) {
+  const id = d?.entityId || d?.properties?.entityId;
+  return typeof id === 'string' && id.startsWith('lidar-');
 }
 
 function featureConfidence(d) {
@@ -1501,7 +1507,9 @@ function applyPolygonLayer() {
     .polygonStrokeColor((d) => {
       if (isSelectedFeature(d)) return 'rgba(255, 255, 255, 0.95)';
       const layer = featureLayer(d);
-      if (layer === 'presence') return null;
+      // Day 64: lidar-mapped landscapes are small (35–300 km across) and have no interior for the
+      // wash to build up in, so they get a teal edge (dotted when conjectural) to read on the map.
+      if (layer === 'presence') return isLidarShape(d) ? (featureConfidence(d) === 'conjectural' ? 'rgba(45, 212, 191, 0.9)' : 'rgba(45, 212, 191, 0.75)') : null;
       if (layer === 'nation') {
         // Day 38: crisp national borders; colonial-internal lines a little softer.
         const kind = d.nationKind || d.properties?.nationKind;
