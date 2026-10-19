@@ -441,6 +441,31 @@ function scheduleFineRefresh(next) {
   }, 0);
 }
 
+/** Day 65: camera target set before the globe has mounted (used instead of `?at=` on mount). */
+let pendingAt = null;
+/**
+ * Day 65: fly the camera to a place (timeline → globe links). Before the globe exists, it opens there.
+ * @param {number} lat
+ * @param {number} lng
+ * @param {number} [altitude] globe radii
+ */
+export function flyGlobeTo(lat, lng, altitude = 0.8) {
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+  const minAlt = MIN_CAMERA_DISTANCE / 100 - 1;
+  const at = { lat, lng, altitude: Math.max(minAlt, Math.min(4, Number(altitude) || 0.8)) };
+  if (!(globe && mounted)) {
+    pendingAt = at;
+    return;
+  }
+  try {
+    const controls = globe.controls();
+    if (controls) controls.autoRotate = false;
+    globe.pointOfView(at, 1200);
+  } catch (_) {
+    // ignore
+  }
+}
+
 /** Day 45: current camera as the `at=lat,lng,alt` deep-link value (null before the globe exists). */
 export function getGlobeCameraAt() {
   try {
@@ -1697,7 +1722,8 @@ export async function mountGlobe(container, opts = {}) {
   }
 
   try {
-    const at = parseAtParam();
+    const at = pendingAt || parseAtParam();
+    pendingAt = null;
     if (at) {
       if (controls) controls.autoRotate = false;
       globe.pointOfView(at, 0);

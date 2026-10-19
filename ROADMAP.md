@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); step 7.1 stars/Milky Way is done (Day 61); step 7.2 constellations is done-in-PR (Day 62); steps 7.2 constellations and 8.1 lidar hidden-cities pins are merged (#76, #77, 17 Oct) and PR #72 coast spill is merged; step 8.2 honest shape updates is done-in-PR (Day 64); next is Phase 5 country packs covering both views, starting with the pack 1 globe backfill** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); step 7.1 stars/Milky Way is done (Day 61); step 7.2 constellations is done-in-PR (Day 62); steps 7.2 constellations and 8.1 lidar hidden-cities pins are merged (#76, #77, 17 Oct) and PR #72 coast spill is merged; step 8.2 honest shape updates is done-in-PR (Day 64); Phase 5 country packs covering both views have started: pack 1 globe backfill, Peru, is done-in-PR (Day 65), next Ghana / Morocco** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -971,13 +971,47 @@ Each pack takes one country (or a small group of neighbours) and refines **both 
 
 Proposed order:
 
-1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs.
+1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, done-in-PR); next Ghana, then Morocco, Kenya, Iraq, Philippines.**
 2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates).
 3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits).
 4. **Central Africa:** DR Congo, Angola, Cameroon, Chad (Kongo, Luba, Lunda, Kanem-Bornu).
 5. **Southeast Europe:** Serbia, Bulgaria, Romania, Croatia, Albania, Greece refinement (Byzantine/Ottoman/medieval kingdoms).
 6. **South Asia:** Pakistan, Bangladesh, Sri Lanka, Nepal, India refinement (Mauryan → Mughal regional kingdoms).
 7. **Globe refinement of the existing 38 countries**, one or a few per day, biggest gaps first. These packs are mostly globe work, as their timelines already exist.
+
+#### Day 65 — Pack 1 globe backfill: Peru — done-in-PR
+
+Peru had a sourced timeline (Day 33), but on the globe it had only a schematic Inca Empire and broad Andean peoples / presence bands. The Spanish "Andes" shape also spilled into the Pacific, and it appeared from 1492, 40 years before Pizarro. Now Peru's whole history is drawn, from Caral to the Viceroyalty.
+
+- **Shapes (`src/globe-pack-peru.js`, lazy globe chunk): 17 polities, 64 keyframes.** Each has a certainty level with a reason, sources, and links to Peru's timeline items:
+  - **Andean origins:** Norte Chico (Caral–Supe, 2900–1850 BCE), Chavín (temple, then a wide *sphere of influence*, conjectural), Paracas.
+  - **Regional states:** Nazca; Moche as two spheres, north and south (to Huarmey), with the south shrinking after the 6th-century floods; Wari's highland network from Viracochapampa to Pikillacta plus Cerro Baúl (conjectural: centres and roads, not a solid territory); Sicán at Batán Grande and Túcume; Chimor in five stages, from the Moche valley (950) to Tumbes–Chillón (1462; its southern limit is disputed).
+  - **Kingdoms before the Inca:** Chachapoyas (Kuélap), Chincha, Ychsma (Pachacamac), the Chanka, the Kingdom of Cusco, and the Colla and Lupaca around Titicaca.
+  - **Inca Empire (redrawn, same id):** 1438 Cusco → 1463 highlands and Titicaca → 1471 Chimor and Quito → 1493 to the Maule → 1527 to Pasto → 1532. Its three regions (Peru, northern and southern Andes) share borders. Dates follow Rowe 1945, and the "How sure" note says radiocarbon now puts the expansion earlier (Marsh et al. 2017). The edge fade is now 4 years, so the empire is full size until Pizarro instead of shrinking from 1513.
+  - **Neo-Inca State** in Vilcabamba, 1537–1572.
+- **Coasts:** a traced Pacific coast (`src/globe-andes-coast.js`, read off the globe's own land, including the Paracas peninsula) gives every coastal shape its west side, so nothing washes over the sea.
+- **Existing shapes redrawn (`applyPeruShapeFixes`):**
+  - Spanish Empire: a 1530 keyframe with no Andes, a 1535 keyframe for Pizarro's conquest, then the Viceroyalty to the coast (1550: Quito–Concepción; 1700/1800: Peru, Upper Peru, Quito). Chile and the Río de la Plata are redrawn on land, and 1800 now has them too.
+  - Colonial Americas: the Andean coast region from 1545, not 1520.
+  - Andean peoples and Andean presence: every keyframe hugs the coast. Since 1900 the peoples shape covers only the Quechua / Aymara highlands.
+- **Morph:** rings longer than 24 vertices now morph with about 2 samples per vertex (up to 160), lined up first, so coast detail doesn't melt mid-scrub. Short rings morph exactly as before.
+- **Cities: +19** — Cahuachi, Huacas de Moche, Pachacamac, Huari, Kuélap, Pikillacta, Batán Grande, La Centinela, Túcume, Hatunqolla, Chucuito, Cajamarca, Huánuco Pampa, Piura, Trujillo, Huamanga → Ayacucho (1825), Arequipa, Puno, Iquitos.
+- **Pins: +17.** They use the new `country:peru:<item>` refs, so a tap opens Peru's own timeline item. They run from the Áspero mounds, the Paracas necropolis, the Lord of Sipán and the Nazca Lines, through the Inca conquest of Chimor, the siege of Cusco, the fall of Vilcabamba, Huancavelica's mercury mine, the 1746 earthquake and Túpac Amaru II, to independence, Junín, Arica, the occupation of Lima, the Treaty of Ancón, Bingham at Machu Picchu and Chuschi (1980).
+- **Timeline (`data/countries/peru.json`): +3 sourced items** — Paracas, Sicán (Lambayeque), and "Kingdoms before the Inca" (10 items now).
+- **Links both ways:** a timeline item's detail now lists **"On the globe"**. These are the shapes and pins that belong to it, for every view, not only Peru. A tap opens the globe at that year, flies there and selects the shape. The table is generated at build time (`src/generated/globe-links.json`, ~19 KB gz, loaded the first time a detail opens). Globe → timeline links ("Related on timeline") were already there.
+- **Validate:** `scripts/check-country-packs.js` (in `npm run validate`) checks:
+  - rings are closed and don't cross themselves;
+  - every vertex is on land and ≥97% of each interior is land, for the new shapes and every redrawn region;
+  - sources, confidence, ≥3 keyframes, nothing after 1815, and timeline links;
+  - 35 capitals and type sites are inside their shapes;
+  - who is on and off at 12 sample years;
+  - no Spanish Andes before 1532.
+- **Honest caveats:**
+  - Before about 1450 these are archaeological cultures (pottery, sites, art styles), not states with borders. Chavín and Wari are conjectural.
+  - Inca dates are the chroniclers' and are debated.
+  - Tiwanaku and the Bolivian / Chilean Andes are left for their own packs (§13 "The Andes before the Inca").
+  - Ghana and Morocco were not started, so Peru got the full pass.
+- **Next:** pack 1 globe backfill continues with **Ghana** (Ghana Empire is already drawn; add Bono, Akan states, Asante keyframes, Elmina / Cape Coast forts, Gold Coast colony), then Morocco, Kenya, Iraq, the Philippines.
 
 ### 13. Fill the globe, region by region (after the packs above)
 
@@ -1119,7 +1153,8 @@ A sensible near-term sequence:
 49. Phase 4c step 7.1 — stars / Milky Way (Day 61) ✅ (done-in-PR).
 50. Phase 4c step 7.2 — constellations (Day 62) ✅ (done-in-PR).
 51. Item 8 — lidar finds: 8.1 hidden-cities pins (Day 63) ✅ (merged, #77) → 8.2 honest shape updates (Day 64) ✅ (done-in-PR).
-52. **Now: Phase 5 country packs covering both views (Timeline + Globe), starting with the pack 1 globe backfill. This is the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
+52. Phase 5 country packs covering both views (Timeline + Globe): pack 1 globe backfill — Peru (Day 65) ✅ (done-in-PR).
+53. **Now: pack 1 globe backfill continues — Ghana, then Morocco, Kenya, Iraq, Philippines. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 

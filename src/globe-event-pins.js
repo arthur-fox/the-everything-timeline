@@ -1,5 +1,7 @@
 /**
  * Day 43 (Phase 4c item 3): timeline events pinned to places on the globe.
+ * Day 65: country packs pin their own timeline items with 'country:<country id>:<item id>'
+ * (e.g. 'country:peru:peru-republic', data/countries/peru.json).
  *
  * Each row points at an existing timeline entry (no new descriptions: clicking a pin opens that
  * entry's detail panel) and says where and when it happened:
@@ -488,6 +490,24 @@ export const EVENT_PINS = [
   P('civilisations:colonial-americas', 1620, 41.96, -70.67, 'Plymouth', 'Mayflower'),
   P('civilisations:colonial-americas', 1810, 21.16, -100.93, 'Dolores', 'Grito de Dolores'),
   P('civilisations:colonial-americas', 1824, -13.15, -74.20, 'Ayacucho', 'Battle of Ayacucho'),
+  // ---- Day 65 — Peru pack (data/countries/peru.json) ------------------------------------------
+  P('country:peru:peru-caral-norte-chico', -3000, -10.81, -77.74, 'Áspero', 'Áspero mounds'),
+  P('country:peru:peru-paracas', -200, -13.86, -76.30, 'Paracas', 'Paracas necropolis'),
+  P('country:peru:peru-nazca-moche', 250, -6.80, -79.60, 'Sipán', 'Lord of Sipán buried'),
+  P('country:peru:peru-nazca-moche', 400, -14.70, -75.13, 'Nazca', 'Nazca Lines'),
+  P('country:peru:peru-wari-chimu', 1470, -8.11, -79.07, 'Chan Chan', 'Inca conquer Chimor'),
+  P('country:peru:peru-inca-empire', 1536, -13.51, -71.98, 'Sacsayhuamán', 'Siege of Cusco'),
+  P('country:peru:peru-inca-empire', 1572, -12.90, -73.20, 'Vilcabamba', 'Fall of Vilcabamba'),
+  P('country:peru:peru-viceroyalty', 1564, -12.79, -74.98, 'Huancavelica', 'Mercury mine opens'),
+  P('country:peru:peru-viceroyalty', 1746, -12.06, -77.14, 'Callao', 'Lima–Callao earthquake'),
+  P('country:peru:peru-viceroyalty', 1780, -14.14, -71.41, 'Tinta', 'Túpac Amaru II rises'),
+  P('country:peru:peru-republic', 1821, -12.05, -77.04, 'Lima', 'Independence proclaimed'),
+  P('country:peru:peru-republic', 1824, -11.05, -76.12, 'Junín', 'Battle of Junín'),
+  P('country:peru:peru-republic', 1880, -18.48, -70.32, 'Arica', 'Battle of Arica'),
+  P('country:peru:peru-republic', 1881, -12.17, -77.02, 'Chorrillos', 'Chile occupies Lima'),
+  P('country:peru:peru-republic', 1883, -11.77, -77.17, 'Ancón', 'Treaty of Ancón'),
+  P('country:peru:peru-republic', 1911, -13.16, -72.55, 'Machu Picchu', 'Bingham reaches Machu Picchu'),
+  P('country:peru:peru-republic', 1980, -13.58, -74.35, 'Chuschi', 'Shining Path’s first attack'),
   P('civilisations:khwarezmia', 1219, 42.85, 68.30, 'Otrar', 'Siege of Otrar'),
   P('civilisations:mongol-empire', 1206, 48.5, 110.0, 'Onon River', 'Genghis Khan proclaimed'),
   P('civilisations:mongol-empire', 1272, 39.91, 116.39, 'Dadu', 'Kublai at Dadu'),

@@ -10,9 +10,9 @@ Built once from the ISO 3166-1 list (UN M49 regions) and the repo data on 15 Oct
 - **Globe:** `done` = full history refined by a Phase 5 pack (shapes over time with certainty levels, dated cities, pinned events, timeline links). `partial` = only today's/1815–2025 nation borders (or drawn inside another state), plus whatever older empire overlays happen to cross it. `none` = not drawn as its own land at all (mostly tiny islands below Natural Earth's scale).
 - **Pack / region:** where it gets done. Small territories batch with their region pack.
 
-**Totals now (249 places):** Timeline done 38, partial 0, none 211. Globe done 0, partial 196, none 53.
+**Totals now (249 places):** Timeline done 38, partial 0, none 211. Globe done 1, partial 195, none 53.
 
-Honest caveat: no country is Globe `done` yet. Pack 1 (Peru, Ghana, Kenya, Morocco, Iraq, Philippines) was timeline-only, and the first Phase 5 job is its globe backfill.
+Honest caveat: only Peru is Globe `done` so far (Day 65: 17 polities from Caral to the Neo-Inca State, 19 cities, 17 pins, links both ways). The rest of pack 1 (Ghana, Kenya, Morocco, Iraq, Philippines) is still timeline-only on the globe and comes next. `done` means a first full pass, not the last word: Tiwanaku and the Bolivian / Chilean Andes wait for their own packs.
 
 **All 53 Globe `none` rows are scheduled** (ROADMAP Phase 5, "Places with nothing drawn yet"). Each will get a high-res close-zoom outline, or a tappable labelled marker where a shape isn't practical, in its region pack. Antarctica gets research stations plus dated territorial claims and the 1959 Antarctic Treaty. Their Notes say `scheduled: outline or marker`.
 
@@ -166,7 +166,7 @@ Honest caveat: no country is Globe `done` yet. Pack 1 (Peru, Ghana, Kenya, Moroc
 | Iraq | IQ | done | partial | Pack 1 globe backfill | modern borders 1815/1914–2025 |
 | Kenya | KE | done | partial | Pack 1 globe backfill | modern borders 1815/1914–2025 |
 | Morocco | MA | done | partial | Pack 1 globe backfill | modern borders 1815/1914–2025 |
-| Peru | PE | done | partial | Pack 1 globe backfill | modern borders 1815/1914–2025 |
+| Peru | PE | done | done | Pack 1 globe backfill | Day 65: Norte Chico → Neo-Inca State keyframes, 19 cities, 17 pins, Inca / Spanish / Andean shapes redrawn to the coast |
 | Philippines | PH | done | partial | Pack 1 globe backfill | modern borders 1815/1914–2025 |
 | Antarctica | AQ | none | none | Polar & remote (batch) | scheduled: stations + dated claims (1959 Treaty) |
 | Bouvet Island | BV | none | none | Polar & remote (batch) | scheduled: outline or marker |

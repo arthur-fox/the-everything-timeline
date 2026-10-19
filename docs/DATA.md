@@ -19,6 +19,8 @@ The Everything Timeline is a static site: all content is plain files in this rep
 | Migrations (Day 55) | `data/migrations.json` (see below) | with the globe, once it is up (≈6 KB gzipped chunk) |
 | Lidar finds / hidden cities (Day 63) | `data/lidar-finds.json` (see below) | with the globe, after cities + pins (≈5 KB gzipped chunk); key toggle `&lidar=0` |
 | Lidar-mapped shapes (Day 64) | `src/globe-lidar-shapes.js` (see below) | lazy globe chunk, with the other presence shapes (6 shapes, 44 vertices) |
+| Country-pack globe backfill (Day 65: Peru) | `src/globe-pack-<country>.js` + shared coast trace `src/globe-andes-coast.js` (see below) | lazy globe chunk |
+| Timeline → globe links (Day 65) | generated: `src/generated/globe-links.json` (gitignored, from `scripts/build-data.mjs`) | the first time a timeline detail panel opens (≈19 KB gz) |
 | Celestial sky (Days 61–62) | `public/sky/bsc-stars.bin` + `milkyway-celestial.webp` + `constellations.bin` (see ATTRIBUTION-sky.md) | with the globe (`globe-sky.js`); Points + texture + LineSegments/names; key toggle `&constellations=0` |
 
 Ids are stable kebab-case strings (`kamakura-shogunate`, `nation-france`) and are used in deep links (`?view=country:japan&id=kamakura-shogunate`), bookmarks and globe ↔ timeline links (`timelineItemIds`). Never rename an id; add a new one instead.
@@ -123,16 +125,34 @@ Where a lidar find changes what the globe draws, `src/globe-lidar-shapes.js` hol
 
 Only use a published area. The outline itself is drawn by hand, so it is never `documented`.
 
+### Country-pack globe backfill (Day 65)
+
+A Phase 5 country pack refines a country's whole history on the globe in one module, `src/globe-pack-<country>.js` (first: `globe-pack-peru.js`). Nothing new in the format:
+
+- **Polities** are ordinary spatial entities (`{ id, name, color, type, description, nameAt?, keyYears, overlays, timelineItemIds, confidence, sources, edgeGrace }`), wired in `globe-overlays.js` with the usual replace-by-id-else-append loop. Each links at least one item in `data/countries/<country>.json`.
+- **Coasts:** shapes that meet the sea take their west side from a traced coast (`src/globe-andes-coast.js`: `[lat, westernmost-land lng]` rows read off `nations.topo.json`, nudged 0.06° inland; `coastal(north, south, inland)` builds the closed ring). That stops Pacific spill. Rings longer than 24 vertices keep their detail mid-morph (`lerpRings` samples ≈2 per vertex, up to 160, and lines the rings up first; short rings are unchanged).
+- **Fixes to shapes that already exist** (`peruShapeFixes`): by entity id → keyframe year → region id, a new ring, `null` to drop a region, or `add` to insert a keyframe copied from another. `applyPeruShapeFixes()` runs after people / presence / lidar are appended and throws if a target is missing.
+- **Cities** go in `src/globe-cities.js`. **Pins** go in `src/globe-event-pins.js` with the new ref form `'country:<country id>:<item id>'`, which resolves against the country file (hover uses the light index, and a click loads the full item).
+- **Timeline → globe:** `scripts/build-data.mjs` writes `src/generated/globe-links.json`, keyed by timeline item id (world events: `event:<title>`). Each entry lists the shapes that link to the item (`{ e, n, y, lat, lng, a }`: entity, name, year of its biggest keyframe inside the item's dates, camera target) and its pins (`{ p, y, lat, lng, a }`). The detail panel shows them under "On the globe". A tap switches to the globe at that year, flies there (`flyGlobeTo`) and selects the shape.
+
+`scripts/check-country-packs.js` (in `npm run validate`, one `PACKS` row per country) checks:
+
+- rings are closed and don't cross themselves;
+- every vertex is on land or the coast, and ≥97% of an interior grid is land (for the pack's polities and for every region it redrew);
+- sources, confidence, ≥3 keyframes, nothing after 1815, and links to real timeline items;
+- type sites and capitals are inside their shape at a real date;
+- who is on and who is gone at sample years, and the fixed anachronisms stay fixed (no Spanish Andes before Pizarro).
+
 ## How to add data
 
 1. **A new country:** add `data/countries/<id>.json` in the format above. Nothing else to register — the build lists it in the picker.
 2. **More items in a country:** edit its JSON file; give each item a new, unique id.
 3. **Topic or landing items:** edit the matching `src/<topic>.js` / `src/events.js` array (same fields).
-4. **Globe shapes, peoples, presence, cities, pins:** edit the matching `src/globe-*.js` module (they only load with the globe). Ancient Mediterranean / Near East shapes are built from shared pieces in `src/globe-med-pieces.js` (borders shared point for point; `scripts/check-greek-world.js` checks merges). Early medieval Eurasia (500–1000) lives in `src/globe-early-medieval.js` (hand-drawn rings with confidence; `scripts/check-early-medieval.js` checks outlines and sample years). Inland Africa (Day 58), Southeast Asia (Day 59) and Native American / Indigenous nations after 1500 (Day 60, `src/globe-native-nations.js`, `type: 'indigenous'` so they persist past the 1815 nations handoff; `scripts/check-native-nations.js`) follow the same pattern. After editing the nations tables, run `npm run build:nations`.
+4. **Globe shapes, peoples, presence, cities, pins:** edit the matching `src/globe-*.js` module (they only load with the globe). Ancient Mediterranean / Near East shapes are built from shared pieces in `src/globe-med-pieces.js` (borders shared point for point; `scripts/check-greek-world.js` checks merges). Early medieval Eurasia (500–1000) lives in `src/globe-early-medieval.js` (hand-drawn rings with confidence; `scripts/check-early-medieval.js` checks outlines and sample years). Inland Africa (Day 58), Southeast Asia (Day 59) and Native American / Indigenous nations after 1500 (Day 60, `src/globe-native-nations.js`, `type: 'indigenous'` so they persist past the 1815 nations handoff; `scripts/check-native-nations.js`) follow the same pattern. Country packs (Day 65 on) live in `src/globe-pack-<country>.js` (see above); add the pack to `PACKS` in `scripts/check-country-packs.js`. After editing the nations tables, run `npm run build:nations`.
 5. **Trade routes, migrations and lidar finds:** edit `data/trade-routes.json` / `data/migrations.json` / `data/lidar-finds.json` (formats above).
 5b. **Celestial sky (stars / Milky Way / constellations):** regenerate with `node scripts/build-sky.mjs --constellations` (and `--bsc` / `--cubemap` when rebuilding those); do not invent star coordinates or asterism geometry — rebuild from the Yale BSC JSON and d3-celestial GeoJSON. License notes in `docs/ATTRIBUTION-sky.md`.
 6. **A new kind of dataset:** a JSON file under `data/`, loaded with a dynamic `import()` from the view that needs it (see `COUNTRY_FILES` in `src/main.js`). Don't add a static import to `main.js`.
-7. Run `npm run validate` (also part of `npm run build`): schema, unique ids, categories, dates, sources, links, borders, labels, cities, pins, trade routes, migrations, lidar finds and lidar-mapped shapes.
+7. Run `npm run validate` (also part of `npm run build`): schema, unique ids, categories, dates, sources, links, borders, labels, cities, pins, trade routes, migrations, lidar finds, lidar-mapped shapes and country packs.
 
 `npm run dev` and `npm run build` run `scripts/build-data.mjs` first (it writes the generated index); there is nothing else to run.
 

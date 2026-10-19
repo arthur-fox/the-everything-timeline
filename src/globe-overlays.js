@@ -32,6 +32,7 @@ import { inlandAfricaPolities } from './globe-inland-africa.js';
 import { nativeNationsPolities } from './globe-native-nations.js';
 import { earlyMedievalPolities, extraKeyframes as earlyMedievalExtraKeyframes } from './globe-early-medieval.js';
 import { lidarPresenceEntities, applyLidarShapeNotes } from './globe-lidar-shapes.js';
+import { peruPolities, applyPeruShapeFixes } from './globe-pack-peru.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6274,6 +6275,14 @@ for (const ent of nativeNationsPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 65 — Phase 5 country pack 1, Peru (globe-pack-peru.js): Caral to the Neo-Inca State; the
+// redrawn Inca Empire replaces the old schematic one, the rest are appended.
+for (const ent of peruPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6306,6 +6315,9 @@ for (const shape of lidarPresenceEntities) {
   spatialEntities.push(shape);
 }
 applyLidarShapeNotes(spatialEntities);
+// Day 65 — Spanish, colonial and Andean peoples / presence shapes over Peru redrawn to the coast,
+// and the Spanish Andes no longer appear before Pizarro (1532).
+applyPeruShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
