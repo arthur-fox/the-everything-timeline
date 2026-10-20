@@ -26,4 +26,4 @@ We do not invent coordinates — every star comes from the catalogue.
 
 ## Runtime
 
-`src/globe-sky.js` loads the assets only with the globe chunk: one `THREE.Points` mesh, one inward-facing textured sphere, one `LineSegments` mesh for constellation lines, and sprite labels for names. No per-frame CPU star or constellation work. A key toggle (`&constellations=0`) hides lines and names. Light theme hides the whole sky group. Axial precession is a single quaternion on the sky group when the globe year changes (ecliptic-pole rotation; Thuban ≈ 3000 BCE, Polaris today).
+`src/globe-sky.js` loads the assets only with the globe chunk: one `THREE.Points` mesh, one inward-facing textured sphere, one `LineSegments` mesh for constellation lines, and sprite labels for names. No per-frame CPU star or constellation work. A key toggle shows or hides lines and names; since Day 67 they are off by default (`&constellations=1` turns them on). Light theme hides the whole sky group. Axial precession is a single quaternion on the sky group when the globe year changes (ecliptic-pole rotation; Thuban ≈ 3000 BCE, Polaris today).

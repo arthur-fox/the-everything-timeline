@@ -299,8 +299,9 @@ let globeEventsOn = true;
 let globeFlowsOn = true;
 // Day 55: migrations on the globe (key "Migrations" toggle; `&migrations=0` when off).
 let globeMigrationsOn = true;
-// Day 62: constellation lines/names on the globe (key "Constellations" toggle; `&constellations=0` when off).
-let globeConstellationsOn = true;
+// Day 62: constellation lines/names on the globe (key "Constellations" toggle).
+// Day 67: off by default (Arthur: they make the space background hard to see); `&constellations=1` turns them on.
+let globeConstellationsOn = false;
 // Day 63: lidar "hidden cities" pins on the globe (key "Lidar finds" toggle; `&lidar=0` when off).
 let globeLidarOn = true;
 let compareLeft = 'technology';
@@ -606,7 +607,7 @@ function syncDeepLinkUrl() {
       if (!globeEventsOn) params.set('events', '0');
       if (!globeFlowsOn) params.set('flows', '0');
       if (!globeMigrationsOn) params.set('migrations', '0');
-      if (!globeConstellationsOn) params.set('constellations', '0');
+      if (globeConstellationsOn) params.set('constellations', '1');
       if (!globeLidarOn) params.set('lidar', '0');
     } else {
       const selectedId = getSelectedDeepLinkId();
@@ -893,7 +894,7 @@ function applyDeepLinkFromUrl() {
     if (flowsRaw != null) setGlobeExtraShown('flows', !/^(0|off|false|no|none)$/i.test(flowsRaw.trim()), { syncUrl: false });
     // Day 55: ?migrations=0 hides the migrations.
     if (migrationsRaw != null) setGlobeExtraShown('migrations', !/^(0|off|false|no|none)$/i.test(migrationsRaw.trim()), { syncUrl: false });
-    // Day 62: ?constellations=0 hides constellation lines and names.
+    // Day 62/67: constellations are off by default; ?constellations=1 shows them (=0 still means off).
     if (constellationsRaw != null) setGlobeExtraShown('constellations', !/^(0|off|false|no|none)$/i.test(constellationsRaw.trim()), { syncUrl: false });
     // Day 63: ?lidar=0 hides the lidar "hidden cities" pins.
     if (lidarRaw != null) setGlobeExtraShown('lidar', !/^(0|off|false|no|none)$/i.test(lidarRaw.trim()), { syncUrl: false });

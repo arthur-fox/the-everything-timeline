@@ -851,7 +851,7 @@ Do not merge until Arthur approves.
 Arthur: replace the plain background with a starfield and space scene.
 
 - **Step 7.1 — Stars and the Milky Way.** ✅ Day 61, done-in-PR. A celestial sphere behind the globe: Yale BSC stars (mag ≤ 6.5, public-domain JSON → `public/sky/bsc-stars.bin`) sized/tinted by magnitude and spectral class, plus a Milky Way equirectangular from NASA SVS Deep Star Maps 2020 (`public/sky/milkyway-celestial.webp`). Earth's axis = celestial pole; one Points mesh + one texture; see Day 61 write-up and `docs/ATTRIBUTION-sky.md`.
-- **Step 7.2 — Constellations.** ✅ Day 62, done-in-PR. Constellation lines and names in roughly correct positions from d3-celestial BSD-3 GeoJSON → `public/sky/constellations.bin` (same celestial frame as Day 61 stars); key toggle on by default (`&constellations=0` when off); lightweight axial precession by year (ecliptic-pole quaternion; Thuban ≈ 3000 BCE, Polaris today). See Day 62 write-up and `docs/ATTRIBUTION-sky.md`.
+- **Step 7.2 — Constellations.** ✅ Day 62, done-in-PR. Constellation lines and names in roughly correct positions from d3-celestial BSD-3 GeoJSON → `public/sky/constellations.bin` (same celestial frame as Day 61 stars); key toggle (on by default until Day 67, now off by default; `&constellations=1` turns it on); lightweight axial precession by year (ecliptic-pole quaternion; Thuban ≈ 3000 BCE, Polaris today). See Day 62 write-up and `docs/ATTRIBUTION-sky.md`.
 - **Phone budget:** one point cloud and one texture; no per-frame CPU work. ✅ met in step 7.1; step 7.2 adds one static `LineSegments` + sprites (rebuilt only on toggle / year for precession quaternion).
 
 #### Day 61 — Stars and the Milky Way (step 7.1) — done-in-PR
@@ -862,7 +862,7 @@ Arthur: replace the plain background with a starfield and space scene.
 
 #### Day 62 — Constellations (step 7.2) — done-in-PR
 - `src/globe-sky.js`: d3-celestial stick figures as one `THREE.LineSegments` mesh + short IAU abbreviation sprites; same world-fixed celestial frame as Day 61; light theme still hides the whole sky group.
-- Key **"Constellations"** toggle (on by default; `&constellations=0`); axial precession is one quaternion on the sky group when the year changes (no per-frame CPU).
+- Key **"Constellations"** toggle (off by default since Day 67; `&constellations=1` turns it on); axial precession is one quaternion on the sky group when the year changes (no per-frame CPU).
 - Asset `public/sky/constellations.bin` (~20 KB, 88 IAU constellations); rebuild `python3 scripts/build-sky.py --constellations`. Attribution in `docs/ATTRIBUTION-sky.md` (BSD-3 © Olaf Frohn / d3-celestial).
 - **Next:** Item 8 lidar finds (8.1 hidden-cities pins).
 
@@ -912,6 +912,7 @@ Inspired by [lidar lost-cities write-up](https://bakerbench.substack.com/p/i-wen
   - years increase strictly, values are positive, and every point names its source;
   - no step falls by more than 15% (HYDE's real dips at 300 and 1400 CE pass);
   - the series covers the slider (3000 BCE–2025) and ends near 8.2 billion.
+- **Constellations off by default (Arthur's review of #81):** they made the space background hard to see. The key toggle still turns them on, and `&constellations=1` turns them on in a link (`&constellations=0` still means off). No saved preference forces them on; the state lives only in the URL.
 - **Later (only if wanted):** the same figure on the Timeline view; per-region populations (HYDE has continents) in a shape's detail panel.
 
 ## Custom domain & sharing (Arthur, 9 Oct 2026)

@@ -4,7 +4,7 @@
  * 7.1: One Points mesh (Yale Bright Star Catalogue subset, mag ≤ 6.5) + one inward-facing
  *      Milky Way texture (NASA SVS Deep Star Maps 2020 → celestial equirectangular WebP).
  * 7.2: Constellation stick figures + short names (d3-celestial BSD-3 GeoJSON → compact binary),
- *      key toggle (`&constellations=0`), lightweight axial precession by year.
+ *      key toggle (off by default since Day 67; `&constellations=1`), lightweight axial precession by year.
  *
  * No per-frame CPU work. Earth's axis = celestial pole (J2000); camera orbit reveals different
  * sky. Precession rotates the whole sky group only when the year changes.
@@ -35,7 +35,7 @@ let constellationLines = null;
 let constellationNames = null;
 let attachedScene = null;
 let themeObserver = null;
-let constellationsEnabled = true;
+let constellationsEnabled = false; // Day 67: off by default (main.js turns them on via the key / `&constellations=1`)
 let skyYear = J2000_YEAR;
 let THREE_REF = null;
 let precessAxis = null;
@@ -381,7 +381,7 @@ export function syncSkyTheme() {
   skyGroup.visible = !light;
 }
 
-/** Day 62: constellation lines/names on or off (key toggle, `&constellations=0`). */
+/** Day 62: constellation lines/names on or off (key toggle; off by default since Day 67, `&constellations=1`). */
 export function setGlobeConstellationsEnabled(on) {
   constellationsEnabled = Boolean(on);
   syncConstellationVisibility();
