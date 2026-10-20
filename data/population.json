@@ -1,0 +1,94 @@
+{
+  "_about": "Approximate world population by year for the globe's population readout (Day 67). Values are Our World in Data's long-run 'Population' series, rounded to 4 significant figures: HYDE 3.3 (2023) for 10,000 BCE to 1799, Gapminder v7 (2022) for 1800 to 1949, UN World Population Prospects 2024 for 1950 on (2024 onward are the UN medium-variant figures). The site interpolates log-linearly between points. Pre-1800 figures are uncertain by tens of percent (1 CE estimates run from about 170 to 330 million; 10,000 BCE from about 1 to 10 million); treat them as orders of magnitude. HYDE's year '0' is stored as 1 CE.",
+  "sources": [
+    {
+      "id": "owid",
+      "title": "Our World in Data: Population (HYDE 2023; Gapminder 2022; UN WPP 2024)",
+      "url": "https://ourworldindata.org/grapher/population"
+    },
+    {
+      "id": "hyde",
+      "title": "HYDE 3.3: History Database of the Global Environment (Klein Goldewijk et al., Utrecht University / PBL, 2023)",
+      "url": "https://doi.org/10.24416/UU01-AEZZIT"
+    },
+    {
+      "id": "gapminder",
+      "title": "Gapminder: Population v7",
+      "url": "https://www.gapminder.org/data/documentation/gd003/"
+    },
+    {
+      "id": "un-wpp",
+      "title": "UN World Population Prospects 2024",
+      "url": "https://population.un.org/wpp/"
+    },
+    {
+      "id": "census",
+      "title": "US Census Bureau: Historical Estimates of World Population (comparison of published estimates)",
+      "url": "https://www.census.gov/data/tables/time-series/demo/international-programs/historical-est-worldpop.html"
+    },
+    {
+      "id": "owid-sources",
+      "title": "Our World in Data: Population sources and methodology",
+      "url": "https://ourworldindata.org/population-sources"
+    }
+  ],
+  "points": [
+    {"year": -10000, "pop": 4501000, "src": "HYDE 3.3"},
+    {"year": -9000, "pop": 5687000, "src": "HYDE 3.3"},
+    {"year": -8000, "pop": 7315000, "src": "HYDE 3.3"},
+    {"year": -7000, "pop": 9652000, "src": "HYDE 3.3"},
+    {"year": -6000, "pop": 13280000, "src": "HYDE 3.3"},
+    {"year": -5000, "pop": 19160000, "src": "HYDE 3.3"},
+    {"year": -4000, "pop": 28860000, "src": "HYDE 3.3"},
+    {"year": -3000, "pop": 44580000, "src": "HYDE 3.3"},
+    {"year": -2000, "pop": 72690000, "src": "HYDE 3.3"},
+    {"year": -1000, "pop": 110500000, "src": "HYDE 3.3"},
+    {"year": 1, "pop": 232300000, "src": "HYDE 3.3"},
+    {"year": 100, "pop": 237100000, "src": "HYDE 3.3"},
+    {"year": 200, "pop": 240800000, "src": "HYDE 3.3"},
+    {"year": 300, "pop": 227700000, "src": "HYDE 3.3"},
+    {"year": 400, "pop": 241700000, "src": "HYDE 3.3"},
+    {"year": 500, "pop": 253400000, "src": "HYDE 3.3"},
+    {"year": 600, "pop": 271600000, "src": "HYDE 3.3"},
+    {"year": 700, "pop": 278300000, "src": "HYDE 3.3"},
+    {"year": 800, "pop": 285900000, "src": "HYDE 3.3"},
+    {"year": 900, "pop": 311100000, "src": "HYDE 3.3"},
+    {"year": 1000, "pop": 323500000, "src": "HYDE 3.3"},
+    {"year": 1100, "pop": 397900000, "src": "HYDE 3.3"},
+    {"year": 1200, "pop": 444700000, "src": "HYDE 3.3"},
+    {"year": 1300, "pop": 456200000, "src": "HYDE 3.3"},
+    {"year": 1400, "pop": 442300000, "src": "HYDE 3.3"},
+    {"year": 1500, "pop": 503100000, "src": "HYDE 3.3"},
+    {"year": 1600, "pop": 516100000, "src": "HYDE 3.3"},
+    {"year": 1700, "pop": 595500000, "src": "HYDE 3.3"},
+    {"year": 1750, "pop": 753300000, "src": "HYDE 3.3"},
+    {"year": 1800, "pop": 983100000, "src": "Gapminder v7"},
+    {"year": 1810, "pop": 1020000000, "src": "Gapminder v7"},
+    {"year": 1820, "pop": 1090000000, "src": "Gapminder v7"},
+    {"year": 1830, "pop": 1162000000, "src": "Gapminder v7"},
+    {"year": 1840, "pop": 1220000000, "src": "Gapminder v7"},
+    {"year": 1850, "pop": 1276000000, "src": "Gapminder v7"},
+    {"year": 1860, "pop": 1298000000, "src": "Gapminder v7"},
+    {"year": 1870, "pop": 1340000000, "src": "Gapminder v7"},
+    {"year": 1880, "pop": 1415000000, "src": "Gapminder v7"},
+    {"year": 1890, "pop": 1521000000, "src": "Gapminder v7"},
+    {"year": 1900, "pop": 1627000000, "src": "Gapminder v7"},
+    {"year": 1910, "pop": 1767000000, "src": "Gapminder v7"},
+    {"year": 1920, "pop": 1895000000, "src": "Gapminder v7"},
+    {"year": 1930, "pop": 2072000000, "src": "Gapminder v7"},
+    {"year": 1940, "pop": 2292000000, "src": "Gapminder v7"},
+    {"year": 1950, "pop": 2493000000, "src": "UN WPP 2024"},
+    {"year": 1960, "pop": 3015000000, "src": "UN WPP 2024"},
+    {"year": 1970, "pop": 3695000000, "src": "UN WPP 2024"},
+    {"year": 1980, "pop": 4448000000, "src": "UN WPP 2024"},
+    {"year": 1990, "pop": 5328000000, "src": "UN WPP 2024"},
+    {"year": 2000, "pop": 6172000000, "src": "UN WPP 2024"},
+    {"year": 2010, "pop": 7022000000, "src": "UN WPP 2024"},
+    {"year": 2020, "pop": 7887000000, "src": "UN WPP 2024"},
+    {"year": 2022, "pop": 8021000000, "src": "UN WPP 2024"},
+    {"year": 2023, "pop": 8092000000, "src": "UN WPP 2024"},
+    {"year": 2024, "pop": 8162000000, "src": "UN WPP 2024", "projection": true},
+    {"year": 2025, "pop": 8232000000, "src": "UN WPP 2024", "projection": true},
+    {"year": 2026, "pop": 8301000000, "src": "UN WPP 2024", "projection": true}
+  ]
+}

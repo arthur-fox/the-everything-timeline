@@ -3357,6 +3357,13 @@ const globeViewEl = document.getElementById('globe-view');
 const globeYearSlider = document.getElementById('globe-year-slider');
 const globeYearLabel = document.getElementById('globe-year-label');
 const globeYearCaption = document.getElementById('globe-year-caption');
+// Day 67: world population readout (see updateGlobePopulation)
+const globePopBtn = document.getElementById('globe-pop');
+const globePopValue = document.getElementById('globe-pop-value');
+const globePopNote = document.getElementById('globe-pop-note');
+const globePopSource = document.getElementById('globe-pop-source');
+let populationModule = null;
+let populationLoading = null;
 const globeOverlayList = document.getElementById('globe-overlay-list');
 const globeOverlayEmpty = document.getElementById('globe-overlay-empty');
 const globeOverlayPanelHeading = document.querySelector('.globe-overlay-panel-heading');
@@ -4250,9 +4257,51 @@ function updateGlobeYearUI() {
     const y = Number(btn.dataset.year);
     btn.classList.toggle('is-active', y === globeYear);
   });
+  updateGlobePopulation();
   updateGlobeOverlayPanel();
   globeSet('setGlobeOverlayYear', globeYear);
 }
+
+// Day 67: approximate world population next to the year readout. The data (≈2 KB) loads with
+// the globe UI the first time it's needed, never with the timeline landing.
+
+function updateGlobePopulation() {
+  if (!globePopValue) return;
+  if (!populationModule) {
+    populationLoading ||= import('./population.js')
+      .then((m) => {
+        populationModule = m;
+        updateGlobePopulation();
+      })
+      .catch(() => globePopBtn?.closest('.globe-pop-wrap')?.setAttribute('hidden', ''));
+    return;
+  }
+  const { worldPopulation, formatPopulation, populationSourceFor } = populationModule;
+  const pop = worldPopulation(globeYear);
+  const long = formatPopulation(pop, globeYear);
+  globePopValue.textContent = `≈ ${long}`;
+  globePopValue.dataset.short = `≈ ${formatPopulation(pop, globeYear, { short: true })}`;
+  if (globePopBtn) globePopBtn.setAttribute('aria-label', `World population in ${formatGlobeYear(globeYear)}: about ${long}. Show sources`);
+  if (globePopSource) globePopSource.textContent = `${formatGlobeYear(globeYear)}: ${populationSourceFor(globeYear)}`;
+}
+
+function setGlobePopNoteOpen(open) {
+  if (!globePopBtn || !globePopNote) return;
+  globePopNote.hidden = !open;
+  globePopBtn.setAttribute('aria-expanded', String(open));
+  document.body.classList.toggle('globe-pop-open', open);
+}
+
+globePopBtn?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  setGlobePopNoteOpen(globePopNote?.hidden);
+});
+document.addEventListener('click', (e) => {
+  if (globePopNote && !globePopNote.hidden && !e.target.closest?.('.globe-pop-wrap')) setGlobePopNoteOpen(false);
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && globePopNote && !globePopNote.hidden) setGlobePopNoteOpen(false);
+});
 
 function setGlobeYear(yearRaw, { syncUrl = true } = {}) {
   let year = Math.round(Number(yearRaw));

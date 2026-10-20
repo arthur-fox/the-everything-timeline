@@ -262,6 +262,13 @@
         <div class="globe-year-row">
           <span class="globe-year-heading">Year</span>
           <span id="globe-year-label" class="globe-year-label">117 CE</span>
+          <span class="globe-pop-wrap">
+            <button id="globe-pop" class="globe-pop" type="button" aria-expanded="false" aria-controls="globe-pop-note" title="Approximate world population in this year · tap for sources"><span class="globe-pop-label">World population</span> <span id="globe-pop-value" class="globe-pop-value" aria-live="polite">≈ 240 million</span></button>
+            <span id="globe-pop-note" class="globe-pop-note" role="note" hidden>
+              <strong>Estimate.</strong> <span id="globe-pop-source"></span>. Interpolated between published figures; before 1800 these are uncertain by tens of percent (1 CE estimates run from about 170 to 330 million).<br />
+              Sources: <a href="https://ourworldindata.org/grapher/population" target="_blank" rel="noopener">Our World in Data</a> · <a href="https://doi.org/10.24416/UU01-AEZZIT" target="_blank" rel="noopener">HYDE 3.3</a> · <a href="https://www.gapminder.org/data/documentation/gd003/" target="_blank" rel="noopener">Gapminder</a> · <a href="https://population.un.org/wpp/" target="_blank" rel="noopener">UN WPP 2024</a>
+            </span>
+          </span>
           <span class="globe-scrub-zoom" role="group" aria-label="Zoom the year scrubber">
             <span id="globe-scrub-range" class="globe-scrub-range" aria-live="polite">All years</span>
             <button id="globe-scrub-zoom-out" class="globe-scrub-btn" type="button" aria-label="Zoom the scrubber out (more years)" title="Zoom out (more years)">&minus;</button>

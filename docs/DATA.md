@@ -21,6 +21,7 @@ The Everything Timeline is a static site: all content is plain files in this rep
 | Lidar-mapped shapes (Day 64) | `src/globe-lidar-shapes.js` (see below) | lazy globe chunk, with the other presence shapes (6 shapes, 44 vertices) |
 | Country-pack globe backfill (Day 65: Peru) | `src/globe-pack-<country>.js` + shared coast trace `src/globe-andes-coast.js` (see below) | lazy globe chunk |
 | Timeline → globe links (Day 65) | generated: `src/generated/globe-links.json` (gitignored, from `scripts/build-data.mjs`) | the first time a timeline detail panel opens (≈19 KB gz) |
+| World population (Day 67) | `data/population.json` (year, pop, src; sources listed in the file; checked by `scripts/check-population.js`) | with the globe UI, first time the year readout updates (≈1.4 KB gzipped chunk via `src/population.js`) |
 | Celestial sky (Days 61–62) | `public/sky/bsc-stars.bin` + `milkyway-celestial.webp` + `constellations.bin` (see ATTRIBUTION-sky.md) | with the globe (`globe-sky.js`); Points + texture + LineSegments/names; key toggle `&constellations=0` |
 
 Ids are stable kebab-case strings (`kamakura-shogunate`, `nation-france`) and are used in deep links (`?view=country:japan&id=kamakura-shogunate`), bookmarks and globe ↔ timeline links (`timelineItemIds`). Never rename an id; add a new one instead.
