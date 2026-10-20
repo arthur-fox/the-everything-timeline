@@ -33,6 +33,7 @@ import { nativeNationsPolities } from './globe-native-nations.js';
 import { earlyMedievalPolities, extraKeyframes as earlyMedievalExtraKeyframes } from './globe-early-medieval.js';
 import { lidarPresenceEntities, applyLidarShapeNotes } from './globe-lidar-shapes.js';
 import { peruPolities, applyPeruShapeFixes } from './globe-pack-peru.js';
+import { ghanaPolities, applyGhanaShapeFixes } from './globe-pack-ghana.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6283,6 +6284,14 @@ for (const ent of peruPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 66 — Phase 5 country pack 1, Ghana (globe-pack-ghana.js): Bono to the Fante coast and the
+// northern kingdoms; the redrawn Asante Empire replaces the Day 58 one, the rest are appended.
+for (const ent of ghanaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6318,6 +6327,8 @@ applyLidarShapeNotes(spatialEntities);
 // Day 65 — Spanish, colonial and Andean peoples / presence shapes over Peru redrawn to the coast,
 // and the Spanish Andes no longer appear before Pizarro (1532).
 applyPeruShapeFixes(spatialEntities);
+// Day 66 — the West African presence bands follow Ghana's shore instead of crossing the Gulf of Guinea.
+applyGhanaShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

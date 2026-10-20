@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); step 7.1 stars/Milky Way is done (Day 61); step 7.2 constellations is done-in-PR (Day 62); steps 7.2 constellations and 8.1 lidar hidden-cities pins are merged (#76, #77, 17 Oct) and PR #72 coast spill is merged; step 8.2 honest shape updates is done-in-PR (Day 64); Phase 5 country packs covering both views have started: pack 1 globe backfill, Peru, is done-in-PR (Day 65), next Ghana / Morocco** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); step 7.1 stars/Milky Way is done (Day 61); step 7.2 constellations is done-in-PR (Day 62); steps 7.2 constellations and 8.1 lidar hidden-cities pins are merged (#76, #77, 17 Oct) and PR #72 coast spill is merged; step 8.2 honest shape updates is done-in-PR (Day 64); Phase 5 country packs covering both views have started: pack 1 globe backfill, Peru, is done-in-PR (Day 65) and Ghana is done-in-PR (Day 66), next Morocco** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -971,7 +971,7 @@ Each pack takes one country (or a small group of neighbours) and refines **both 
 
 Proposed order:
 
-1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, done-in-PR); next Ghana, then Morocco, Kenya, Iraq, Philippines.**
+1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, done-in-PR); Ghana ✅ (Day 66, done-in-PR); next Morocco, then Kenya, Iraq, Philippines.**
 2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates).
 3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits).
 4. **Central Africa:** DR Congo, Angola, Cameroon, Chad (Kongo, Luba, Lunda, Kanem-Bornu).
@@ -1012,6 +1012,29 @@ Peru had a sourced timeline (Day 33), but on the globe it had only a schematic I
   - Tiwanaku and the Bolivian / Chilean Andes are left for their own packs (§13 "The Andes before the Inca").
   - Ghana and Morocco were not started, so Peru got the full pass.
 - **Next:** pack 1 globe backfill continues with **Ghana** (Ghana Empire is already drawn; add Bono, Akan states, Asante keyframes, Elmina / Cape Coast forts, Gold Coast colony), then Morocco, Kenya, Iraq, the Philippines.
+
+#### Day 66 — Pack 1 globe backfill: Ghana — done-in-PR
+
+Ghana had a sourced timeline but on the globe only a four-keyframe Asante Empire (Day 58) whose southern side ran into the Gulf of Guinea, plus broad presence bands. Nothing showed the Akan states before Asante, the coast states, or the savanna kingdoms of the north. Now Ghana's history is drawn from Bono to 1815, where the nations layer (Ashanti, then the British Gold Coast) takes over.
+
+- **Shapes (`src/globe-pack-ghana.js`, lazy globe chunk): 10 polities, 54 keyframes,** each with a certainty level and reason, sources and links to Ghana's timeline items:
+  - **Forest Akan states:** Bono (Bono Manso and Begho, 1350–1723, conjectural), Denkyira (Abankeseso, 1620–1701), Akwamu (1600–1730: Accra in 1681, Winneba to Little Popo by 1710, then the move across the Volta to Akwamufie), Akyem (Kyebi; crushes Akwamu in 1730, conquered by Asante in 1742).
+  - **Coast:** Great Accra, the Ga kingdom (Ayawaso, 1500–1677/81), and the Fante states (Mankessim and Anomabo, 1620–1815).
+  - **North:** Dagbon (from the 1400s; Yendi after Gonja takes Daboya in 1713), Mamprugu (Gambaga, then Nalerigu), Gonja (Ngbanya horsemen about 1600, Jakpa's kingdom about 1675, Salaga), drawn as three touching regions so it grows without its outline sliding over Dagbon.
+  - **Asante Empire (redrawn, same id):** 1701 Kumasi union → 1722 Denkyira's old lands → 1723 Bono → 1742/1750 Akyem and the Accra coast → 1807 armies on the Fante coast. Tributaries (Dagbon 1744, Gonja 1751) are drawn as their own kingdoms with "(Asante tributary)" names, not swallowed into Asante.
+- **Coast:** a traced Gulf of Guinea shore (`GOLD_COAST`, read off the globe's own land every 0.1° and nudged 0.05° inland), so coastal shapes stop at the beach. The old Asante's southern vertices were in the sea.
+- **Existing shapes fixed (`applyGhanaShapeFixes`):** the West African presence bands (`west-africa-sahel-presence` 1400/1700, `global-modern-presence` 1700–2025) ran straight across the Gulf of Guinea and shaded the sea off Ghana; their southern edge now follows Ghana's shore from 3°W to 1.8°E (checked at their keyframes).
+- **No overlaps:** the pack's own shapes never overlap each other in any year 1300–1815 (checked every 5 years on a 0.1° grid; keyframes for conquests are paired, e.g. Akwamu 1729/1730 with Akyem 1730/1731, so morphs don't slide over a neighbour).
+- **Cities: +18** — Begho, Bono Manso, Takyiman → Techiman, Abankeseso, Kyebi, Akwamufie, Mankessim, Cabo Corso → Cape Coast, Anomabo, Axim, Keta, Yendi, Nalerigu, Salaga, Bole, Tamale (1907), Sekondi-Takoradi (1928), Tema (1952).
+- **Pins: +24**, using `country:ghana:<item>` refs: Begho's market, Denkyira's rise, the Portuguese at Shama (1471), São Jorge da Mina (1482), Cape Coast Castle, Christiansborg, Gross Friedrichsburg, Elmina handed to Britain (1872); Akwamu takes Great Accra, Akyem defeats Akwamu; the Golden Stool, Feyiase, Anomabo (1807), Kumasi burned (1874), Yaa Asantewaa's war (1900); the Fante Confederation (1868); Gonja takes Daboya, Dagbon's tribute to Asante; Tetteh Quarshie's cocoa (1879), Takoradi harbour, the 1948 Cross-Roads shooting, independence (1957), Akosombo (1965), the 1966 coup.
+- **Timeline (`data/countries/ghana.json`): +3 sourced items** — "Great Accra, Akwamu & Akyem", "Fante States", "Dagbon, Mamprugu & Gonja" (new "Northern Kingdoms" category; 10 items now).
+- **Validate:** Ghana is a second row in `scripts/check-country-packs.js` (land, rings, sources, 26 capitals and type sites inside their shapes, who is on / gone at sample years, and the new no-overlap test). `check-inland-africa.js` now accepts a country pack's redraw of one of its polities (Asante).
+- **Honest caveats:**
+  - None of these states had written borders. Outlines are the districts traditions and European traders' reports say they ruled or taxed, drawn roughly; Bono is conjectural.
+  - Northern dates (Dagbon and Mamprugu's founding, Gonja's) come from drum histories and the Kitab Ghanja and are argued over.
+  - Smaller states (Wassa, Twifo, Assin, Nzema, Ahanta, Krobo, the Ewe states) and the European forts as territory are not drawn; the forts are cities and pins.
+  - Next door, the schematic French (1700–1830) and Portuguese (1500–1700) "west-africa-coast" shapes still cover inland Côte d'Ivoire and Guinea, and the presence bands still cross the sea off Côte d'Ivoire and Benin. Those belong to the West Africa fill-the-globe pass.
+- **Next:** pack 1 globe backfill continues with **Morocco** (Mauretania, Idrisids, Almoravids, Almohads, Marinids, Saadians, Alaouites), then Kenya, Iraq, the Philippines.
 
 ### 13. Fill the globe, region by region (after the packs above)
 
@@ -1154,7 +1177,8 @@ A sensible near-term sequence:
 50. Phase 4c step 7.2 — constellations (Day 62) ✅ (done-in-PR).
 51. Item 8 — lidar finds: 8.1 hidden-cities pins (Day 63) ✅ (merged, #77) → 8.2 honest shape updates (Day 64) ✅ (done-in-PR).
 52. Phase 5 country packs covering both views (Timeline + Globe): pack 1 globe backfill — Peru (Day 65) ✅ (done-in-PR).
-53. **Now: pack 1 globe backfill continues — Ghana, then Morocco, Kenya, Iraq, Philippines. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
+53. Pack 1 globe backfill — Ghana (Day 66) ✅ (done-in-PR, stacked on Peru).
+54. **Now: pack 1 globe backfill continues — Morocco, then Kenya, Iraq, Philippines. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
