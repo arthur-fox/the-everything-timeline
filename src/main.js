@@ -1908,13 +1908,72 @@ function renderDetailSources(sources) {
 let detailContext = null;
 
 function clearDetailRelated() {
-  const wrap = document.getElementById('detail-related');
-  const list = document.getElementById('detail-related-list');
-  if (list) list.innerHTML = '';
-  if (wrap) {
-    wrap.classList.add('hidden');
-    wrap.hidden = true;
+  for (const [w, l] of [['detail-related', 'detail-related-list'], ['detail-globe', 'detail-globe-list']]) {
+    const wrap = document.getElementById(w);
+    const list = document.getElementById(l);
+    if (list) list.innerHTML = '';
+    if (wrap) {
+      wrap.classList.add('hidden');
+      wrap.hidden = true;
+    }
   }
+}
+
+// Day 65 — timeline → globe: a timeline item's detail lists the globe shapes and pinned events
+// that belong to it ("On the globe"); a tap opens the globe at that year, there. The table is
+// built by scripts/build-data.mjs and loaded the first time a timeline detail opens.
+let globeLinksPromise = null;
+function loadGlobeLinks() {
+  if (!globeLinksPromise) {
+    globeLinksPromise = import('./generated/globe-links.json').then((m) => m.default || m, (err) => {
+      globeLinksPromise = null;
+      throw err;
+    });
+  }
+  return globeLinksPromise;
+}
+
+function renderDetailGlobeLinks(context) {
+  const wrap = document.getElementById('detail-globe');
+  const list = document.getElementById('detail-globe-list');
+  if (!wrap || !list) return;
+  list.innerHTML = '';
+  wrap.classList.add('hidden');
+  wrap.hidden = true;
+  if (!context?.id || context.view === 'globe' || String(context.kind || '').startsWith('globe')) return;
+  const key = context.view === 'cosmic' ? `event:${context.id}` : context.id;
+  loadGlobeLinks().then((links) => {
+    if (detailContext !== context) return;
+    const entries = (links[key] || []).slice(0, 10);
+    if (!entries.length) return;
+    for (const link of entries) {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'detail-related-link';
+      btn.textContent = link.e ? `🌍 ${link.n}` : `📍 ${link.p}`;
+      const hint = document.createElement('span');
+      hint.className = 'detail-related-view';
+      hint.textContent = `Globe · ${formatGlobeYear(link.y)}`;
+      btn.append(' ', hint);
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goToGlobeLink(link);
+      });
+      li.appendChild(btn);
+      list.appendChild(li);
+    }
+    wrap.classList.remove('hidden');
+    wrap.hidden = false;
+  }).catch(() => {});
+}
+
+function goToGlobeLink(link) {
+  if (currentView !== 'globe') switchView('globe');
+  setGlobeYear(link.y, { syncUrl: false });
+  globeSet('flyGlobeTo', link.lat, link.lng, link.a);
+  if (link.e) selectGlobeEntity(link.e, { syncUrl: true, openDetail: true });
+  syncDeepLinkUrl();
 }
 
 /**
@@ -1962,6 +2021,7 @@ function showDetail(title, date, description, sources, context = null) {
   renderDetailSources(sources);
   renderDetailRelated(context?.relatedItems || []);
   detailContext = context;
+  renderDetailGlobeLinks(context);
   updateDetailBookmarkButton();
   document.getElementById('event-detail').classList.remove('hidden');
 }
@@ -3605,10 +3665,22 @@ function resolveGlobePinRef(ref) {
     const evt = events.find((e) => e.title === key);
     return evt ? { view: 'cosmic', id: evt.title, item: evt, icon: evt.icon || '', title: evt.title, description: evt.description || '', sources: evt.sources } : null;
   }
+  if (kind === 'country') {
+    // Day 65: country-pack pins, 'country:<cid>:<item id>'. Until the country file has loaded only
+    // the light index entry is known (enough for hover); a click loads the full item first.
+    const [cid, itemId] = key.split(':');
+    const full = swimStates[cid]?.items.find((x) => x.id === itemId) || countryPinItems.get(key);
+    const hit = full ? { item: full, country: cid } : COUNTRY_ITEM_INDEX.get(itemId);
+    if (!hit || hit.country !== cid) return null;
+    const it = hit.item;
+    return { view: 'country:' + cid, id: it.id, item: it, icon: it.icon || '', title: it.name, description: it.description || '', sources: it.sources, country: cid, loaded: !!full };
+  }
   const it = swimStates[kind]?.items.find((x) => x.id === key);
   if (!it) return null;
   return { view: kind, id: it.id, item: it, icon: it.icon || '', title: it.name, description: it.description || '', sources: it.sources };
 }
+/** Day 65: full country items fetched for pin details ('<cid>:<item id>' → item). */
+const countryPinItems = new Map();
 
 // Day 63 — a tap on a lidar pin opens the find's story (site period, when lidar found it, what it changed).
 function showGlobeLidarDetail(f) {
@@ -3642,6 +3714,15 @@ function showGlobePinDetail(pin) {
   }
   const info = resolveGlobePinRef(pin.ref);
   if (!info) return;
+  if (info.country && !info.loaded) {
+    loadCountryData(info.country).then((data) => {
+      const it = (data?.items || []).find((x) => x.id === info.id);
+      if (!it) return;
+      countryPinItems.set(`${info.country}:${info.id}`, it);
+      showGlobePinDetail(pin);
+    }).catch(() => {});
+    return;
+  }
   clearGlobeEntitySelection({ syncUrl: false, closeDetail: false });
   const when = formatGlobeYear(pin.year);
   const title = `${info.icon ? info.icon + ' ' : ''}${pin.label}`;

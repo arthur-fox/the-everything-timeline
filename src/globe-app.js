@@ -23,6 +23,7 @@ export {
   setGlobeConstellationsEnabled,
   setGlobeLidarEnabled,
   getGlobeCameraAt,
+  flyGlobeTo,
   prefetchGlobe,
   getGlobeLoadSteps,
   snapshotGlobeCanvas,

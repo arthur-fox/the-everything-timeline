@@ -8,6 +8,7 @@
  *    src/data/nations.topo.json (coastal towns sit on the simplified coastline);
  *  - every event pin points at a real timeline entry and its year sits inside that entry's
  *    dates, give or take 30 years for founding moments (world events: within 15 years).
+ *    Day 65: 'country:<cid>:<item id>' pins resolve against data/countries/<cid>.json.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -71,6 +72,7 @@ const SAMPLES = [
   ['new-york', 1650, 'New Amsterdam'], ['new-york', 1700, 'New York'],
   ['jakarta', 1700, 'Batavia'], ['jakarta', 1950, 'Jakarta'], ['ho-chi-minh-city', 1970, 'Saigon'], ['ho-chi-minh-city', 1980, 'Ho Chi Minh City'],
   ['seoul', 1920, 'Keijō'], ['kyoto', 1000, 'Heian-kyō'], ['xian', 700, "Chang'an"],
+  ['huamanga', 1700, 'Huamanga'], ['huamanga', 1900, 'Ayacucho'], ['huari', 1200, null],
   ['teotihuacan', 400, 'Teotihuacan'], ['teotihuacan', 700, null], ['angkor', 1500, null], ['brasilia', 1950, null],
 ];
 for (const [id, y, want] of SAMPLES) {
@@ -151,6 +153,12 @@ for (const [i, p] of EVENT_PINS.entries()) {
     const e = events.find((x) => x.title === key);
     if (!e) fail(`${tag}: no world event titled "${key}"`);
     else if (Math.abs(e.year - p.year) > 15) fail(`${tag}: year ${p.year} is far from the event (${e.year})`);
+  } else if (kind === 'country') {
+    const [cid, itemId] = key.split(':');
+    const file = path.join(ROOT, 'data/countries', `${cid}.json`);
+    const it = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')).items.find((x) => x.id === itemId) : null;
+    if (!it) fail(`${tag}: no country item "${key}"`);
+    else if (p.year < it.start - 30 || p.year > it.end + 30) fail(`${tag}: year ${p.year} outside country:${key} (${it.start}–${it.end})`);
   } else {
     const it = VIEWS[kind]?.find((x) => x.id === key);
     if (!it) fail(`${tag}: no ${kind} item "${key}"`);

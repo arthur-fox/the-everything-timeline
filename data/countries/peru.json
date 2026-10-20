@@ -96,6 +96,37 @@
       ]
     },
     {
+      "id": "peru-paracas",
+      "name": "Paracas Culture",
+      "start": -800,
+      "end": -100,
+      "region": "andean-origins",
+      "icon": "🧵",
+      "description": "On the dry south coast around the Paracas peninsula and the Ica, Pisco and Chincha valleys, the Paracas people buried their dead in great cemeteries, wrapping mummy bundles in layers of brilliantly embroidered textiles. Julio C. Tello excavated over 400 bundles at the Necrópolis of Wari Kayan in 1927. Paracas art and farming carried straight on into the Nazca culture.",
+      "sources": [
+        {
+          "title": "Wikipedia — Paracas culture",
+          "url": "https://en.wikipedia.org/wiki/Paracas_culture"
+        },
+        {
+          "title": "Wikipedia — Paracas Peninsula",
+          "url": "https://en.wikipedia.org/wiki/Paracas_Peninsula"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Paracas Cavernas",
+          "start": -800,
+          "end": -300
+        },
+        {
+          "name": "Paracas Necrópolis",
+          "start": -300,
+          "end": -100
+        }
+      ]
+    },
+    {
       "id": "peru-nazca-moche",
       "name": "Nazca & Moche",
       "start": -100,
@@ -154,6 +185,99 @@
           "name": "Kingdom of Chimor",
           "start": 900,
           "end": 1470
+        }
+      ]
+    },
+    {
+      "id": "peru-sican",
+      "name": "Sicán (Lambayeque)",
+      "start": 750,
+      "end": 1375,
+      "region": "regional",
+      "icon": "🥇",
+      "description": "On Peru's far-north coast the Sicán (Lambayeque) culture, remembered in the legend of Naylamp who arrived by sea, built the adobe temples of Batán Grande and smelted arsenical bronze on an industrial scale; its gold funerary masks are among the finest Andean metalwork. After drought and floods around 1100 the temples were burned and the centre moved to Túcume, until Chimor conquered the region around 1375.",
+      "sources": [
+        {
+          "title": "Wikipedia — Sican culture",
+          "url": "https://en.wikipedia.org/wiki/Sican_culture"
+        },
+        {
+          "title": "Wikipedia — Túcume",
+          "url": "https://en.wikipedia.org/wiki/T%C3%BAcume"
+        },
+        {
+          "title": "Shimada et al., “Batán Grande: a prehistoric metallurgical center in Peru”, Science 216 (1982)",
+          "url": "https://doi.org/10.1126/science.216.4549.952"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Early Sicán",
+          "start": 750,
+          "end": 900
+        },
+        {
+          "name": "Middle Sicán (Batán Grande)",
+          "start": 900,
+          "end": 1100
+        },
+        {
+          "name": "Late Sicán (Túcume)",
+          "start": 1100,
+          "end": 1375
+        }
+      ]
+    },
+    {
+      "id": "peru-late-intermediate",
+      "name": "Kingdoms before the Inca",
+      "start": 1000,
+      "end": 1470,
+      "region": "regional",
+      "icon": "🏰",
+      "description": "Between Wari's fall and the Inca conquest, Peru was a patchwork of kingdoms and chiefdoms: Chimor on the north coast; the merchant lords of Chincha and the Pachacamac oracle of the Ychsma on the central and south coast; the Chachapoyas in the cloud forests around Kuélap; the warlike Chanka west of Cusco; the Aymara kingdoms of the Colla and Lupaca around Lake Titicaca — and the small Kingdom of Cusco, whose rulers would build the Inca Empire.",
+      "sources": [
+        {
+          "title": "Wikipedia — Late Intermediate Period",
+          "url": "https://en.wikipedia.org/wiki/Late_Intermediate_Period"
+        },
+        {
+          "title": "Wikipedia — Chincha culture",
+          "url": "https://en.wikipedia.org/wiki/Chincha_culture"
+        },
+        {
+          "title": "Wikipedia — Chachapoya culture",
+          "url": "https://en.wikipedia.org/wiki/Chachapoya_culture"
+        },
+        {
+          "title": "Wikipedia — Kingdom of Cusco",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Cusco"
+        },
+        {
+          "title": "Wikipedia — Colla Kingdom",
+          "url": "https://en.wikipedia.org/wiki/Colla_Kingdom"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Chachapoyas",
+          "start": 1000,
+          "end": 1470
+        },
+        {
+          "name": "Chincha and Ychsma",
+          "start": 1000,
+          "end": 1470
+        },
+        {
+          "name": "Chanka and the Kingdom of Cusco",
+          "start": 1200,
+          "end": 1438
+        },
+        {
+          "name": "Colla and Lupaca",
+          "start": 1150,
+          "end": 1460
         }
       ]
     },

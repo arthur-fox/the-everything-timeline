@@ -17,6 +17,8 @@ import {
 
 /** Vertex count for morph correspondence (closed ring stores N+1 with repeat). */
 export const MORPH_RING_SAMPLES = 48;
+/** Day 65: upper bound for detailed (coast-traced) rings in lerpRings. */
+export const MORPH_RING_MAX_SAMPLES = 160;
 
 /**
  * Signed area of a closed ring (positive ⇒ counter-clockwise in lng/lat plane).
@@ -176,14 +178,38 @@ export function lerpRings(ringA, ringB, t, samples = MORPH_RING_SAMPLES) {
     return ensureClockwise(out);
   }
 
-  const a = resampleRing(ringA, samples);
-  const b = resampleRing(ringB, samples);
+  // Day 65: coast-traced rings (e.g. Peru's shore, 60+ vertices) keep their detail mid-morph —
+  // about two samples per vertex, capped at 160. Rings of ≤24 vertices still use 48 as before.
+  const n = samples === MORPH_RING_SAMPLES
+    ? Math.min(MORPH_RING_MAX_SAMPLES, Math.max(samples, 2 * Math.max(openA.length, openB.length)))
+    : samples;
+  const a = resampleRing(ringA, n);
+  const b = resampleRing(ringB, n);
   if (!a || !b) return ensureClockwise(a || b);
+  // Detailed rings only: start B's samples where they best line up with A's, so the shape grows
+  // instead of twisting (≤24-vertex rings keep the old index-for-index behaviour).
+  let shift = 0;
+  if (n > MORPH_RING_SAMPLES) {
+    let best = Infinity;
+    for (let k = 0; k < n; k += 1) {
+      let d = 0;
+      for (let i = 0; i < n; i += 4) {
+        const p = a[i];
+        const q = b[(i + k) % n];
+        d += Math.abs(p[0] - q[0]) + Math.abs(p[1] - q[1]);
+      }
+      if (d < best) {
+        best = d;
+        shift = k;
+      }
+    }
+  }
   const out = [];
-  for (let i = 0; i < samples; i += 1) {
+  for (let i = 0; i < n; i += 1) {
+    const q = b[(i + shift) % n];
     out.push([
-      lerpLng(a[i][0], b[i][0], tt),
-      a[i][1] + (b[i][1] - a[i][1]) * tt,
+      lerpLng(a[i][0], q[0], tt),
+      a[i][1] + (q[1] - a[i][1]) * tt,
     ]);
   }
   out.push([out[0][0], out[0][1]]);
