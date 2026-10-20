@@ -16,6 +16,11 @@
       "color": "#EAB308"
     },
     {
+      "id": "north",
+      "name": "Northern Kingdoms",
+      "color": "#B45309"
+    },
+    {
       "id": "colonial",
       "name": "Gold Coast",
       "color": "#78716C"
@@ -64,6 +69,55 @@
       ]
     },
     {
+      "id": "ghana-northern-kingdoms",
+      "name": "Dagbon, Mamprugu & Gonja",
+      "start": 1450,
+      "end": 1899,
+      "region": "north",
+      "icon": "🐎",
+      "description": "The savanna north had its own kingdoms. In the 1400s Naa Gbewaa’s heirs founded Mamprugu and Dagbon, ruled by the Nayiri at Gambaga (later Nalerigu) and the Ya Na, whose capital moved to Yendi. Mande horsemen founded Gonja between the Volta rivers, and under Sumaila Ndewura Jakpa (about 1675) it became a kingdom with markets such as Salaga, where forest kola met the northern caravans. Asante made Dagbon (1744) and Gonja (1751) pay tribute. In 1899 Britain and Germany drew the Gold Coast–Togoland border straight through Dagbon.",
+      "sources": [
+        {
+          "title": "Wikipedia — Kingdom of Dagbon",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Dagbon"
+        },
+        {
+          "title": "Wikipedia — Gonja (kingdom)",
+          "url": "https://en.wikipedia.org/wiki/Gonja_(kingdom)"
+        },
+        {
+          "title": "Wikipedia — Mamprusi people",
+          "url": "https://en.wikipedia.org/wiki/Mamprusi_people"
+        },
+        {
+          "title": "Wikipedia — Salaga",
+          "url": "https://en.wikipedia.org/wiki/Salaga"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Dagbon and Mamprugu",
+          "start": 1450,
+          "end": 1675
+        },
+        {
+          "name": "Gonja and the kola trade",
+          "start": 1675,
+          "end": 1744
+        },
+        {
+          "name": "Asante tribute",
+          "start": 1744,
+          "end": 1874
+        },
+        {
+          "name": "Partition",
+          "start": 1874,
+          "end": 1899
+        }
+      ]
+    },
+    {
       "id": "ghana-coast-forts",
       "name": "European Forts & Atlantic Trade",
       "start": 1471,
@@ -95,6 +149,100 @@
         {
           "name": "Abolition & British consolidation",
           "start": 1807,
+          "end": 1874
+        }
+      ]
+    },
+    {
+      "id": "ghana-akwamu-akyem",
+      "name": "Great Accra, Akwamu & Akyem",
+      "start": 1500,
+      "end": 1742,
+      "region": "akan",
+      "icon": "⚔️",
+      "description": "In the south-east, the Ga kingdom of Great Accra ruled the Accra plains from its walled inland town of Ayawaso, with port towns where Portuguese, then Dutch, English, Swedish and Danish traders built lodges and forts. The Akwamu, an Akan state in the hills behind, conquered Great Accra in 1677–81, seized the Danish castle at Christiansborg in 1693 and by about 1710 ruled the coast from Winneba east past the Volta. Akyem and its allies broke Akwamu in 1730 and took Accra, until Asante conquered Akyem in 1742.",
+      "sources": [
+        {
+          "title": "Wikipedia — Akwamu",
+          "url": "https://en.wikipedia.org/wiki/Akwamu"
+        },
+        {
+          "title": "Wikipedia — Akyem",
+          "url": "https://en.wikipedia.org/wiki/Akyem"
+        },
+        {
+          "title": "Wikipedia — Ga-Dangme",
+          "url": "https://en.wikipedia.org/wiki/Ga-Dangme"
+        },
+        {
+          "title": "Wikipedia — Osu Castle",
+          "url": "https://en.wikipedia.org/wiki/Osu_Castle"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Great Accra (Ga kingdom)",
+          "start": 1500,
+          "end": 1681
+        },
+        {
+          "name": "Akwamu empire",
+          "start": 1681,
+          "end": 1730
+        },
+        {
+          "name": "Akyem and Accra",
+          "start": 1730,
+          "end": 1742
+        }
+      ]
+    },
+    {
+      "id": "ghana-fante",
+      "name": "Fante States",
+      "start": 1600,
+      "end": 1874,
+      "region": "akan",
+      "icon": "⛵",
+      "description": "Fante kingdoms and towns of the central coast, led from Mankessim, grew rich as the middlemen between inland states and the European forts. By the 1700s they had formed a strong alliance, and Anomabo was the busiest slave-trading port on the Gold Coast. Asante invaded in 1807, 1811 and 1816, and the Fante leaned on British protection. In 1868 they drew up a written constitution for a Fante Confederation, the first of its kind in West Africa, which Britain ended when it declared the Gold Coast Colony in 1874.",
+      "sources": [
+        {
+          "title": "Wikipedia — Fante Confederacy",
+          "url": "https://en.wikipedia.org/wiki/Fante_Confederacy"
+        },
+        {
+          "title": "Wikipedia — Mankessim",
+          "url": "https://en.wikipedia.org/wiki/Mankessim"
+        },
+        {
+          "title": "Wikipedia — Anomabu",
+          "url": "https://en.wikipedia.org/wiki/Anomabu"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Mankessim and the coast towns",
+          "start": 1600,
+          "end": 1700
+        },
+        {
+          "name": "Middlemen of the coast",
+          "start": 1700,
+          "end": 1807
+        },
+        {
+          "name": "Asante invasions",
+          "start": 1807,
+          "end": 1824
+        },
+        {
+          "name": "British protection",
+          "start": 1824,
+          "end": 1868
+        },
+        {
+          "name": "Fante Confederation",
+          "start": 1868,
           "end": 1874
         }
       ]

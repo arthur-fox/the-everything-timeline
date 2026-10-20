@@ -127,7 +127,7 @@ Only use a published area. The outline itself is drawn by hand, so it is never `
 
 ### Country-pack globe backfill (Day 65)
 
-A Phase 5 country pack refines a country's whole history on the globe in one module, `src/globe-pack-<country>.js` (first: `globe-pack-peru.js`). Nothing new in the format:
+A Phase 5 country pack refines a country's whole history on the globe in one module, `src/globe-pack-<country>.js` (first: `globe-pack-peru.js`; then `globe-pack-ghana.js`). Nothing new in the format:
 
 - **Polities** are ordinary spatial entities (`{ id, name, color, type, description, nameAt?, keyYears, overlays, timelineItemIds, confidence, sources, edgeGrace }`), wired in `globe-overlays.js` with the usual replace-by-id-else-append loop. Each links at least one item in `data/countries/<country>.json`.
 - **Coasts:** shapes that meet the sea take their west side from a traced coast (`src/globe-andes-coast.js`: `[lat, westernmost-land lng]` rows read off `nations.topo.json`, nudged 0.06° inland; `coastal(north, south, inland)` builds the closed ring). That stops Pacific spill. Rings longer than 24 vertices keep their detail mid-morph (`lerpRings` samples ≈2 per vertex, up to 160, and lines the rings up first; short rings are unchanged).
@@ -135,13 +135,16 @@ A Phase 5 country pack refines a country's whole history on the globe in one mod
 - **Cities** go in `src/globe-cities.js`. **Pins** go in `src/globe-event-pins.js` with the new ref form `'country:<country id>:<item id>'`, which resolves against the country file (hover uses the light index, and a click loads the full item).
 - **Timeline → globe:** `scripts/build-data.mjs` writes `src/generated/globe-links.json`, keyed by timeline item id (world events: `event:<title>`). Each entry lists the shapes that link to the item (`{ e, n, y, lat, lng, a }`: entity, name, year of its biggest keyframe inside the item's dates, camera target) and its pins (`{ p, y, lat, lng, a }`). The detail panel shows them under "On the globe". A tap switches to the globe at that year, flies there (`flyGlobeTo`) and selects the shape.
 
+Day 66 (Ghana) adds two conventions: a pack may **replace an existing polity by id** (the Day 58 Asante), and the region's own check must then accept the pack's version; and a coast that isn't the Pacific gets its own trace in the pack module (`GOLD_COAST`, `[lng, southernmost-land lat]`, nudged 0.05° inland, `shore(west, east)`). A pack can also pull an existing shape's sea-crossing edge onto its coast (`applyGhanaShapeFixes`: the West African presence bands), checked by `offshore` (no shading 0.25° and 0.65° off the trace at the shape's keyframes). A state that grows past a neighbour can be drawn as several touching regions that fade in (Gonja) so its outline never morphs across the neighbour.
+
 `scripts/check-country-packs.js` (in `npm run validate`, one `PACKS` row per country) checks:
 
 - rings are closed and don't cross themselves;
 - every vertex is on land or the coast, and ≥97% of an interior grid is land (for the pack's polities and for every region it redrew);
 - sources, confidence, ≥3 keyframes, nothing after 1815, and links to real timeline items;
 - type sites and capitals are inside their shape at a real date;
-- who is on and who is gone at sample years, and the fixed anachronisms stay fixed (no Spanish Andes before Pizarro).
+- who is on and who is gone at sample years, and the fixed anachronisms stay fixed (no Spanish Andes before Pizarro);
+- optionally (`noOverlap`), that the pack's shapes never overlap each other, sampled every 5 years on a 0.1° grid (Ghana).
 
 ## How to add data
 

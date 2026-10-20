@@ -1,6 +1,6 @@
 /**
  * Day 65: checks for Phase 5 country-pack globe backfills (ROADMAP item 12), starting with Peru
- * (src/globe-pack-peru.js). Add a pack to PACKS to cover it.
+ * (src/globe-pack-peru.js) and Ghana (Day 66, src/globe-pack-ghana.js). Add a pack to PACKS to cover it.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
  *    on land (no Pacific spill), for the pack's polities and the shapes it redrew;
@@ -12,6 +12,7 @@
 import fs from 'node:fs';
 import { geoContains } from 'd3-geo';
 import { peruPolities, peruShapeFixes } from '../src/globe-pack-peru.js';
+import { ghanaPolities, ghanaShapeFixes, GOLD_COAST } from '../src/globe-pack-ghana.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
 import { ensureClockwise } from '../src/globe-morph.js';
@@ -160,6 +161,61 @@ const PACKS = [
       ['spanish-empire', 1750, 'southern-cone'],
     ],
   },
+  {
+    country: 'ghana',
+    polities: ghanaPolities,
+    fixes: ghanaShapeFixes,
+    redrawn: {},
+    capitals: [
+      ['bono-state', 1450, -1.85, 7.70, 'Bono Manso'],
+      ['bono-state', 1450, -2.48, 7.84, 'Begho'],
+      ['bono-state', 1722, -1.85, 7.70, 'Bono Manso'],
+      ['denkyira', 1620, -1.85, 6.28, 'Abankeseso'],
+      ['denkyira', 1695, -1.85, 6.28, 'Abankeseso'],
+      ['great-accra', 1600, -0.24, 5.68, 'Ayawaso'],
+      ['akwamu', 1681, -0.20, 5.56, 'Accra'],
+      ['akwamu', 1710, -0.62, 5.35, 'Winneba'],
+      ['akwamu', 1730, 0.08, 6.28, 'Akwamufie'],
+      ['akyem', 1700, -0.55, 6.17, 'Kyebi'],
+      ['akyem', 1731, -0.20, 5.56, 'Accra'],
+      ['fante-states', 1700, -1.02, 5.27, 'Mankessim'],
+      ['fante-states', 1760, -1.12, 5.17, 'Anomabo'],
+      ['dagbon', 1600, -1.38, 9.53, 'Daboya'],
+      ['dagbon', 1713, 0.0, 9.43, 'Yendi'],
+      ['mamprugu', 1450, -0.44, 10.53, 'Gambaga'],
+      ['mamprugu', 1700, -0.37, 10.53, 'Nalerigu'],
+      ['gonja', 1675, -1.32, 10.0, 'Yagbum'],
+      ['gonja', 1675, -2.48, 9.03, 'Bole'],
+      ['gonja', 1713, -1.38, 9.53, 'Daboya'],
+      ['gonja', 1751, -0.52, 8.55, 'Salaga'],
+      ['asante-empire', 1701, -1.62, 6.69, 'Kumasi'],
+      ['asante-empire', 1723, -1.85, 7.70, 'Bono Manso'],
+      ['asante-empire', 1750, -0.20, 5.56, 'Accra'],
+      ['asante-empire', 1750, -0.55, 6.17, 'Kyebi'],
+      ['asante-empire', 1807, -1.62, 6.69, 'Kumasi'],
+    ],
+    on: {
+      1400: ['bono-state'],
+      1500: ['bono-state', 'dagbon', 'mamprugu', 'great-accra'],
+      1650: ['bono-state', 'denkyira', 'great-accra', 'akwamu', 'akyem', 'fante-states', 'dagbon', 'mamprugu', 'gonja'],
+      1720: ['bono-state', 'asante-empire', 'akwamu', 'akyem', 'fante-states', 'dagbon', 'mamprugu', 'gonja'],
+      1760: ['asante-empire', 'fante-states', 'dagbon', 'mamprugu', 'gonja'],
+      1810: ['asante-empire', 'fante-states', 'dagbon', 'mamprugu', 'gonja'],
+    },
+    gone: {
+      1690: ['great-accra'],
+      1710: ['denkyira'],
+      1740: ['bono-state', 'akwamu'],
+      1750: ['akyem'],
+      1830: ['asante-empire', 'fante-states', 'dagbon', 'mamprugu', 'gonja'],
+    },
+    absent: [],
+    present: [],
+    // Day 66: the pack's own shapes must not overlap each other at any year (sampled every 5 years).
+    noOverlap: { from: 1300, to: 1815, box: [-3.3, 4.7, 1.9, 11.2] },
+    // The presence bands it redrew must not shade the sea off Ghana's coast (0.2° and 0.6° offshore).
+    offshore: { coast: GOLD_COAST, west: -2.9, east: 1.7, entities: ['west-africa-sahel-presence', 'global-modern-presence'], years: [1400, 1550, 1700, 1850, 1900, 1960, 2025] }, // keyframes, and between identical ones
+  },
 ];
 
 let rings = 0;
@@ -207,7 +263,7 @@ for (const pack of PACKS) {
       }
     }
   }
-  for (const id of Object.keys(pack.fixes)) if (!pack.redrawn[id]) fail(`fix target ${id} is not land-checked`);
+  for (const id of Object.keys(pack.fixes)) if (!pack.redrawn[id] && !pack.offshore?.entities.includes(id)) fail(`fix target ${id} is not land-checked`);
 
   for (const [id, y, lng, lat, place] of pack.capitals) {
     const kf = byId.get(id)?.overlays.find((o) => o.year === y);
@@ -233,6 +289,30 @@ for (const pack of PACKS) {
   const regionOn = (id, y, rid) => getOverlayPolygonFeatures(Number(y), spatialEntities).some((f) => f.entityId === id && f.regionId === rid);
   for (const [id, y, rid] of pack.absent) if (regionOn(id, y, rid)) fail(`${id} ${rid} should not be drawn in ${y}`);
   for (const [id, y, rid] of pack.present) if (!regionOn(id, y, rid)) fail(`${id} ${rid} should be drawn in ${y}`);
+  if (pack.offshore) {
+    const { coast, west, east, entities, years } = pack.offshore;
+    const sea = coast.filter(([lng]) => lng >= west && lng <= east).flatMap(([lng, lat]) => [[lng, lat - 0.25], [lng, lat - 0.65]]);
+    for (const y of years) {
+      const feats = getOverlayPolygonFeatures(y, spatialEntities).filter((f) => entities.includes(f.entityId));
+      const wet = sea.find((pt) => feats.some((f) => geoContains(f, pt)));
+      if (wet) fail(`${pack.country}: a presence band shades the sea off the coast in ${y} at ${wet.map((v) => v.toFixed(2)).join(',')}`);
+    }
+  }
+  if (pack.noOverlap) {
+    const { from, to, box: [x0, y0, x1, y1] } = pack.noOverlap;
+    const ids = new Set(pack.polities.map((e) => e.id));
+    let worst = null;
+    for (let y = from; y <= to; y += 5) {
+      const feats = getOverlayPolygonFeatures(y, spatialEntities).filter((f) => ids.has(f.entityId));
+      for (let lat = y0; lat < y1; lat += 0.1) {
+        for (let lng = x0; lng < x1; lng += 0.1) {
+          const hit = feats.filter((f) => geoContains(f, [lng, lat]));
+          if (hit.length > 1 && !worst) worst = `${y}: ${hit.map((f) => f.entityId).join(' + ')} at ${lng.toFixed(2)},${lat.toFixed(2)}`;
+        }
+      }
+    }
+    if (worst) fail(`${pack.country} shapes overlap — ${worst}`);
+  }
 }
 
 if (failed) {
