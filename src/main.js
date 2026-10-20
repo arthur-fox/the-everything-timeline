@@ -299,8 +299,9 @@ let globeEventsOn = true;
 let globeFlowsOn = true;
 // Day 55: migrations on the globe (key "Migrations" toggle; `&migrations=0` when off).
 let globeMigrationsOn = true;
-// Day 62: constellation lines/names on the globe (key "Constellations" toggle; `&constellations=0` when off).
-let globeConstellationsOn = true;
+// Day 62: constellation lines/names on the globe (key "Constellations" toggle).
+// Day 67: off by default (Arthur: they make the space background hard to see); `&constellations=1` turns them on.
+let globeConstellationsOn = false;
 // Day 63: lidar "hidden cities" pins on the globe (key "Lidar finds" toggle; `&lidar=0` when off).
 let globeLidarOn = true;
 let compareLeft = 'technology';
@@ -606,7 +607,7 @@ function syncDeepLinkUrl() {
       if (!globeEventsOn) params.set('events', '0');
       if (!globeFlowsOn) params.set('flows', '0');
       if (!globeMigrationsOn) params.set('migrations', '0');
-      if (!globeConstellationsOn) params.set('constellations', '0');
+      if (globeConstellationsOn) params.set('constellations', '1');
       if (!globeLidarOn) params.set('lidar', '0');
     } else {
       const selectedId = getSelectedDeepLinkId();
@@ -893,7 +894,7 @@ function applyDeepLinkFromUrl() {
     if (flowsRaw != null) setGlobeExtraShown('flows', !/^(0|off|false|no|none)$/i.test(flowsRaw.trim()), { syncUrl: false });
     // Day 55: ?migrations=0 hides the migrations.
     if (migrationsRaw != null) setGlobeExtraShown('migrations', !/^(0|off|false|no|none)$/i.test(migrationsRaw.trim()), { syncUrl: false });
-    // Day 62: ?constellations=0 hides constellation lines and names.
+    // Day 62/67: constellations are off by default; ?constellations=1 shows them (=0 still means off).
     if (constellationsRaw != null) setGlobeExtraShown('constellations', !/^(0|off|false|no|none)$/i.test(constellationsRaw.trim()), { syncUrl: false });
     // Day 63: ?lidar=0 hides the lidar "hidden cities" pins.
     if (lidarRaw != null) setGlobeExtraShown('lidar', !/^(0|off|false|no|none)$/i.test(lidarRaw.trim()), { syncUrl: false });
@@ -3357,6 +3358,13 @@ const globeViewEl = document.getElementById('globe-view');
 const globeYearSlider = document.getElementById('globe-year-slider');
 const globeYearLabel = document.getElementById('globe-year-label');
 const globeYearCaption = document.getElementById('globe-year-caption');
+// Day 67: world population readout (see updateGlobePopulation)
+const globePopBtn = document.getElementById('globe-pop');
+const globePopValue = document.getElementById('globe-pop-value');
+const globePopNote = document.getElementById('globe-pop-note');
+const globePopSource = document.getElementById('globe-pop-source');
+let populationModule = null;
+let populationLoading = null;
 const globeOverlayList = document.getElementById('globe-overlay-list');
 const globeOverlayEmpty = document.getElementById('globe-overlay-empty');
 const globeOverlayPanelHeading = document.querySelector('.globe-overlay-panel-heading');
@@ -4250,9 +4258,51 @@ function updateGlobeYearUI() {
     const y = Number(btn.dataset.year);
     btn.classList.toggle('is-active', y === globeYear);
   });
+  updateGlobePopulation();
   updateGlobeOverlayPanel();
   globeSet('setGlobeOverlayYear', globeYear);
 }
+
+// Day 67: approximate world population next to the year readout. The data (≈2 KB) loads with
+// the globe UI the first time it's needed, never with the timeline landing.
+
+function updateGlobePopulation() {
+  if (!globePopValue) return;
+  if (!populationModule) {
+    populationLoading ||= import('./population.js')
+      .then((m) => {
+        populationModule = m;
+        updateGlobePopulation();
+      })
+      .catch(() => globePopBtn?.closest('.globe-pop-wrap')?.setAttribute('hidden', ''));
+    return;
+  }
+  const { worldPopulation, formatPopulation, populationSourceFor } = populationModule;
+  const pop = worldPopulation(globeYear);
+  const long = formatPopulation(pop, globeYear);
+  globePopValue.textContent = `≈ ${long}`;
+  globePopValue.dataset.short = `≈ ${formatPopulation(pop, globeYear, { short: true })}`;
+  if (globePopBtn) globePopBtn.setAttribute('aria-label', `World population in ${formatGlobeYear(globeYear)}: about ${long}. Show sources`);
+  if (globePopSource) globePopSource.textContent = `${formatGlobeYear(globeYear)}: ${populationSourceFor(globeYear)}`;
+}
+
+function setGlobePopNoteOpen(open) {
+  if (!globePopBtn || !globePopNote) return;
+  globePopNote.hidden = !open;
+  globePopBtn.setAttribute('aria-expanded', String(open));
+  document.body.classList.toggle('globe-pop-open', open);
+}
+
+globePopBtn?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  setGlobePopNoteOpen(globePopNote?.hidden);
+});
+document.addEventListener('click', (e) => {
+  if (globePopNote && !globePopNote.hidden && !e.target.closest?.('.globe-pop-wrap')) setGlobePopNoteOpen(false);
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && globePopNote && !globePopNote.hidden) setGlobePopNoteOpen(false);
+});
 
 function setGlobeYear(yearRaw, { syncUrl = true } = {}) {
   let year = Math.round(Number(yearRaw));

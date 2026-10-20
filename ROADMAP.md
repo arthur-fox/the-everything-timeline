@@ -851,7 +851,7 @@ Do not merge until Arthur approves.
 Arthur: replace the plain background with a starfield and space scene.
 
 - **Step 7.1 — Stars and the Milky Way.** ✅ Day 61, done-in-PR. A celestial sphere behind the globe: Yale BSC stars (mag ≤ 6.5, public-domain JSON → `public/sky/bsc-stars.bin`) sized/tinted by magnitude and spectral class, plus a Milky Way equirectangular from NASA SVS Deep Star Maps 2020 (`public/sky/milkyway-celestial.webp`). Earth's axis = celestial pole; one Points mesh + one texture; see Day 61 write-up and `docs/ATTRIBUTION-sky.md`.
-- **Step 7.2 — Constellations.** ✅ Day 62, done-in-PR. Constellation lines and names in roughly correct positions from d3-celestial BSD-3 GeoJSON → `public/sky/constellations.bin` (same celestial frame as Day 61 stars); key toggle on by default (`&constellations=0` when off); lightweight axial precession by year (ecliptic-pole quaternion; Thuban ≈ 3000 BCE, Polaris today). See Day 62 write-up and `docs/ATTRIBUTION-sky.md`.
+- **Step 7.2 — Constellations.** ✅ Day 62, done-in-PR. Constellation lines and names in roughly correct positions from d3-celestial BSD-3 GeoJSON → `public/sky/constellations.bin` (same celestial frame as Day 61 stars); key toggle (on by default until Day 67, now off by default; `&constellations=1` turns it on); lightweight axial precession by year (ecliptic-pole quaternion; Thuban ≈ 3000 BCE, Polaris today). See Day 62 write-up and `docs/ATTRIBUTION-sky.md`.
 - **Phone budget:** one point cloud and one texture; no per-frame CPU work. ✅ met in step 7.1; step 7.2 adds one static `LineSegments` + sprites (rebuilt only on toggle / year for precession quaternion).
 
 #### Day 61 — Stars and the Milky Way (step 7.1) — done-in-PR
@@ -862,7 +862,7 @@ Arthur: replace the plain background with a starfield and space scene.
 
 #### Day 62 — Constellations (step 7.2) — done-in-PR
 - `src/globe-sky.js`: d3-celestial stick figures as one `THREE.LineSegments` mesh + short IAU abbreviation sprites; same world-fixed celestial frame as Day 61; light theme still hides the whole sky group.
-- Key **"Constellations"** toggle (on by default; `&constellations=0`); axial precession is one quaternion on the sky group when the year changes (no per-frame CPU).
+- Key **"Constellations"** toggle (off by default since Day 67; `&constellations=1` turns it on); axial precession is one quaternion on the sky group when the year changes (no per-frame CPU).
 - Asset `public/sky/constellations.bin` (~20 KB, 88 IAU constellations); rebuild `python3 scripts/build-sky.py --constellations`. Attribution in `docs/ATTRIBUTION-sky.md` (BSD-3 © Olaf Frohn / d3-celestial).
 - **Next:** Item 8 lidar finds (8.1 hidden-cities pins).
 
@@ -899,6 +899,21 @@ Inspired by [lidar lost-cities write-up](https://bakerbench.substack.com/p/i-wen
   - the notes reached their shapes, and the Maya polity stays east of 94° W;
   - the set stays within a small budget (6 shapes, 44 vertices).
 - **Next:** Phase 5 country packs covering both views (Timeline + Globe), starting with the pack 1 globe backfill (Peru, Ghana, Kenya, Morocco, Iraq, Philippines).
+
+### World population readout on the globe (Arthur, 20 Oct 2026: "show an approximate shift in population size as you move the slider") — Day 67, done-in-PR
+
+- **What:** a "World population ≈ 230 million" chip beside the globe year (full screen and windowed; "≈ 230M" on phones). It updates as the slider moves and climbs to ≈ 8.23 billion in 2025. Tap it for an "Estimate · sources" note.
+- **Data (`data/population.json`, its own ≈1.4 KB gz chunk, loaded with the globe UI):** 57 points from 10,000 BCE to 2026, from Our World in Data's long-run series, rounded to 4 significant figures:
+  - HYDE 3.3 (2023) for 10,000 BCE–1799;
+  - Gapminder v7 for 1800–1949;
+  - UN World Population Prospects 2024 for 1950 on (2024–2026 are the UN medium variant).
+- **Display:** log-linear interpolation between points (a steady growth rate within each gap). The figure is rounded to 2 significant figures before 1800 and 3 after, because estimates before 1800 are only good to tens of percent. For example, published 1 CE estimates run from about 170 million (McEvedy & Jones 1978) to 300–330 million (UN, Population Reference Bureau, Durand 1974), as compiled by the US Census Bureau and Wikipedia's comparison table.
+- **Validate:** `scripts/check-population.js` (in `npm run validate`) checks that:
+  - years increase strictly, values are positive, and every point names its source;
+  - no step falls by more than 15% (HYDE's real dips at 300 and 1400 CE pass);
+  - the series covers the slider (3000 BCE–2025) and ends near 8.2 billion.
+- **Constellations off by default (Arthur's review of #81):** they made the space background hard to see. The key toggle still turns them on, and `&constellations=1` turns them on in a link (`&constellations=0` still means off). No saved preference forces them on; the state lives only in the URL.
+- **Later (only if wanted):** the same figure on the Timeline view; per-region populations (HYDE has continents) in a shape's detail panel.
 
 ## Custom domain & sharing (Arthur, 9 Oct 2026)
 
@@ -971,7 +986,7 @@ Each pack takes one country (or a small group of neighbours) and refines **both 
 
 Proposed order:
 
-1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, done-in-PR); Ghana ✅ (Day 66, done-in-PR); next Morocco, then Kenya, Iraq, Philippines.**
+1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, merged #79); Ghana ✅ (Day 66, merged #80); next Morocco, then Kenya, Iraq, Philippines.**
 2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates).
 3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits).
 4. **Central Africa:** DR Congo, Angola, Cameroon, Chad (Kongo, Luba, Lunda, Kanem-Bornu).
@@ -979,7 +994,7 @@ Proposed order:
 6. **South Asia:** Pakistan, Bangladesh, Sri Lanka, Nepal, India refinement (Mauryan → Mughal regional kingdoms).
 7. **Globe refinement of the existing 38 countries**, one or a few per day, biggest gaps first. These packs are mostly globe work, as their timelines already exist.
 
-#### Day 65 — Pack 1 globe backfill: Peru — done-in-PR
+#### Day 65 — Pack 1 globe backfill: Peru — done (merged, PR #79)
 
 Peru had a sourced timeline (Day 33), but on the globe it had only a schematic Inca Empire and broad Andean peoples / presence bands. The Spanish "Andes" shape also spilled into the Pacific, and it appeared from 1492, 40 years before Pizarro. Now Peru's whole history is drawn, from Caral to the Viceroyalty.
 
@@ -1013,7 +1028,7 @@ Peru had a sourced timeline (Day 33), but on the globe it had only a schematic I
   - Ghana and Morocco were not started, so Peru got the full pass.
 - **Next:** pack 1 globe backfill continues with **Ghana** (Ghana Empire is already drawn; add Bono, Akan states, Asante keyframes, Elmina / Cape Coast forts, Gold Coast colony), then Morocco, Kenya, Iraq, the Philippines.
 
-#### Day 66 — Pack 1 globe backfill: Ghana — done-in-PR
+#### Day 66 — Pack 1 globe backfill: Ghana — done (merged, PR #80)
 
 Ghana had a sourced timeline but on the globe only a four-keyframe Asante Empire (Day 58) whose southern side ran into the Gulf of Guinea, plus broad presence bands. Nothing showed the Akan states before Asante, the coast states, or the savanna kingdoms of the north. Now Ghana's history is drawn from Bono to 1815, where the nations layer (Ashanti, then the British Gold Coast) takes over.
 
@@ -1176,9 +1191,10 @@ A sensible near-term sequence:
 49. Phase 4c step 7.1 — stars / Milky Way (Day 61) ✅ (done-in-PR).
 50. Phase 4c step 7.2 — constellations (Day 62) ✅ (done-in-PR).
 51. Item 8 — lidar finds: 8.1 hidden-cities pins (Day 63) ✅ (merged, #77) → 8.2 honest shape updates (Day 64) ✅ (done-in-PR).
-52. Phase 5 country packs covering both views (Timeline + Globe): pack 1 globe backfill — Peru (Day 65) ✅ (done-in-PR).
-53. Pack 1 globe backfill — Ghana (Day 66) ✅ (done-in-PR, stacked on Peru).
-54. **Now: pack 1 globe backfill continues — Morocco, then Kenya, Iraq, Philippines. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
+52. Phase 5 country packs covering both views (Timeline + Globe): pack 1 globe backfill — Peru (Day 65) ✅ (merged, #79).
+53. Pack 1 globe backfill — Ghana (Day 66) ✅ (merged, #80).
+54. World population readout on the globe (Day 67) ✅ (done-in-PR).
+55. **Now: pack 1 globe backfill continues — Morocco, then Kenya, Iraq, Philippines. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 

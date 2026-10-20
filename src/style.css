@@ -5294,3 +5294,152 @@ body.globe-active .fab-dock:focus-within {
     display: none;
   }
 }
+
+/* ---------------------------------------------------------------------------------------------
+   Day 67: world population readout beside the globe year ("World population ≈ 232 million").
+   Sits in the scrubber's top row; tap for an "Estimate · sources" note.
+   --------------------------------------------------------------------------------------------- */
+.globe-year-row .globe-year-label {
+  margin-right: 0;
+}
+
+.globe-pop-wrap {
+  position: relative;
+  margin-right: auto;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.globe-pop {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--text);
+  font: 600 0.82rem/1.2 var(--font-ui);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.globe-pop:hover,
+.globe-pop:focus-visible,
+.globe-pop[aria-expanded='true'] {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.globe-pop-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.globe-pop-value {
+  color: var(--accent);
+}
+
+.globe-pop-note {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  z-index: 6;
+  width: min(320px, calc(100vw - 32px));
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  box-shadow: 0 8px 28px var(--shadow-tooltip);
+  color: var(--text-muted);
+  font: 500 0.76rem/1.45 var(--font-ui);
+  white-space: normal;
+}
+
+.globe-pop-note[hidden] {
+  display: none;
+}
+
+.globe-pop-note strong {
+  color: var(--text);
+}
+
+.globe-pop-note a {
+  color: var(--accent);
+}
+
+/* Phones: a compact "≈ 232M" chip so the row (year · population · zoom) stays on one line */
+@media (max-width: 640px) {
+  .globe-pop {
+    padding: 2px 8px;
+    font-size: 0.78rem;
+  }
+
+  .globe-pop-label {
+    display: none;
+  }
+
+  .globe-pop-value[data-short] {
+    font-size: 0;
+  }
+
+  .globe-pop-value[data-short]::after {
+    content: attr(data-short);
+    font-size: 0.78rem;
+  }
+
+  /* the chip takes the room of the "All years" / window-range hint (the tick labels under the
+     slider already show a zoomed window's ends) and of the "Year" heading */
+  .globe-scrub-range,
+  .globe-year-heading {
+    display: none;
+  }
+
+  /* the note spans the scrubber instead of hanging off the chip */
+  .globe-scrubber {
+    position: relative;
+  }
+
+  .globe-pop-wrap {
+    position: static;
+  }
+
+  .globe-pop-note {
+    left: 10px;
+    right: 10px;
+    width: auto;
+  }
+
+  /* never overflow: if year + chip + zoom buttons don't fit, the zoom buttons wrap */
+  .globe-year-row {
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+
+  .globe-scrub-zoom {
+    margin-left: auto;
+  }
+
+  /* the share / support / feedback dock would sit on top of the open note */
+  body.globe-pop-open .fab-dock {
+    visibility: hidden;
+  }
+}
+
+@media (max-width: 400px) {
+  .globe-year-row {
+    gap: 8px;
+  }
+
+  .globe-year-row .globe-year-label {
+    font-size: 1.3rem;
+  }
+
+  .globe-scrub-btn {
+    min-width: 34px;
+  }
+}
