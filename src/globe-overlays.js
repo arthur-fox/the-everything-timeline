@@ -34,6 +34,7 @@ import { earlyMedievalPolities, extraKeyframes as earlyMedievalExtraKeyframes } 
 import { lidarPresenceEntities, applyLidarShapeNotes } from './globe-lidar-shapes.js';
 import { peruPolities, applyPeruShapeFixes } from './globe-pack-peru.js';
 import { ghanaPolities, applyGhanaShapeFixes } from './globe-pack-ghana.js';
+import { moroccoPolities, applyMoroccoShapeFixes } from './globe-pack-morocco.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6292,6 +6293,14 @@ for (const ent of ghanaPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 68 — Phase 5 country pack 1, Morocco (globe-pack-morocco.js): the Mauri kings to the
+// Alaouites, with the Portuguese, Spanish and English coastal enclaves; all appended.
+for (const ent of moroccoPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6329,6 +6338,9 @@ applyLidarShapeNotes(spatialEntities);
 applyPeruShapeFixes(spatialEntities);
 // Day 66 — the West African presence bands follow Ghana's shore instead of crossing the Gulf of Guinea.
 applyGhanaShapeFixes(spatialEntities);
+// Day 68 — Rome's African edge stops at the Ampsaga (Mauretania is drawn by the Morocco pack), and
+// the French Maghreb shape no longer grows over Morocco before 1815.
+applyMoroccoShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

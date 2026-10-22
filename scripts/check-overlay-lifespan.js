@@ -856,26 +856,28 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   }
   assert(holeRefs >= 20, `≥20 authored hole refs (got ${holeRefs})`);
 
-  // Roman Empire at 117: Mediterranean is a gap, not empire.
+  // Roman Empire at 117: Mediterranean is a gap, not empire. (Day 68: Rome's west is drawn as fixed
+  // Hispania and Africa regions — globe-pack-morocco.js — so the 'mediterranean' ring no longer wraps
+  // the western basin and only the eastern basin is a hole.)
   const med117 = getOverlayPolygonFeatures(117).find((f) => f.entityId === 'roman-empire' && f.regionId === 'mediterranean');
   assert(!!med117, 'Roman mediterranean feature at 117');
-  assert(med117?.holeIds.includes('mediterranean-west') && med117?.holeIds.includes('mediterranean-east'),
-    `Roman@117 has Mediterranean holes (got ${med117?.holeIds})`);
-  assert(med117?.geometry.coordinates.length === 3, 'Roman@117 polygon = exterior + 2 inner rings');
+  assert(med117?.holeIds.includes('mediterranean-east') && !med117?.holeIds.includes('mediterranean-west'),
+    `Roman@117 has the eastern Mediterranean hole (got ${med117?.holeIds})`);
+  assert(med117?.geometry.coordinates.length === 2, 'Roman@117 polygon = exterior + 1 inner ring');
   {
     const g = med117.geometry;
     const solid = { type: 'Polygon', coordinates: [g.coordinates[0]] };
-    assert(geoArea(g) < geoArea(solid) * 0.8, `d3-geo: holes subtract area (${geoArea(g).toFixed(4)} < ${geoArea(solid).toFixed(4)})`);
+    assert(geoArea(g) < geoArea(solid) * 0.9, `d3-geo: holes subtract area (${geoArea(g).toFixed(4)} < ${geoArea(solid).toFixed(4)})`);
     assert(!geoContains(g, [18, 35]), 'd3-geo: Ionian Sea [18,35] NOT inside Roman@117');
     assert(!geoContains(g, [5, 39]), 'd3-geo: Balearic Sea [5,39] NOT inside Roman@117');
     assert(geoContains(g, [2, 47]), 'd3-geo: Gaul [2,47] inside Roman@117');
     assert(geoContains(g, [32, 39]), 'd3-geo: Anatolia [32,39] inside Roman@117');
   }
 
-  // Morph mid-year between Roman keyframes 117 → 200 still carries both holes, inside the outer ring.
+  // Morph mid-year between Roman keyframes 117 → 200 still carries the hole, inside the outer ring.
   for (const y of [158, 80, 300]) {
     const f = getOverlayPolygonFeatures(y).find((x) => x.entityId === 'roman-empire' && x.regionId === 'mediterranean');
-    assert(!!f && f.holeIds.includes('mediterranean-west') && f.holeIds.includes('mediterranean-east'),
+    assert(!!f && f.holeIds.includes('mediterranean-east'),
       `Roman@${y} (mid-morph) still has Mediterranean holes (got ${f?.holeIds})`);
   }
   const roman = spatialEntities.find((e) => e.id === 'roman-empire');

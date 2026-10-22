@@ -1,18 +1,23 @@
 /**
  * Day 65: checks for Phase 5 country-pack globe backfills (ROADMAP item 12), starting with Peru
- * (src/globe-pack-peru.js) and Ghana (Day 66, src/globe-pack-ghana.js). Add a pack to PACKS to cover it.
+ * (src/globe-pack-peru.js), Ghana (Day 66, src/globe-pack-ghana.js) and Morocco (Day 68,
+ * src/globe-pack-morocco.js). Add a pack to PACKS to cover it.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
  *    on land (no Pacific spill), for the pack's polities and the shapes it redrew;
  *  - every polity has sources, confidence with a reason, ≥3 keyframes, no keyframe after 1815 and
  *    timeline links that exist (country items or civilisations);
  *  - capitals / type sites sit inside (or within ~10 km of the coast-hugging edge of) their polity;
- *  - who is on and who is gone at sample years, and the anachronisms the pack fixed stay fixed.
+ *  - who is on and who is gone at sample years, and the anachronisms the pack fixed stay fixed;
+ *  - (Day 66+) the pack's shapes never overlap each other — and (Day 68) the neighbours it lists —
+ *    at any sampled year, and (Day 68) each coastal enclave is drawn by exactly one shape.
  */
 import fs from 'node:fs';
 import { geoContains } from 'd3-geo';
 import { peruPolities, peruShapeFixes } from '../src/globe-pack-peru.js';
 import { ghanaPolities, ghanaShapeFixes, GOLD_COAST } from '../src/globe-pack-ghana.js';
+import { moroccoPolities, moroccoShapeFixes, ENCLAVE_SHAPES, ENCLAVE_RULE } from '../src/globe-pack-morocco.js';
+import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
 import { ensureClockwise } from '../src/globe-morph.js';
@@ -73,6 +78,28 @@ function edgeKm(ring, lng, lat) {
     best = Math.min(best, Math.hypot(vx - t * ux, vy - t * uy) * 111.2);
   }
   return best;
+}
+
+/** Planar point-in-ring with a bounding-box prefilter (fast enough for a 0.1° grid over the Maghreb). */
+function planarFeature(f) {
+  const ring = f.geometry.coordinates[0];
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+  for (const [x, y] of ring) {
+    x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y);
+  }
+  return {
+    f,
+    has(x, y) {
+      if (x < x0 || x > x1 || y < y0 || y > y1) return false;
+      let c = false;
+      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const [a, b] = ring[i];
+        const [e, g] = ring[j];
+        if ((b > y) !== (g > y) && x < ((e - a) * (y - b)) / (g - b) + a) c = !c;
+      }
+      return c;
+    },
+  };
 }
 
 const PACKS = [
@@ -216,6 +243,111 @@ const PACKS = [
     // The presence bands it redrew must not shade the sea off Ghana's coast (0.2° and 0.6° offshore).
     offshore: { coast: GOLD_COAST, west: -2.9, east: 1.7, entities: ['west-africa-sahel-presence', 'global-modern-presence'], years: [1400, 1550, 1700, 1850, 1900, 1960, 2025] }, // keyframes, and between identical ones
   },
+  {
+    country: 'morocco',
+    polities: moroccoPolities,
+    fixes: moroccoShapeFixes,
+    // Rome's west was split off into fixed Hispania and Africa regions (its 'mediterranean' ring now
+    // runs through the sea, so only the new land regions are land-checked).
+    redrawn: { 'roman-empire': ['hispania', 'africa-numidia'] },
+    capitals: [
+      ['mauretania-kingdom', -206, -5.81, 35.77, 'Tingis'],
+      ['mauretania-kingdom', -25, -5.56, 34.07, 'Volubilis'],
+      ['mauretania-kingdom', -25, 2.19, 36.61, 'Caesarea (Iol)'],
+      ['roman-mauretania', 117, -5.81, 35.77, 'Tingis'],
+      ['roman-mauretania', 117, -5.56, 34.07, 'Volubilis'],
+      ['roman-mauretania', 117, -6.81, 34.01, 'Sala'],
+      ['roman-mauretania', 117, 2.19, 36.61, 'Caesarea'],
+      ['roman-mauretania', 285, -5.81, 35.77, 'Tingis'],
+      ['barghawata', 850, -7.59, 33.59, 'Anfa'],
+      ['idrisid-dynasty', 789, -5.56, 34.07, 'Walili (Volubilis)'],
+      ['idrisid-dynasty', 789, -4.98, 34.06, 'Fez'],
+      ['idrisid-dynasty', 828, -1.32, 34.88, 'Tlemcen'],
+      ['idrisid-dynasty', 951, -5.68, 35.24, 'Hajar an-Nasr'],
+      ['emirate-of-nekor', 917, -3.85, 35.12, 'Nekor'],
+      ['midrarids', 823, -4.27, 31.28, 'Sijilmasa'],
+      ['maghrawa', 987, -4.98, 34.06, 'Fez'],
+      ['maghrawa', 994, -1.91, 34.68, 'Oujda'],
+      ['maghrawa', 1033, -7.80, 31.42, 'Aghmat'],
+      ['banu-ifran', 1038, -6.80, 34.04, 'Salé'],
+      ['almoravid-empire', 1055, -4.27, 31.28, 'Sijilmasa'],
+      ['almoravid-empire', 1083, -7.99, 31.63, 'Marrakesh'],
+      ['almoravid-empire', 1091, -5.99, 37.39, 'Seville'],
+      ['almoravid-empire', 1110, -0.88, 41.65, 'Zaragoza'],
+      ['almoravid-empire', 1147, 2.65, 39.57, 'Palma'],
+      ['almohad-caliphate', 1124, -8.23, 30.98, 'Tinmel'],
+      ['almohad-caliphate', 1160, 10.18, 36.80, 'Tunis'],
+      ['almohad-caliphate', 1160, -7.99, 31.63, 'Marrakesh'],
+      ['almohad-caliphate', 1172, -0.38, 39.47, 'Valencia'],
+      ['marinid-sultanate', 1276, -4.98, 34.06, 'Fez'],
+      ['marinid-sultanate', 1347, 10.18, 36.80, 'Tunis'],
+      ['wattasid-sultanate', 1472, -4.98, 34.06, 'Fez'],
+      ['saadi-sultanate', 1510, -8.88, 30.47, 'Taroudant'],
+      ['saadi-sultanate', 1578, -7.99, 31.63, 'Marrakesh'],
+      ['saadi-sultanate', 1641, -7.99, 31.63, 'Marrakesh'],
+      ['dila-zawiya', 1641, -4.98, 34.06, 'Fez'],
+      ['dila-zawiya', 1641, -5.55, 33.89, 'Meknes'],
+      ['republic-of-sale', 1627, -6.80, 34.04, 'Salé'],
+      ['alaouite-sultanate', 1631, -4.27, 31.28, 'Sijilmasa'],
+      ['alaouite-sultanate', 1672, -5.55, 33.89, 'Meknes'],
+      ['alaouite-sultanate', 1757, -7.99, 31.63, 'Marrakesh'],
+      ['portuguese-morocco', 1415, -5.39, 35.87, 'Ceuta'],
+      ['portuguese-morocco', 1541, -8.49, 33.24, 'Mazagan'],
+      ['spanish-presidios', 1497, -2.94, 35.29, 'Melilla'],
+      ['english-tangier', 1662, -5.80, 35.77, 'Tangier'],
+    ],
+    on: {
+      '-100': ['mauretania-kingdom'],
+      100: ['roman-mauretania'],
+      800: ['barghawata', 'idrisid-dynasty', 'emirate-of-nekor', 'midrarids'],
+      1000: ['barghawata', 'emirate-of-nekor', 'maghrawa'],
+      1035: ['maghrawa', 'banu-ifran'],
+      1100: ['almoravid-empire'],
+      1180: ['almohad-caliphate', 'almoravid-empire'],
+      1300: ['marinid-sultanate'],
+      1500: ['wattasid-sultanate', 'portuguese-morocco', 'spanish-presidios'],
+      1600: ['saadi-sultanate', 'portuguese-morocco', 'spanish-presidios'],
+      1650: ['saadi-sultanate', 'tazerwalt', 'dila-zawiya', 'republic-of-sale', 'alaouite-sultanate', 'portuguese-morocco', 'spanish-presidios'],
+      1670: ['alaouite-sultanate', 'english-tangier', 'portuguese-morocco', 'spanish-presidios'],
+      1810: ['alaouite-sultanate', 'spanish-presidios'],
+    },
+    gone: {
+      50: ['mauretania-kingdom'],
+      450: ['roman-mauretania'],
+      1210: ['almoravid-empire'],
+      1280: ['almohad-caliphate'],
+      1470: ['marinid-sultanate'],
+      1560: ['wattasid-sultanate'],
+      1665: ['saadi-sultanate'],
+      1672: ['dila-zawiya', 'republic-of-sale', 'tazerwalt'],
+      1690: ['english-tangier'],
+      1780: ['portuguese-morocco'],
+      1830: ['alaouite-sultanate', 'spanish-presidios'],
+    },
+    absent: [],
+    present: [
+      ['roman-empire', 100, 'hispania'],
+      ['roman-empire', 100, 'africa-numidia'],
+    ],
+    // Anachronisms fixed: Rome no longer covers Mauretania, nor the French Maghreb shape Fez before 1815.
+    notOver: [
+      ['roman-empire', 0, -4.98, 34.06, 'Fez'],
+      ['roman-empire', 100, -5.56, 34.07, 'Volubilis'],
+      ['roman-empire', 300, 2.19, 36.61, 'Caesarea'],
+      ['roman-empire', 380, -1.32, 34.88, 'Tlemcen'],
+      ['french-colonial', 1790, -4.98, 34.06, 'Fez'],
+      ['french-colonial', 1810, -1.91, 34.68, 'Oujda'],
+    ],
+    // The pack's shapes, and the older shapes around it, never overlap (every 5 years, 0.1° grid).
+    noOverlap: {
+      from: -210,
+      to: 1815,
+      box: [-17.5, 20, 15.5, 42.5],
+      planar: true,
+      with: ['roman-empire', 'carthage', 'umayyad-caliphate', 'byzantine-empire', 'ottoman-empire', 'spanish-empire', 'portuguese-empire', 'french-colonial'],
+    },
+    enclaves: { shapes: ENCLAVE_SHAPES, rule: ENCLAVE_RULE },
+  },
 ];
 
 let rings = 0;
@@ -298,22 +430,52 @@ for (const pack of PACKS) {
       if (wet) fail(`${pack.country}: a presence band shades the sea off the coast in ${y} at ${wet.map((v) => v.toFixed(2)).join(',')}`);
     }
   }
+  for (const [id, y, lng, lat, place] of pack.notOver || []) {
+    const over = getOverlayPolygonFeatures(Number(y), spatialEntities).some((f) => f.entityId === id && geoContains(f, [lng, lat]));
+    if (over) fail(`${id} still covers ${place} in ${y}`);
+  }
   if (pack.noOverlap) {
-    const { from, to, box: [x0, y0, x1, y1] } = pack.noOverlap;
+    const { from, to, box: [x0, y0, x1, y1], planar = false } = pack.noOverlap;
     const ids = new Set(pack.polities.map((e) => e.id));
+    const others = new Set(pack.noOverlap.with || []);
     let worst = null;
-    for (let y = from; y <= to; y += 5) {
-      const feats = getOverlayPolygonFeatures(y, spatialEntities).filter((f) => ids.has(f.entityId));
-      for (let lat = y0; lat < y1; lat += 0.1) {
+    for (let y = from; y <= to && !worst; y += 5) {
+      const all = getOverlayPolygonFeatures(y, spatialEntities).filter((f) => ids.has(f.entityId) || others.has(f.entityId));
+      const feats = planar ? all.map(planarFeature) : all.map((f) => ({ f, has: (x, yy) => geoContains(f, [x, yy]) }));
+      for (let lat = y0; lat < y1 && !worst; lat += 0.1) {
         for (let lng = x0; lng < x1; lng += 0.1) {
-          const hit = feats.filter((f) => geoContains(f, [lng, lat]));
-          if (hit.length > 1 && !worst) worst = `${y}: ${hit.map((f) => f.entityId).join(' + ')} at ${lng.toFixed(2)},${lat.toFixed(2)}`;
+          const hit = feats.filter((q) => q.has(lng, lat)).map((q) => q.f);
+          // Two of the pack's shapes, or one of them and a listed neighbour (a neighbour's own regions may overlap each other).
+          const own = hit.filter((f) => ids.has(f.entityId));
+          if (own.length > 1 || (own.length === 1 && hit.length > 1)) {
+            worst = `${y}: ${hit.map((f) => `${f.entityId}/${f.regionId}`).join(' + ')} at ${lng.toFixed(2)},${lat.toFixed(2)}`;
+            break;
+          }
         }
       }
     }
     if (worst) fail(`${pack.country} shapes overlap — ${worst}`);
   }
+  if (pack.enclaves) {
+    // Each enclave is drawn by exactly one shape in its own years, and by its host after it is given up.
+    // (A shape in its fade-out year is drawn at 12% size and faint; such remnants don't count.)
+    const { shapes, rule } = pack.enclaves;
+    const area = (ring) => Math.abs(ring.slice(0, -1).reduce((t, p, i) => t + p[0] * ring[i + 1][1] - ring[i + 1][0] * p[1], 0)) / 2;
+    const years = [...new Set(rule.flatMap(([, , f, t]) => [f, t - 1, t].filter((v) => v <= 1815)))];
+    for (const y of years) {
+      const feats = getOverlayPolygonFeatures(y, spatialEntities).filter((f) => pack.polities.some((e) => e.id === f.entityId)).map(planarFeature);
+      for (const [eid, pid, f, t] of rule) {
+        const ring = shapes[eid].ring;
+        const c = [ring.slice(0, -1).reduce((a, p) => a + p[0], 0) / (ring.length - 1), ring.slice(0, -1).reduce((a, p) => a + p[1], 0) / (ring.length - 1)];
+        const big = area(ring) * 0.3;
+        const hit = feats.filter((q) => q.has(c[0], c[1]) && area(q.f.geometry.coordinates[0]) > big).map((q) => q.f.entityId);
+        if (hit.length > 1) fail(`${eid} is drawn twice in ${y}: ${hit.join(' + ')}`);
+        if (y >= f && y < t && !hit.includes(pid)) fail(`${eid} should be ${pid}'s in ${y} (drawn: ${hit.join(', ') || 'none'})`);
+      }
+    }
+  }
 }
+if (MERGE_STATS.problems.length) fail(`pieces that do not merge into one outline: ${MERGE_STATS.problems.slice(0, 3).join('; ')}`);
 
 if (failed) {
   console.error(`check-country-packs: ${failed} problem(s)`);

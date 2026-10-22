@@ -10,9 +10,9 @@ Built once from the ISO 3166-1 list (UN M49 regions) and the repo data on 15 Oct
 - **Globe:** `done` = full history refined by a Phase 5 pack (shapes over time with certainty levels, dated cities, pinned events, timeline links). `partial` = only today's/1815–2025 nation borders (or drawn inside another state), plus whatever older empire overlays happen to cross it. `none` = not drawn as its own land at all (mostly tiny islands below Natural Earth's scale).
 - **Pack / region:** where it gets done. Small territories batch with their region pack.
 
-**Totals now (249 places):** Timeline done 38, partial 0, none 211. Globe done 2, partial 194, none 53.
+**Totals now (249 places):** Timeline done 38, partial 0, none 211. Globe done 3, partial 193, none 53.
 
-Honest caveat: only Peru (Day 65: 17 polities from Caral to the Neo-Inca State, 19 cities, 17 pins, links both ways) and Ghana (Day 66: 10 polities from Bono to the Fante coast and the northern kingdoms, 18 cities, 24 pins) are Globe `done` so far. The rest of pack 1 (Morocco, Kenya, Iraq, Philippines) is still timeline-only on the globe and comes next. `done` means a first full pass, not the last word: Tiwanaku and the Bolivian / Chilean Andes wait for their own packs, and Ghana's smaller states (Wassa, Nzema, the Ewe, Krobo) for the West Africa pass.
+Honest caveat: only Peru (Day 65: 17 polities from Caral to the Neo-Inca State, 19 cities, 17 pins, links both ways) Ghana (Day 66: 10 polities from Bono to the Fante coast and the northern kingdoms, 18 cities, 24 pins) and Morocco (Day 68: 20 polities and enclave holders from the Mauri kings to the Alaouites, 20 cities, 54 pins) are Globe `done` so far. The rest of pack 1 (Kenya, Iraq, Philippines) is still timeline-only on the globe and comes next. `done` means a first full pass, not the last word: Tiwanaku and the Bolivian / Chilean Andes wait for their own packs, Ghana's smaller states (Wassa, Nzema, the Ewe, Krobo) for the West Africa pass, and Morocco's lesser powers (al-Ayyashi, Tetouan's Naqsis, the Hintata, Ceuta's Azafids) and Algeria / Tunisia's own dynasties (Rustamids, Zirids, Hammadids, Hafsids, Zayyanids) for the Maghreb pass.
 
 **All 53 Globe `none` rows are scheduled** (ROADMAP Phase 5, "Places with nothing drawn yet"). Each will get a high-res close-zoom outline, or a tappable labelled marker where a shape isn't practical, in its region pack. Antarctica gets research stations plus dated territorial claims and the 1959 Antarctic Treaty. Their Notes say `scheduled: outline or marker`.
 
@@ -165,7 +165,7 @@ Honest caveat: only Peru (Day 65: 17 polities from Caral to the Neo-Inca State, 
 | Ghana | GH | done | done | Pack 1 globe backfill | Day 66: Bono, Denkyira, Akwamu, Akyem, Great Accra, Fante, Dagbon, Mamprugu, Gonja, Asante redrawn to the coast (1350–1815), 18 cities, 24 pins, +3 timeline items |
 | Iraq | IQ | done | partial | Pack 1 globe backfill | modern borders 1815/1914–2025 |
 | Kenya | KE | done | partial | Pack 1 globe backfill | modern borders 1815/1914–2025 |
-| Morocco | MA | done | partial | Pack 1 globe backfill | modern borders 1815/1914–2025 |
+| Morocco | MA | done | done | Pack 1 globe backfill | Day 68: Mauretania, Roman Tingitana, Barghawata, Idrisids, Nekor, Sijilmasa, Maghrawa / Banu Ifran, Almoravids, Almohads, Marinids, Wattasids, Saadians, Tazerwalt, Dila, Salé, Alaouites and the Portuguese / Spanish / English enclaves (−206–1815), 20 cities, 54 pins, +4 timeline items |
 | Peru | PE | done | done | Pack 1 globe backfill | Day 65: Norte Chico → Neo-Inca State keyframes, 19 cities, 17 pins, Inca / Spanish / Andean shapes redrawn to the coast |
 | Philippines | PH | done | partial | Pack 1 globe backfill | modern borders 1815/1914–2025 |
 | Antarctica | AQ | none | none | Polar & remote (batch) | scheduled: stations + dated claims (1959 Treaty) |
