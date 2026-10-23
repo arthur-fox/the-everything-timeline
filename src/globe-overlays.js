@@ -35,6 +35,7 @@ import { lidarPresenceEntities, applyLidarShapeNotes } from './globe-lidar-shape
 import { peruPolities, applyPeruShapeFixes } from './globe-pack-peru.js';
 import { ghanaPolities, applyGhanaShapeFixes } from './globe-pack-ghana.js';
 import { moroccoPolities, applyMoroccoShapeFixes } from './globe-pack-morocco.js';
+import { kenyaPolities, applyKenyaShapeFixes } from './globe-pack-kenya.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6301,6 +6302,14 @@ for (const ent of moroccoPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 69 — Phase 5 country pack 1, Kenya (globe-pack-kenya.js): Shanga and Manda to the Mazrui of
+// Mombasa and the Wanga Kingdom; all appended.
+for (const ent of kenyaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6341,6 +6350,8 @@ applyGhanaShapeFixes(spatialEntities);
 // Day 68 — Rome's African edge stops at the Ampsaga (Mauretania is drawn by the Morocco pack), and
 // the French Maghreb shape no longer grows over Morocco before 1815.
 applyMoroccoShapeFixes(spatialEntities);
+// Day 69 — the Swahili city-states' schematic Kenya-coast region gives way to the Kenya pack's towns.
+applyKenyaShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
