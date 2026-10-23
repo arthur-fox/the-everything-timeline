@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); step 7.1 stars/Milky Way is done (Day 61); step 7.2 constellations is done-in-PR (Day 62); steps 7.2 constellations and 8.1 lidar hidden-cities pins are merged (#76, #77, 17 Oct) and PR #72 coast spill is merged; step 8.2 honest shape updates is done-in-PR (Day 64); Phase 5 country packs covering both views have started: pack 1 globe backfill, Peru, is done-in-PR (Day 65), Ghana is done-in-PR (Day 66) and Morocco is done-in-PR (Day 68), next Kenya** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); step 7.1 stars/Milky Way is done (Day 61); step 7.2 constellations is done-in-PR (Day 62); steps 7.2 constellations and 8.1 lidar hidden-cities pins are merged (#76, #77, 17 Oct) and PR #72 coast spill is merged; step 8.2 honest shape updates is done-in-PR (Day 64); Phase 5 country packs covering both views have started: pack 1 globe backfill, Peru, is done-in-PR (Day 65), Ghana is done-in-PR (Day 66) Morocco (Day 68) is merged (#82) and Kenya is done-in-PR (Day 69), next Iraq** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -986,7 +986,7 @@ Each pack takes one country (or a small group of neighbours) and refines **both 
 
 Proposed order:
 
-1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, merged #79); Ghana ✅ (Day 66, merged #80); Morocco ✅ (Day 68, done-in-PR); next Kenya, then Iraq, Philippines.**
+1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, merged #79); Ghana ✅ (Day 66, merged #80); Morocco ✅ (Day 68, merged #82); Kenya ✅ (Day 69, done-in-PR); next Iraq, then Philippines.**
 2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates).
 3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits).
 4. **Central Africa:** DR Congo, Angola, Cameroon, Chad (Kongo, Luba, Lunda, Kanem-Bornu).
@@ -1074,6 +1074,27 @@ Morocco had a sourced timeline but on the globe only a schematic Roman outline t
   - Not drawn yet: al-Ayyashi's jihad state, Tetouan's Naqsis, the Hintata of Marrakesh, the Azafids of Ceuta, Marinid holdings in Spain, Saadian rule on the Niger after 1591, and Algeria and Tunisia's own dynasties (Rustamids, Zirids, Hammadids, Hafsids, Zayyanids) — those belong to the Maghreb pass. The Umayyad Maghreb (680–750) stays schematic.
   - Enclaves are drawn a little larger than the forts so they show up. The Rif Republic (1921–1926) is after the 1815 handoff, so it is a timeline item with pins, not a shape.
 - **Next:** pack 1 globe backfill continues with **Kenya**, then Iraq, the Philippines.
+
+#### Day 69 — Pack 1 globe backfill: Kenya — done-in-PR
+
+Kenya had a sourced timeline, but on the globe only one schematic Swahili-coast blob from Lamu to Mombasa, the peoples and presence layers, and modern borders from 1888. No town-state, Fort Jesus or the Mazrui showed. Now the coast and the Wanga Kingdom are drawn from the 760s to 1815, where the nations layer takes over (it draws Kenya from 1888, and leaves 1815–1888 empty).
+
+- **Shapes (`src/globe-pack-kenya.js`, lazy globe chunk): 11 polities, 114 keyframes** (every change is a one-year step), each with a certainty level and reason, sources and links to Kenya's timeline items:
+  - **Lamu archipelago:** Shanga (760–1425), Manda (850–1300), Pate (from c. 1300, ruling the archipelago in the 1700s), Siyu and Faza, and Lamu (from c. 1300; Omani governor after Shela, 1812–1813).
+  - **Mainland coast:** Gedi (c. 1050–1640), Mombasa / Mvita (from al-Idrisi's 1151), Malindi (from c. 1250; Portugal's ally, its sultans moved to Mombasa in 1592).
+  - **Portuguese Mombasa (Fort Jesus)** 1593–1698 (with Malindi to 1630; Dom Jerónimo's revolt 1631–32 shown as a label), then **Omani and Mazrui Mombasa** 1698–1815 (Portuguese return 1728–29 as a label; Mazrui from 1746).
+  - **Wanga Kingdom** (c. 1650–1815) around Elureko (Mumias) — conjectural outline.
+- **Existing shapes fixed (`applyKenyaShapeFixes`):** the Swahili city-states' schematic 'north' region over the Kenya coast is dropped; the towns are now drawn one by one. `check-inland-africa.js` checks Zanzibar instead of Mombasa for that shape.
+- **Cities: +16** — Shanga, Manda, Pate, Siyu, Faza, Takwa, Gedi, Mnarani, Rabai, Takaungu, Elureko → Mumias, Machakos, Kisumu, Nyeri, Nakuru, Eldoret.
+- **Pins: +50**, using `country:kenya:<item>` refs, from Lothagam North and the Periplus through Shanga's mosques, al-Idrisi, Ibn Battuta, Gedi, Zheng He at Malindi, da Gama turned away from Mombasa, Almeida, Fort Jesus and its sieges, Shela, Thimlich Ohinga, the kayas, Elureko, Krapf and Rebmann, the Uganda Railway, Nairobi, Mau Mau, independence and the 2010 constitution.
+- **Timeline (`data/countries/kenya.json`): +4 sourced items** — "Pate, Lamu & the Lamu Archipelago", "Fort Jesus & Portuguese Mombasa", "Omani & Mazrui Mombasa" and "Wanga Kingdom & the Peoples of the Interior" (new "Interior Kingdoms & Peoples" category; 11 items now).
+- **Validate:** Kenya is a fourth row in `scripts/check-country-packs.js` (land, rings, sources, 19 capitals and sites inside their shapes, who is on / gone at sample years, the old Swahili shape no longer over Mombasa, Malindi or Lamu and its 'north' region stays dropped, no overlap with the pack, the Swahili city-states, Ethiopia or Buganda 750–1815).
+- **Honest caveats:**
+  - Swahili towns ruled a town and its nearby farmland, not surveyed territory; each hinterland is a small, approximate strip. Shanga, Manda, Gedi and the Wanga Kingdom are conjectural outlines.
+  - Left empty where no source says who ruled: Kilifi creek (Mnarani), the Tana delta (Ungwana), the south coast (Vumba Kuu), the Kiunga mainland and the interior apart from Wanga. Interior peoples stay in the peoples layer.
+  - Short interludes (1631–32, 1728–29) are labels on a continuous shape, because one shape can't have a gap in time.
+  - 1815–1888 has no shape over Kenya (Zanzibar's coastal strip and the Mazrui after 1837 aren't drawn yet).
+- **Next:** pack 1 globe backfill continues with **Iraq**, then the Philippines.
 
 ### 13. Fill the globe, region by region (after the packs above)
 
@@ -1218,8 +1239,9 @@ A sensible near-term sequence:
 52. Phase 5 country packs covering both views (Timeline + Globe): pack 1 globe backfill — Peru (Day 65) ✅ (merged, #79).
 53. Pack 1 globe backfill — Ghana (Day 66) ✅ (merged, #80).
 54. World population readout on the globe (Day 67) ✅ (done-in-PR).
-55. Pack 1 globe backfill — Morocco (Day 68) ✅ (done-in-PR).
-56. **Now: pack 1 globe backfill continues — Kenya, then Iraq, Philippines. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
+55. Pack 1 globe backfill — Morocco (Day 68) ✅ (merged, #82).
+56. Pack 1 globe backfill — Kenya (Day 69) ✅ (done-in-PR).
+57. **Now: pack 1 globe backfill continues — Iraq, then Philippines. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
