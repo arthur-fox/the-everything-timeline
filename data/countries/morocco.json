@@ -21,6 +21,11 @@
       "color": "#EF4444"
     },
     {
+      "id": "enclaves",
+      "name": "European Enclaves",
+      "color": "#60A5FA"
+    },
+    {
       "id": "protectorate",
       "name": "Protectorate",
       "color": "#78716C"
@@ -65,6 +70,53 @@
           "name": "Roman Mauretania Tingitana",
           "start": 44,
           "end": 429
+        }
+      ]
+    },
+    {
+      "id": "morocco-barghawata-zenata",
+      "name": "Barghawata, Sijilmasa & the Zenata",
+      "start": 742,
+      "end": 1081,
+      "region": "berber",
+      "icon": "🐪",
+      "description": "After the Berber Revolt of 739–743 broke Umayyad rule, Morocco split into Berber states. The Barghawata of the Atlantic plain of Tamesna followed Salih ibn Tarif's own Berber-language revelation (744) and held out for three centuries. The Miknasa founded Sijilmasa in the Tafilalt (757–758), the northern gate of the gold road to Wagadu. In the late 900s the Zenata Maghrawa and Banu Ifran, clients of Córdoba, took Sijilmasa and Fez; Ziri ibn Atiyya founded Oujda in 994. The Almoravids swept all of them away between 1055 and 1080.",
+      "sources": [
+        {
+          "title": "Wikipedia — Barghawata",
+          "url": "https://en.wikipedia.org/wiki/Barghawata"
+        },
+        {
+          "title": "Wikipedia — Midrarid dynasty",
+          "url": "https://en.wikipedia.org/wiki/Midrarid_dynasty"
+        },
+        {
+          "title": "Wikipedia — Sijilmasa",
+          "url": "https://en.wikipedia.org/wiki/Sijilmasa"
+        },
+        {
+          "title": "Wikipedia — Maghrawa",
+          "url": "https://en.wikipedia.org/wiki/Maghrawa"
+        },
+        {
+          "title": "Wikipedia — Banu Ifran",
+          "url": "https://en.wikipedia.org/wiki/Banu_Ifran"
+        },
+        {
+          "title": "Abun-Nasr, A History of the Maghrib in the Islamic Period (Cambridge, 1987)",
+          "url": "https://doi.org/10.1017/CBO9780511608100"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Berber Revolt and the Barghawata",
+          "start": 742,
+          "end": 976
+        },
+        {
+          "name": "Maghrawa and Banu Ifran",
+          "start": 976,
+          "end": 1081
         }
       ]
     },
@@ -167,6 +219,92 @@
       ]
     },
     {
+      "id": "morocco-enclaves",
+      "name": "Portuguese & Spanish Enclaves",
+      "start": 1415,
+      "end": 2025,
+      "region": "enclaves",
+      "icon": "🏰",
+      "description": "Portugal took Ceuta in 1415, the first European foothold in Africa, then Ksar es-Seghir, Asilah, Tangier and a chain of Atlantic forts (Agadir, Safi, Azemmour, Mazagan). Spain took Melilla in 1497 and later Larache and La Mamora; Ceuta stayed Spanish after 1640, and Tangier was English from 1662 to 1684. Moroccan sultans won most of them back — the Saadians in the 1540s, Moulay Ismail in the 1680s, Mohammed III at Mazagan in 1769. Ceuta and Melilla are still Spanish today.",
+      "sources": [
+        {
+          "title": "Wikipedia — Portuguese Morocco",
+          "url": "https://en.wikipedia.org/wiki/Portuguese_Morocco"
+        },
+        {
+          "title": "Wikipedia — Conquest of Ceuta",
+          "url": "https://en.wikipedia.org/wiki/Conquest_of_Ceuta"
+        },
+        {
+          "title": "Wikipedia — English Tangier",
+          "url": "https://en.wikipedia.org/wiki/English_Tangier"
+        },
+        {
+          "title": "Wikipedia — Melilla",
+          "url": "https://en.wikipedia.org/wiki/Melilla"
+        },
+        {
+          "title": "Wikipedia — Ceuta",
+          "url": "https://en.wikipedia.org/wiki/Ceuta"
+        },
+        {
+          "title": "UNESCO — Portuguese City of Mazagan (El Jadida)",
+          "url": "https://whc.unesco.org/en/list/1058/"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Portuguese forts",
+          "start": 1415,
+          "end": 1769
+        },
+        {
+          "name": "Spanish Ceuta and Melilla",
+          "start": 1497,
+          "end": 2025
+        }
+      ]
+    },
+    {
+      "id": "morocco-sale-dila",
+      "name": "Crisis of the 1600s: Salé, Dila & Tafilalt",
+      "start": 1603,
+      "end": 1670,
+      "region": "sharifian",
+      "icon": "⚔️",
+      "description": "After Ahmad al-Mansur died in 1603, his sons fought for the throne and Morocco broke apart. The marabout Sidi Ali Bou Dmia ruled the Sous from Iligh (Tazerwalt); Morisco refugees made Salé a corsair republic (1627); the Sufi lodge of Dila in the Middle Atlas took Meknes, Fez and Salé by 1641; and in the Tafilalt a sharifian family, the Alaouites, was proclaimed in 1631. The Alaouite al-Rashid took Fez in 1666 and destroyed Dila and took Marrakesh in 1668, then razed Iligh in 1670, reuniting the country.",
+      "sources": [
+        {
+          "title": "Wikipedia — Zawiya Dila'iya",
+          "url": "https://en.wikipedia.org/wiki/Zawiya_Dila'iya"
+        },
+        {
+          "title": "Wikipedia — Republic of Salé",
+          "url": "https://en.wikipedia.org/wiki/Republic_of_Salé"
+        },
+        {
+          "title": "Wikipedia — Tazerwalt",
+          "url": "https://en.wikipedia.org/wiki/Tazerwalt"
+        },
+        {
+          "title": "Wikipedia — Alawi dynasty",
+          "url": "https://en.wikipedia.org/wiki/Alawi_dynasty"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Saadi civil war",
+          "start": 1603,
+          "end": 1627
+        },
+        {
+          "name": "Salé, Dila and Iligh",
+          "start": 1627,
+          "end": 1670
+        }
+      ]
+    },
+    {
       "id": "morocco-alaouite-sultanate",
       "name": "Alaouite Sultanate",
       "start": 1666,
@@ -235,6 +373,29 @@
           "name": "Nationalist movement",
           "start": 1926,
           "end": 1956
+        }
+      ]
+    },
+    {
+      "id": "morocco-rif-republic",
+      "name": "Rif War & the Republic of the Rif",
+      "start": 1921,
+      "end": 1926,
+      "region": "protectorate",
+      "icon": "⛰️",
+      "description": "In the Spanish zone, Abd el-Krim led the Rif tribes to a crushing victory over the Spanish army at Annual (1921) and set up the Republic of the Rif, with its capital at Ajdir. It took a joint French and Spanish force of hundreds of thousands — and the first amphibious landing with tanks, at Al Hoceima (1925) — to defeat him; he surrendered in 1926.",
+      "sources": [
+        {
+          "title": "Wikipedia — Republic of the Rif",
+          "url": "https://en.wikipedia.org/wiki/Republic_of_the_Rif"
+        },
+        {
+          "title": "Wikipedia — Rif War",
+          "url": "https://en.wikipedia.org/wiki/Rif_War"
+        },
+        {
+          "title": "Wikipedia — Battle of Annual",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Annual"
         }
       ]
     },

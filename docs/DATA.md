@@ -128,7 +128,7 @@ Only use a published area. The outline itself is drawn by hand, so it is never `
 
 ### Country-pack globe backfill (Day 65)
 
-A Phase 5 country pack refines a country's whole history on the globe in one module, `src/globe-pack-<country>.js` (first: `globe-pack-peru.js`; then `globe-pack-ghana.js`). Nothing new in the format:
+A Phase 5 country pack refines a country's whole history on the globe in one module, `src/globe-pack-<country>.js` (first: `globe-pack-peru.js`; then `globe-pack-ghana.js` and `globe-pack-morocco.js`). Nothing new in the format:
 
 - **Polities** are ordinary spatial entities (`{ id, name, color, type, description, nameAt?, keyYears, overlays, timelineItemIds, confidence, sources, edgeGrace }`), wired in `globe-overlays.js` with the usual replace-by-id-else-append loop. Each links at least one item in `data/countries/<country>.json`.
 - **Coasts:** shapes that meet the sea take their west side from a traced coast (`src/globe-andes-coast.js`: `[lat, westernmost-land lng]` rows read off `nations.topo.json`, nudged 0.06° inland; `coastal(north, south, inland)` builds the closed ring). That stops Pacific spill. Rings longer than 24 vertices keep their detail mid-morph (`lerpRings` samples ≈2 per vertex, up to 160, and lines the rings up first; short rings are unchanged).
@@ -138,6 +138,8 @@ A Phase 5 country pack refines a country's whole history on the globe in one mod
 
 Day 66 (Ghana) adds two conventions: a pack may **replace an existing polity by id** (the Day 58 Asante), and the region's own check must then accept the pack's version; and a coast that isn't the Pacific gets its own trace in the pack module (`GOLD_COAST`, `[lng, southernmost-land lat]`, nudged 0.05° inland, `shore(west, east)`). A pack can also pull an existing shape's sea-crossing edge onto its coast (`applyGhanaShapeFixes`: the West African presence bands), checked by `offshore` (no shading 0.25° and 0.65° off the trace at the shape's keyframes). A state that grows past a neighbour can be drawn as several touching regions that fade in (Gonja) so its outline never morphs across the neighbour.
 
+Day 68 (Morocco) builds a pack from **shared-border pieces**, like the Greek world: the land is cut into pieces (`MOROCCO_PIECES`: Tingis, the Gharb, the Saïs, Tamesna, the Haouz, the High Atlas, the Sous, Tafilalt, western Algeria, Ifriqiya, the parts of al-Andalus …) whose borders are the same point lists, and each polity is a dated list of pieces merged with `mergeRings` (`build(meta, steps)`). Coasts are read off `nations.topo.json` along the shore (both the Atlantic and the Mediterranean, and Iberia's south and east), nudged 0.04° inland. Every change is a one-year step (keyframes at Y−1 and Y), so no outline morphs across a neighbour. **Coastal enclaves** (`ENCLAVE_SHAPES` / `ENCLAVE_RULE`: Portuguese Ceuta, Tangier, Mazagan …, Spanish Melilla, English Tangier, the Republic of Salé) are small shapes cut out of whichever state holds that shore in each year, with matching notches. An older shape whose morph would slide over the pack (Rome's single 'mediterranean' ring) can be split so that the part next to the pack is a region that is the **same in every keyframe** — identical rings are not morphed (`applyMoroccoShapeFixes`: fixed Hispania and Africa regions).
+
 `scripts/check-country-packs.js` (in `npm run validate`, one `PACKS` row per country) checks:
 
 - rings are closed and don't cross themselves;
@@ -145,7 +147,9 @@ Day 66 (Ghana) adds two conventions: a pack may **replace an existing polity by 
 - sources, confidence, ≥3 keyframes, nothing after 1815, and links to real timeline items;
 - type sites and capitals are inside their shape at a real date;
 - who is on and who is gone at sample years, and the fixed anachronisms stay fixed (no Spanish Andes before Pizarro);
-- optionally (`noOverlap`), that the pack's shapes never overlap each other, sampled every 5 years on a 0.1° grid (Ghana).
+- optionally (`noOverlap`), that the pack's shapes never overlap each other, sampled every 5 years on a 0.1° grid (Ghana); `with` adds neighbouring older shapes the pack must not overlap either and `planar` uses a fast planar test for big boxes (Morocco);
+- optionally (`notOver`), that a fixed older shape no longer covers a place in a year (Rome over Volubilis, the French Maghreb over Fez), and (`enclaves`) that each enclave is drawn by exactly one shape in every year it changes hands;
+- that every piece merge made one outline (`MERGE_STATS`).
 
 ## How to add data
 
