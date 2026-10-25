@@ -81,7 +81,8 @@ const expectEntity = (id, y, level) => {
 expectEntity('roman-empire', 117, 'approximate');
 expectEntity('han-china', 100, 'approximate');
 expectEntity('ottoman-empire', 1683, 'approximate');
-expectEntity('mesopotamia', -2300, 'conjectural');
+expectEntity('sumerian-city-states', -2500, 'conjectural');
+expectEntity('akkadian-empire', -2300, 'approximate');
 expectEntity('olmec', -1000, 'conjectural');
 expectEntity('ancient-egypt', -1450, 'approximate');
 expectEntity('celts', -300, 'conjectural');

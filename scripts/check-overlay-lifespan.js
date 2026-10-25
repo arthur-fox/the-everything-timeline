@@ -73,7 +73,9 @@ assert(!idsAt(1980).has('british-empire'), 'British OFF at 1980 (last keyframe 1
 assert(idsAt(1900).has('british-empire'), 'British ON at 1900');
 assert(idsAt(1900).has('qing-china'), 'Qing ON at 1900');
 
-assert(idsAt(-3000).has('mesopotamia'), 'Mesopotamia ON at −3000');
+// Day 70 — the Mesopotamia sphere is replaced by the Iraq pack (city-states from c. 2900 BCE).
+assert(idsAt(-2800).has('sumerian-city-states'), 'Sumerian city-states ON at −2800');
+assert(!idsAt(-2800).has('mesopotamia'), 'Mesopotamia sphere gone');
 assert(idsAt(-3000).has('ancient-egypt'), 'Egypt ON at −3000');
 assert(idsAt(-2500).size >= 2, `−2500 has ≥2 overlays (got ${idsAt(-2500).size})`);
 assert(idsAt(-2000).size >= 2, `−2000 has ≥3 overlays (got ${idsAt(-2000).size})`);

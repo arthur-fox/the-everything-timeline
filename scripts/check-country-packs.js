@@ -1,7 +1,8 @@
 /**
  * Day 65: checks for Phase 5 country-pack globe backfills (ROADMAP item 12), starting with Peru
  * (src/globe-pack-peru.js), Ghana (Day 66, src/globe-pack-ghana.js), Morocco (Day 68,
- * src/globe-pack-morocco.js) and Kenya (Day 69, src/globe-pack-kenya.js). Add a pack to PACKS to cover it.
+ * src/globe-pack-morocco.js), Kenya (Day 69, src/globe-pack-kenya.js) and Iraq (Day 70,
+ * src/globe-pack-iraq.js). Add a pack to PACKS to cover it.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
  *    on land (no Pacific spill), for the pack's polities and the shapes it redrew;
@@ -11,7 +12,10 @@
  *  - who is on and who is gone at sample years, and the anachronisms the pack fixed stay fixed;
  *  - (Day 66+) the pack's shapes never overlap each other — and (Day 68) the neighbours it lists —
  *    at any sampled year, and (Day 68) each coastal enclave is drawn by exactly one shape;
- *  - (Day 69) a region the pack dropped from an older shape stays dropped (`dropped`).
+ *  - (Day 69) a region the pack dropped from an older shape stays dropped (`dropped`);
+ *  - (Day 70) whole shapes a pack replaces are gone (`droppedEntities`), and shapes it only trimmed
+ *    back (schematic rings that run through the sea, so not land-checked) have a notOver test that
+ *    proves the trim (`trimmed`).
  */
 import fs from 'node:fs';
 import { geoContains } from 'd3-geo';
@@ -19,6 +23,7 @@ import { peruPolities, peruShapeFixes } from '../src/globe-pack-peru.js';
 import { ghanaPolities, ghanaShapeFixes, GOLD_COAST } from '../src/globe-pack-ghana.js';
 import { moroccoPolities, moroccoShapeFixes, ENCLAVE_SHAPES, ENCLAVE_RULE } from '../src/globe-pack-morocco.js';
 import { kenyaPolities, kenyaShapeFixes } from '../src/globe-pack-kenya.js';
+import { iraqPolities, iraqShapeFixes, IRAQ_TRIMS } from '../src/globe-pack-iraq.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -414,6 +419,174 @@ const PACKS = [
       with: ['swahili-city-states', 'ethiopian-empire', 'buganda'],
     },
   },
+  {
+    country: 'iraq',
+    polities: iraqPolities,
+    fixes: iraqShapeFixes,
+    // Regions redrawn from the Iraq pieces (land-checked).
+    redrawn: {
+      'parthian-empire': ['babylonia'],
+      'sassanid-empire': ['mesopotamia'],
+      'umayyad-caliphate': ['mesopotamia'],
+      'abbasid-caliphate': ['mesopotamia'],
+      'ottoman-empire': ['jazira'],
+    },
+    // The schematic Mesopotamia sphere is replaced by the pack.
+    droppedEntities: ['mesopotamia'],
+    // Schematic rings trimmed back to a line clear of Iraq (they run through the sea elsewhere).
+    trimmed: [...new Set(IRAQ_TRIMS.map(([id]) => id)), 'achaemenid-empire'],
+    capitals: [
+      ['sumerian-city-states', -2600, 46.1, 30.96, 'Ur'],
+      ['sumerian-city-states', -2600, 45.64, 31.32, 'Uruk'],
+      ['sumerian-city-states', -2600, 44.6, 32.54, 'Kish'],
+      ['sumerian-city-states', -2600, 46.18, 31.55, 'Girsu'],
+      ['sumerian-city-states', -2600, 40.89, 34.55, 'Mari'],
+      ['akkadian-empire', -2300, 44.6, 32.54, 'Kish'],
+      ['akkadian-empire', -2300, 45.23, 32.13, 'Nippur'],
+      ['akkadian-empire', -2300, 43.26, 35.46, 'Assur'],
+      ['akkadian-empire', -2254, 41.06, 36.67, 'Nagar (Tell Brak)'],
+      ['ur-iii', -2094, 46.1, 30.96, 'Ur'],
+      ['ur-iii', -2060, 43.26, 35.46, 'Assur'],
+      ['isin-dynasty', -2000, 45.27, 31.88, 'Isin'],
+      ['larsa-dynasty', -1822, 45.85, 31.29, 'Larsa'],
+      ['larsa-dynasty', -1822, 46.1, 30.96, 'Ur'],
+      ['eshnunna', -1850, 44.73, 33.48, 'Eshnunna'],
+      ['mari-kingdom', -1775, 40.89, 34.55, 'Mari'],
+      ['assyria', -1950, 43.26, 35.46, 'Assur'],
+      ['assyria', -1808, 41.92, 36.96, 'Shubat-Enlil'],
+      ['assyria', -880, 43.33, 36.1, 'Kalhu'],
+      ['assyria', -689, 43.15, 36.36, 'Nineveh'],
+      ['assyria', -689, 44.42, 32.54, 'Babylon'],
+      ['assyria', -612, 39.03, 36.87, 'Harran'],
+      ['mitanni', -1500, 41.06, 36.67, 'Nagar (Tell Brak)'],
+      ['babylonia', -1792, 44.42, 32.54, 'Babylon'],
+      ['babylonia', -1761, 40.89, 34.55, 'Mari'],
+      ['babylonia', -1375, 44.2, 33.35, 'Dur-Kurigalzu'],
+      ['sealand-dynasty', -1600, 46.1, 30.96, 'Ur'],
+      ['neo-babylonian-empire', -587, 44.42, 32.54, 'Babylon'],
+      ['neo-babylonian-empire', -587, 39.03, 36.87, 'Harran'],
+      ['parthian-empire', 50, 44.58, 33.09, 'Ctesiphon'],
+      ['sassanid-empire', 400, 44.58, 33.09, 'Ctesiphon'],
+      ['umayyad-caliphate', 661, 44.4, 32.03, 'Kufa'],
+      ['umayyad-caliphate', 720, 46.3, 32.19, 'Wasit'],
+      ['abbasid-caliphate', 800, 44.36, 33.31, 'Baghdad'],
+      ['abbasid-caliphate', 936, 44.36, 33.31, 'Baghdad'],
+      ['hamdanids-mosul', 942, 43.13, 36.34, 'Mosul'],
+      ['hamdanids-mosul', 942, 41.22, 37.07, 'Nisibis'],
+      ['buyid-iraq', 945, 44.36, 33.31, 'Baghdad'],
+      ['buyid-iraq', 979, 43.13, 36.34, 'Mosul'],
+      ['uqaylids', 1044, 43.13, 36.34, 'Mosul'],
+      ['seljuk-iraq', 1067, 44.36, 33.31, 'Baghdad'],
+      ['seljuk-iraq', 1118, 43.13, 36.34, 'Mosul'],
+      ['mosul-atabegs', 1146, 43.13, 36.34, 'Mosul'],
+      ['abbasid-caliphate-iraq', 1180, 44.36, 33.31, 'Baghdad'],
+      ['abbasid-caliphate-iraq', 1180, 47.81, 30.51, 'Basra'],
+      ['ilkhanate-iraq', 1295, 44.36, 33.31, 'Baghdad'],
+      ['ilkhanate-iraq', 1295, 43.13, 36.34, 'Mosul'],
+      ['jalayirids', 1356, 44.36, 33.31, 'Baghdad'],
+      ['jalayirids', 1410, 47.81, 30.51, 'Basra'],
+      ['qara-qoyunlu', 1432, 44.36, 33.31, 'Baghdad'],
+      ['aq-qoyunlu', 1478, 44.36, 33.31, 'Baghdad'],
+      ['safavid-iraq', 1514, 44.36, 33.31, 'Baghdad'],
+      ['safavid-baghdad', 1626, 44.36, 33.31, 'Baghdad'],
+      ['ottoman-iraq', 1554, 44.36, 33.31, 'Baghdad'],
+      ['ottoman-iraq', 1554, 43.13, 36.34, 'Mosul'],
+      ['ottoman-iraq', 1554, 47.81, 30.51, 'Basra'],
+      ['ottoman-iraq', 1780, 45.43, 35.56, 'Sulaymaniyah'],
+      ['ottoman-iraq', 1780, 44.01, 36.19, 'Erbil'],
+      ['afrasiyab-basra', 1624, 47.81, 30.51, 'Basra'],
+    ],
+    on: {
+      '-2800': ['sumerian-city-states'],
+      '-2300': ['akkadian-empire'],
+      '-2100': ['ur-iii'],
+      '-1900': ['isin-dynasty', 'larsa-dynasty', 'eshnunna', 'assyria'],
+      '-1790': ['babylonia', 'larsa-dynasty', 'mari-kingdom', 'eshnunna', 'assyria'],
+      '-1700': ['babylonia', 'sealand-dynasty', 'assyria'],
+      '-1450': ['babylonia', 'mitanni', 'assyria'],
+      '-700': ['assyria'],
+      '-580': ['neo-babylonian-empire'],
+      0: ['parthian-empire'],
+      700: ['umayyad-caliphate'],
+      935: ['abbasid-caliphate', 'hamdanids-mosul'],
+      1000: ['buyid-iraq', 'uqaylids'],
+      1100: ['seljuk-iraq'],
+      1200: ['abbasid-caliphate-iraq', 'mosul-atabegs'],
+      1300: ['ilkhanate-iraq'],
+      1400: ['jalayirids'],
+      1450: ['qara-qoyunlu'],
+      1490: ['aq-qoyunlu'],
+      1520: ['safavid-iraq'],
+      1600: ['ottoman-iraq', 'afrasiyab-basra'],
+      1630: ['safavid-baghdad', 'ottoman-iraq'],
+      1810: ['ottoman-iraq'],
+    },
+    gone: {
+      '-2800': ['mesopotamia'],
+      '-2200': ['sumerian-city-states'],
+      '-2100': ['akkadian-empire'],
+      '-1990': ['ur-iii'],
+      '-1750': ['larsa-dynasty', 'eshnunna', 'mari-kingdom', 'isin-dynasty'],
+      '-1400': ['sealand-dynasty'],
+      '-1200': ['mitanni'],
+      '-700': ['babylonia'],
+      '-600': ['assyria'],
+      '-530': ['neo-babylonian-empire'],
+      960: ['abbasid-caliphate'],
+      990: ['hamdanids-mosul'],
+      1060: ['buyid-iraq'],
+      1100: ['uqaylids'],
+      1160: ['seljuk-iraq'],
+      1260: ['abbasid-caliphate-iraq'],
+      1265: ['mosul-atabegs'],
+      1340: ['ilkhanate-iraq'],
+      1435: ['jalayirids'],
+      1470: ['qara-qoyunlu'],
+      1510: ['aq-qoyunlu'],
+      1536: ['safavid-iraq'],
+      1640: ['safavid-baghdad'],
+      1670: ['afrasiyab-basra'],
+    },
+    absent: [
+      ['safavid-empire', 1620, 'mesopotamia'],
+      ['achaemenid-empire', -545, 'meso-syria'],
+    ],
+    present: [
+      ['parthian-empire', 0, 'babylonia'],
+      ['umayyad-caliphate', 715, 'mesopotamia'],
+      ['abbasid-caliphate', 940, 'mesopotamia'],
+      ['ottoman-empire', 1700, 'jazira'],
+    ],
+    // Anachronisms fixed: shapes that spilled over Iraq in other powers' years.
+    notOver: [
+      ['hittite-empire', -1300, 38.55, 36.5, 'the Balikh mouth (Mitanni)'],
+      ['roman-empire', 117, 44.42, 32.54, 'Babylon'],
+      ['roman-empire', 117, 43.13, 36.34, 'Mosul'],
+      ['ancient-egypt', -1500, 40.89, 34.55, 'Mari'],
+      ['phoenicia', -1500, 40.89, 34.55, 'Mari'],
+      ['byzantine-empire', 800, 41.22, 37.07, 'Nisibis'],
+      ['byzantine-empire', 1000, 41.22, 37.07, 'Nisibis'],
+      ['mongol-empire', 1240, 43.13, 36.34, 'Mosul'],
+      ['mongol-empire', 1300, 43.13, 36.34, 'Mosul'],
+      ['mongol-empire', 1290, 44.36, 33.31, 'Baghdad'],
+      ['mongol-empire', 1290, 47.81, 30.51, 'Basra'],
+      ['safavid-empire', 1600, 44.36, 33.31, 'Baghdad'],
+      ['safavid-empire', 1650, 47.81, 30.51, 'Basra'],
+      ['safavid-empire', 1700, 45.43, 35.56, 'Sulaymaniyah'],
+      ['ottoman-empire', 1500, 43.13, 36.34, 'Mosul'],
+      ['ottoman-empire', 1600, 44.01, 36.19, 'Erbil'],
+      ['ottoman-empire', 1700, 42.0, 34.4, 'Anah'],
+      ['achaemenid-empire', -541, 44.42, 32.54, 'Babylon'],
+    ],
+    // The pack's shapes, and the older shapes around it, never overlap (every 5 years, 0.1° grid).
+    noOverlap: {
+      from: -2900,
+      to: 1815,
+      box: [37.5, 29.5, 49, 38],
+      planar: true,
+      with: ['achaemenid-empire', 'macedonian-empire', 'seleucid-empire', 'parthian-empire', 'roman-empire', 'sassanid-empire', 'umayyad-caliphate', 'abbasid-caliphate', 'ancient-egypt', 'phoenicia', 'hittite-empire', 'byzantine-empire', 'mongol-empire', 'timurid', 'safavid-empire', 'ottoman-empire'],
+    },
+  },
 ];
 
 let rings = 0;
@@ -461,7 +634,13 @@ for (const pack of PACKS) {
       }
     }
   }
-  for (const id of Object.keys(pack.fixes)) if (!pack.redrawn[id] && !pack.offshore?.entities.includes(id) && !(pack.dropped || []).some(([d]) => d === id)) fail(`fix target ${id} is not land-checked`);
+  for (const id of Object.keys(pack.fixes)) {
+    if (pack.redrawn[id] || pack.offshore?.entities.includes(id) || (pack.dropped || []).some(([d]) => d === id)) continue;
+    if (pack.droppedEntities?.includes(id) || pack.trimmed?.includes(id)) continue;
+    fail(`fix target ${id} is not land-checked`);
+  }
+  for (const id of pack.droppedEntities || []) if (byId.has(id)) fail(`${id} should have been dropped by the ${pack.country} pack`);
+  for (const id of pack.trimmed || []) if (!(pack.notOver || []).some(([e]) => e === id)) fail(`trimmed ${id} has no notOver test`);
 
   for (const [id, y, lng, lat, place] of pack.capitals) {
     const kf = byId.get(id)?.overlays.find((o) => o.year === y);

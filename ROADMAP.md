@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); step 7.1 stars/Milky Way is done (Day 61); step 7.2 constellations is done-in-PR (Day 62); steps 7.2 constellations and 8.1 lidar hidden-cities pins are merged (#76, #77, 17 Oct) and PR #72 coast spill is merged; step 8.2 honest shape updates is done-in-PR (Day 64); Phase 5 country packs covering both views have started: pack 1 globe backfill, Peru, is done-in-PR (Day 65), Ghana is done-in-PR (Day 66) Morocco (Day 68) is merged (#82) and Kenya is done-in-PR (Day 69), next Iraq** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); step 7.1 stars/Milky Way is done (Day 61); step 7.2 constellations is done-in-PR (Day 62); steps 7.2 constellations and 8.1 lidar hidden-cities pins are merged (#76, #77, 17 Oct) and PR #72 coast spill is merged; step 8.2 honest shape updates is done-in-PR (Day 64); Phase 5 country packs covering both views have started: pack 1 globe backfill, Peru, is done-in-PR (Day 65), Ghana is done-in-PR (Day 66) Morocco (Day 68) is merged (#82), Kenya is done-in-PR (Day 69) and Iraq is done-in-PR (Day 70), next the Philippines** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -986,7 +986,7 @@ Each pack takes one country (or a small group of neighbours) and refines **both 
 
 Proposed order:
 
-1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, merged #79); Ghana ✅ (Day 66, merged #80); Morocco ✅ (Day 68, merged #82); Kenya ✅ (Day 69, done-in-PR); next Iraq, then Philippines.**
+1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, merged #79); Ghana ✅ (Day 66, merged #80); Morocco ✅ (Day 68, merged #82); Kenya ✅ (Day 69, done-in-PR); Iraq ✅ (Day 70, done-in-PR); next Philippines.**
 2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates).
 3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits).
 4. **Central Africa:** DR Congo, Angola, Cameroon, Chad (Kongo, Luba, Lunda, Kanem-Bornu).
@@ -1095,6 +1095,24 @@ Kenya had a sourced timeline, but on the globe only one schematic Swahili-coast 
   - Short interludes (1631–32, 1728–29) are labels on a continuous shape, because one shape can't have a gap in time.
   - 1815–1888 has no shape over Kenya (Zanzibar's coastal strip and the Mazrui after 1837 aren't drawn yet).
 - **Next:** pack 1 globe backfill continues with **Iraq**, then the Philippines.
+
+#### Day 70 — Pack 1 globe backfill: Iraq — done-in-PR
+
+Iraq had a sourced timeline, but on the globe only one schematic "Mesopotamia" sphere (3000–560 BCE), seven-point blobs for the Parthian, Sasanian, Umayyad and Abbasid provinces, and nothing between the Abbasid collapse and the 1815 nations layer except a stray Mongol wedge and Safavid / Ottoman outlines in the wrong years. Now Iraq's own states are drawn from the first city-states (c. 2900 BCE) to 1815, where the nations layer takes over (Ottoman Iraq, the Mandate, the Kingdom, the Republic).
+
+- **Shapes (`src/globe-pack-iraq.js`, lazy globe chunk): 26 polities, 290 keyframes** (every change is a one-year step), each with a certainty level and reason, sources and links to Iraq's timeline items, built from 10 shared-border pieces (the western and eastern Jazira, Suhum, Assyria, the Kurdish uplands, Akkad, the Diyala, northern and southern Sumer, the Sealand) whose west edge is the Greek-world `MESOPOTAMIA | SYRIA` border:
+  - **Bronze and Iron Age:** the Early Dynastic city-states, Akkad, Ur III, Isin, Larsa, Eshnunna, Mari, Assyria (Old, Upper Mesopotamia, Middle and Neo-Assyrian), Mitanni, Babylonia (First Dynasty, Kassite and later), the First Sealand dynasty, the Neo-Babylonian Empire.
+  - **Islamic era:** the Hamdanids of Mosul, the Buyid emirs, the Uqaylids, the Seljuks, the Zengid and Lu'lu'id atabegs of Mosul, the restored Abbasid caliphate (1157–1258), the Ilkhanate, the Jalayirids, the Qara and Aq Qoyunlu, Safavid Iraq (1508–34) and Safavid Baghdad (1623–38), Ottoman Iraq (the eyalets of Baghdad, Mosul, Basra and Shahrizor; the Mamluk pashas from 1749) and the house of Afrasiyab at Basra (1596–1668).
+- **Existing shapes fixed (`applyIraqShapeFixes`):** the Mesopotamia sphere is dropped; the Parthian, Sasanian, Umayyad and Abbasid Iraq regions are redrawn from the pieces (with the missing keyframes filled, and the Abbasid shape cut back to Iraq from 929 and ended in 944); the Hittite, Roman (117), Egyptian, Phoenician, Byzantine, Mongol, Safavid and Ottoman shapes that spilled over Iraq in other powers' years are trimmed to a fixed line outside it; the Safavid 'mesopotamia' region (wrongly 1550–1650) goes; the Achaemenid 'meso-syria' region arrives in 539 BCE as a one-year step.
+- **Cities: +19** (Isin, Larsa, Nuzi, Erbil, Kirkuk, Harran, Shubat-Enlil, Dur-Kurigalzu, Kalhu / Nimrud, Dur-Sharrukin, Tikrit, Hatra, Karbala, Wasit, Najaf, Hilla, Sulaymaniyah, Amara, Ramadi); Mosul now dates from 637.
+- **Pins: +73**, using `country:iraq:<item>` refs, from Uruk's tablets and the Royal Tombs of Ur through Hammurabi, Ashurbanipal's library, the fall of Nineveh, Gaugamela, Hatra, Karbala, Samarra, the Buyids, Tughril Beg, Timur, Suleiman, Murad IV, the Mamluk pashas, the 1920 revolt, Faisal I, Baba Gurgur, 1958, Halabja and the 2017 referendum.
+- **Timeline (`data/countries/iraq.json`): +6 sourced items** — client kingdoms (Characene, Hatra, Adiabene, the Lakhmids), the Arab conquest and Umayyad Iraq, the emirs and sultans, the Ilkhanate / Jalayirids / Turkmen, the Mamluk pashas and the Kurdistan Region (13 items now).
+- **Validate:** Iraq is a fifth row in `scripts/check-country-packs.js` (land, rings, sources, 59 capitals and sites inside their shapes, who is on / gone at 23 sample years, the Mesopotamia sphere stays dropped (`droppedEntities`), each trimmed shape has a `notOver` test (`trimmed`), 18 anachronisms stay fixed, no overlap with the pack or 16 neighbouring empires, 2900 BCE–1815 CE). `check-confidence.js` and `check-overlay-lifespan.js` now test the city-states / Akkad instead of the old sphere.
+- **Honest caveats:**
+  - Dates before 1000 BCE follow the middle chronology (± a few decades). Mesopotamian kingdoms ruled cities and canals; the outlines between them are hand-drawn approximations along rivers, the desert edge and the Zagros foothills. The city-states, Mitanni and the Sealand are conjectural.
+  - Only the Iraqi part of wider realms is drawn by the pack (Elam, Akkad's and Assyria's Syrian, Anatolian and Egyptian conquests, the Iranian lands of the Buyids, Seljuks, Ilkhans and Turkmen are not). The Persian, Hellenistic, Parthian and Sasanian centuries still use the older empire shapes; the client kingdoms (Characene, Hatra, Adiabene, the Lakhmids) are timeline items and pins, not shapes.
+  - Gaps are left where no one held the land: e.g. the Gutian years after Akkad, and southern Iraq when tribes and local emirs held it. Short interludes (Yasmah-Adad at Mari, the Zand occupation of Basra 1776–79) are labels.
+- **Next:** pack 1 globe backfill continues with **the Philippines**.
 
 ### 13. Fill the globe, region by region (after the packs above)
 
@@ -1241,7 +1259,8 @@ A sensible near-term sequence:
 54. World population readout on the globe (Day 67) ✅ (done-in-PR).
 55. Pack 1 globe backfill — Morocco (Day 68) ✅ (merged, #82).
 56. Pack 1 globe backfill — Kenya (Day 69) ✅ (done-in-PR).
-57. **Now: pack 1 globe backfill continues — Iraq, then Philippines. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
+57. Pack 1 globe backfill — Iraq (Day 70) ✅ (done-in-PR).
+58. **Now: pack 1 globe backfill continues — Philippines. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
