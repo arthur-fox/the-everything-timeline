@@ -11,6 +11,7 @@ import { geoContains } from 'd3-geo';
 import { southeastAsiaPolities as POLS } from '../src/globe-southeast-asia.js';
 import { getActiveOverlaysAtYear, entityNameAt, spatialEntities } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
+import { philippinesPolities } from '../src/globe-pack-philippines.js';
 
 let failed = 0;
 const fail = (m) => {
@@ -58,8 +59,12 @@ for (const e of POLS) {
 }
 
 const byId = new Map(spatialEntities.map((e) => [e.id, e]));
+// Day 71: Tondo, Sulu and Maguindanao are redrawn by the Philippines pack (globe-pack-philippines.js,
+// checked in check-country-packs.js); the capital and on/gone checks below run on the wired shapes.
+const PH = new Map(philippinesPolities.map((e) => [e.id, e]));
 for (const id of REQUIRED) {
-  if (byId.get(id) !== POLS.find((e) => e.id === id)) fail(`${id} not wired into spatialEntities`);
+  const want = PH.get(id) || POLS.find((e) => e.id === id);
+  if (byId.get(id) !== want) fail(`${id} not wired into spatialEntities`);
 }
 
 const NAMES = [

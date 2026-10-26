@@ -95,3 +95,43 @@ export function checkPathTerrain(kind, p) {
   }
   return { error: null, samples };
 }
+
+/**
+ * Day 71: the same test against the close-zoom land (src/data/nations-fine.topo.json), for islands
+ * too small for the simplified shapes (Jolo, Tawi-Tawi). Loaded on first use.
+ */
+let finePolys = null;
+export function landAtFine(lat, lng) {
+  if (!finePolys) {
+    finePolys = [];
+    const fine = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/nations-fine.topo.json'), 'utf8'));
+    const seen = new Set();
+    for (const g of fine.objects.shapes.geometries) {
+      const geom = feature(fine, g).geometry;
+      if (!geom) continue;
+      for (const rings of geom.type === 'Polygon' ? [geom.coordinates] : geom.coordinates) {
+        let a = Infinity, b = Infinity, c = -Infinity, d = -Infinity;
+        for (const [x, y] of rings[0]) {
+          a = Math.min(a, x); b = Math.min(b, y); c = Math.max(c, x); d = Math.max(d, y);
+        }
+        const k = `${a},${b},${c},${d},${rings[0].length}`; // the same island repeats in every table version
+        if (seen.has(k)) continue;
+        seen.add(k);
+        finePolys.push({ bbox: [a, b, c, d], rings });
+      }
+    }
+  }
+  const k = Math.max(0.2, Math.cos((lat * Math.PI) / 180));
+  let near = false;
+  for (const p of finePolys) {
+    const [a, b, c, d] = p.bbox;
+    if (lng < a - TOL / k || lng > c + TOL / k || lat < b - TOL || lat > d + TOL) continue;
+    if (inRings(lng, lat, p.rings)) return 'in';
+    if (!near) {
+      for (const r of p.rings) {
+        for (let i = 1; i < r.length && !near; i++) if (segDist(lng, lat, r[i - 1][0], r[i - 1][1], r[i][0], r[i][1], k) < TOL) near = true;
+      }
+    }
+  }
+  return near ? 'coast' : null;
+}

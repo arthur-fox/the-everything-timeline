@@ -265,9 +265,14 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assert(sp.overlays.some((o) => o.year === 1550), 'Spanish has 1550 keyframe');
   assert(sp.overlays.some((o) => o.year === 1800), 'Spanish has 1800 contraction keyframe');
   const s1550 = regionIds('spanish-empire', 1550);
-  for (const id of ['iberia', 'new-spain', 'andes', 'caribbean', 'philippines']) {
+  for (const id of ['iberia', 'new-spain', 'andes', 'caribbean']) {
     assert(s1550.includes(id), `Spanish 1550 has fragment ${id}`);
   }
+  // Day 71: the schematic Philippines fragment is dropped (Legazpi only lands in 1565);
+  // Spanish Philippines is drawn by the Philippines pack from 1565.
+  assert(!s1550.includes('philippines'), 'Spanish 1550 has no Philippines fragment (Day 71)');
+  assert(regionIds('spanish-empire', 1700).every((id) => id !== 'philippines'), 'Spanish 1700 has no Philippines fragment (Day 71)');
+  assert(idsAt(1600).has('spanish-philippines'), 'Spanish Philippines ON at 1600');
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
 

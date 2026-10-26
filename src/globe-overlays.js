@@ -37,6 +37,7 @@ import { ghanaPolities, applyGhanaShapeFixes } from './globe-pack-ghana.js';
 import { moroccoPolities, applyMoroccoShapeFixes } from './globe-pack-morocco.js';
 import { kenyaPolities, applyKenyaShapeFixes } from './globe-pack-kenya.js';
 import { iraqPolities, applyIraqShapeFixes } from './globe-pack-iraq.js';
+import { philippinesPolities, applyPhilippinesShapeFixes } from './globe-pack-philippines.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6319,6 +6320,15 @@ for (const ent of iraqPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 71 — Phase 5 country pack 1, the Philippines (globe-pack-philippines.js): Tondo and Butuan to
+// Spanish Philippines and the Moro sultanates, drawn from island pieces; Tondo, Sulu and Maguindanao
+// (Day 59) are replaced by id, the rest appended.
+for (const ent of philippinesPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6365,6 +6375,9 @@ applyKenyaShapeFixes(spatialEntities);
 // Umayyad and Abbasid Iraq regions are redrawn from its pieces, and shapes that spilled over Iraq in
 // other powers' years are trimmed back.
 applyIraqShapeFixes(spatialEntities);
+// Day 71 — the Spanish Empire's schematic 'philippines' ring gives way to the Philippines pack's
+// Spanish Philippines (drawn island by island from 1565).
+applyPhilippinesShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

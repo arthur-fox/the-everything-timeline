@@ -731,7 +731,7 @@ Builds on Phase 4b's dated cities step 1 (the first ~300 dated cities).
 
 - **Step 4.1 — Confidence data.** Each shape (and later each border segment) carries a confidence level: documented, approximate or conjectural, with a short reason. Default by era and source (Day 38 nations "documented", ancient spheres "approximate", most prehistoric peoples "conjectural"); validation makes sure every overlay has one.
 - **Step 4.2 — Draw it.** Crisp solid edges where borders are well documented; softer, feathered or dotted edges and a fill that fades out towards the edge where they're guesswork. A key entry explains it, and the detail panel says how sure we are and why.
-- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); step 7.1 stars/Milky Way is done (Day 61); step 7.2 constellations is done-in-PR (Day 62); steps 7.2 constellations and 8.1 lidar hidden-cities pins are merged (#76, #77, 17 Oct) and PR #72 coast spill is merged; step 8.2 honest shape updates is done-in-PR (Day 64); Phase 5 country packs covering both views have started: pack 1 globe backfill, Peru, is done-in-PR (Day 65), Ghana is done-in-PR (Day 66) Morocco (Day 68) is merged (#82), Kenya is done-in-PR (Day 69) and Iraq is done-in-PR (Day 70), next the Philippines** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
+- **Status: steps 4.1 and 4.2 done on Day 44 (merged, PR #50).** The data-architecture PR (#57) is merged and item 5 is built: **step 5.1 (trade routes) is done (merged, PR #59, Day 53) and step 5.2 (migrations) is done (merged, PR #61, Day 55), the Greek world (Day 56) is in review (PR #62) and step 6.1 the early medieval world (Day 57) is in review (PR #63); steps 6.1–6.3 are merged (early medieval #63/#64, inland Africa #68, Southeast Asia #69); step 6.4 Native American nations after 1500 is done-in-PR (Day 60); step 7.1 stars/Milky Way is done (Day 61); step 7.2 constellations is done-in-PR (Day 62); steps 7.2 constellations and 8.1 lidar hidden-cities pins are merged (#76, #77, 17 Oct) and PR #72 coast spill is merged; step 8.2 honest shape updates is done-in-PR (Day 64); Phase 5 country packs covering both views have started: pack 1 globe backfill, Peru, is done-in-PR (Day 65), Ghana is done-in-PR (Day 66) Morocco (Day 68) is merged (#82), Kenya is done-in-PR (Day 69), Iraq is done-in-PR (Day 70) and the Philippines is done-in-PR (Day 71), so the pack 1 globe backfill is complete pending the merges of #83, #84 and #85; next Central Asia (pack 2)** — the aesthetics (#53), full-screen globe (#54), load-speed (#55) and tip-jar (#58) reviews are all merged. Per-border-segment confidence is left for later (see the follow-up below).
 
 #### Day 44 — Showing uncertainty (steps 4.1 + 4.2) — done (merged, PR #50)
 
@@ -986,7 +986,7 @@ Each pack takes one country (or a small group of neighbours) and refines **both 
 
 Proposed order:
 
-1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, merged #79); Ghana ✅ (Day 66, merged #80); Morocco ✅ (Day 68, merged #82); Kenya ✅ (Day 69, done-in-PR); Iraq ✅ (Day 70, done-in-PR); next Philippines.**
+1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, merged #79); Ghana ✅ (Day 66, merged #80); Morocco ✅ (Day 68, merged #82); Kenya ✅ (Day 69, done-in-PR #83); Iraq ✅ (Day 70, done-in-PR #84); Philippines ✅ (Day 71, done-in-PR #85). Pack 1 globe backfill complete pending merges; next item 2, Central Asia.**
 2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates).
 3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits).
 4. **Central Africa:** DR Congo, Angola, Cameroon, Chad (Kongo, Luba, Lunda, Kanem-Bornu).
@@ -1113,6 +1113,27 @@ Iraq had a sourced timeline, but on the globe only one schematic "Mesopotamia" s
   - Only the Iraqi part of wider realms is drawn by the pack (Elam, Akkad's and Assyria's Syrian, Anatolian and Egyptian conquests, the Iranian lands of the Buyids, Seljuks, Ilkhans and Turkmen are not). The Persian, Hellenistic, Parthian and Sasanian centuries still use the older empire shapes; the client kingdoms (Characene, Hatra, Adiabene, the Lakhmids) are timeline items and pins, not shapes.
   - Gaps are left where no one held the land: e.g. the Gutian years after Akkad, and southern Iraq when tribes and local emirs held it. Short interludes (Yasmah-Adad at Mari, the Zand occupation of Basra 1776–79) are labels.
 - **Next:** pack 1 globe backfill continues with **the Philippines**.
+
+#### Day 71 — Pack 1 globe backfill: the Philippines — done-in-PR
+
+The Philippines had a sourced timeline, but on the globe only the Day 59 Tondo, Sulu and Maguindanao outlines and a schematic Spanish 'philippines' blob drawn from 1550 (fifteen years before Legazpi landed) over the whole archipelago, Moro south included, until 1815. Now the islands' own states are drawn from Tondo (900) to 1815, where the nations layer takes over (Spanish Philippines, the US, the Commonwealth, the Republic). This completes the pack 1 globe backfill.
+
+- **Shapes (`src/globe-pack-philippines.js`, lazy globe chunk): 12 polities, 124 keyframes** (every change is a one-year step), each with a certainty level and reason, sources and links to the Philippines timeline items, built from 32 island pieces (see `docs/DATA.md`):
+  - **Rajahnates and lowland polities:** Tondo (redrawn), Maynila, Namayan, Caboloan (Pangasinan), Butuan, Cebu.
+  - **Sultanates:** Sulu (redrawn; Jolo lost to Spain 1638–46, Sabah from 1704, disputed), Maguindanao (redrawn; Kudarat's height with Sarangani and Davao), Buayan, the Lanao sultanates (from 1616).
+  - **Spanish Philippines (1565–1815):** Cebu 1565, Panay 1569, Manila 1571, Luzon's lowlands 1572, Bicol and the Visayas 1575, Cagayan 1581, Caraga 1609, Taytay 1623, the north Mindanao coast 1626, Zamboanga 1635 (abandoned 1663, back 1718), Jolo 1638–46; the British in Manila 1762–64 as a label.
+  - **Dagohoy's Bohol** (1744–1815 on the globe; the revolt ends in 1829).
+- **Existing shapes fixed (`applyPhilippinesShapeFixes`):** the Spanish Empire's schematic 'philippines' region is dropped; Tondo, Sulu and Maguindanao are replaced by the pack's versions (Tondo gets a colour of its own instead of Qing China's).
+- **Cities: +17** (Butuan, Vigan, Nueva Segovia → Lal-lo, Nueva Cáceres → Naga, Iloilo, Malolos, Sawangan → Legazpi, Tandag, Taytay, Cagayan → Cagayan de Oro, Zamboanga, Dansalan → Marawi, Tagbilaran, Basco, Nueva Vergara → Davao, Quezon City, Dadiangas → Buayan → General Santos); Cebu is now Sugbu from 1225.
+- **Pins: +75**, using `country:philippines:<item>` refs, from Butuan's Song missions and Limasawa through Bangkusay, Fort Pilar, Corcuera at Jolo, La Naval, the British in Manila, Silang and Dagohoy, Gomburza, Pugad Lawin, Rizal, Kawit, Malolos, Palanan, Bud Dajo, Bataan, Leyte, independence, martial law, EDSA, Pinatubo, the Marawi siege and the BARMM.
+- **Timeline (`data/countries/philippines.json`): +6 sourced items** and a new Moro category — the Luzon polities, Butuan and Cebu, the Moro sultanates, the Moro wars, the revolts against Spain and Bangsamoro (12 items now).
+- **Validate:** the Philippines is a sixth row in `scripts/check-country-packs.js` (land, rings, sources, 35 capitals and sites inside their shapes, who is on / gone at 14 sample years, the Spanish 'philippines' region stays dropped, 8 anachronisms stay fixed, no overlap with the pack, Brunei or the Spanish Empire, 900–1815). The row sets `fineLand: true` because Jolo and Tawi-Tawi exist only in the fine land. `check-southeast-asia.js` checks the redrawn Tondo, Sulu and Maguindanao; `check-overlay-lifespan.js` checks the Spanish blob is gone.
+- **Honest caveats:**
+  - Precolonial extents are conjectural: the polities ruled people and river mouths, not lines. Namayan's and Cebu's early dates are presumed (Santa Ana graves, Zhao Rugua's 1225 list). The 1575 Visayas step is a single date for a conquest that took years.
+  - Sulu's founding (1405 or 1457) and the Sabah cession (1658 or 1704) are disputed; the pack uses 1405 and 1704 and says so.
+  - The Cordillera, Sierra Madre, most of Palawan, Basilan and inland Mindanao are left empty: no lowland power held them before 1815.
+  - Post-1815 states (Biak-na-Bato, the Malolos Republic, the US era, the Japanese occupation, Bangsamoro) are timeline items and pins, not shapes; the nations layer draws Spanish, US and independent Philippines. Dagohoy's Bohol is drawn only to 1815.
+- **Next:** pack 1 globe backfill is complete pending merges. Next is item 2, **Central Asia** (pack 2, Timeline + Globe).
 
 ### 13. Fill the globe, region by region (after the packs above)
 
@@ -1260,7 +1281,8 @@ A sensible near-term sequence:
 55. Pack 1 globe backfill — Morocco (Day 68) ✅ (merged, #82).
 56. Pack 1 globe backfill — Kenya (Day 69) ✅ (done-in-PR).
 57. Pack 1 globe backfill — Iraq (Day 70) ✅ (done-in-PR).
-58. **Now: pack 1 globe backfill continues — Philippines. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
+58. Pack 1 globe backfill — Philippines (Day 71) ✅ (done-in-PR). Pack 1 globe backfill complete pending merges of #83, #84 and #85.
+59. **Now: Phase 5 pack 2 — Central Asia (Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan), Timeline + Globe. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 

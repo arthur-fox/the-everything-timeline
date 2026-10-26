@@ -1,8 +1,9 @@
 /**
  * Day 65: checks for Phase 5 country-pack globe backfills (ROADMAP item 12), starting with Peru
  * (src/globe-pack-peru.js), Ghana (Day 66, src/globe-pack-ghana.js), Morocco (Day 68,
- * src/globe-pack-morocco.js), Kenya (Day 69, src/globe-pack-kenya.js) and Iraq (Day 70,
- * src/globe-pack-iraq.js). Add a pack to PACKS to cover it.
+ * src/globe-pack-morocco.js), Kenya (Day 69, src/globe-pack-kenya.js), Iraq (Day 70,
+ * src/globe-pack-iraq.js) and the Philippines (Day 71, src/globe-pack-philippines.js). Add a pack
+ * to PACKS to cover it.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
  *    on land (no Pacific spill), for the pack's polities and the shapes it redrew;
@@ -15,7 +16,9 @@
  *  - (Day 69) a region the pack dropped from an older shape stays dropped (`dropped`);
  *  - (Day 70) whole shapes a pack replaces are gone (`droppedEntities`), and shapes it only trimmed
  *    back (schematic rings that run through the sea, so not land-checked) have a notOver test that
- *    proves the trim (`trimmed`).
+ *    proves the trim (`trimmed`);
+ *  - (Day 71) an archipelago pack can set `fineLand` so the land test also accepts the close-zoom
+ *    land (nations-fine.topo.json) for islands too small for the simplified shapes (Jolo, Tawi-Tawi).
  */
 import fs from 'node:fs';
 import { geoContains } from 'd3-geo';
@@ -24,11 +27,12 @@ import { ghanaPolities, ghanaShapeFixes, GOLD_COAST } from '../src/globe-pack-gh
 import { moroccoPolities, moroccoShapeFixes, ENCLAVE_SHAPES, ENCLAVE_RULE } from '../src/globe-pack-morocco.js';
 import { kenyaPolities, kenyaShapeFixes } from '../src/globe-pack-kenya.js';
 import { iraqPolities, iraqShapeFixes, IRAQ_TRIMS } from '../src/globe-pack-iraq.js';
+import { philippinesPolities, philippinesShapeFixes } from '../src/globe-pack-philippines.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
 import { ensureClockwise } from '../src/globe-morph.js';
-import { landAt } from './flow-geo.js';
+import { landAt as landAtSimple, landAtFine } from './flow-geo.js';
 
 let failed = 0;
 const fail = (m) => {
@@ -52,7 +56,7 @@ function crossings(ring) {
 }
 
 /** Vertices off land, and the share of an interior grid that is on land. */
-function landStats(ring) {
+function landStats(ring, landAt = landAtSimple) {
   const off = ring.filter(([lng, lat]) => !landAt(lat, lng));
   let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
   for (const [x, y] of ring) {
@@ -587,6 +591,105 @@ const PACKS = [
       with: ['achaemenid-empire', 'macedonian-empire', 'seleucid-empire', 'parthian-empire', 'roman-empire', 'sassanid-empire', 'umayyad-caliphate', 'abbasid-caliphate', 'ancient-egypt', 'phoenicia', 'hittite-empire', 'byzantine-empire', 'mongol-empire', 'timurid', 'safavid-empire', 'ottoman-empire'],
     },
   },
+  {
+    country: 'philippines',
+    polities: philippinesPolities,
+    fixes: philippinesShapeFixes,
+    // Jolo and Tawi-Tawi are only in the close-zoom land.
+    fineLand: true,
+    // The Spanish Empire's schematic 'philippines' ring was dropped, not redrawn.
+    redrawn: {},
+    dropped: [['spanish-empire', 'philippines']],
+    capitals: [
+      ['tondo', 900, 120.97, 14.62, 'Tondo'],
+      ['tondo', 1570, 120.97, 14.62, 'Tondo'],
+      ['maynila', 1570, 120.975, 14.59, 'Maynila (Intramuros)'],
+      ['namayan', 1500, 121.012, 14.581, 'Sapa (Santa Ana)'],
+      ['caboloan', 1403, 120.23, 16.02, 'Lingayen'],
+      ['caboloan', 1500, 120.35, 15.93, 'Binalatongan (San Carlos)'],
+      ['butuan', 1001, 125.54, 8.95, 'Butuan'],
+      ['butuan', 1521, 125.49, 9.79, 'Surigao (Calagan)'],
+      ['cebu-rajahnate', 1521, 123.9, 10.29, 'Cebu'],
+      ['cebu-rajahnate', 1521, 123.97, 10.3, 'Mactan'],
+      ['sulu-sultanate', 1405, 121.0, 6.05, 'Jolo'],
+      ['sulu-sultanate', 1638, 120.03, 5.17, 'Tawi-Tawi'],
+      ['sulu-sultanate', 1704, 118.07, 5.84, 'Sandakan'],
+      ['maguindanao-sultanate', 1520, 124.07, 7.59, 'Malabang'],
+      ['maguindanao-sultanate', 1640, 124.25, 7.22, 'Cotabato'],
+      ['maguindanao-sultanate', 1645, 124.28, 7.33, 'Simuay'],
+      ['maguindanao-sultanate', 1625, 125.17, 6.11, 'Sarangani Bay'],
+      ['maguindanao-sultanate', 1640, 125.61, 7.07, 'Davao'],
+      ['buayan-sultanate', 1596, 124.5, 7.02, 'Buayan (Datu Piang)'],
+      ['lanao-sultanates', 1616, 124.29, 8.0, 'Dansalan (Marawi)'],
+      ['spanish-philippines', 1565, 123.9, 10.29, 'Cebu (San Miguel)'],
+      ['spanish-philippines', 1569, 122.75, 11.55, 'Pan-ay'],
+      ['spanish-philippines', 1571, 120.975, 14.59, 'Manila'],
+      ['spanish-philippines', 1572, 120.39, 17.57, 'Vigan'],
+      ['spanish-philippines', 1575, 123.19, 13.62, 'Nueva Cáceres'],
+      ['spanish-philippines', 1581, 121.66, 18.2, 'Nueva Segovia (Lal-lo)'],
+      ['spanish-philippines', 1609, 126.2, 9.08, 'Tandag'],
+      ['spanish-philippines', 1623, 119.52, 10.82, 'Taytay'],
+      ['spanish-philippines', 1626, 124.65, 8.48, 'Cagayan (de Oro)'],
+      ['spanish-philippines', 1635, 122.08, 6.9, 'Zamboanga'],
+      ['spanish-philippines', 1638, 121.0, 6.05, 'Jolo'],
+      ['spanish-philippines', 1744, 123.85, 9.65, 'Tagbilaran'],
+      ['spanish-philippines', 1815, 120.975, 14.59, 'Manila'],
+      ['dagohoy-bohol', 1744, 124.07, 10.0, 'Inabanga'],
+      ['dagohoy-bohol', 1744, 124.27, 10.02, 'Danao'],
+    ],
+    on: {
+      900: ['tondo'],
+      1001: ['tondo', 'butuan'],
+      1250: ['tondo', 'namayan', 'butuan', 'cebu-rajahnate'],
+      1450: ['tondo', 'namayan', 'butuan', 'cebu-rajahnate', 'caboloan', 'sulu-sultanate', 'buayan-sultanate'],
+      1530: ['tondo', 'maynila', 'namayan', 'caboloan', 'cebu-rajahnate', 'sulu-sultanate', 'maguindanao-sultanate', 'buayan-sultanate'],
+      1566: ['spanish-philippines', 'tondo', 'maynila', 'namayan', 'caboloan', 'sulu-sultanate', 'maguindanao-sultanate'],
+      1600: ['spanish-philippines', 'sulu-sultanate', 'maguindanao-sultanate', 'buayan-sultanate'],
+      1640: ['spanish-philippines', 'sulu-sultanate', 'maguindanao-sultanate', 'buayan-sultanate', 'lanao-sultanates'],
+      1750: ['spanish-philippines', 'sulu-sultanate', 'maguindanao-sultanate', 'buayan-sultanate', 'lanao-sultanates', 'dagohoy-bohol'],
+      1810: ['spanish-philippines', 'sulu-sultanate', 'maguindanao-sultanate', 'buayan-sultanate', 'lanao-sultanates', 'dagohoy-bohol'],
+    },
+    gone: {
+      1530: ['butuan'],
+      1566: ['cebu-rajahnate'],
+      1573: ['tondo', 'maynila', 'namayan', 'caboloan'],
+      1830: ['spanish-philippines', 'sulu-sultanate', 'maguindanao-sultanate', 'buayan-sultanate', 'lanao-sultanates', 'dagohoy-bohol'],
+    },
+    absent: [
+      ['spanish-philippines', 1660, 'jolo'],
+      ['spanish-philippines', 1700, 'zambo'],
+      ['spanish-philippines', 1600, 'caraga'],
+      ['sulu-sultanate', 1640, 'jolo'],
+      ['sulu-sultanate', 1650, 'sabah'],
+    ],
+    present: [
+      ['spanish-philippines', 1640, 'jolo'],
+      ['spanish-philippines', 1640, 'zambo'],
+      ['spanish-philippines', 1720, 'zambo'],
+      ['spanish-philippines', 1590, 'cagayan'],
+      ['sulu-sultanate', 1650, 'jolo'],
+      ['sulu-sultanate', 1710, 'sabah'],
+    ],
+    // Anachronisms fixed: no Spanish shape before Legazpi, none over the sultanates, the Cordillera or Dagohoy's Bohol.
+    notOver: [
+      ['spanish-empire', 1560, 123.9, 10.29, 'Cebu (before Legazpi)'],
+      ['spanish-empire', 1700, 121.0, 6.05, 'Jolo'],
+      ['spanish-empire', 1700, 124.29, 8.0, 'Marawi'],
+      ['spanish-philippines', 1700, 121.0, 6.05, 'Jolo'],
+      ['spanish-philippines', 1700, 124.29, 8.0, 'Marawi'],
+      ['spanish-philippines', 1700, 124.25, 7.22, 'Cotabato'],
+      ['spanish-philippines', 1700, 121.0, 17.0, 'the Cordillera'],
+      ['spanish-philippines', 1750, 124.27, 10.02, 'Danao (Dagohoy)'],
+    ],
+    // The pack's shapes, Brunei and what is left of the Spanish Empire never overlap (every 5 years, 0.1° grid).
+    noOverlap: {
+      from: 900,
+      to: 1815,
+      box: [116.5, 4.5, 126.8, 18.8],
+      planar: true,
+      with: ['brunei-sultanate', 'spanish-empire'],
+    },
+  },
 ];
 
 let rings = 0;
@@ -601,7 +704,7 @@ for (const pack of PACKS) {
     const b = ring[ring.length - 1];
     if (a[0] !== b[0] || a[1] !== b[1]) fail(`${tag} is not closed`);
     if (crossings(ring)) fail(`${tag} crosses itself`);
-    const { off, share } = landStats(ring);
+    const { off, share } = landStats(ring, pack.fineLand ? (lat, lng) => landAtSimple(lat, lng) || landAtFine(lat, lng) : landAtSimple);
     if (off.length) fail(`${tag}: ${off.length} vertex(es) in the sea, e.g. ${off[0].map((v) => v.toFixed(2)).join(',')}`);
     if (share < 0.97) fail(`${tag}: only ${(share * 100).toFixed(0)}% of its interior is land`);
   };
