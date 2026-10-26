@@ -36,6 +36,7 @@ import { peruPolities, applyPeruShapeFixes } from './globe-pack-peru.js';
 import { ghanaPolities, applyGhanaShapeFixes } from './globe-pack-ghana.js';
 import { moroccoPolities, applyMoroccoShapeFixes } from './globe-pack-morocco.js';
 import { kenyaPolities, applyKenyaShapeFixes } from './globe-pack-kenya.js';
+import { iraqPolities, applyIraqShapeFixes } from './globe-pack-iraq.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6310,6 +6311,14 @@ for (const ent of kenyaPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 70 — Phase 5 country pack 1, Iraq (globe-pack-iraq.js): Sumer's city-states to Mamluk Iraq,
+// drawn from shared pieces; all appended.
+for (const ent of iraqPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6352,6 +6361,10 @@ applyGhanaShapeFixes(spatialEntities);
 applyMoroccoShapeFixes(spatialEntities);
 // Day 69 — the Swahili city-states' schematic Kenya-coast region gives way to the Kenya pack's towns.
 applyKenyaShapeFixes(spatialEntities);
+// Day 70 — the schematic Mesopotamia sphere is replaced by the Iraq pack; the Parthian, Sasanian,
+// Umayyad and Abbasid Iraq regions are redrawn from its pieces, and shapes that spilled over Iraq in
+// other powers' years are trimmed back.
+applyIraqShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

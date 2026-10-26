@@ -21,6 +21,11 @@
       "color": "#10B981"
     },
     {
+      "id": "turkmen",
+      "name": "Mongols & Turkmen",
+      "color": "#A855F7"
+    },
+    {
       "id": "ottoman",
       "name": "Ottoman & Mandate",
       "color": "#78716C"
@@ -152,6 +157,102 @@
       ]
     },
     {
+      "id": "iraq-client-kingdoms",
+      "name": "Characene, Hatra, Adiabene & the Lakhmids",
+      "start": -141,
+      "end": 602,
+      "region": "empires",
+      "icon": "🏛️",
+      "description": "Under the Parthian and Sasanian empires much of Iraq was ruled by client kings. Characene (Mesene), founded by Hyspaosines around 141 BCE at the head of the Gulf, grew rich on trade with India; Adiabene around Arbela (Erbil) had kings who converted to Judaism in the 1st century CE; the walled desert city of Hatra, a sanctuary of the sun god, beat off sieges by Trajan (117) and Septimius Severus before the Sasanians took it around 240. The Arab Lakhmid kings of al-Hira guarded the Sasanian desert frontier until Khosrow II ended the dynasty in 602.",
+      "sources": [
+        {
+          "title": "Wikipedia — Characene",
+          "url": "https://en.wikipedia.org/wiki/Characene"
+        },
+        {
+          "title": "Wikipedia — Adiabene",
+          "url": "https://en.wikipedia.org/wiki/Adiabene"
+        },
+        {
+          "title": "Wikipedia — Hatra",
+          "url": "https://en.wikipedia.org/wiki/Hatra"
+        },
+        {
+          "title": "Wikipedia — Lakhmids",
+          "url": "https://en.wikipedia.org/wiki/Lakhmids"
+        },
+        {
+          "title": "UNESCO World Heritage — Hatra",
+          "url": "https://whc.unesco.org/en/list/277/"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Characene",
+          "start": -141,
+          "end": 222
+        },
+        {
+          "name": "Hatra",
+          "start": -100,
+          "end": 241
+        },
+        {
+          "name": "Lakhmids of al-Hira",
+          "start": 300,
+          "end": 602
+        }
+      ]
+    },
+    {
+      "id": "iraq-arab-conquest-umayyad",
+      "name": "Arab conquest and Umayyad Iraq",
+      "start": 633,
+      "end": 750,
+      "region": "caliphate",
+      "icon": "🕌",
+      "description": "Arab Muslim armies defeated the Sasanians at al-Qadisiyyah (636) and took Ctesiphon (637); the garrison cities of Basra and Kufa were founded soon after. Ali made Kufa his capital (656–661), and his son Husayn was killed at Karbala in 680, an event at the heart of Shi'a Islam. Under the Umayyads, Iraq was governed from Kufa and then from Wasit, founded by al-Hajjaj around 702–705, until the Abbasid revolution of 750.",
+      "sources": [
+        {
+          "title": "Wikipedia — Muslim conquest of Persia",
+          "url": "https://en.wikipedia.org/wiki/Muslim_conquest_of_Persia"
+        },
+        {
+          "title": "Wikipedia — Battle of al-Qadisiyyah",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_al-Qadisiyyah"
+        },
+        {
+          "title": "Wikipedia — Battle of Karbala",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Karbala"
+        },
+        {
+          "title": "Wikipedia — Wasit",
+          "url": "https://en.wikipedia.org/wiki/Wasit"
+        },
+        {
+          "title": "Wikipedia — Al-Hajjaj ibn Yusuf",
+          "url": "https://en.wikipedia.org/wiki/Al-Hajjaj_ibn_Yusuf"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Conquest",
+          "start": 633,
+          "end": 651
+        },
+        {
+          "name": "Rashidun & Ali at Kufa",
+          "start": 651,
+          "end": 661
+        },
+        {
+          "name": "Umayyad Iraq",
+          "start": 661,
+          "end": 750
+        }
+      ]
+    },
+    {
       "id": "iraq-abbasid-baghdad",
       "name": "Abbasid Baghdad",
       "start": 750,
@@ -188,6 +289,112 @@
       ]
     },
     {
+      "id": "iraq-emirs-sultans",
+      "name": "Emirs and sultans: Buyids, Hamdanids, Seljuks, Zengids",
+      "start": 929,
+      "end": 1262,
+      "region": "caliphate",
+      "icon": "⚔️",
+      "description": "From the 10th century real power in Iraq passed from the caliphs to military dynasties. The Hamdanids ruled Mosul from 929; the Daylamite Buyids entered Baghdad in 945 and kept the caliphs as figureheads; the Uqaylids held Mosul from about 990. The Seljuk Turk Tughril Beg took Baghdad in 1055, and Zengi became atabeg of Mosul in 1127. After the Seljuk siege of Baghdad failed in 1157 the caliphs ruled central Iraq again, until the Mongols sacked Baghdad (1258) and took Mosul (1262).",
+      "sources": [
+        {
+          "title": "Wikipedia — Hamdanid dynasty",
+          "url": "https://en.wikipedia.org/wiki/Hamdanid_dynasty"
+        },
+        {
+          "title": "Wikipedia — Buyid dynasty",
+          "url": "https://en.wikipedia.org/wiki/Buyid_dynasty"
+        },
+        {
+          "title": "Wikipedia — Uqaylid dynasty",
+          "url": "https://en.wikipedia.org/wiki/Uqaylid_dynasty"
+        },
+        {
+          "title": "Wikipedia — Seljuk Empire",
+          "url": "https://en.wikipedia.org/wiki/Seljuk_Empire"
+        },
+        {
+          "title": "Wikipedia — Zengid dynasty",
+          "url": "https://en.wikipedia.org/wiki/Zengid_dynasty"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Hamdanids & Buyids",
+          "start": 929,
+          "end": 1055
+        },
+        {
+          "name": "Seljuks",
+          "start": 1055,
+          "end": 1157
+        },
+        {
+          "name": "Restored caliphate & Mosul atabegs",
+          "start": 1157,
+          "end": 1262
+        }
+      ]
+    },
+    {
+      "id": "iraq-mongols-turkmen",
+      "name": "Ilkhanate, Jalayirids and the Turkmen",
+      "start": 1258,
+      "end": 1534,
+      "region": "turkmen",
+      "icon": "🐎",
+      "description": "After Hulagu's sack of Baghdad in 1258, Iraq became a province of the Mongol Ilkhanate, ruled from Tabriz. When the Ilkhanate broke up (1335) the Jalayirids made Baghdad their capital; Timur took the city in 1393 and sacked it in 1401. The Turkmen Qara Qoyunlu (from 1410) and Aq Qoyunlu (from 1468) followed, and Shah Isma'il I of Safavid Iran took Baghdad in 1508, before Suleiman the Magnificent conquered it in 1534.",
+      "sources": [
+        {
+          "title": "Wikipedia — Ilkhanate",
+          "url": "https://en.wikipedia.org/wiki/Ilkhanate"
+        },
+        {
+          "title": "Wikipedia — Jalayirid Sultanate",
+          "url": "https://en.wikipedia.org/wiki/Jalayirid_Sultanate"
+        },
+        {
+          "title": "Wikipedia — Qara Qoyunlu",
+          "url": "https://en.wikipedia.org/wiki/Qara_Qoyunlu"
+        },
+        {
+          "title": "Wikipedia — Aq Qoyunlu",
+          "url": "https://en.wikipedia.org/wiki/Aq_Qoyunlu"
+        },
+        {
+          "title": "Wikipedia — Capture of Baghdad (1534)",
+          "url": "https://en.wikipedia.org/wiki/Capture_of_Baghdad_(1534)"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Ilkhanate",
+          "start": 1258,
+          "end": 1335
+        },
+        {
+          "name": "Jalayirids",
+          "start": 1336,
+          "end": 1432
+        },
+        {
+          "name": "Qara Qoyunlu",
+          "start": 1410,
+          "end": 1467
+        },
+        {
+          "name": "Aq Qoyunlu",
+          "start": 1468,
+          "end": 1508
+        },
+        {
+          "name": "Safavid Iraq",
+          "start": 1508,
+          "end": 1534
+        }
+      ]
+    },
+    {
       "id": "iraq-ottoman",
       "name": "Ottoman Iraq",
       "start": 1534,
@@ -220,6 +427,45 @@
           "name": "Direct rule & First World War",
           "start": 1831,
           "end": 1918
+        }
+      ]
+    },
+    {
+      "id": "iraq-mamluk-iraq",
+      "name": "Mamluk pashas of Baghdad",
+      "start": 1704,
+      "end": 1831,
+      "region": "ottoman",
+      "icon": "🗡️",
+      "description": "Hasan Pasha, governor of Baghdad from 1704, and his son Ahmad built up a household of Georgian mamluks (slave-soldiers); from Sulayman Abu Layla in 1749 these mamluks ruled Baghdad and Basra as nearly independent Ottoman pashas, while the Jalili family governed Mosul (1726–1834) and the Baban emirs ruled the Kurdish uplands from Sulaymaniyah, founded in 1784. Sultan Mahmud II's troops ended Mamluk rule by removing Dawud Pasha in 1831.",
+      "sources": [
+        {
+          "title": "Wikipedia — Mamluk dynasty of Iraq",
+          "url": "https://en.wikipedia.org/wiki/Mamluk_dynasty_of_Iraq"
+        },
+        {
+          "title": "Wikipedia — Jalili dynasty",
+          "url": "https://en.wikipedia.org/wiki/Jalili_dynasty"
+        },
+        {
+          "title": "Wikipedia — Baban",
+          "url": "https://en.wikipedia.org/wiki/Baban"
+        },
+        {
+          "title": "Wikipedia — Dawud Pasha",
+          "url": "https://en.wikipedia.org/wiki/Dawud_Pasha"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Hasan & Ahmad Pasha",
+          "start": 1704,
+          "end": 1747
+        },
+        {
+          "name": "Georgian mamluks",
+          "start": 1749,
+          "end": 1831
         }
       ]
     },
@@ -296,6 +542,50 @@
         {
           "name": "Post-ISIS reconstruction",
           "start": 2017,
+          "end": 2025
+        }
+      ]
+    },
+    {
+      "id": "iraq-kurdistan-region",
+      "name": "Kurdistan Region",
+      "start": 1970,
+      "end": 2025,
+      "region": "modern",
+      "icon": "⛰️",
+      "description": "The 1970 Autonomy Agreement promised the Kurds self-rule, but war resumed in 1974. In the Anfal campaign of 1986–1989 the Ba'athist regime destroyed thousands of villages and killed tens of thousands of Kurds; the chemical attack on Halabja in March 1988 killed about 5,000 people. After the 1991 uprising and the no-fly zone, Kurds elected their own parliament in 1992. The 2005 constitution recognised the Kurdistan Region, with its capital at Erbil; an independence referendum in 2017 was followed by Iraq retaking Kirkuk.",
+      "sources": [
+        {
+          "title": "Wikipedia — Kurdistan Region",
+          "url": "https://en.wikipedia.org/wiki/Kurdistan_Region"
+        },
+        {
+          "title": "Wikipedia — Anfal campaign",
+          "url": "https://en.wikipedia.org/wiki/Anfal_campaign"
+        },
+        {
+          "title": "Wikipedia — Halabja chemical attack",
+          "url": "https://en.wikipedia.org/wiki/Halabja_chemical_attack"
+        },
+        {
+          "title": "Wikipedia — 2017 Kurdistan Region independence referendum",
+          "url": "https://en.wikipedia.org/wiki/2017_Kurdistan_Region_independence_referendum"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Autonomy and war",
+          "start": 1970,
+          "end": 1991
+        },
+        {
+          "name": "Self-rule",
+          "start": 1991,
+          "end": 2005
+        },
+        {
+          "name": "Federal region",
+          "start": 2005,
           "end": 2025
         }
       ]

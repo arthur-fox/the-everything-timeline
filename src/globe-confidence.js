@@ -62,7 +62,6 @@ const R = {
  * mostly from archaeology or later legend, or loose networks rather than territories.
  */
 const ENTITY_OVERRIDES = {
-  mesopotamia: { level: 'conjectural', reason: 'A shifting world of city-states and short-lived empires; the shape is a sphere of influence, not a border.' },
   phoenicia: { level: 'conjectural', reason: 'A network of coastal trading cities and colonies, not a territorial state; the inland edge is a guess.' },
   olmec: { level: 'conjectural', reason: 'Known only from archaeology (no readable texts); the area is where Olmec-style sites cluster.' },
   'shang-china': { level: 'conjectural', reason: 'Oracle-bone texts cover the royal core; how far Shang power reached beyond it is debated.' },
