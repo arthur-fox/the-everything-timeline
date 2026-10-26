@@ -1,7 +1,7 @@
 /**
  * Day 65: checks for Phase 5 country-pack globe backfills (ROADMAP item 12), starting with Peru
- * (src/globe-pack-peru.js), Ghana (Day 66, src/globe-pack-ghana.js) and Morocco (Day 68,
- * src/globe-pack-morocco.js). Add a pack to PACKS to cover it.
+ * (src/globe-pack-peru.js), Ghana (Day 66, src/globe-pack-ghana.js), Morocco (Day 68,
+ * src/globe-pack-morocco.js) and Kenya (Day 69, src/globe-pack-kenya.js). Add a pack to PACKS to cover it.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
  *    on land (no Pacific spill), for the pack's polities and the shapes it redrew;
@@ -10,13 +10,15 @@
  *  - capitals / type sites sit inside (or within ~10 km of the coast-hugging edge of) their polity;
  *  - who is on and who is gone at sample years, and the anachronisms the pack fixed stay fixed;
  *  - (Day 66+) the pack's shapes never overlap each other — and (Day 68) the neighbours it lists —
- *    at any sampled year, and (Day 68) each coastal enclave is drawn by exactly one shape.
+ *    at any sampled year, and (Day 68) each coastal enclave is drawn by exactly one shape;
+ *  - (Day 69) a region the pack dropped from an older shape stays dropped (`dropped`).
  */
 import fs from 'node:fs';
 import { geoContains } from 'd3-geo';
 import { peruPolities, peruShapeFixes } from '../src/globe-pack-peru.js';
 import { ghanaPolities, ghanaShapeFixes, GOLD_COAST } from '../src/globe-pack-ghana.js';
 import { moroccoPolities, moroccoShapeFixes, ENCLAVE_SHAPES, ENCLAVE_RULE } from '../src/globe-pack-morocco.js';
+import { kenyaPolities, kenyaShapeFixes } from '../src/globe-pack-kenya.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -348,6 +350,70 @@ const PACKS = [
     },
     enclaves: { shapes: ENCLAVE_SHAPES, rule: ENCLAVE_RULE },
   },
+  {
+    country: 'kenya',
+    polities: kenyaPolities,
+    fixes: kenyaShapeFixes,
+    // The Swahili city-states' schematic 'north' region was dropped, not redrawn.
+    redrawn: {},
+    dropped: [['swahili-city-states', 'north']],
+    capitals: [
+      ['shanga', 760, 41.07, -2.13, 'Shanga'],
+      ['shanga', 1300, 41.07, -2.13, 'Shanga'],
+      ['manda', 1000, 40.95, -2.21, 'Manda'],
+      ['pate-sultanate', 1300, 41.00, -2.11, 'Pate'],
+      ['pate-sultanate', 1700, 41.00, -2.11, 'Pate'],
+      ['siyu', 1606, 41.07, -2.10, 'Siyu'],
+      ['siyu', 1587, 41.10, -2.05, 'Faza'],
+      ['lamu', 1300, 40.90, -2.27, 'Lamu'],
+      ['lamu', 1812, 40.91, -2.30, 'Shela'],
+      ['gedi', 1450, 40.02, -3.31, 'Gedi'],
+      ['malindi-sultanate', 1498, 40.12, -3.22, 'Malindi'],
+      ['mombasa-sultanate', 1151, 39.67, -4.06, 'Mombasa'],
+      ['mombasa-sultanate', 1331, 39.67, -4.06, 'Mombasa'],
+      ['portuguese-mombasa', 1593, 39.68, -4.06, 'Fort Jesus'],
+      ['portuguese-mombasa', 1593, 40.12, -3.22, 'Malindi'],
+      ['portuguese-mombasa', 1696, 39.68, -4.06, 'Fort Jesus'],
+      ['mazrui-mombasa', 1746, 39.68, -4.06, 'Fort Jesus'],
+      ['wanga-kingdom', 1650, 34.49, 0.34, 'Elureko (Mumias)'],
+      ['wanga-kingdom', 1760, 34.56, 0.40, 'Matungu'],
+    ],
+    on: {
+      800: ['shanga'],
+      1000: ['shanga', 'manda'],
+      1100: ['shanga', 'gedi'],
+      1200: ['shanga', 'gedi', 'mombasa-sultanate', 'manda'],
+      1400: ['shanga', 'gedi', 'mombasa-sultanate', 'malindi-sultanate', 'lamu', 'pate-sultanate'],
+      1550: ['gedi', 'mombasa-sultanate', 'malindi-sultanate', 'lamu', 'pate-sultanate', 'siyu'],
+      1600: ['gedi', 'portuguese-mombasa', 'lamu', 'pate-sultanate', 'siyu'],
+      1700: ['mazrui-mombasa', 'lamu', 'pate-sultanate', 'siyu', 'wanga-kingdom'],
+      1810: ['mazrui-mombasa', 'lamu', 'pate-sultanate', 'siyu', 'wanga-kingdom'],
+    },
+    gone: {
+      1310: ['manda'],
+      1430: ['shanga'],
+      1595: ['mombasa-sultanate', 'malindi-sultanate'],
+      1650: ['gedi'],
+      1700: ['portuguese-mombasa'],
+      1830: ['mazrui-mombasa', 'lamu', 'pate-sultanate', 'siyu', 'wanga-kingdom'],
+    },
+    absent: [['portuguese-mombasa', 1650, 'malindi']],
+    present: [['portuguese-mombasa', 1620, 'malindi']],
+    // The old schematic coast no longer covers the towns the pack draws.
+    notOver: [
+      ['swahili-city-states', 1300, 39.67, -4.06, 'Mombasa'],
+      ['swahili-city-states', 1500, 40.12, -3.22, 'Malindi'],
+      ['swahili-city-states', 1600, 40.90, -2.27, 'Lamu'],
+    ],
+    // The pack's shapes, and the older polities around it, never overlap (every 5 years, 0.1° grid).
+    noOverlap: {
+      from: 750,
+      to: 1815,
+      box: [33.8, -4.8, 42.0, 5.0],
+      planar: true,
+      with: ['swahili-city-states', 'ethiopian-empire', 'buganda'],
+    },
+  },
 ];
 
 let rings = 0;
@@ -395,7 +461,7 @@ for (const pack of PACKS) {
       }
     }
   }
-  for (const id of Object.keys(pack.fixes)) if (!pack.redrawn[id] && !pack.offshore?.entities.includes(id)) fail(`fix target ${id} is not land-checked`);
+  for (const id of Object.keys(pack.fixes)) if (!pack.redrawn[id] && !pack.offshore?.entities.includes(id) && !(pack.dropped || []).some(([d]) => d === id)) fail(`fix target ${id} is not land-checked`);
 
   for (const [id, y, lng, lat, place] of pack.capitals) {
     const kf = byId.get(id)?.overlays.find((o) => o.year === y);
@@ -429,6 +495,11 @@ for (const pack of PACKS) {
       const wet = sea.find((pt) => feats.some((f) => geoContains(f, pt)));
       if (wet) fail(`${pack.country}: a presence band shades the sea off the coast in ${y} at ${wet.map((v) => v.toFixed(2)).join(',')}`);
     }
+  }
+  for (const [id, rid] of pack.dropped || []) {
+    const e = byId.get(id);
+    if (!e) fail(`dropped-region entity ${id} missing`);
+    else if (e.overlays.some((o) => o.regions.some((r) => (typeof r === 'string' ? r : r.id) === rid))) fail(`${id} still has its ${rid} region`);
   }
   for (const [id, y, lng, lat, place] of pack.notOver || []) {
     const over = getOverlayPolygonFeatures(Number(y), spatialEntities).some((f) => f.entityId === id && geoContains(f, [lng, lat]));

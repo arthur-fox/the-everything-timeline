@@ -101,7 +101,9 @@ const CAPITALS = [
   ['zagwe-dynasty', 1200, 39.05, 12.03, 'Lalibela'],
   ['ethiopian-empire', 1700, 37.47, 12.61, 'Gondar'],
   ['swahili-city-states', 1300, 39.51, -8.96, 'Kilwa'],
-  ['swahili-city-states', 1300, 39.67, -4.05, 'Mombasa'],
+  // Day 69: the Kenya coast (Mombasa, Malindi, Lamu) is drawn town by town by the Kenya pack
+  // (globe-pack-kenya.js, checked in check-country-packs.js), so Zanzibar stands in here.
+  ['swahili-city-states', 1300, 39.30, -6.05, 'Zanzibar'],
   ['buganda', 1800, 32.58, 0.32, 'Kampala hills'],
 ];
 for (const [id, y, lng, lat, place] of CAPITALS) {
