@@ -3,8 +3,8 @@
  * (src/globe-pack-peru.js), Ghana (Day 66, src/globe-pack-ghana.js), Morocco (Day 68,
  * src/globe-pack-morocco.js), Kenya (Day 69, src/globe-pack-kenya.js), Iraq (Day 70,
  * src/globe-pack-iraq.js), the Philippines (Day 71, src/globe-pack-philippines.js) and
- * Uzbekistan (Day 72, src/globe-pack-uzbekistan.js). Add a pack
- * to PACKS to cover it.
+ * Uzbekistan (Day 72, src/globe-pack-uzbekistan.js) and Kazakhstan (Day 73,
+ * src/globe-pack-kazakhstan.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
  *    on land (no Pacific spill), for the pack's polities and the shapes it redrew;
@@ -30,6 +30,7 @@ import { kenyaPolities, kenyaShapeFixes } from '../src/globe-pack-kenya.js';
 import { iraqPolities, iraqShapeFixes, IRAQ_TRIMS } from '../src/globe-pack-iraq.js';
 import { philippinesPolities, philippinesShapeFixes } from '../src/globe-pack-philippines.js';
 import { uzbekistanPolities, uzbekistanShapeFixes, UZ_TRIMS } from '../src/globe-pack-uzbekistan.js';
+import { kazakhstanPolities, kazakhstanShapeFixes } from '../src/globe-pack-kazakhstan.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -783,10 +784,90 @@ const PACKS = [
       remnants: [[1500, 'timurid', 'transoxiana']],
     },
   },
+  {
+    country: 'kazakhstan',
+    polities: kazakhstanPolities,
+    fixes: kazakhstanShapeFixes,
+    // Kokand's Syr Darya region (1814–15) is drawn from the pieces (land-checked).
+    redrawn: { 'kokand-khanate': ['steppe'] },
+    // The Russian Empire's Western Siberia ring is trimmed north of the steppe before the fort lines.
+    trimmed: ['russian-empire'],
+    notOver: [
+      ['russian-empire', 1730, 63.62, 53.2, 'Kostanay'],
+      ['russian-empire', 1730, 73.1, 49.8, 'Karaganda'],
+      ['russian-empire', 1740, 66.5, 51.5, 'the Turgay steppe'],
+      ['russian-empire', 1800, 57.23, 50.28, 'Aktobe'],
+      ['russian-empire', 1800, 76.95, 51.0, 'the Pavlodar steppe'],
+    ],
+    capitals: [
+      ['wusun', -130, 77.61, 43.33, 'Issyk (Zhetysu)'],
+      ['kangju', -128, 68.30, 42.85, 'Otrar oasis'],
+      ['turgesh', 699, 75.2, 42.81, 'Suyab'],
+      ['turgesh', 717, 71.37, 42.9, 'Taraz'],
+      ['oghuz-yabgu', 750, 61.92, 45.61, 'Yangikent'],
+      ['kimek-kipchak', 880, 80.27, 50.43, 'Irtysh (Semey)'],
+      ['kimek-kipchak', 1055, 67.65, 53.3, 'Ishim steppe'],
+      ['moghulistan', 1347, 81.28, 43.91, 'Almaliq / Kulja'],
+      ['moghulistan', 1347, 77.23, 43.3, 'Talgar'],
+      ['abulkhair-khanate', 1446, 66.96, 44.16, 'Sighnaq'],
+      ['nogai-horde', 1440, 51.73, 47.5, 'Saraychik'],
+      ['kazakh-khanate-early', 1465, 71.37, 42.9, 'Taraz (Chu and Talas)'],
+      ['kazakh-khanate-early', 1470, 66.96, 44.16, 'Sighnaq'],
+      ['kazakh-khanate-early', 1511, 68.27, 43.3, 'Turkestan'],
+      ['kazakh-khanate-early', 1598, 69.24, 41.3, 'Tashkent'],
+      ['kazakh-khanate-early', 1718, 68.27, 43.3, 'Turkestan'],
+      ['kazakh-khanate-early', 1815, 76.89, 43.24, 'Almaty (Senior jüz)'],
+      ['dzungar-khanate', 1634, 81.28, 43.91, 'Ghulja'],
+      ['dzungar-khanate', 1723, 68.27, 43.3, 'Turkestan'],
+      ['kokand-khanate', 1815, 68.27, 43.3, 'Turkestan'],
+    ],
+    on: {
+      [-100]: ['wusun', 'kangju'],
+      720: ['turgesh'],
+      900: ['oghuz-yabgu', 'kimek-kipchak'],
+      1100: ['kimek-kipchak'],
+      1400: ['moghulistan'],
+      1450: ['moghulistan', 'abulkhair-khanate', 'nogai-horde'],
+      1550: ['kazakh-khanate-early', 'nogai-horde'],
+      1700: ['kazakh-khanate-early', 'dzungar-khanate'],
+      1800: ['kazakh-khanate-early'],
+      1815: ['kazakh-khanate-early', 'kokand-khanate'],
+    },
+    gone: {
+      [-200]: ['wusun', 'kangju'],
+      500: ['wusun', 'kangju'],
+      800: ['turgesh'],
+      1100: ['oghuz-yabgu'],
+      1230: ['kimek-kipchak'],
+      1300: ['moghulistan'],
+      1480: ['abulkhair-khanate'],
+      1530: ['moghulistan'],
+      1650: ['nogai-horde'],
+      1760: ['dzungar-khanate'],
+    },
+    absent: [
+      ['kazakh-khanate-early', 1730, 'senior'],
+      ['kokand-khanate', 1800, 'steppe'],
+    ],
+    present: [
+      ['dzungar-khanate', 1730, 'west'],
+      ['kazakh-khanate-early', 1760, 'senior'],
+      ['kazakh-khanate-early', 1780, 'junior'],
+      ['kokand-khanate', 1814, 'steppe'],
+    ],
+    // The pack's shapes and the older shapes around them never overlap (every 5 years, 0.1° grid).
+    noOverlap: {
+      from: -130,
+      to: 1815,
+      box: [46, 40, 92, 56],
+      planar: true,
+      with: ['khazar-khaganate', 'karakhanid-khanate', 'khwarezmia', 'timurid', 'bukhara-khanate', 'khiva-khanate', 'kokand-khanate', 'gokturk-khaganate', 'mongol-empire', 'russian-empire', 'qing-china'],
+    },
+  },
 ];
 
 let rings = 0;
-for (const pack of PACKS) {
+for (const pack of PACKS.filter((p) => !process.env.PACK || p.country === process.env.PACK)) {
   const file = new URL(`../data/countries/${pack.country}.json`, import.meta.url);
   const items = new Set(JSON.parse(fs.readFileSync(file, 'utf8')).items.map((i) => i.id));
   const civIds = new Set(civilisations.map((c) => c.id));
