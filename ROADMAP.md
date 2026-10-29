@@ -1153,7 +1153,7 @@ Uzbekistan had no country timeline, and on the globe before 1815 only the Achaem
 - **Timeline crash fix:** the country swim-lane view crashed on any item without a `periods` list, which had left the live Morocco timeline blank since Day 68; `src/swim-lane-view.js` now treats a missing list as empty, and the Morocco and Uzbekistan items carry `"periods": []`.
 - **Next:** Kazakhstan (pack 2, Timeline + Globe).
 
-#### Day 73 — Pack 2 Central Asia: Kazakhstan (Timeline + Globe) — done-in-PR
+#### Day 73 — Pack 2 Central Asia: Kazakhstan (Timeline + Globe) — done-in-PR (#87, stacked on #86)
 
 Kazakhstan had no country timeline, and on the globe before 1815 only peoples and presence washes, the Karakhanids' and Khwarazmshahs' Syr Darya towns, the schematic Mongol Empire and a Russian Siberia ring that reached 50°N (over Kostanay, Pavlodar and the Kazakh uplands) from 1721. No Wusun or Kangju, no Turgesh, Oghuz or Kipchaks, no Moghulistan, no Abu'l-Khayr, no Nogai Horde, no Dzungars and no Kazakh Khanate. Now the steppe's own states are drawn from the Wusun (c. 130 BCE) to 1815, where the nations layer takes over (the three jüz, Kokand, Russian Steppe and Turkestan, the Kazakh SSR, Kazakhstan). Built on top of the Uzbekistan PR (#86), which it shares pieces with.
 
