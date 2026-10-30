@@ -158,11 +158,12 @@ export function drawSwimLaneView(ctx, w, h, viewStart, viewEnd, scrollY, hovered
         ctx.stroke();
 
         // Whether this bar has visible periods
-        const hasPeriods = bar.item.periods.length > 0;
+        const periods = bar.item.periods || []; // items may omit periods (Morocco, Uzbekistan)
+        const hasPeriods = periods.length > 0;
 
         // Sub-periods (darker segments) — draw segments first, then labels
         let lastPeriodLabelRight = -Infinity;
-        for (const period of bar.item.periods) {
+        for (const period of periods) {
           const px1 = yearToX(period.start, viewStart, viewEnd, w);
           const px2 = yearToX(period.end, viewStart, viewEnd, w);
           const clampedX1 = Math.max(bar.xStart + 1, px1);

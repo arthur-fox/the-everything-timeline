@@ -2,7 +2,8 @@
  * Day 65: checks for Phase 5 country-pack globe backfills (ROADMAP item 12), starting with Peru
  * (src/globe-pack-peru.js), Ghana (Day 66, src/globe-pack-ghana.js), Morocco (Day 68,
  * src/globe-pack-morocco.js), Kenya (Day 69, src/globe-pack-kenya.js), Iraq (Day 70,
- * src/globe-pack-iraq.js) and the Philippines (Day 71, src/globe-pack-philippines.js). Add a pack
+ * src/globe-pack-iraq.js), the Philippines (Day 71, src/globe-pack-philippines.js) and
+ * Uzbekistan (Day 72, src/globe-pack-uzbekistan.js). Add a pack
  * to PACKS to cover it.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -28,6 +29,7 @@ import { moroccoPolities, moroccoShapeFixes, ENCLAVE_SHAPES, ENCLAVE_RULE } from
 import { kenyaPolities, kenyaShapeFixes } from '../src/globe-pack-kenya.js';
 import { iraqPolities, iraqShapeFixes, IRAQ_TRIMS } from '../src/globe-pack-iraq.js';
 import { philippinesPolities, philippinesShapeFixes } from '../src/globe-pack-philippines.js';
+import { uzbekistanPolities, uzbekistanShapeFixes, UZ_TRIMS } from '../src/globe-pack-uzbekistan.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -690,6 +692,97 @@ const PACKS = [
       with: ['brunei-sultanate', 'spanish-empire'],
     },
   },
+  {
+    country: 'uzbekistan',
+    polities: uzbekistanPolities,
+    fixes: uzbekistanShapeFixes,
+    // The Timurids' oasis regions are redrawn from the Uzbekistan pieces (land-checked).
+    redrawn: {
+      timurid: ['transoxiana', 'hisar', 'chach', 'fergana', 'khwarazm'],
+    },
+    // The Russian Empire's schematic 'central-asia' ring (over Bukhara from the 1750s) is dropped.
+    dropped: [['russian-empire', 'central-asia']],
+    // Rings trimmed clear of the oases, and the Mongol 1227 shape kept off Transoxiana before 1219.
+    trimmed: [...new Set(UZ_TRIMS.map(([id]) => id)), 'mongol-empire'],
+    capitals: [
+      ['sogdia', 350, 66.96, 39.65, 'Samarkand'],
+      ['sogdia', 350, 64.42, 39.77, 'Bukhara'],
+      ['afrighid-khwarazm', 305, 60.75, 41.69, 'Kath'],
+      ['afrighid-khwarazm', 995, 59.15, 42.33, 'Gurganj'],
+      ['samanid-empire', 819, 66.96, 39.65, 'Samarkand'],
+      ['samanid-empire', 900, 64.42, 39.77, 'Bukhara'],
+      ['karakhanid-khanate', 999, 66.96, 39.65, 'Samarkand'],
+      ['karakhanid-khanate', 999, 64.42, 39.77, 'Bukhara'],
+      ['karakhanid-khanate', 999, 75.99, 39.47, 'Kashgar'],
+      ['khwarezmia', 1097, 59.15, 42.33, 'Gurganj'],
+      ['khwarezmia', 1212, 66.96, 39.65, 'Samarkand'],
+      ['timurid', 1370, 66.96, 39.65, 'Samarkand'],
+      ['timurid', 1380, 59.15, 42.33, 'Urgench'],
+      ['bukhara-khanate', 1500, 66.96, 39.65, 'Samarkand'],
+      ['bukhara-khanate', 1557, 64.42, 39.77, 'Bukhara'],
+      ['bukhara-khanate', 1815, 64.42, 39.77, 'Bukhara'],
+      ['bukhara-khanate', 1815, 66.96, 39.65, 'Samarkand'],
+      ['khiva-khanate', 1600, 60.36, 41.38, 'Khiva'],
+      ['khiva-khanate', 1815, 60.36, 41.38, 'Khiva'],
+      ['kokand-khanate', 1740, 70.94, 40.53, 'Kokand'],
+      ['kokand-khanate', 1815, 69.24, 41.3, 'Tashkent'],
+    ],
+    on: {
+      400: ['sogdia', 'afrighid-khwarazm'],
+      700: ['sogdia', 'afrighid-khwarazm'],
+      900: ['samanid-empire', 'afrighid-khwarazm'],
+      1050: ['karakhanid-khanate'],
+      1150: ['karakhanid-khanate', 'khwarezmia'],
+      1215: ['khwarezmia'],
+      1400: ['timurid'],
+      1550: ['bukhara-khanate', 'khiva-khanate'],
+      1750: ['bukhara-khanate', 'khiva-khanate', 'kokand-khanate'],
+      1810: ['bukhara-khanate', 'khiva-khanate', 'kokand-khanate'],
+    },
+    gone: {
+      300: ['sogdia', 'afrighid-khwarazm'],
+      760: ['sogdia'],
+      1010: ['samanid-empire'],
+      1050: ['afrighid-khwarazm'],
+      1240: ['karakhanid-khanate', 'khwarezmia'],
+      1520: ['timurid'],
+      1830: ['bukhara-khanate', 'khiva-khanate', 'kokand-khanate'],
+    },
+    absent: [
+      ['khwarezmia', 1200, 'transoxiana'],
+      ['timurid', 1490, 'chach'],
+    ],
+    present: [
+      ['khwarezmia', 1215, 'transoxiana'],
+      ['timurid', 1400, 'khwarazm'],
+      ['bukhara-khanate', 1590, 'khurasan'],
+    ],
+    // Anachronisms fixed: shapes that spread over the oases in other powers' years.
+    notOver: [
+      ['russian-empire', 1800, 66.96, 39.65, 'Samarkand'],
+      ['russian-empire', 1800, 64.42, 39.77, 'Bukhara'],
+      ['russian-empire', 1800, 60.36, 41.38, 'Khiva'],
+      ['sassanid-empire', 400, 66.96, 39.65, 'Samarkand'],
+      ['sassanid-empire', 400, 64.42, 39.77, 'Bukhara'],
+      ['gokturk-khaganate', 580, 66.96, 39.65, 'Samarkand'],
+      ['khwarezmia', 1200, 66.96, 39.65, 'Samarkand'],
+      ['mongol-empire', 1215, 66.96, 39.65, 'Samarkand'],
+      ['mongol-empire', 1215, 59.15, 42.33, 'Gurganj'],
+    ],
+    // The pack's shapes and the older shapes around them never overlap (every 5 years, 0.1° grid).
+    // (The Safavids' schematic 'persia' ring is not listed: it still takes in Herat while Abdullah
+    // Khan II held it, 1588–98.)
+    noOverlap: {
+      from: 305,
+      to: 1815,
+      box: [55, 34, 78, 46],
+      planar: true,
+      with: ['timurid', 'sassanid-empire', 'gokturk-khaganate', 'russian-empire', 'mughal-empire'],
+      // Fade-out remnants: in a step year a region that is given up is drawn at 12% size and faint
+      // about its centre (here the Timurid Transoxiana in 1500, the year Shaybani takes Samarkand).
+      remnants: [[1500, 'timurid', 'transoxiana']],
+    },
+  },
 ];
 
 let rings = 0;
@@ -793,7 +886,8 @@ for (const pack of PACKS) {
     const others = new Set(pack.noOverlap.with || []);
     let worst = null;
     for (let y = from; y <= to && !worst; y += 5) {
-      const all = getOverlayPolygonFeatures(y, spatialEntities).filter((f) => ids.has(f.entityId) || others.has(f.entityId));
+      const remnant = (f) => (pack.noOverlap.remnants || []).some(([ry, re, rr]) => ry === y && re === f.entityId && rr === f.regionId);
+      const all = getOverlayPolygonFeatures(y, spatialEntities).filter((f) => (ids.has(f.entityId) || others.has(f.entityId)) && !remnant(f));
       const feats = planar ? all.map(planarFeature) : all.map((f) => ({ f, has: (x, yy) => geoContains(f, [x, yy]) }));
       for (let lat = y0; lat < y1 && !worst; lat += 0.1) {
         for (let lng = x0; lng < x1; lng += 0.1) {

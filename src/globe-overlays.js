@@ -38,6 +38,7 @@ import { moroccoPolities, applyMoroccoShapeFixes } from './globe-pack-morocco.js
 import { kenyaPolities, applyKenyaShapeFixes } from './globe-pack-kenya.js';
 import { iraqPolities, applyIraqShapeFixes } from './globe-pack-iraq.js';
 import { philippinesPolities, applyPhilippinesShapeFixes } from './globe-pack-philippines.js';
+import { uzbekistanPolities, applyUzbekistanShapeFixes } from './globe-pack-uzbekistan.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6329,6 +6330,15 @@ for (const ent of philippinesPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 72 — Phase 5 country pack 2, Uzbekistan (globe-pack-uzbekistan.js): the Sogdian city-states and
+// Afrighid Khwarazm to the khanates of Bukhara, Khiva and Kokand, drawn from province pieces; the
+// Khwarezmian Empire is replaced by id, the rest appended.
+for (const ent of uzbekistanPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6378,6 +6388,10 @@ applyIraqShapeFixes(spatialEntities);
 // Day 71 — the Spanish Empire's schematic 'philippines' ring gives way to the Philippines pack's
 // Spanish Philippines (drawn island by island from 1565).
 applyPhilippinesShapeFixes(spatialEntities);
+// Day 72 — the Timurid Transoxiana is redrawn from the Uzbekistan pack's pieces; the Russian Empire no
+// longer covers Central Asia before 1815, the Mongols reach it only in 1220–21, and the Sasanian and
+// Göktürk rings are trimmed off Sogdia.
+applyUzbekistanShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

@@ -1,0 +1,741 @@
+{
+  "id": "uzbekistan",
+  "name": "Uzbekistan",
+  "flag": "🇺🇿",
+  "minYear": -2200,
+  "maxYear": 2025,
+  "categories": [
+    {
+      "id": "ancient",
+      "name": "Ancient Oases & Empires",
+      "color": "#D97706"
+    },
+    {
+      "id": "silk",
+      "name": "Sogdians & the Silk Road",
+      "color": "#F59E0B"
+    },
+    {
+      "id": "islamic",
+      "name": "Islamic Golden Age",
+      "color": "#10B981"
+    },
+    {
+      "id": "mongol",
+      "name": "Mongols & Timurids",
+      "color": "#A855F7"
+    },
+    {
+      "id": "khanates",
+      "name": "Uzbek Khanates",
+      "color": "#0EA5E9"
+    },
+    {
+      "id": "russian",
+      "name": "Russian & Soviet Rule",
+      "color": "#EF4444"
+    },
+    {
+      "id": "modern",
+      "name": "Independent Uzbekistan",
+      "color": "#3B82F6"
+    }
+  ],
+  "items": [
+    {
+      "id": "uz-oxus-bronze-age",
+      "name": "Bronze Age oases: Sapallitepa & the Oxus civilisation",
+      "start": -2200,
+      "end": -1500,
+      "region": "ancient",
+      "icon": "🏺",
+      "description": "In the Surkhandarya valley of southern Uzbekistan, Sapallitepa and Djarkutan were fortified farming towns of the Bactria–Margiana Archaeological Complex (the 'Oxus civilisation'), which irrigated the oases of the upper Amu Darya and northern Afghanistan and Turkmenistan around 2200–1700 BCE. Djarkutan, with its citadel and temple, is one of the largest Bronze Age settlements of Central Asia. Dates are approximate (radiocarbon).",
+      "sources": [
+        {
+          "title": "Wikipedia — Bactria–Margiana Archaeological Complex",
+          "url": "https://en.wikipedia.org/wiki/Bactria–Margiana_Archaeological_Complex"
+        },
+        {
+          "title": "Wikipedia — Djarkutan",
+          "url": "https://en.wikipedia.org/wiki/Djarkutan"
+        }
+      ],
+      "periods": []
+    },
+    {
+      "id": "uz-sogdiana-bactria",
+      "name": "Sogdiana, Bactria & Chorasmia under Persia, Alexander and the Greeks",
+      "start": -545,
+      "end": -145,
+      "region": "ancient",
+      "icon": "🏛️",
+      "description": "Sogdiana (the Zarafshan and Kashkadarya valleys around Marakanda, modern Samarkand), Chorasmia (Khwarazm, on the lower Amu Darya) and Bactria (north of the Hindu Kush) appear in Darius I's Behistun inscription as provinces of the Achaemenid Persian Empire, conquered by Cyrus the Great. Alexander the Great took Marakanda in 329 BCE and spent two years putting down the Sogdian revolt of Spitamenes, ending with the capture of the Sogdian Rock and his marriage to Roxana (327 BCE). Under the Seleucids and then the Greco-Bactrian kings (from c. 250 BCE), Greek cities such as Alexandria Eschate (Khujand) and the fortress at Afrasiyab guarded the north, until nomads overran Bactria around 145 BCE.",
+      "sources": [
+        {
+          "title": "Wikipedia — Sogdia",
+          "url": "https://en.wikipedia.org/wiki/Sogdia"
+        },
+        {
+          "title": "Wikipedia — Behistun Inscription",
+          "url": "https://en.wikipedia.org/wiki/Behistun_Inscription"
+        },
+        {
+          "title": "Wikipedia — Sogdian Rock",
+          "url": "https://en.wikipedia.org/wiki/Sogdian_Rock"
+        },
+        {
+          "title": "Wikipedia — Greco-Bactrian Kingdom",
+          "url": "https://en.wikipedia.org/wiki/Greco-Bactrian_Kingdom"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Achaemenid satrapies",
+          "start": -545,
+          "end": -330
+        },
+        {
+          "name": "Alexander's campaign",
+          "start": -329,
+          "end": -327
+        },
+        {
+          "name": "Seleucid rule",
+          "start": -305,
+          "end": -250
+        },
+        {
+          "name": "Greco-Bactrian Kingdom",
+          "start": -250,
+          "end": -145
+        }
+      ]
+    },
+    {
+      "id": "uz-ancient-khwarazm",
+      "name": "Ancient Khwarazm & the Afrighid shahs",
+      "start": -500,
+      "end": 995,
+      "region": "ancient",
+      "icon": "🏰",
+      "description": "Khwarazm (Chorasmia), the delta oasis of the lower Amu Darya south of the Aral Sea, was an Achaemenid province, then an independent kingdom with fortified towns such as Toprak-Kala and Ayaz-Kala. According to al-Biruni, the Afrighid dynasty of Khwarazmshahs began in 305 CE and ruled from Kath. After Qutayba ibn Muslim's conquest in 712 the Afrighids stayed on as tributary shahs of the caliphate and later of the Samanids, until the emir of Gurganj (Urgench), Ma'mun ibn Muhammad, overthrew the last of them in 995.",
+      "sources": [
+        {
+          "title": "Encyclopaedia Iranica — Chorasmia ii. In Islamic times",
+          "url": "https://www.iranicaonline.org/articles/chorasmia-ii"
+        },
+        {
+          "title": "Encyclopaedia Iranica — Āl-e Afrīḡ",
+          "url": "https://www.iranicaonline.org/articles/al-e-afrig"
+        },
+        {
+          "title": "Wikipedia — Afrighids",
+          "url": "https://en.wikipedia.org/wiki/Afrighids"
+        },
+        {
+          "title": "Wikipedia — Toprak-Kala",
+          "url": "https://en.wikipedia.org/wiki/Toprak-Kala"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Achaemenid Chorasmia",
+          "start": -500,
+          "end": -330
+        },
+        {
+          "name": "Kingdom of Khwarazm",
+          "start": -330,
+          "end": 305
+        },
+        {
+          "name": "Afrighid shahs at Kath",
+          "start": 305,
+          "end": 995
+        }
+      ]
+    },
+    {
+      "id": "uz-kushans",
+      "name": "Yuezhi & the Kushan Empire",
+      "start": -130,
+      "end": 300,
+      "region": "ancient",
+      "icon": "☸️",
+      "description": "Around 130 BCE the Yuezhi, pushed west from Gansu, crossed the Amu Darya into Bactria; one of their five clans founded the Kushan Empire, which in the 1st–3rd centuries ruled from the Oxus to the Ganges. Southern Uzbekistan was a Kushan heartland: Dalverzin Tepe was a Kushan city, and Buddhist monasteries were built at Kara Tepe and Fayaz Tepe near Termez, on the route by which Buddhism travelled to China. The Sasanians took much of Bactria in the 3rd century.",
+      "sources": [
+        {
+          "title": "Wikipedia — Kushan Empire",
+          "url": "https://en.wikipedia.org/wiki/Kushan_Empire"
+        },
+        {
+          "title": "Wikipedia — Yuezhi",
+          "url": "https://en.wikipedia.org/wiki/Yuezhi"
+        },
+        {
+          "title": "Wikipedia — Fayaz Tepe",
+          "url": "https://en.wikipedia.org/wiki/Fayaz_Tepe"
+        },
+        {
+          "title": "Wikipedia — Dalverzin Tepe",
+          "url": "https://en.wikipedia.org/wiki/Dalverzin_Tepe"
+        }
+      ],
+      "periods": []
+    },
+    {
+      "id": "uz-sogdian-city-states",
+      "name": "Sogdian city-states & the Silk Road",
+      "start": 350,
+      "end": 722,
+      "region": "silk",
+      "icon": "🐫",
+      "description": "Between the 4th and 8th centuries the Sogdian city-states — Samarkand, Bukhara, Kesh, Nasaf, Panjikent and others, each under its own ruler (the ikhshid of Samarkand, the Bukhar Khudah of Bukhara) — were the merchants of the Silk Road, with colonies from Crimea to China. They paid tribute to the Hephthalites and from the 560s to the Western Turkic khagans. The Afrasiyab wall paintings show foreign envoys before King Varkhuman of Samarkand (c. 660). The Arabs took Bukhara in 709 and Samarkand in 712; Devashtich, ruler of Panjikent, held out at Mount Mugh until 722, where his archive of Sogdian documents was found in 1933.",
+      "sources": [
+        {
+          "title": "Wikipedia — Sogdia",
+          "url": "https://en.wikipedia.org/wiki/Sogdia"
+        },
+        {
+          "title": "Wikipedia — Afrasiab paintings",
+          "url": "https://en.wikipedia.org/wiki/Afrasiab_paintings"
+        },
+        {
+          "title": "Wikipedia — Devashtich",
+          "url": "https://en.wikipedia.org/wiki/Devashtich"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Hephthalite overlordship",
+          "start": 479,
+          "end": 560
+        },
+        {
+          "name": "Western Turkic overlordship",
+          "start": 560,
+          "end": 658
+        },
+        {
+          "name": "Arab conquest",
+          "start": 705,
+          "end": 722
+        }
+      ]
+    },
+    {
+      "id": "uz-arab-conquest",
+      "name": "Arab conquest of Transoxiana",
+      "start": 673,
+      "end": 819,
+      "region": "islamic",
+      "icon": "🕌",
+      "description": "Arab armies from Khurasan first raided Bukhara in 673–674. Qutayba ibn Muslim, governor of Khurasan from 705, took Bukhara (709), Khwarazm and Samarkand (712) and pushed to Chach and Fergana, making Transoxiana (Mawarannahr, 'what lies beyond the river') a province of the Umayyad Caliphate; the Türgesh and Sogdian revolts kept it contested until the 740s. The Abbasid victory over a Tang army at Talas (751) ended Chinese ambitions in the west, and the revolt of al-Muqanna, the 'veiled prophet' (c. 776–783), was put down in the Kashkadarya and Zarafshan valleys.",
+      "sources": [
+        {
+          "title": "Wikipedia — Muslim conquest of Transoxiana",
+          "url": "https://en.wikipedia.org/wiki/Muslim_conquest_of_Transoxiana"
+        },
+        {
+          "title": "Wikipedia — Qutayba ibn Muslim",
+          "url": "https://en.wikipedia.org/wiki/Qutayba_ibn_Muslim"
+        },
+        {
+          "title": "Wikipedia — Battle of Talas",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Talas"
+        },
+        {
+          "title": "Wikipedia — Al-Muqanna",
+          "url": "https://en.wikipedia.org/wiki/Al-Muqanna"
+        }
+      ],
+      "periods": []
+    },
+    {
+      "id": "uz-samanids",
+      "name": "Samanid Empire",
+      "start": 819,
+      "end": 999,
+      "region": "islamic",
+      "icon": "📜",
+      "description": "In 819 the caliph al-Ma'mun's governor gave Samarkand, Fergana, Chach (Tashkent) and Herat to the four grandsons of Saman Khuda. Nasr I was made governor of all Transoxiana in 875, and his brother Isma'il, ruling from Bukhara, defeated the Saffarid Amr ibn al-Layth near Balkh in 900 and added Khurasan. Under the Samanids Bukhara was a capital of Persian letters and learning: the poet Rudaki wrote there and Ibn Sina was born nearby (980). The Samanid Mausoleum (early 10th century) still stands in Bukhara. The Karakhanids took Bukhara in 999.",
+      "sources": [
+        {
+          "title": "Wikipedia — Samanid Empire",
+          "url": "https://en.wikipedia.org/wiki/Samanid_Empire"
+        },
+        {
+          "title": "Wikipedia — Isma'il ibn Ahmad",
+          "url": "https://en.wikipedia.org/wiki/Isma'il_ibn_Ahmad"
+        },
+        {
+          "title": "Wikipedia — Samanid Mausoleum",
+          "url": "https://en.wikipedia.org/wiki/Samanid_Mausoleum"
+        },
+        {
+          "title": "UNESCO World Heritage — Historic Centre of Bukhara",
+          "url": "https://whc.unesco.org/en/list/602"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Samanid governors",
+          "start": 819,
+          "end": 875
+        },
+        {
+          "name": "Samanid emirs at Bukhara",
+          "start": 875,
+          "end": 999
+        }
+      ]
+    },
+    {
+      "id": "uz-karakhanids",
+      "name": "Karakhanids",
+      "start": 999,
+      "end": 1212,
+      "region": "islamic",
+      "icon": "🏹",
+      "description": "The Karakhanids (Qarakhanids or Ilek Khans), a Turkic dynasty that had converted to Islam, took Bukhara in 999 and ended the Samanids. Around 1040 their realm split into a western khanate centred on Samarkand and an eastern one centred on Balasagun and Kashgar. The western khans became vassals of the Seljuks (1089) and, after the Qara Khitai defeated Sultan Sanjar at Qatwan near Samarkand (1141), of the Qara Khitai. Arslan Khan built the Kalyan minaret in Bukhara in 1127. The Khwarazmshah Muhammad II executed the last western khan, Uthman, in 1212.",
+      "sources": [
+        {
+          "title": "Wikipedia — Kara-Khanid Khanate",
+          "url": "https://en.wikipedia.org/wiki/Kara-Khanid_Khanate"
+        },
+        {
+          "title": "Encyclopaedia Iranica — Ilak-Khanids",
+          "url": "https://www.iranicaonline.org/articles/ilak-khanids"
+        },
+        {
+          "title": "Wikipedia — Battle of Qatwan",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Qatwan"
+        },
+        {
+          "title": "Wikipedia — Kalyan Minaret",
+          "url": "https://en.wikipedia.org/wiki/Kalyan_Minaret"
+        }
+      ],
+      "periods": [
+        {
+          "name": "United khanate",
+          "start": 999,
+          "end": 1040
+        },
+        {
+          "name": "Western khanate (Samarkand)",
+          "start": 1040,
+          "end": 1212
+        },
+        {
+          "name": "Qara Khitai overlordship",
+          "start": 1141,
+          "end": 1212
+        }
+      ]
+    },
+    {
+      "id": "uz-khwarazmshahs",
+      "name": "Khwarazmshahs: Ma'munids to the Khwarazmian Empire",
+      "start": 995,
+      "end": 1231,
+      "region": "islamic",
+      "icon": "👑",
+      "description": "The Ma'munids of Gurganj (995–1017) made Khwarazm a court of scholars — al-Biruni and Ibn Sina both served there — until Mahmud of Ghazni annexed it in 1017. In 1077 the Seljuks made the Turkic slave-commander Anushtegin governor; his descendants, the Khwarazmshahs, broke free under Atsiz, paid tribute to the Qara Khitai after 1141, and under Tekish (1172–1200) took Khurasan and western Iran (1194). Muhammad II took Bukhara (1207) and Samarkand (1212) and made Samarkand his capital. The massacre of a Mongol caravan at Otrar (1218) brought Genghis Khan's invasion: Bukhara and Samarkand fell in 1220 and Gurganj in 1221. Muhammad's son Jalal al-Din fought on in Iran until he was killed in 1231.",
+      "sources": [
+        {
+          "title": "Wikipedia — Khwarazmian Empire",
+          "url": "https://en.wikipedia.org/wiki/Khwarazmian_Empire"
+        },
+        {
+          "title": "Wikipedia — Ma'munids",
+          "url": "https://en.wikipedia.org/wiki/Ma%27munids"
+        },
+        {
+          "title": "Wikipedia — Al-Biruni",
+          "url": "https://en.wikipedia.org/wiki/Al-Biruni"
+        },
+        {
+          "title": "Wikipedia — Muhammad II of Khwarazm",
+          "url": "https://en.wikipedia.org/wiki/Muhammad_II_of_Khwarazm"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Ma'munids of Gurganj",
+          "start": 995,
+          "end": 1017
+        },
+        {
+          "name": "Anushteginid Khwarazmshahs",
+          "start": 1077,
+          "end": 1231
+        }
+      ]
+    },
+    {
+      "id": "uz-mongols-chagatai",
+      "name": "Mongol conquest & the Chagatai Khanate",
+      "start": 1219,
+      "end": 1370,
+      "region": "mongol",
+      "icon": "🐎",
+      "description": "Genghis Khan's armies besieged Otrar in 1219, took Bukhara and Samarkand in 1220 and destroyed Gurganj in 1221. Transoxiana became part of the ulus of his son Chagatai, while Khwarazm went to the Golden Horde. Mongol rule was run through local governors such as Mahmud Yalavach. In the 14th century the Chagatai khans Kebek (who built a palace at Qarshi and reformed the coinage) and Tarmashirin turned to the settled lands and to Islam; by the 1340s the khanate had split, and Transoxiana was in the hands of Turkic amirs.",
+      "sources": [
+        {
+          "title": "Wikipedia — Mongol invasion of the Khwarazmian Empire",
+          "url": "https://en.wikipedia.org/wiki/Mongol_invasion_of_the_Khwarazmian_Empire"
+        },
+        {
+          "title": "Wikipedia — Chagatai Khanate",
+          "url": "https://en.wikipedia.org/wiki/Chagatai_Khanate"
+        },
+        {
+          "title": "Wikipedia — Siege of Samarkand (1220)",
+          "url": "https://en.wikipedia.org/wiki/Siege_of_Samarkand_(1220)"
+        },
+        {
+          "title": "Wikipedia — Siege of Gurganj",
+          "url": "https://en.wikipedia.org/wiki/Siege_of_Gurganj"
+        }
+      ],
+      "periods": []
+    },
+    {
+      "id": "uz-timurids",
+      "name": "Timur & the Timurid Empire",
+      "start": 1370,
+      "end": 1507,
+      "region": "mongol",
+      "icon": "🕌",
+      "description": "Timur (Tamerlane), born near Kesh (Shahrisabz), made himself master of Transoxiana at Balkh in 1370 and built an empire from Anatolia to Delhi with Samarkand as its capital, adorned with the Bibi-Khanym mosque and the Gur-e Amir. His grandson Ulugh Beg, governor of Samarkand (1409–1449), built the Registan madrasa and an observatory whose star catalogue was the best of its age. The Timurid princes lost Transoxiana to the Uzbek Muhammad Shaybani in 1500–1501; Babur, driven out of Fergana, went on to found the Mughal Empire in India, and Herat, the last Timurid capital, fell in 1507.",
+      "sources": [
+        {
+          "title": "Wikipedia — Timurid Empire",
+          "url": "https://en.wikipedia.org/wiki/Timurid_Empire"
+        },
+        {
+          "title": "Wikipedia — Ulugh Beg Observatory",
+          "url": "https://en.wikipedia.org/wiki/Ulugh_Beg_Observatory"
+        },
+        {
+          "title": "UNESCO World Heritage — Samarkand – Crossroad of Cultures",
+          "url": "https://whc.unesco.org/en/list/603"
+        },
+        {
+          "title": "UNESCO World Heritage — Historic Centre of Shakhrisyabz",
+          "url": "https://whc.unesco.org/en/list/885"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Timur",
+          "start": 1370,
+          "end": 1405
+        },
+        {
+          "name": "Shah Rukh & Ulugh Beg",
+          "start": 1409,
+          "end": 1449
+        },
+        {
+          "name": "Late Timurids",
+          "start": 1451,
+          "end": 1507
+        }
+      ]
+    },
+    {
+      "id": "uz-shaybanids-bukhara",
+      "name": "Shaybanids & the Khanate of Bukhara",
+      "start": 1500,
+      "end": 1785,
+      "region": "khanates",
+      "icon": "🏯",
+      "description": "Muhammad Shaybani, grandson of the Uzbek khan Abu'l-Khayr, took Samarkand and Bukhara (1500–1501), Tashkent and Fergana (1503) and Urgench (1505), but was killed by Shah Ismail I of Iran at Merv in 1510, and Khwarazm broke away. His Shaybanid kinsmen ruled Transoxiana as a family confederation of appanages (Bukhara, Samarkand, Tashkent, Balkh) until Abdullah Khan II reunited it (Balkh 1573, Tashkent 1576, Badakhshan 1584); the Mir-i Arab madrasa and much of old Bukhara date from this time. The Janids (Ashtarkhanids) ruled from 1599; Nadir Shah of Iran made the khanate his vassal (1740), and from 1747 the Manghit atalyks held real power.",
+      "sources": [
+        {
+          "title": "Wikipedia — Khanate of Bukhara",
+          "url": "https://en.wikipedia.org/wiki/Khanate_of_Bukhara"
+        },
+        {
+          "title": "Wikipedia — Muhammad Shaybani",
+          "url": "https://en.wikipedia.org/wiki/Muhammad_Shaybani"
+        },
+        {
+          "title": "Wikipedia — Abdullah Khan II",
+          "url": "https://en.wikipedia.org/wiki/Abdullah_Khan_II"
+        },
+        {
+          "title": "Wikipedia — Janid dynasty",
+          "url": "https://en.wikipedia.org/wiki/Janid_dynasty"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Shaybanids",
+          "start": 1500,
+          "end": 1599
+        },
+        {
+          "name": "Janids (Ashtarkhanids)",
+          "start": 1599,
+          "end": 1747
+        },
+        {
+          "name": "Manghit atalyks",
+          "start": 1747,
+          "end": 1785
+        }
+      ]
+    },
+    {
+      "id": "uz-emirate-bukhara",
+      "name": "Emirate of Bukhara",
+      "start": 1785,
+      "end": 1920,
+      "region": "khanates",
+      "icon": "🕌",
+      "description": "Shah Murad (1785–1800), of the Manghit dynasty, took the Islamic title of emir, giving the Emirate of Bukhara its name. Emir Nasrullah (1827–1860) executed the British officers Charles Stoddart and Arthur Conolly in 1842. After defeats by Russia — Samarkand was taken in 1868 — the emirate became a Russian protectorate. The Red Army took Bukhara in September 1920 and the last emir, Alim Khan, fled to Afghanistan.",
+      "sources": [
+        {
+          "title": "Wikipedia — Emirate of Bukhara",
+          "url": "https://en.wikipedia.org/wiki/Emirate_of_Bukhara"
+        },
+        {
+          "title": "Wikipedia — Charles Stoddart",
+          "url": "https://en.wikipedia.org/wiki/Charles_Stoddart"
+        },
+        {
+          "title": "Wikipedia — Arthur Conolly",
+          "url": "https://en.wikipedia.org/wiki/Arthur_Conolly"
+        },
+        {
+          "title": "Encyclopaedia Iranica — Bukhara iv. From the Mongol invasion to the Russian conquest",
+          "url": "https://www.iranicaonline.org/articles/bukhara-iv"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Independent emirate",
+          "start": 1785,
+          "end": 1868
+        },
+        {
+          "name": "Russian protectorate",
+          "start": 1868,
+          "end": 1920
+        }
+      ]
+    },
+    {
+      "id": "uz-khiva",
+      "name": "Khanate of Khiva",
+      "start": 1511,
+      "end": 1920,
+      "region": "khanates",
+      "icon": "🏰",
+      "description": "In 1511 the Arabshahid brothers Ilbars and Balbars, rivals of the Shaybanids, made Khwarazm an independent Uzbek khanate, first ruled from Urgench (Konye-Urgench). When the Amu Darya's western branch dried up around 1600, Arab Muhammad Khan moved the capital to Khiva, which gave the khanate its later name. Abu al-Ghazi Bahadur (1643–1663) wrote histories of the Turks in Chagatai. Nadir Shah took Khiva in 1740; from 1804 the Qongrat dynasty ruled. The walled inner town, Itchan Kala, is a World Heritage Site. Russia made Khiva a protectorate in 1873; it was taken by the Red Army in 1920.",
+      "sources": [
+        {
+          "title": "Wikipedia — Khanate of Khiva",
+          "url": "https://en.wikipedia.org/wiki/Khanate_of_Khiva"
+        },
+        {
+          "title": "Wikipedia — Abu al-Ghazi Bahadur",
+          "url": "https://en.wikipedia.org/wiki/Abu_al-Ghazi_Bahadur"
+        },
+        {
+          "title": "UNESCO World Heritage — Itchan Kala",
+          "url": "https://whc.unesco.org/en/list/543"
+        },
+        {
+          "title": "Encyclopaedia Iranica — Khiva",
+          "url": "https://www.iranicaonline.org/articles/khiva"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Arabshahids (Urgench)",
+          "start": 1511,
+          "end": 1600
+        },
+        {
+          "name": "Arabshahids (Khiva)",
+          "start": 1600,
+          "end": 1740
+        },
+        {
+          "name": "Qongrat dynasty",
+          "start": 1804,
+          "end": 1920
+        }
+      ]
+    },
+    {
+      "id": "uz-kokand",
+      "name": "Khanate of Kokand",
+      "start": 1709,
+      "end": 1876,
+      "region": "khanates",
+      "icon": "🏯",
+      "description": "In 1709 Shahrukh Biy, leader of the Ming tribe, broke the Fergana valley away from Bukhara; his successor Abd al-Karim Biy built the fortress of Kokand in 1740, and it became the capital. Alim Khan (1798–1810) built an army of highlanders and took the western Fergana valley, Khujand and Tashkent. In the 19th century Kokand reached into the Kazakh steppe and the Tian Shan, and traded with Qing Xinjiang. Russia took Tashkent in 1865 and annexed the khanate as the Fergana oblast in 1876.",
+      "sources": [
+        {
+          "title": "Wikipedia — Khanate of Kokand",
+          "url": "https://en.wikipedia.org/wiki/Khanate_of_Kokand"
+        },
+        {
+          "title": "Encyclopaedia Iranica — Kokand",
+          "url": "https://www.iranicaonline.org/articles/kokand"
+        },
+        {
+          "title": "Wikipedia — Kokand",
+          "url": "https://en.wikipedia.org/wiki/Kokand"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Ming beys",
+          "start": 1709,
+          "end": 1798
+        },
+        {
+          "name": "Alim Khan and his successors",
+          "start": 1798,
+          "end": 1865
+        },
+        {
+          "name": "Last years",
+          "start": 1865,
+          "end": 1876
+        }
+      ]
+    },
+    {
+      "id": "uz-russian-turkestan",
+      "name": "Russian conquest & Turkestan",
+      "start": 1839,
+      "end": 1917,
+      "region": "russian",
+      "icon": "🦅",
+      "description": "After Perovsky's failed winter march on Khiva (1839–40), Russia advanced up the Syr Darya, taking Ak-Mechet from Kokand (1853) and Tashkent (1865). Tashkent became the seat of the Governor-Generalship of Turkestan (1867). Samarkand fell in 1868 and Bukhara became a protectorate; Khiva followed in 1873, and the Khanate of Kokand was annexed in 1876. Cotton for Russian mills spread across the oases, the railway reached Samarkand (1888) and Tashkent (1899), and the Jadids pushed for reformed Muslim schools. The 1898 Andijan uprising and the 1916 revolt against wartime labour conscription were put down.",
+      "sources": [
+        {
+          "title": "Wikipedia — Russian conquest of Central Asia",
+          "url": "https://en.wikipedia.org/wiki/Russian_conquest_of_Central_Asia"
+        },
+        {
+          "title": "Wikipedia — Russian Turkestan",
+          "url": "https://en.wikipedia.org/wiki/Russian_Turkestan"
+        },
+        {
+          "title": "Wikipedia — Jadid",
+          "url": "https://en.wikipedia.org/wiki/Jadid"
+        },
+        {
+          "title": "Wikipedia — Central Asian revolt of 1916",
+          "url": "https://en.wikipedia.org/wiki/Central_Asian_revolt_of_1916"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Conquest",
+          "start": 1853,
+          "end": 1876
+        },
+        {
+          "name": "Governor-Generalship of Turkestan",
+          "start": 1867,
+          "end": 1917
+        }
+      ]
+    },
+    {
+      "id": "uz-soviet",
+      "name": "Soviet Uzbekistan",
+      "start": 1917,
+      "end": 1991,
+      "region": "russian",
+      "icon": "☭",
+      "description": "After the 1917 revolutions the Bolsheviks crushed the Kokand Autonomy (February 1918) and founded the Turkestan ASSR; the Basmachi resistance fought on into the 1920s, and the Bukharan and Khorezm People's Soviet Republics replaced the emirate and the khanate in 1920. The national delimitation of 1924 created the Uzbek SSR, with its capital at Samarkand until Tashkent took over in 1930; the Karakalpak ASSR joined it in 1936. Forced collectivisation, the 1927 Hujum campaign against the veil, the purges of 1937–38 and the cotton monoculture that drained the Aral Sea shaped the republic. Tashkent was rebuilt after the 1966 earthquake.",
+      "sources": [
+        {
+          "title": "Wikipedia — Uzbek Soviet Socialist Republic",
+          "url": "https://en.wikipedia.org/wiki/Uzbek_Soviet_Socialist_Republic"
+        },
+        {
+          "title": "Wikipedia — Basmachi movement",
+          "url": "https://en.wikipedia.org/wiki/Basmachi_movement"
+        },
+        {
+          "title": "Wikipedia — National delimitation in the Soviet Union",
+          "url": "https://en.wikipedia.org/wiki/National_delimitation_in_the_Soviet_Union"
+        },
+        {
+          "title": "Wikipedia — Aral Sea",
+          "url": "https://en.wikipedia.org/wiki/Aral_Sea"
+        },
+        {
+          "title": "Wikipedia — 1966 Tashkent earthquake",
+          "url": "https://en.wikipedia.org/wiki/1966_Tashkent_earthquake"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Revolution and the Basmachi",
+          "start": 1917,
+          "end": 1924
+        },
+        {
+          "name": "Uzbek SSR",
+          "start": 1924,
+          "end": 1991
+        }
+      ]
+    },
+    {
+      "id": "uz-independence",
+      "name": "Independent Uzbekistan",
+      "start": 1991,
+      "end": 2025,
+      "region": "modern",
+      "icon": "🇺🇿",
+      "description": "Uzbekistan declared independence on 31 August 1991 (celebrated on 1 September). Islam Karimov ruled until his death in 2016; his government's troops killed hundreds of protesters in Andijan in May 2005. His successor Shavkat Mirziyoyev freed the currency (2017), ended forced labour in the cotton harvest and opened the borders with Uzbekistan's neighbours. Protests in Karakalpakstan in July 2022 forced the withdrawal of plans to remove its right to secede, and a new constitution was approved by referendum in 2023.",
+      "sources": [
+        {
+          "title": "Wikipedia — Uzbekistan",
+          "url": "https://en.wikipedia.org/wiki/Uzbekistan"
+        },
+        {
+          "title": "Wikipedia — Islam Karimov",
+          "url": "https://en.wikipedia.org/wiki/Islam_Karimov"
+        },
+        {
+          "title": "Wikipedia — Andijan massacre",
+          "url": "https://en.wikipedia.org/wiki/Andijan_massacre"
+        },
+        {
+          "title": "Wikipedia — Shavkat Mirziyoyev",
+          "url": "https://en.wikipedia.org/wiki/Shavkat_Mirziyoyev"
+        },
+        {
+          "title": "Wikipedia — 2022 Karakalpak protests",
+          "url": "https://en.wikipedia.org/wiki/2022_Karakalpak_protests"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Karimov",
+          "start": 1991,
+          "end": 2016
+        },
+        {
+          "name": "Mirziyoyev",
+          "start": 2016,
+          "end": 2025
+        }
+      ]
+    }
+  ]
+}
