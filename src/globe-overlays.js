@@ -39,6 +39,7 @@ import { kenyaPolities, applyKenyaShapeFixes } from './globe-pack-kenya.js';
 import { iraqPolities, applyIraqShapeFixes } from './globe-pack-iraq.js';
 import { philippinesPolities, applyPhilippinesShapeFixes } from './globe-pack-philippines.js';
 import { uzbekistanPolities, applyUzbekistanShapeFixes } from './globe-pack-uzbekistan.js';
+import { kazakhstanPolities, applyKazakhstanShapeFixes } from './globe-pack-kazakhstan.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6339,6 +6340,14 @@ for (const ent of uzbekistanPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 73 — Phase 5 country pack 2, Kazakhstan (globe-pack-kazakhstan.js): the Wusun and Kangju to the
+// Kazakh Khanate, the Nogai Horde and the Dzungars, drawn from the shared Central Asia pieces; appended.
+for (const ent of kazakhstanPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6392,6 +6401,8 @@ applyPhilippinesShapeFixes(spatialEntities);
 // longer covers Central Asia before 1815, the Mongols reach it only in 1220–21, and the Sasanian and
 // Göktürk rings are trimmed off Sogdia.
 applyUzbekistanShapeFixes(spatialEntities);
+// Day 73 — the Khanate of Kokand gains its Syr Darya conquests (1814), matching the 1815 nations table.
+applyKazakhstanShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
