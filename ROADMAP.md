@@ -987,7 +987,7 @@ Each pack takes one country (or a small group of neighbours) and refines **both 
 Proposed order:
 
 1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, merged #79); Ghana ✅ (Day 66, merged #80); Morocco ✅ (Day 68, merged #82); Kenya ✅ (Day 69, merged #83); Iraq ✅ (Day 70, merged #84); Philippines ✅ (Day 71, merged #85). Pack 1 globe backfill complete; next item 2, Central Asia.**
-2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates). **Uzbekistan ✅ (Day 72, done-in-PR: new timeline + globe); Kazakhstan ✅ (Day 73, done-in-PR: new timeline + globe). Next: Turkmenistan.**
+2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates). **Uzbekistan ✅ (Day 72, done-in-PR: new timeline + globe); Kazakhstan ✅ (Day 73, done-in-PR: new timeline + globe); Turkmenistan ✅ (Day 74, done-in-PR: new timeline + globe). Next: Kyrgyzstan.**
 3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits).
 4. **Central Africa:** DR Congo, Angola, Cameroon, Chad (Kongo, Luba, Lunda, Kanem-Bornu).
 5. **Southeast Europe:** Serbia, Bulgaria, Romania, Croatia, Albania, Greece refinement (Byzantine/Ottoman/medieval kingdoms).
@@ -1172,6 +1172,25 @@ Kazakhstan had no country timeline, and on the globe before 1815 only peoples an
   - Some dates are approximate: the Wusun move to Zhetysu (160s–130s BCE), Kangju's end, the Kimek and Kipchak dates, Kerei and Janibek's secession (c. 1465), Kasym Khan's conquests (1510s) and Sayram's, Sauran's and Sighnaq's founding and abandonment.
 - **Next:** Turkmenistan (pack 2, Timeline + Globe).
 
+#### Day 74 — Pack 2 Central Asia: Turkmenistan (Timeline + Globe) — done-in-PR (#88, stacked on #87)
+
+Turkmenistan had no country timeline, and on the globe before 1815 only empire-wide schematic rings (Achaemenid, Seleucid, Parthian, Sasanian, Abbasid, Mongol, Timurid, Safavid), the Uzbekistan pack's Khwarazm and Bukhara, and the peoples and presence washes. No Oxus civilisation, a Parthian heartland ring that missed Nisa, no Seljuks at all (nothing over Merv from 1000 to 1150), no Sufids, and Merv empty for most of its history. Now Turkmenistan's own states are drawn from the Bronze Age to 1815, where the nations layer takes over (Khiva and Bukhara over Daşoguz and Lebap; Ahal, Balkan and Mary unclaimed until Russia's conquest of 1881–84). Built on top of the Kazakhstan PR (#87), which it shares pieces with.
+
+- **Timeline (`data/countries/turkmenistan.json`, new): 15 sourced items** in 7 categories: Jeitun's Neolithic farmers, Namazga and Altyn Depe, the Oxus civilisation at Gonur Depe, Margiana under the Persians and Greeks (Frada's revolt, Antiochia Margiana), Parthian Nisa, Sasanian Merv, Merv as capital of Khurasan (Abu Muslim, al-Ma'mun), the Oghuz and the first Turkmen (Dihistan), the Seljuks (Dandanaqan, Sanjar), Gurganj, the Mongols and the Sufids, Merv between Persia, Khiva and Bukhara (to Shah Murad's razing, 1788–89), the Turkmen tribes (Teke, Yomut, Salor; Magtymguly), the Russian conquest (Krasnovodsk, Geok Tepe, Merv, Panjdeh), Soviet Turkmenistan (the 1948 earthquake, the Karakum Canal, Darvaza) and independence (Niyazov, the Berdimuhamedows). Every item has `periods` (a list or `[]`). Sources: Wikipedia, UNESCO (Merv 886, Kunya-Urgench 1199, Nisa 1242).
+- **Shapes (`src/globe-pack-turkmenistan.js`, lazy globe chunk): 4 polities, 43 keyframes** (one-year steps), each with a certainty level and reason, sources and timeline links: the Oxus civilisation (BMAC, −2400 to c. −1600: the Kopet Dag towns, Margiana from −2250, northern Bactria from −1950; conjectural), the Great Seljuk Empire on its Khurasan side (1035–1157: Nasa and Dihistan 1035, Merv 1037, Nishapur 1038, all Khurasan after Dandanaqan 1040, Khwarazm and the Jibal 1043–97, Sanjar's Merv 1118–57), the Sufids of Khwarazm (1361–1379) and Merv under the Safavids, Nader Shah and the Qajar khans (1600–1784).
+- **Shared pieces:** `src/globe-central-asia-pieces.js` gains Turkmenistan's Balkan region (`BALKAN`), regenerated in the same topology; every other piece is unchanged.
+- **Existing shapes fixed (`applyTurkmenistanShapeFixes`):** the Parthian Empire's 'parthia' (−238, −200) and 'parthia-aria' (−141, −100) rings now reach Nisa and the Kopet Dag foothills; the Safavid 1620 'persia' ring no longer runs over the Merv oasis; the Uzbekistan pack's Khanate of Bukhara holds Merv from Shah Murad's conquest (1785) to its destruction (1788–89).
+- **Cities: +7** (Jeitun, Altyn Depe, Gonur Depe, Dihistan, Merv → Mary, Chardzhuy → Leninsk → Chardzhou → Chärjew → Türkmenabat, Krasnovodsk → Türkmenbaşy), and **Merv** now lasts until Shah Murad's razing (1789) instead of ending with the Mongols in 1221.
+- **Pins: +43**, `country:turkmenistan:<item>` refs, from Jeitun, Altyn Depe's carts, Namazga and Gonur's wagon burial through Frada's revolt, Antiochia Margiana, Arsacid Nisa, Yazdegerd III's death, Abu Muslim, al-Ma'mun, Dihistan, the Seljuks at Nasa, Merv and Dandanaqan, Sanjar's tomb, Kutlug-Timur's minaret, Husain Sufi, Timur at Urgench, Shah Murad, the Teke, Krasnovodsk, Geok Tepe, Panjdeh, the 1948 earthquake, Darvaza and independence.
+- **Validate:** Turkmenistan is a ninth row in `scripts/check-country-packs.js` (land, rings, sources, 18 capitals and sites inside their shapes, who is on / gone at 16 sample years, 9 regions present / absent, the Safavid trim proven by 2 `notOver` tests, no overlap with the pack, Parthia, the Greco-Bactrians, Seleucids, Samanids, Karakhanids, the Oghuz Yabgu, Afrighids, Khwarazmshahs, the Iraq Seljuks, Mongols, Timurids, Khiva, Bukhara or the Safavids, −2400–1815). `PACK=turkmenistan` checks just this row.
+- **Honest caveats:**
+  - Velayats stand in for oases and their desert margins, so the edges are rough; Ahal stands for the whole Kopet Dag foothill strip and Karakum. The Oxus civilisation is conjectural: whether its towns formed one state is unknown, its dates are debated (c. 2400–1950 or c. 2250–1700 BCE), and southern Bactria is not drawn.
+  - The Seljuk shape is only the eastern, Khurasan side; the Seljuks of Iraq are in the Iraq pack, and Anatolia, Syria and western Iran (the Sultanate of Iraq from 1118) are not drawn. Khwarazm and the Jibal are given from 1043 (Khwarazm taken from Shah Malik and Rayy taken c. 1042–43).
+  - The Sufids' Kath lies in the Karakalpakstan piece, so their 1372 loss of Kath and Khiva is drawn at the Khorezm border; the date they seized Kath and Khiva (the 1360s) is approximate.
+  - Merv is still left empty in some periods: where the schematic Parthian and Sasanian rings miss it, under the caliphs and the Tahirids, in the Ghaznavid years (999–1037) and from Sanjar's death until the Khwarazmshahs' Khurasan region; the Turkmen tribes, who held most of the country between the empires, are left to the peoples layer (there was no Turkmen state before 1881).
+  - Some dates are approximate: Jeitun (radiocarbon), Altyn Depe's abandonment (c. 2000 or c. 1600 BCE), Dihistan's founding and abandonment (10th–15th century), the Darvaza fire (1971 by most accounts).
+- **Next:** Kyrgyzstan (pack 2, Timeline + Globe).
+
 ### 13. Fill the globe, region by region (after the packs above)
 
 Once packs reach a region, do a pass over the whole region to fill gaps between countries:
@@ -1319,8 +1338,8 @@ A sensible near-term sequence:
 56. Pack 1 globe backfill — Kenya (Day 69) ✅ (done-in-PR).
 57. Pack 1 globe backfill — Iraq (Day 70) ✅ (done-in-PR).
 58. Pack 1 globe backfill — Philippines (Day 71) ✅ (merged #85). Pack 1 globe backfill complete.
-59. Phase 5 pack 2 — Central Asia: Uzbekistan (Day 72) ✅ (done-in-PR), Kazakhstan (Day 73) ✅ (done-in-PR), Timeline + Globe.
-60. **Now: Phase 5 pack 2 — Central Asia continues with Turkmenistan, then Kyrgyzstan, Tajikistan and Afghanistan, Timeline + Globe. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
+59. Phase 5 pack 2 — Central Asia: Uzbekistan (Day 72) ✅ (done-in-PR), Kazakhstan (Day 73) ✅ (done-in-PR), Turkmenistan (Day 74) ✅ (done-in-PR), Timeline + Globe.
+60. **Now: Phase 5 pack 2 — Central Asia continues with Kyrgyzstan, then Tajikistan and Afghanistan, Timeline + Globe. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
