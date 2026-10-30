@@ -423,7 +423,7 @@ export const CITIES = [
   // ---- Central Asia, Mongolia, Tibet ------------------------------------------------------
   C('samarkand', 39.65, 66.96, 2, -700, null, 'Maracanda', 700, 'Samarkand', { ranks: [[1370, 1], [1500, 2]] }),
   C('bukhara', 39.77, 64.42, 2, -500, null, 'Bukhara'),
-  C('merv', 37.66, 62.19, 2, -500, 1221, 'Merv', { ranks: [[1100, 1]] }),
+  C('merv', 37.66, 62.19, 2, -500, 1789, 'Merv', { ranks: [[1100, 1], [1222, 3]] }),
   C('khiva', 41.38, 60.36, 4, 500, null, 'Khiva', { ranks: [[1600, 3]] }),
   C('tashkent', 41.30, 69.24, 3, -200, null, 'Chach', 1000, 'Tashkent', { ranks: [[1950, 2]] }),
   C('herat', 34.35, 62.20, 3, -500, null, 'Herat'),
@@ -562,6 +562,14 @@ export const CITIES = [
   C('kyzylorda', 44.85, 65.52, 4, 1820, null, 'Ak-Mechet', 1853, 'Perovsk', 1925, 'Kyzylorda'),
   C('karaganda', 49.80, 73.11, 3, 1934, null, 'Karaganda'),
   C('shymkent', 42.32, 69.60, 4, 1200, null, 'Shymkent', { ranks: [[1990, 3]] }),
+  // Day 74 — Turkmenistan pack (globe-pack-turkmenistan.js): Neolithic and Bronze Age sites, Dihistan, and the Russian-era towns.
+  C('jeitun', 38.19, 58.35, 4, -7200, -4500, 'Jeitun'),
+  C('altyn-depe', 36.86, 60.43, 4, -3200, -1600, 'Altyn Depe'),
+  C('gonur', 38.21, 62.04, 4, -2400, -1600, 'Gonur Depe'),
+  C('dehistan', 38.27, 54.63, 4, 900, 1450, 'Dihistan'),
+  C('mary', 37.61, 61.83, 3, 1884, null, 'Merv', 1937, 'Mary'),
+  C('turkmenabat', 39.08, 63.57, 3, 1888, null, 'Chardzhuy', 1924, 'Leninsk', 1927, 'Chardzhuy', 1940, 'Chardzhou', 1992, 'Chärjew', 1999, 'Türkmenabat'),
+  C('turkmenbashi', 40.02, 52.97, 4, 1869, null, 'Krasnovodsk', 1993, 'Türkmenbaşy'),
   // ---- China ------------------------------------------------------------------------------
   C('anyang', 36.10, 114.35, 2, -1300, -1046, 'Yin'),
   C('xian', 34.26, 108.94, 1, -1046, null, 'Haojing', -202, "Chang'an", 1369, "Xi'an", { ranks: [[-1046, 2], [-202, 1], [904, 3]] }),

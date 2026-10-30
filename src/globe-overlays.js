@@ -40,6 +40,7 @@ import { iraqPolities, applyIraqShapeFixes } from './globe-pack-iraq.js';
 import { philippinesPolities, applyPhilippinesShapeFixes } from './globe-pack-philippines.js';
 import { uzbekistanPolities, applyUzbekistanShapeFixes } from './globe-pack-uzbekistan.js';
 import { kazakhstanPolities, applyKazakhstanShapeFixes } from './globe-pack-kazakhstan.js';
+import { turkmenistanPolities, applyTurkmenistanShapeFixes } from './globe-pack-turkmenistan.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6348,6 +6349,15 @@ for (const ent of kazakhstanPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 74 — Phase 5 country pack 2, Turkmenistan (globe-pack-turkmenistan.js): the Oxus civilisation,
+// the Great Seljuks of Merv, the Sufids of Khwarazm and Safavid/Qajar Merv, drawn from the shared
+// Central Asia pieces; appended.
+for (const ent of turkmenistanPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6403,6 +6413,7 @@ applyPhilippinesShapeFixes(spatialEntities);
 applyUzbekistanShapeFixes(spatialEntities);
 // Day 73 — the Khanate of Kokand gains its Syr Darya conquests (1814), matching the 1815 nations table.
 applyKazakhstanShapeFixes(spatialEntities);
+applyTurkmenistanShapeFixes(spatialEntities, resolveRegionRing);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

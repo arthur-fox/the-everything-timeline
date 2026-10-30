@@ -3,8 +3,9 @@
  * (src/globe-pack-peru.js), Ghana (Day 66, src/globe-pack-ghana.js), Morocco (Day 68,
  * src/globe-pack-morocco.js), Kenya (Day 69, src/globe-pack-kenya.js), Iraq (Day 70,
  * src/globe-pack-iraq.js), the Philippines (Day 71, src/globe-pack-philippines.js) and
- * Uzbekistan (Day 72, src/globe-pack-uzbekistan.js) and Kazakhstan (Day 73,
- * src/globe-pack-kazakhstan.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one pack.
+ * Uzbekistan (Day 72, src/globe-pack-uzbekistan.js), Kazakhstan (Day 73,
+ * src/globe-pack-kazakhstan.js) and Turkmenistan (Day 74, src/globe-pack-turkmenistan.js). Add a pack
+ * to PACKS to cover it. `PACK=<country>` checks one pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
  *    on land (no Pacific spill), for the pack's polities and the shapes it redrew;
@@ -31,6 +32,7 @@ import { iraqPolities, iraqShapeFixes, IRAQ_TRIMS } from '../src/globe-pack-iraq
 import { philippinesPolities, philippinesShapeFixes } from '../src/globe-pack-philippines.js';
 import { uzbekistanPolities, uzbekistanShapeFixes, UZ_TRIMS } from '../src/globe-pack-uzbekistan.js';
 import { kazakhstanPolities, kazakhstanShapeFixes } from '../src/globe-pack-kazakhstan.js';
+import { turkmenistanPolities, turkmenistanShapeFixes } from '../src/globe-pack-turkmenistan.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -862,6 +864,82 @@ const PACKS = [
       box: [46, 40, 92, 56],
       planar: true,
       with: ['khazar-khaganate', 'karakhanid-khanate', 'khwarezmia', 'timurid', 'bukhara-khanate', 'khiva-khanate', 'kokand-khanate', 'gokturk-khaganate', 'mongol-empire', 'russian-empire', 'qing-china'],
+    },
+  },
+  {
+    country: 'turkmenistan',
+    polities: turkmenistanPolities,
+    fixes: turkmenistanShapeFixes,
+    // Parthia's heartland rings now reach Nisa (land-checked); Bukhara's Merv (1785–89) is drawn from the pieces.
+    redrawn: { 'parthian-empire': ['parthia', 'parthia-aria'], 'bukhara-khanate': ['merv'] },
+    // The Safavid 1620 'persia' ring is trimmed back off the Merv oasis.
+    trimmed: ['safavid-empire'],
+    notOver: [
+      ['safavid-empire', 1620, 62.19, 37.66, 'Merv'],
+      ['safavid-empire', 1650, 61.83, 37.61, 'the Merv oasis'],
+    ],
+    capitals: [
+      ['oxus-civilisation', -2400, 60.43, 36.86, 'Altyn Depe'],
+      ['oxus-civilisation', -2400, 59.56, 37.37, 'Namazga Tepe'],
+      ['oxus-civilisation', -2250, 62.04, 38.21, 'Gonur Depe'],
+      ['oxus-civilisation', -1950, 66.96, 37.63, 'Djarkutan'],
+      ['parthian-empire', -238, 58.2, 37.97, 'Nisa'],
+      ['parthian-empire', -141, 58.2, 37.97, 'Nisa (Mithradatkert)'],
+      ['seljuk-empire', 1035, 58.2, 37.97, 'Nasa'],
+      ['seljuk-empire', 1035, 54.63, 38.27, 'Dihistan'],
+      ['seljuk-empire', 1037, 62.19, 37.66, 'Merv'],
+      ['seljuk-empire', 1038, 58.8, 36.3, 'Nishapur'],
+      ['seljuk-empire', 1040, 62.2, 34.35, 'Herat'],
+      ['seljuk-empire', 1043, 59.15, 42.33, 'Gurganj'],
+      ['seljuk-empire', 1043, 51.43, 35.59, 'Rayy'],
+      ['seljuk-empire', 1118, 62.19, 37.66, 'Merv'],
+      ['sufid-khwarazm', 1361, 59.15, 42.33, 'Urgench'],
+      ['sufid-khwarazm', 1365, 60.36, 41.38, 'Khiva'],
+      ['merv-qajar', 1600, 62.19, 37.66, 'Merv'],
+      ['bukhara-khanate', 1785, 62.19, 37.66, 'Merv'],
+    ],
+    on: {
+      [-2300]: ['oxus-civilisation'],
+      [-1700]: ['oxus-civilisation'],
+      [-200]: ['parthian-empire'],
+      1050: ['seljuk-empire'],
+      1150: ['seljuk-empire'],
+      1370: ['sufid-khwarazm'],
+      1650: ['merv-qajar', 'safavid-empire'],
+      1760: ['merv-qajar'],
+    },
+    gone: {
+      [-2500]: ['oxus-civilisation'],
+      [-1500]: ['oxus-civilisation'],
+      1000: ['seljuk-empire'],
+      1200: ['seljuk-empire'],
+      1350: ['sufid-khwarazm'],
+      1400: ['sufid-khwarazm'],
+      1550: ['merv-qajar'],
+      1800: ['merv-qajar'],
+    },
+    absent: [
+      ['oxus-civilisation', -1700, 'kopetdag'],
+      ['seljuk-empire', 1100, 'khwarazm'],
+      ['seljuk-empire', 1120, 'jibal'],
+      ['bukhara-khanate', 1780, 'merv'],
+      ['bukhara-khanate', 1800, 'merv'],
+    ],
+    present: [
+      ['oxus-civilisation', -2000, 'kopetdag'],
+      ['seljuk-empire', 1050, 'khwarazm'],
+      ['seljuk-empire', 1050, 'jibal'],
+      ['bukhara-khanate', 1787, 'merv'],
+    ],
+    // The pack's shapes and the older shapes around them never overlap (every 5 years, 0.1° grid).
+    noOverlap: {
+      from: -2400,
+      to: 1815,
+      box: [47, 33, 69, 46],
+      planar: true,
+      with: ['parthian-empire', 'greco-bactria', 'seleucid-empire', 'samanid-empire', 'karakhanid-khanate', 'oghuz-yabgu', 'afrighid-khwarazm', 'khwarezmia', 'seljuk-iraq', 'mongol-empire', 'timurid', 'khiva-khanate', 'bukhara-khanate', 'safavid-empire'],
+      // Fade-out remnants (12% size): the Sufids in 1380, the year the Timurids take Khwarazm.
+      remnants: [[1380, 'sufid-khwarazm', 'khwarazm']],
     },
   },
 ];
