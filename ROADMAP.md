@@ -1191,7 +1191,7 @@ Turkmenistan had no country timeline, and on the globe before 1815 only empire-w
   - Some dates are approximate: Jeitun (radiocarbon), Altyn Depe's abandonment (c. 2000 or c. 1600 BCE), Dihistan's founding and abandonment (10th–15th century), the Darvaza fire (1971 by most accounts).
 - **Next:** Kyrgyzstan (pack 2, Timeline + Globe).
 
-#### Day 75 — Pack 2 Central Asia: Kyrgyzstan (Timeline + Globe) — done-in-PR
+#### Day 75 — Pack 2 Central Asia: Kyrgyzstan (Timeline + Globe) — done-in-PR (#89)
 
 Kyrgyzstan had no country timeline, and on the globe before 1815 only the Kazakhstan pack's Wusun, Türgesh and Moghulistan over the north, the Uzbekistan pack's Karakhanids (from 999) and Timurid / Shaybanid Fergana over the south, the schematic Göktürk and Mongol rings and the peoples wash. The Chu valley — Suyab, Navekat and Balasagun, capitals of three Turkic empires — was empty from 630 to 699, from 766 to 999 and from 1134 to 1218; Osh was left out of Kokand; and Han China's 'Tarim' rectangle ran over Issyk-Kul. Now the Chu valley's states are drawn, Osh is Kokand's from 1709, and from 1815 the nations layer takes over (Kokand, then Russia, the USSR and Kyrgyzstan).
 
