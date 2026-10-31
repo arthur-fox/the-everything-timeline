@@ -61,7 +61,7 @@ const NE = { title: 'Natural Earth — 1:10m admin-1 states and provinces (piece
 export const UZ_PIECES = CA_PIECES;
 
 /** Kashgar and the western Tarim (the eastern Karakhanids' seat), hand-drawn: east of the Kyrgyz and Tajik pieces. */
-const KASHGAR = [[75.3, 38.9], [75.5, 39.7], [76.4, 39.9], [77.4, 39.55], [77.3, 38.75], [76.2, 38.45], [75.3, 38.9]];
+export const KASHGAR = [[75.3, 38.9], [75.5, 39.7], [76.4, 39.9], [77.4, 39.55], [77.3, 38.75], [76.2, 38.45], [75.3, 38.9]];
 
 /** Region builder: piece names → one ring (touching pieces merged). */
 function ringOf(label, names) {

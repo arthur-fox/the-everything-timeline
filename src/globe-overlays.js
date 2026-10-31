@@ -41,6 +41,7 @@ import { philippinesPolities, applyPhilippinesShapeFixes } from './globe-pack-ph
 import { uzbekistanPolities, applyUzbekistanShapeFixes } from './globe-pack-uzbekistan.js';
 import { kazakhstanPolities, applyKazakhstanShapeFixes } from './globe-pack-kazakhstan.js';
 import { turkmenistanPolities, applyTurkmenistanShapeFixes } from './globe-pack-turkmenistan.js';
+import { kyrgyzstanPolities, applyKyrgyzstanShapeFixes } from './globe-pack-kyrgyzstan.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6358,6 +6359,15 @@ for (const ent of turkmenistanPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 75 — Phase 5 country pack 2, Kyrgyzstan (globe-pack-kyrgyzstan.js): the Western Turkic
+// Khaganate at Suyab, the Karluk yabghus and the Qara Khitai at Balasagun, drawn from the shared
+// Central Asia pieces; appended.
+for (const ent of kyrgyzstanPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6414,6 +6424,8 @@ applyUzbekistanShapeFixes(spatialEntities);
 // Day 73 — the Khanate of Kokand gains its Syr Darya conquests (1814), matching the 1815 nations table.
 applyKazakhstanShapeFixes(spatialEntities);
 applyTurkmenistanShapeFixes(spatialEntities, resolveRegionRing);
+// Day 75 — the Karakhanids from c. 940 at Balasagun, Kokand's Osh (1709–1815), Han China's Tarim off Issyk-Kul.
+applyKyrgyzstanShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

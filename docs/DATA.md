@@ -8,7 +8,7 @@ The Everything Timeline is a static site: all content is plain files in this rep
 
 | What | Source of truth | Loaded |
 |---|---|---|
-| Country timelines (41) | `data/countries/<id>.json`, one file per country | when that country is opened (or deep-linked / compared) |
+| Country timelines (42) | `data/countries/<id>.json`, one file per country | when that country is opened (or deep-linked / compared) |
 | Country list + light item index | generated: `src/generated/countries-index.json` (gitignored) | with the main bundle (5 KB gzipped) |
 | Cosmic landing events + eras | `src/events.js` | main bundle (the landing needs them) |
 | Topic views (civilisations, technology, science, religion, philosophy, art, economics, wars, cosmic history) | `src/<topic>.js` | main bundle (see "Not done" below) |
@@ -128,7 +128,7 @@ Only use a published area. The outline itself is drawn by hand, so it is never `
 
 ### Country-pack globe backfill (Day 65)
 
-A Phase 5 country pack refines a country's whole history on the globe in one module, `src/globe-pack-<country>.js` (first: `globe-pack-peru.js`; then `globe-pack-ghana.js`, `globe-pack-morocco.js`, `globe-pack-kenya.js`, `globe-pack-iraq.js`, `globe-pack-philippines.js`, `globe-pack-uzbekistan.js`, `globe-pack-kazakhstan.js` and `globe-pack-turkmenistan.js`). Nothing new in the format:
+A Phase 5 country pack refines a country's whole history on the globe in one module, `src/globe-pack-<country>.js` (first: `globe-pack-peru.js`; then `globe-pack-ghana.js`, `globe-pack-morocco.js`, `globe-pack-kenya.js`, `globe-pack-iraq.js`, `globe-pack-philippines.js`, `globe-pack-uzbekistan.js`, `globe-pack-kazakhstan.js`, `globe-pack-turkmenistan.js` and `globe-pack-kyrgyzstan.js`). Nothing new in the format:
 
 - **Polities** are ordinary spatial entities (`{ id, name, color, type, description, nameAt?, keyYears, overlays, timelineItemIds, confidence, sources, edgeGrace }`), wired in `globe-overlays.js` with the usual replace-by-id-else-append loop. Each links at least one item in `data/countries/<country>.json`.
 - **Coasts:** shapes that meet the sea take their west side from a traced coast (`src/globe-andes-coast.js`: `[lat, westernmost-land lng]` rows read off `nations.topo.json`, nudged 0.06° inland; `coastal(north, south, inland)` builds the closed ring). That stops Pacific spill. Rings longer than 24 vertices keep their detail mid-morph (`lerpRings` samples ≈2 per vertex, up to 160, and lines the rings up first; short rings are unchanged).
@@ -152,6 +152,7 @@ Day 73 (Kazakhstan) moves the pieces into a shared module, **`src/globe-central-
 
 Day 74 (Turkmenistan) adds Turkmenistan's Balkan region (`BALKAN`) to the shared pieces, regenerated in the same topology (every other piece is unchanged), so all five Turkmen velayats are pieces: Ahal stands for Nisa and the Kopet Dag foothills, Balkan for Dihistan, Mary for the Merv oasis, Lebap for Amul and Daşoguz for Urgench. A pack may give a polity `type: 'civilization'` (the Oxus civilisation, like Peru's Norte Chico) when the sources show a shared culture rather than a known state. Older rings can be **extended** as well as trimmed: `applyTurkmenistanShapeFixes` swaps one vertex of the Parthian 'parthia' and 'parthia-aria' rings for three that take in Nisa (listed in `redrawn`, so land-checked), moves one Safavid 1620 vertex off Merv (`trimmed`, with `notOver` tests), and adds a dated region to another pack's entity (Bukhara's Merv, 1785–89) with keyframes at 1785, 1789 and 1790. Region rings that are shared-catalogue strings are resolved (`resolveRegionRing`) and replaced by `{ id, name, ring }` objects only in the keyframes the fix touches.
 
+Day 75 (Kyrgyzstan) needs no new pieces: Kyrgyzstan's two (`KG_N`, `KG_S`) and the Uzbekistan pack's Kashgar hand ring (now exported as `KASHGAR`) are enough for the Chu valley's khaganates. A fix may also **prepend** keyframes to another pack's entity (the Karakhanids at Balasagun from c. 940, before their 999 extent; the new country item is added to its `timelineItemIds`, because an entity's lifespan is clipped to its linked items' dates), **re-cut every keyframe** of another pack's region from a larger set of pieces (Kokand's 'fergana' gains `KG_S`), and swap a schematic `bbox` region for a ring that follows a country border (Han China's 'Tarim'), listed in `redrawn` so it is land-checked, with `notOver` tests for the places it used to cover.
 `scripts/check-country-packs.js` (in `npm run validate`, one `PACKS` row per country) checks:
 
 - rings are closed and don't cross themselves;
