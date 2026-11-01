@@ -4,8 +4,8 @@
  * src/globe-pack-morocco.js), Kenya (Day 69, src/globe-pack-kenya.js), Iraq (Day 70,
  * src/globe-pack-iraq.js), the Philippines (Day 71, src/globe-pack-philippines.js) and
  * Uzbekistan (Day 72, src/globe-pack-uzbekistan.js), Kazakhstan (Day 73,
- * src/globe-pack-kazakhstan.js), Turkmenistan (Day 74, src/globe-pack-turkmenistan.js) and Kyrgyzstan
- * (Day 75, src/globe-pack-kyrgyzstan.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * src/globe-pack-kazakhstan.js), Turkmenistan (Day 74, src/globe-pack-turkmenistan.js), Kyrgyzstan
+ * (Day 75, src/globe-pack-kyrgyzstan.js) and Tajikistan (Day 76, src/globe-pack-tajikistan.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -35,6 +35,7 @@ import { uzbekistanPolities, uzbekistanShapeFixes, UZ_TRIMS } from '../src/globe
 import { kazakhstanPolities, kazakhstanShapeFixes } from '../src/globe-pack-kazakhstan.js';
 import { turkmenistanPolities, turkmenistanShapeFixes } from '../src/globe-pack-turkmenistan.js';
 import { kyrgyzstanPolities, kyrgyzstanShapeFixes } from '../src/globe-pack-kyrgyzstan.js';
+import { tajikistanPolities, tajikistanShapeFixes } from '../src/globe-pack-tajikistan.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -1005,6 +1006,72 @@ const PACKS = [
       box: [66, 37, 82, 46],
       planar: true,
       with: ['gokturk-khaganate', 'sogdia', 'tang-china', 'turgesh', 'oghuz-yabgu', 'samanid-empire', 'kimek-kipchak', 'karakhanid-khanate', 'seljuk-empire', 'khwarezmia', 'mongol-empire'],
+    },
+  },
+  {
+    country: 'tajikistan',
+    polities: tajikistanPolities,
+    fixes: tajikistanShapeFixes,
+    redrawn: {},
+    // The Sasanian 'parthia-east' ring is schematic (it reaches the Gulf), so its trim is proven by notOver.
+    trimmed: ['sassanid-empire'],
+    capitals: [
+      ['hephthalite-empire', 466, 68.86, 36.73, 'Kunduz'],
+      ['hephthalite-empire', 466, 67.28, 37.22, 'Termez'],
+      ['hephthalite-empire', 479, 69.0, 39.91, 'Istaravshan'],
+      ['hephthalite-empire', 557, 66.9, 36.76, 'Balkh'],
+      ['tokhara-yabghus', 625, 68.86, 36.73, 'Kunduz'],
+      ['tokhara-yabghus', 630, 66.9, 36.76, 'Balkh'],
+      ['tokhara-yabghus', 705, 69.78, 37.91, 'Kulob (Khuttal)'],
+      ['tokhara-yabghus', 705, 68.55, 38.52, 'Hisar (Shuman)'],
+      ['ustrushana', 630, 68.82, 39.77, 'Bunjikat'],
+      ['ustrushana', 712, 69.62, 40.28, 'Khujand'],
+      ['ustrushana', 818, 69.0, 39.91, 'Istaravshan'],
+      ['chagatai-ulus-amirs', 1346, 66.9, 36.76, 'Balkh'],
+      ['chagatai-ulus-amirs', 1346, 66.96, 39.65, 'Samarkand'],
+      ['chagatai-ulus-amirs', 1365, 69.78, 37.91, 'Kulob (Khuttal)'],
+      ['chagatai-ulus-amirs', 1369, 69.62, 40.28, 'Khujand'],
+    ],
+    on: {
+      470: ['hephthalite-empire'],
+      500: ['hephthalite-empire'],
+      640: ['tokhara-yabghus', 'ustrushana'],
+      720: ['tokhara-yabghus', 'ustrushana'],
+      800: ['ustrushana'],
+      1350: ['chagatai-ulus-amirs'],
+      1366: ['chagatai-ulus-amirs'],
+    },
+    gone: {
+      455: ['hephthalite-empire'],
+      565: ['hephthalite-empire'],
+      620: ['tokhara-yabghus', 'ustrushana'],
+      755: ['tokhara-yabghus'],
+      822: ['ustrushana'],
+      1340: ['chagatai-ulus-amirs'],
+      1372: ['chagatai-ulus-amirs'],
+    },
+    absent: [
+      ['hephthalite-empire', 470, 'ustrushana'],
+    ],
+    present: [
+      ['hephthalite-empire', 500, 'ustrushana'],
+      ['tokhara-yabghus', 640, 'tokharistan'],
+    ],
+    // After Qutayba (705) the yabghus' princes are drawn north of the Oxus only: Balkh and Termez are Arab.
+    // The Sasanian eastern ring no longer covers Tokharistan.
+    notOver: [
+      ['tokhara-yabghus', 720, 66.9, 36.76, 'Balkh'],
+      ['tokhara-yabghus', 720, 67.28, 37.22, 'Termez'],
+      ['sassanid-empire', 470, 66.9, 36.76, 'Balkh'],
+      ['sassanid-empire', 600, 68.86, 36.73, 'Kunduz'],
+    ],
+    // The pack's shapes and the older shapes around them never overlap (every 5 years, 0.1° grid).
+    noOverlap: {
+      from: 400,
+      to: 1400,
+      box: [60, 34, 76, 44],
+      planar: true,
+      with: ['sassanid-empire', 'kushan-empire', 'gokturk-khaganate', 'western-turkic-khaganate', 'sogdia', 'tang-china', 'tibetan-empire', 'umayyad-caliphate', 'abbasid-caliphate', 'afrighid-khwarazm', 'samanid-empire', 'karakhanid-khanate', 'seljuk-empire', 'khwarezmia', 'mongol-empire', 'moghulistan', 'timurid'],
     },
   },
 ];

@@ -433,7 +433,8 @@ export const CITIES = [
   C('almaty', 43.24, 76.89, 3, 1854, null, 'Verny', 1921, 'Alma-Ata', 1993, 'Almaty'),
   C('astana', 51.17, 71.45, 3, 1830, null, 'Akmolinsk', 1961, 'Tselinograd', 1992, 'Akmola', 1998, 'Astana', 2019, 'Nur-Sultan', 2022, 'Astana', { ranks: [[1830, 4]] }),
   C('bishkek', 42.87, 74.59, 4, 1825, null, 'Pishpek', 1926, 'Frunze', 1991, 'Bishkek'),
-  C('dushanbe', 38.56, 68.79, 4, 1920, null, 'Dushanbe', 1929, 'Stalinabad', 1961, 'Dushanbe'),
+  // Day 76: first recorded in 1676 as a market town (Kasabai Dushanbe) under Balkh, not founded in 1920.
+  C('dushanbe', 38.56, 68.79, 4, 1676, null, 'Dushanbe', 1929, 'Stalinabad', 1961, 'Dushanbe'),
   C('ashgabat', 37.95, 58.38, 4, 1881, null, 'Askhabad', 1919, 'Poltoratsk', 1927, 'Ashgabat'),
   C('kashgar', 39.47, 75.99, 3, -200, null, 'Kashgar'),
   C('dunhuang', 40.14, 94.66, 4, -111, null, 'Dunhuang'),
@@ -578,6 +579,14 @@ export const CITIES = [
   C('balasagun', 42.75, 75.25, 3, 880, 1400, 'Balasagun', { ranks: [[1220, 4]] }),
   C('naryn', 41.43, 75.99, 4, 1868, null, 'Naryn'),
   C('karakol', 42.49, 78.39, 4, 1869, null, 'Karakol', 1889, 'Przhevalsk', 1921, 'Karakol', 1939, 'Przhevalsk', 1991, 'Karakol'),
+  // Day 76 — Tajikistan pack (globe-pack-tajikistan.js): Sarazm, the Oxus temple, Ustrushana's Ura-Tyube, Hisar, Khuttal's Kulob, Khorog and Kunduz (Tokharistan).
+  C('sarazm', 39.51, 67.46, 4, -3900, -2100, 'Sarazm'),
+  C('takht-i-sangin', 37.12, 68.57, 4, -300, 250, 'Takht-i Sangin'),
+  C('istaravshan', 39.91, 69.00, 4, -500, null, 'Istaravshan'),
+  C('hisor', 38.52, 68.55, 4, 1500, null, 'Hisar'),
+  C('kulob', 37.91, 69.78, 4, 737, null, 'Khatlon', 1750, 'Kulob'),
+  C('khorog', 37.49, 71.55, 4, 1895, null, 'Khorog'),
+  C('kunduz', 36.73, 68.86, 4, 450, null, 'Kunduz'),
   // ---- China ------------------------------------------------------------------------------
   C('anyang', 36.10, 114.35, 2, -1300, -1046, 'Yin'),
   C('xian', 34.26, 108.94, 1, -1046, null, 'Haojing', -202, "Chang'an", 1369, "Xi'an", { ranks: [[-1046, 2], [-202, 1], [904, 3]] }),
