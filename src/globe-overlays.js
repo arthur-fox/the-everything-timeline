@@ -42,6 +42,7 @@ import { uzbekistanPolities, applyUzbekistanShapeFixes } from './globe-pack-uzbe
 import { kazakhstanPolities, applyKazakhstanShapeFixes } from './globe-pack-kazakhstan.js';
 import { turkmenistanPolities, applyTurkmenistanShapeFixes } from './globe-pack-turkmenistan.js';
 import { kyrgyzstanPolities, applyKyrgyzstanShapeFixes } from './globe-pack-kyrgyzstan.js';
+import { tajikistanPolities, applyTajikistanShapeFixes } from './globe-pack-tajikistan.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6368,6 +6369,15 @@ for (const ent of kyrgyzstanPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 76 — Phase 5 country pack 2, Tajikistan (globe-pack-tajikistan.js): the Hephthalites, the
+// Yabghus of Tokharistan, Ustrushana and the Chagatai ulus under the Qara'unas amirs (1346–1369),
+// drawn from the shared Central Asia pieces; appended.
+for (const ent of tajikistanPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6426,6 +6436,8 @@ applyKazakhstanShapeFixes(spatialEntities);
 applyTurkmenistanShapeFixes(spatialEntities, resolveRegionRing);
 // Day 75 — the Karakhanids from c. 940 at Balasagun, Kokand's Osh (1709–1815), Han China's Tarim off Issyk-Kul.
 applyKyrgyzstanShapeFixes(spatialEntities);
+// Day 76 — the Sasanian eastern ring off Tokharistan (the Hephthalites' and yabghus' Balkh and Kunduz).
+applyTajikistanShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
