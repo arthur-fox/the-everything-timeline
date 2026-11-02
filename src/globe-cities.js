@@ -570,6 +570,14 @@ export const CITIES = [
   C('mary', 37.61, 61.83, 3, 1884, null, 'Merv', 1937, 'Mary'),
   C('turkmenabat', 39.08, 63.57, 3, 1888, null, 'Chardzhuy', 1924, 'Leninsk', 1927, 'Chardzhuy', 1940, 'Chardzhou', 1992, 'Chärjew', 1999, 'Türkmenabat'),
   C('turkmenbashi', 40.02, 52.97, 4, 1869, null, 'Krasnovodsk', 1993, 'Türkmenbaşy'),
+  // Day 75 — Kyrgyzstan pack (globe-pack-kyrgyzstan.js): Osh and Uzgen, the Chu valley's Silk Road capitals, and the Russian-era towns.
+  C('osh', 40.53, 72.80, 3, -1000, null, 'Osh'),
+  C('uzgen', 40.77, 73.30, 4, -200, null, 'Uzgen', { ranks: [[1000, 3], [1220, 4]] }),
+  C('suyab', 42.81, 75.20, 3, 550, 1050, 'Suyab'),
+  C('navekat', 42.88, 74.98, 4, 550, 1200, 'Navekat'),
+  C('balasagun', 42.75, 75.25, 3, 880, 1400, 'Balasagun', { ranks: [[1220, 4]] }),
+  C('naryn', 41.43, 75.99, 4, 1868, null, 'Naryn'),
+  C('karakol', 42.49, 78.39, 4, 1869, null, 'Karakol', 1889, 'Przhevalsk', 1921, 'Karakol', 1939, 'Przhevalsk', 1991, 'Karakol'),
   // ---- China ------------------------------------------------------------------------------
   C('anyang', 36.10, 114.35, 2, -1300, -1046, 'Yin'),
   C('xian', 34.26, 108.94, 1, -1046, null, 'Haojing', -202, "Chang'an", 1369, "Xi'an", { ranks: [[-1046, 2], [-202, 1], [904, 3]] }),

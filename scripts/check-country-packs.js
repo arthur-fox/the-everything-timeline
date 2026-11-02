@@ -4,8 +4,9 @@
  * src/globe-pack-morocco.js), Kenya (Day 69, src/globe-pack-kenya.js), Iraq (Day 70,
  * src/globe-pack-iraq.js), the Philippines (Day 71, src/globe-pack-philippines.js) and
  * Uzbekistan (Day 72, src/globe-pack-uzbekistan.js), Kazakhstan (Day 73,
- * src/globe-pack-kazakhstan.js) and Turkmenistan (Day 74, src/globe-pack-turkmenistan.js). Add a pack
- * to PACKS to cover it. `PACK=<country>` checks one pack.
+ * src/globe-pack-kazakhstan.js), Turkmenistan (Day 74, src/globe-pack-turkmenistan.js) and Kyrgyzstan
+ * (Day 75, src/globe-pack-kyrgyzstan.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
  *    on land (no Pacific spill), for the pack's polities and the shapes it redrew;
@@ -33,6 +34,7 @@ import { philippinesPolities, philippinesShapeFixes } from '../src/globe-pack-ph
 import { uzbekistanPolities, uzbekistanShapeFixes, UZ_TRIMS } from '../src/globe-pack-uzbekistan.js';
 import { kazakhstanPolities, kazakhstanShapeFixes } from '../src/globe-pack-kazakhstan.js';
 import { turkmenistanPolities, turkmenistanShapeFixes } from '../src/globe-pack-turkmenistan.js';
+import { kyrgyzstanPolities, kyrgyzstanShapeFixes } from '../src/globe-pack-kyrgyzstan.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -942,7 +944,75 @@ const PACKS = [
       remnants: [[1380, 'sufid-khwarazm', 'khwarazm']],
     },
   },
+  {
+    country: 'kyrgyzstan',
+    polities: kyrgyzstanPolities,
+    fixes: kyrgyzstanShapeFixes,
+    // The early Karakhanids (c. 940), Kokand's Fergana with Osh and Han China's Tarim are drawn from
+    // the pieces or the Kyrgyz border (land-checked).
+    redrawn: { 'karakhanid-khanate': ['khanate', 'kashgar'], 'kokand-khanate': ['fergana'], 'han-china': ['tarim'] },
+    capitals: [
+      ['western-turkic-khaganate', 631, 75.2, 42.81, 'Suyab'],
+      ['western-turkic-khaganate', 657, 74.98, 42.88, 'Navekat'],
+      ['karluk-yabgu', 766, 75.2, 42.81, 'Suyab'],
+      ['karluk-yabgu', 768, 71.37, 42.9, 'Taraz'],
+      ['karluk-yabgu', 893, 75.25, 42.75, 'Balasagun'],
+      ['karakhanid-khanate', 940, 75.25, 42.75, 'Balasagun'],
+      ['karakhanid-khanate', 940, 75.99, 39.47, 'Kashgar'],
+      ['karakhanid-khanate', 999, 73.3, 40.77, 'Uzgen'],
+      ['qara-khitai', 1134, 75.25, 42.75, 'Balasagun'],
+      ['qara-khitai', 1134, 72.24, 42.52, 'Talas'],
+      ['qara-khitai', 1211, 75.99, 39.47, 'Kashgar'],
+      ['kokand-khanate', 1709, 72.8, 40.53, 'Osh'],
+      ['kokand-khanate', 1740, 73.3, 40.77, 'Uzgen'],
+      ['kokand-khanate', 1815, 72.8, 40.53, 'Osh'],
+    ],
+    on: {
+      640: ['western-turkic-khaganate'],
+      800: ['karluk-yabgu'],
+      950: ['karakhanid-khanate'],
+      1150: ['qara-khitai'],
+      1215: ['qara-khitai'],
+    },
+    gone: {
+      620: ['western-turkic-khaganate'],
+      670: ['western-turkic-khaganate'],
+      760: ['karluk-yabgu'],
+      945: ['karluk-yabgu'],
+      930: ['karakhanid-khanate'],
+      1130: ['qara-khitai'],
+      1225: ['qara-khitai'],
+    },
+    absent: [
+      ['qara-khitai', 1200, 'kashgar'],
+    ],
+    present: [
+      ['karakhanid-khanate', 950, 'kashgar'],
+      ['qara-khitai', 1215, 'kashgar'],
+    ],
+    // Anachronisms fixed: Han China's Tarim rectangle over the Wusun's Issyk-Kul and Naryn; the Karluks
+    // keep Taraz only until the Samanids take it (893).
+    notOver: [
+      ['han-china', 2, 77.08, 42.65, 'Issyk-Kul (Cholpon-Ata)'],
+      ['han-china', 2, 75.99, 41.43, 'Naryn'],
+      ['han-china', 2, 78.39, 42.49, 'Karakol'],
+      ['karluk-yabgu', 900, 71.37, 42.9, 'Taraz'],
+    ],
+    // The pack's shapes and the older shapes around them never overlap (every 5 years, 0.1° grid).
+    noOverlap: {
+      from: 600,
+      to: 1230,
+      box: [66, 37, 82, 46],
+      planar: true,
+      with: ['gokturk-khaganate', 'sogdia', 'tang-china', 'turgesh', 'oghuz-yabgu', 'samanid-empire', 'kimek-kipchak', 'karakhanid-khanate', 'seljuk-empire', 'khwarezmia', 'mongol-empire'],
+    },
+  },
 ];
+
+// A shape another pack extended may also link a later pack's items (Day 75: the Karakhanids link
+// kg-karakhanids), so links may resolve in any country file.
+const countriesDir = new URL('../data/countries/', import.meta.url);
+const allCountryItems = new Set(fs.readdirSync(countriesDir).filter((f) => f.endsWith('.json')).flatMap((f) => JSON.parse(fs.readFileSync(new URL(f, countriesDir), 'utf8')).items.map((i) => i.id)));
 
 let rings = 0;
 for (const pack of PACKS.filter((p) => !process.env.PACK || p.country === process.env.PACK)) {
@@ -972,7 +1042,7 @@ for (const pack of PACKS.filter((p) => !process.env.PACK || p.country === proces
     for (const s of e.sources || []) if (!/^https:\/\//.test(s.url || '')) fail(`${e.id} source without an https url: ${s.title}`);
     if ((e.overlays || []).length < 3) fail(`${e.id} has fewer than 3 keyframes`);
     if (!(e.timelineItemIds || []).some((t) => items.has(t))) fail(`${e.id} links no ${pack.country} timeline item`);
-    for (const t of e.timelineItemIds || []) if (!items.has(t) && !civIds.has(t)) fail(`${e.id} links missing timeline entry ${t}`);
+    for (const t of e.timelineItemIds || []) if (!items.has(t) && !civIds.has(t) && !allCountryItems.has(t)) fail(`${e.id} links missing timeline entry ${t}`);
   }
 
   for (const [id, regionIds] of Object.entries(pack.redrawn)) {
