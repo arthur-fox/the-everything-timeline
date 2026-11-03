@@ -5,7 +5,8 @@
  * src/globe-pack-iraq.js), the Philippines (Day 71, src/globe-pack-philippines.js) and
  * Uzbekistan (Day 72, src/globe-pack-uzbekistan.js), Kazakhstan (Day 73,
  * src/globe-pack-kazakhstan.js), Turkmenistan (Day 74, src/globe-pack-turkmenistan.js), Kyrgyzstan
- * (Day 75, src/globe-pack-kyrgyzstan.js) and Tajikistan (Day 76, src/globe-pack-tajikistan.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * (Day 75, src/globe-pack-kyrgyzstan.js), Tajikistan (Day 76, src/globe-pack-tajikistan.js) and
+ * Afghanistan (Day 77, src/globe-pack-afghanistan.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -36,6 +37,7 @@ import { kazakhstanPolities, kazakhstanShapeFixes } from '../src/globe-pack-kaza
 import { turkmenistanPolities, turkmenistanShapeFixes } from '../src/globe-pack-turkmenistan.js';
 import { kyrgyzstanPolities, kyrgyzstanShapeFixes } from '../src/globe-pack-kyrgyzstan.js';
 import { tajikistanPolities, tajikistanShapeFixes } from '../src/globe-pack-tajikistan.js';
+import { afghanistanPolities, afghanistanShapeFixes } from '../src/globe-pack-afghanistan.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -1072,6 +1074,141 @@ const PACKS = [
       box: [60, 34, 76, 44],
       planar: true,
       with: ['sassanid-empire', 'kushan-empire', 'gokturk-khaganate', 'western-turkic-khaganate', 'sogdia', 'tang-china', 'tibetan-empire', 'umayyad-caliphate', 'abbasid-caliphate', 'afrighid-khwarazm', 'samanid-empire', 'karakhanid-khanate', 'seljuk-empire', 'khwarezmia', 'mongol-empire', 'moghulistan', 'timurid'],
+    },
+  },
+  {
+    country: 'afghanistan',
+    polities: afghanistanPolities,
+    fixes: afghanistanShapeFixes,
+    redrawn: {},
+    // The Parthian and Sasanian eastern rings are schematic (they reach the Gulf), so their trims are proven by notOver.
+    trimmed: ['parthian-empire', 'sassanid-empire', 'abbasid-caliphate', 'safavid-empire', 'sikh-empire'],
+    capitals: [
+      ['kabul-shahis', 665, 69.17, 34.53, 'Kabul'],
+      ['kabul-shahis', 680, 72.44, 34.02, 'Udabhandapura (Hund)'],
+      ['kabul-shahis', 870, 71.58, 34.01, 'Peshawar'],
+      ['kabul-shahis', 1001, 74.34, 31.55, 'Lahore'],
+      ['kabul-shahis', 1001, 73.23, 32.71, 'Nandana'],
+      ['zunbils', 680, 68.42, 33.55, 'Ghazni'],
+      ['zunbils', 698, 65.71, 31.61, 'Kandahar'],
+      ['zunbils', 698, 64.36, 31.58, 'Bost'],
+      ['saffarids', 861, 61.86, 30.96, 'Zaranj'],
+      ['saffarids', 867, 62.2, 34.35, 'Herat'],
+      ['saffarids', 870, 69.17, 34.53, 'Kabul'],
+      ['saffarids', 870, 66.9, 36.76, 'Balkh'],
+      ['saffarids', 900, 61.86, 30.96, 'Zaranj'],
+      ['ghaznavid-empire', 977, 68.42, 33.55, 'Ghazni'],
+      ['ghaznavid-empire', 977, 64.36, 31.58, 'Bost'],
+      ['ghaznavid-empire', 1000, 59.6, 36.3, 'Mashhad (Tus)'],
+      ['ghaznavid-empire', 1000, 66.9, 36.76, 'Balkh'],
+      ['ghaznavid-empire', 1003, 61.86, 30.96, 'Zaranj'],
+      ['ghaznavid-empire', 1011, 64.52, 34.4, 'Firozkoh (Jam)'],
+      ['ghaznavid-empire', 1021, 74.34, 31.55, 'Lahore'],
+      ['ghaznavid-empire', 1029, 51.42, 35.6, 'Rayy'],
+      ['ghaznavid-empire', 1163, 74.34, 31.55, 'Lahore'],
+      ['ghurid-empire', 1149, 64.52, 34.4, 'Firozkoh (Jam)'],
+      ['ghurid-empire', 1152, 67.83, 34.82, 'Bamiyan'],
+      ['ghurid-empire', 1173, 68.42, 33.55, 'Ghazni'],
+      ['ghurid-empire', 1175, 62.2, 34.35, 'Herat'],
+      ['ghurid-empire', 1186, 74.34, 31.55, 'Lahore'],
+      ['ghurid-empire', 1198, 66.9, 36.76, 'Balkh'],
+      ['ghurid-empire', 1206, 68.42, 33.55, 'Ghazni'],
+      ['kartids', 1245, 62.2, 34.35, 'Herat'],
+      ['mughal-kabul', 1507, 69.17, 34.53, 'Kabul'],
+      ['mughal-kabul', 1522, 65.71, 31.61, 'Kandahar'],
+      ['mughal-kabul', 1526, 71.58, 34.01, 'Peshawar'],
+      ['mughal-kabul', 1595, 65.71, 31.61, 'Kandahar'],
+      ['mughal-kabul', 1638, 65.71, 31.61, 'Kandahar'],
+      ['safavid-herat', 1510, 62.2, 34.35, 'Herat'],
+      ['safavid-herat', 1558, 65.71, 31.61, 'Kandahar'],
+      ['safavid-herat-abbas', 1598, 62.2, 34.35, 'Herat'],
+      ['safavid-herat-abbas', 1649, 65.71, 31.61, 'Kandahar'],
+      ['hotaki-dynasty', 1709, 65.71, 31.61, 'Kandahar'],
+      ['hotaki-dynasty', 1722, 51.67, 32.65, 'Isfahan'],
+      ['hotaki-dynasty', 1722, 57.08, 30.28, 'Kerman'],
+      ['hotaki-dynasty', 1724, 52.54, 29.61, 'Shiraz'],
+      ['abdali-herat', 1717, 62.2, 34.35, 'Herat'],
+      ['durrani-empire', 1747, 65.71, 31.61, 'Kandahar'],
+      ['durrani-empire', 1748, 71.58, 34.01, 'Peshawar'],
+      ['durrani-empire', 1750, 62.2, 34.35, 'Herat'],
+      ['durrani-empire', 1751, 66.9, 36.76, 'Balkh'],
+      ['durrani-empire', 1752, 74.34, 31.55, 'Lahore'],
+      ['durrani-empire', 1752, 71.47, 30.2, 'Multan'],
+      ['durrani-empire', 1752, 74.8, 34.08, 'Srinagar'],
+      ['durrani-empire', 1768, 70.58, 37.12, 'Faizabad'],
+      ['durrani-empire', 1776, 69.17, 34.53, 'Kabul'],
+    ],
+    on: {
+      700: ['kabul-shahis', 'zunbils'],
+      900: ['kabul-shahis', 'saffarids'],
+      1010: ['kabul-shahis', 'ghaznavid-empire'],
+      1100: ['ghaznavid-empire'],
+      1180: ['ghaznavid-empire', 'ghurid-empire'],
+      1210: ['ghurid-empire'],
+      1300: ['kartids'],
+      1590: ['safavid-herat'],
+      1600: ['mughal-kabul', 'safavid-herat-abbas'],
+      1725: ['mughal-kabul', 'hotaki-dynasty', 'abdali-herat'],
+      1760: ['durrani-empire'],
+      1810: ['durrani-empire'],
+    },
+    gone: {
+      660: ['kabul-shahis', 'zunbils'],
+      875: ['zunbils'],
+      1025: ['kabul-shahis'],
+      1005: ['saffarids'],
+      1190: ['ghaznavid-empire'],
+      1218: ['ghurid-empire'],
+      1385: ['kartids'],
+      1740: ['mughal-kabul', 'hotaki-dynasty', 'abdali-herat'],
+      1596: ['safavid-herat', 'safavid-herat-abbas'],
+      1720: ['safavid-herat-abbas'],
+    },
+    absent: [
+      ['kabul-shahis', 900, 'kabul'],
+      ['ghurid-empire', 1210, 'punjab'],
+      ['durrani-empire', 1770, 'punjab'],
+      ['safavid-herat', 1590, 'herat'],
+      ['hotaki-dynasty', 1735, 'isfahan'],
+    ],
+    present: [
+      ['kabul-shahis', 700, 'kabul'],
+      ['ghaznavid-empire', 1030, 'rayy'],
+      ['durrani-empire', 1755, 'punjab'],
+      ['durrani-empire', 1800, 'kashmir'],
+      ['hotaki-dynasty', 1725, 'isfahan'],
+      ['safavid-herat-abbas', 1600, 'herat'],
+      ['mughal-kabul', 1600, 'kandahar'],
+    ],
+    // The old schematic rings no longer cover the Hindu Kush; the Ghaznavid west ends at Dandanaqan.
+    notOver: [
+      ['parthian-empire', -50, 66.9, 36.76, 'Balkh'],
+      ['parthian-empire', -50, 69.17, 34.53, 'Kabul'],
+      ['parthian-empire', 0, 67.83, 34.82, 'Bamiyan'],
+      ['parthian-empire', 50, 68.42, 33.55, 'Ghazni'],
+      ['parthian-empire', 50, 65.71, 31.61, 'Kandahar'],
+      ['parthian-empire', 50, 66.96, 39.65, 'Samarkand'],
+      ['sassanid-empire', 400, 69.17, 34.53, 'Kabul'],
+      ['sassanid-empire', 500, 68.42, 33.55, 'Ghazni'],
+      ['sassanid-empire', 600, 65.71, 31.61, 'Kandahar'],
+      ['ghaznavid-empire', 1045, 62.2, 34.35, 'Herat'],
+      ['abbasid-caliphate', 870, 60.8, 31.8, 'Lash-Juwain (Sistan)'],
+      ['abbasid-caliphate', 900, 60.8, 34.4, 'Ghurian (Herat)'],
+      ['safavid-empire', 1620, 60.7, 33.6, 'western Herat oasis'],
+      ['sikh-empire', 1810, 71.58, 34.01, 'Peshawar'],
+      ['sikh-empire', 1810, 74.8, 34.08, 'Srinagar'],
+    ],
+    // The pack's shapes and the older shapes around them never overlap (every 5 years, 0.1° grid).
+    noOverlap: {
+      from: 401,
+      to: 1815,
+      box: [50, 28, 76, 39],
+      planar: true,
+      // The Kartids were Mongol vassals and are drawn over the schematic Mongol rings (1245–1320), so
+      // mongol-empire is not listed. A shape in its fade-out year shrinks to its centre: the Hindu
+      // Shahis' Gandhara is such a remnant in 1001, the year Mahmud takes Peshawar.
+      remnants: [[1001, 'kabul-shahis', 'gandhara']],
+      with: ['sassanid-empire', 'kushan-empire', 'hephthalite-empire', 'tokhara-yabghus', 'umayyad-caliphate', 'abbasid-caliphate', 'samanid-empire', 'buyid-iraq', 'seljuk-empire', 'seljuk-iraq', 'khwarezmia', 'chagatai-ulus-amirs', 'timurid', 'delhi-sultanate', 'mughal-empire', 'safavid-empire', 'bukhara-khanate', 'merv-qajar', 'maratha-empire', 'sikh-empire'],
     },
   },
 ];
