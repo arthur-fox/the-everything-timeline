@@ -5,7 +5,7 @@
  * src/globe-pack-iraq.js), the Philippines (Day 71, src/globe-pack-philippines.js) and
  * Uzbekistan (Day 72, src/globe-pack-uzbekistan.js), Kazakhstan (Day 73,
  * src/globe-pack-kazakhstan.js), Turkmenistan (Day 74, src/globe-pack-turkmenistan.js), Kyrgyzstan
- * (Day 75, src/globe-pack-kyrgyzstan.js) and Tajikistan (Day 76, src/globe-pack-tajikistan.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * (Day 75, src/globe-pack-kyrgyzstan.js) Tajikistan (Day 76, src/globe-pack-tajikistan.js) and Cuba (Day 78, src/globe-pack-cuba.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -36,6 +36,7 @@ import { kazakhstanPolities, kazakhstanShapeFixes } from '../src/globe-pack-kaza
 import { turkmenistanPolities, turkmenistanShapeFixes } from '../src/globe-pack-turkmenistan.js';
 import { kyrgyzstanPolities, kyrgyzstanShapeFixes } from '../src/globe-pack-kyrgyzstan.js';
 import { tajikistanPolities, tajikistanShapeFixes } from '../src/globe-pack-tajikistan.js';
+import { cubaPolities, cubaShapeFixes } from '../src/globe-pack-cuba.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -1074,6 +1075,77 @@ const PACKS = [
       with: ['sassanid-empire', 'kushan-empire', 'gokturk-khaganate', 'western-turkic-khaganate', 'sogdia', 'tang-china', 'tibetan-empire', 'umayyad-caliphate', 'abbasid-caliphate', 'afrighid-khwarazm', 'samanid-empire', 'karakhanid-khanate', 'seljuk-empire', 'khwarezmia', 'mongol-empire', 'moghulistan', 'timurid'],
     },
   },
+  {
+    country: 'cuba',
+    polities: cubaPolities,
+    fixes: cubaShapeFixes,
+    redrawn: {},
+    dropped: [['spanish-empire', 'caribbean']],
+    capitals: [
+      ['guanahatabey', 1492, -84.0, 22.1, 'Guanahacabibes'],
+      ['habana-cacicazgo', 1492, -82.38, 23.08, 'Habana harbour'],
+      ['cubanacan', 1492, -80.0, 22.4, 'Cubanacán'],
+      ['camaguey-cacicazgo', 1492, -77.92, 21.38, 'Camagüey'],
+      ['oriente-cacicazgos', 1492, -74.50, 20.35, 'Baracoa'],
+      ['oriente-cacicazgos', 1510, -76.64, 20.38, 'Bayamo'],
+      ['spanish-cuba', 1511, -74.50, 20.35, 'Baracoa'],
+      ['spanish-cuba', 1513, -76.64, 20.38, 'Bayamo'],
+      ['spanish-cuba', 1513, -75.83, 20.02, 'Santiago de Cuba'],
+      ['spanish-cuba', 1514, -77.92, 21.38, 'Puerto Príncipe'],
+      ['spanish-cuba', 1514, -79.98, 21.80, 'Trinidad'],
+      ['spanish-cuba', 1519, -82.38, 23.13, 'Havana'],
+      ['spanish-cuba', 1762, -82.38, 23.13, 'Havana (British)'],
+      ['spanish-cuba', 1815, -82.38, 23.13, 'Havana'],
+    ],
+    on: {
+      1400: ['guanahatabey', 'habana-cacicazgo', 'cubanacan', 'camaguey-cacicazgo', 'oriente-cacicazgos'],
+      1492: ['guanahatabey', 'habana-cacicazgo', 'cubanacan', 'camaguey-cacicazgo', 'oriente-cacicazgos'],
+      1511: ['guanahatabey', 'habana-cacicazgo', 'cubanacan', 'camaguey-cacicazgo', 'spanish-cuba'],
+      1513: ['guanahatabey', 'habana-cacicazgo', 'cubanacan', 'spanish-cuba'],
+      1514: ['guanahatabey', 'spanish-cuba'],
+      1520: ['spanish-cuba'],
+      1700: ['spanish-cuba'],
+      1762: ['spanish-cuba'],
+      1810: ['spanish-cuba'],
+    },
+    gone: {
+      900: ['guanahatabey', 'habana-cacicazgo', 'cubanacan', 'camaguey-cacicazgo', 'oriente-cacicazgos'],
+      1512: ['oriente-cacicazgos'],
+      1514: ['camaguey-cacicazgo'],
+      1515: ['habana-cacicazgo', 'cubanacan'],
+      1516: ['guanahatabey'],
+      1830: ['spanish-cuba'],
+    },
+    absent: [
+      ['spanish-cuba', 1512, 'habana'],
+      ['spanish-cuba', 1512, 'guanahatabey'],
+      ['spanish-cuba', 1514, 'guanahatabey'],
+    ],
+    present: [
+      ['spanish-cuba', 1511, 'oriente'],
+      ['spanish-cuba', 1514, 'habana'],
+      ['spanish-cuba', 1515, 'guanahatabey'],
+      ['spanish-cuba', 1762, 'habana'],
+      ['guanahatabey', 1492, 'guanahatabey'],
+      ['oriente-cacicazgos', 1492, 'oriente'],
+    ],
+    notOver: [
+      ['spanish-empire', 1560, -82.38, 23.13, 'Havana'],
+      ['spanish-empire', 1700, -82.38, 23.13, 'Havana'],
+      ['spanish-empire', 1700, -74.50, 20.35, 'Baracoa'],
+      ['spanish-empire', 1800, -77.92, 21.38, 'Camagüey'],
+      ['spanish-cuba', 1512, -82.38, 23.13, 'Havana (before villa)'],
+      ['spanish-cuba', 1512, -84.0, 22.1, 'Guanahacabibes'],
+    ],
+    noOverlap: {
+      from: 1000,
+      to: 1815,
+      box: [-85.2, 19.6, -74.0, 23.4],
+      planar: true,
+      with: ['spanish-empire'],
+    },
+  },
+
 ];
 
 // A shape another pack extended may also link a later pack's items (Day 75: the Karakhanids link

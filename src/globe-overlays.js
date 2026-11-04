@@ -43,6 +43,7 @@ import { kazakhstanPolities, applyKazakhstanShapeFixes } from './globe-pack-kaza
 import { turkmenistanPolities, applyTurkmenistanShapeFixes } from './globe-pack-turkmenistan.js';
 import { kyrgyzstanPolities, applyKyrgyzstanShapeFixes } from './globe-pack-kyrgyzstan.js';
 import { tajikistanPolities, applyTajikistanShapeFixes } from './globe-pack-tajikistan.js';
+import { cubaPolities, applyCubaShapeFixes } from './globe-pack-cuba.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6378,6 +6379,14 @@ for (const ent of tajikistanPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 78 — Phase 5 country pack 3, Cuba (globe-pack-cuba.js): Guanahatabey and Taíno cacicazgos to
+// Spanish Cuba, drawn from island pieces; the Spanish Empire's schematic caribbean ring is dropped.
+for (const ent of cubaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6438,6 +6447,8 @@ applyTurkmenistanShapeFixes(spatialEntities, resolveRegionRing);
 applyKyrgyzstanShapeFixes(spatialEntities);
 // Day 76 — the Sasanian eastern ring off Tokharistan (the Hephthalites' and yabghus' Balkh and Kunduz).
 applyTajikistanShapeFixes(spatialEntities);
+// Day 78 — the Spanish Empire's schematic 'caribbean' ring gives way to the Cuba pack's Spanish Cuba.
+applyCubaShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
