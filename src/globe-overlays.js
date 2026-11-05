@@ -44,6 +44,7 @@ import { turkmenistanPolities, applyTurkmenistanShapeFixes } from './globe-pack-
 import { kyrgyzstanPolities, applyKyrgyzstanShapeFixes } from './globe-pack-kyrgyzstan.js';
 import { tajikistanPolities, applyTajikistanShapeFixes } from './globe-pack-tajikistan.js';
 import { cubaPolities, applyCubaShapeFixes } from './globe-pack-cuba.js';
+import { haitiDrPolities, applyHaitiDrShapeFixes } from './globe-pack-haiti-dr.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6387,6 +6388,15 @@ for (const ent of cubaPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 79 — Phase 5 country pack 3, Haiti / Dominican Republic (globe-pack-haiti-dr.js): Taíno
+// cacicazgos, Spanish Santo Domingo, French Saint-Domingue, Haiti and España Boba, drawn from
+// Hispaniola island pieces.
+for (const ent of haitiDrPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6449,6 +6459,8 @@ applyKyrgyzstanShapeFixes(spatialEntities);
 applyTajikistanShapeFixes(spatialEntities);
 // Day 78 — the Spanish Empire's schematic 'caribbean' ring gives way to the Cuba pack's Spanish Cuba.
 applyCubaShapeFixes(spatialEntities);
+// Day 79 — Hispaniola pack (no extra empire drops; Spanish caribbean already cleared by Cuba).
+applyHaitiDrShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
