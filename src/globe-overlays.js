@@ -43,6 +43,7 @@ import { kazakhstanPolities, applyKazakhstanShapeFixes } from './globe-pack-kaza
 import { turkmenistanPolities, applyTurkmenistanShapeFixes } from './globe-pack-turkmenistan.js';
 import { kyrgyzstanPolities, applyKyrgyzstanShapeFixes } from './globe-pack-kyrgyzstan.js';
 import { tajikistanPolities, applyTajikistanShapeFixes } from './globe-pack-tajikistan.js';
+import { afghanistanPolities, applyAfghanistanShapeFixes } from './globe-pack-afghanistan.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6378,6 +6379,16 @@ for (const ent of tajikistanPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 77 — Phase 5 country pack 2, Afghanistan (globe-pack-afghanistan.js): the Kabul Shahis, the
+// Zunbils, the Saffarids, the Ghaznavids, the Ghurids, the Kartids, Mughal Kabul, Safavid Herat and
+// Kandahar, the Hotaks, the Abdalis of Herat and the Durrani Empire, drawn from the shared Central
+// Asia pieces; appended.
+for (const ent of afghanistanPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6438,6 +6449,8 @@ applyTurkmenistanShapeFixes(spatialEntities, resolveRegionRing);
 applyKyrgyzstanShapeFixes(spatialEntities);
 // Day 76 — the Sasanian eastern ring off Tokharistan (the Hephthalites' and yabghus' Balkh and Kunduz).
 applyTajikistanShapeFixes(spatialEntities);
+// Day 77 — the Parthian (-50, 50) and Sasanian (400) eastern rings off Bactria, Kabul, Ghazni and Kandahar.
+applyAfghanistanShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
