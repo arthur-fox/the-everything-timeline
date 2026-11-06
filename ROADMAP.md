@@ -987,8 +987,8 @@ Each pack takes one country (or a small group of neighbours) and refines **both 
 Proposed order:
 
 1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, merged #79); Ghana ✅ (Day 66, merged #80); Morocco ✅ (Day 68, merged #82); Kenya ✅ (Day 69, merged #83); Iraq ✅ (Day 70, merged #84); Philippines ✅ (Day 71, merged #85). Pack 1 globe backfill complete; next item 2, Central Asia.**
-2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates). **Uzbekistan ✅ (Day 72, done-in-PR: new timeline + globe); Kazakhstan ✅ (Day 73, done-in-PR: new timeline + globe); Turkmenistan ✅ (Day 74, done-in-PR: new timeline + globe); Kyrgyzstan ✅ (Day 75, done-in-PR: new timeline + globe); Tajikistan ✅ (Day 76, done-in-PR: new timeline + globe); Afghanistan ✅ (Day 77, done-in-PR: new timeline + globe). Pack 2 complete pending merge of #91; next item 3, Caribbean and Central America.**
-3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits).
+2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates). **Uzbekistan ✅ (Day 72, merged #86); Kazakhstan ✅ (Day 73, merged #87); Turkmenistan ✅ (Day 74, merged #88); Kyrgyzstan ✅ (Day 75, merged #89); Tajikistan ✅ (Day 76, merged #90); Afghanistan ✅ (Day 77, merged #91). Pack 2 complete.**
+3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits). **Cuba ✅ (Day 78, done-in-PR: new timeline + globe). Next: Haiti/Dominican Republic.**
 4. **Central Africa:** DR Congo, Angola, Cameroon, Chad (Kongo, Luba, Lunda, Kanem-Bornu).
 5. **Southeast Europe:** Serbia, Bulgaria, Romania, Croatia, Albania, Greece refinement (Byzantine/Ottoman/medieval kingdoms).
 6. **South Asia:** Pakistan, Bangladesh, Sri Lanka, Nepal, India refinement (Mauryan → Mughal regional kingdoms).
@@ -1226,7 +1226,7 @@ Tajikistan had no country timeline, and on the globe south Tajikistan (Hisar, Du
   - Some dates are approximate: the Hephthalite conquest of Tokharistan (c. 466) and of Sogdia (479 or 509), the battle near Qarshi (c. 557), the end of the yabghus (Khuttal 750–751, Badakhshan after 758), Sarazm's dates (radiocarbon) and Istaravshan's founding (it celebrated its 2,500th year in 2002).
 - **Next:** Afghanistan (Day 77, done-in-PR #91).
 
-#### Day 77 — Pack 2 Central Asia: Afghanistan (Timeline + Globe) — done-in-PR (#91)
+#### Day 77 — Pack 2 Central Asia: Afghanistan (Timeline + Globe) — merged (#91)
 
 Afghanistan had no country timeline, and on the globe south of the Hindu Kush (Kabul, Ghazni, Kandahar, Sistan) nothing was drawn between the Sasanian ring (to 620) and Timur (1405): no Turk or Hindu Shahis, no Zunbils, no Saffarids, and neither the Ghaznavids nor the Ghurids, both ruled from here. Herat and Kandahar were empty from the end of the Timurid shape (1506) to 1815, so the Mughal–Safavid contest, the Hotaks who took Isfahan and Ahmad Shah Durrani's empire never showed; Isfahan itself was empty in 1722–1729. The Parthian and Sasanian schematic rings ran over Bactria, Kabul and Ghazni, and the Abbasid, Safavid and Sikh rings spilled over Sistan, Herat, Peshawar and Kashmir. From 1815 the nations layer takes over (Durrani Afghanistan, then Afghanistan). Afghanistan is the last country of pack 2.
 
@@ -1242,8 +1242,25 @@ Afghanistan had no country timeline, and on the globe south of the Hindu Kush (K
   - Not drawn: the Kidarites, Alchon Huns and Nezaks at Kabul (c. 370–665); the Arab garrisons at Zaranj, Herat and Balkh; the Tahirids; the Saffarids' Iranian conquests (under the Abbasid ring); the Ghaznavid and Ghurid conquests in India beyond the Punjab; the Ghurids' Merv and Nishapur (1192, 1200–01); Khwarazmian Ghazni (1215–1221); Afsharid Afghanistan (1738–1746); Shah Jahan's Balkh campaign (1646–47); the Arghuns of Kandahar; and the Durranis' tributaries (Sindh, Kalat, Multan after 1765, Shah Rukh's Khurasan).
   - The Kartids were Mongol vassals and are drawn over the schematic Mongol rings (1245–1320), so the overlap check leaves `mongol-empire` out. The Hindu Shahis' Punjab (1001–1020) is drawn whole, though their hold on Lahore and the south is uncertain.
   - Some dates are approximate: the Turk Shahi takeover (c. 665), the Zunbil split (c. 680), Kallar's coup (c. 822), the Ghaznavid loss of Balkh (by the 1059 peace), Ghor passing to Seljuk overlordship (c. 1100), Bost and Zamindawar to the Ghurids (c. 1155), Mundigak's and Shahr-i Sokhta's phases (radiocarbon), Bamiyan's founding, Ghazni's (Xuanzang's Hexina, 7th century), Zaranj's and Kapisa's abandonment (c. 1000), and Firozkoh (probably at Jam, destroyed 1222).
-- **Pack 2 (Central Asia) is complete** pending the merge of #91 (Afghanistan). #89 (Kyrgyzstan) and #90 (Tajikistan) are already merged.
-- **Next:** Phase 5 item 3, Caribbean and Central America: Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Timeline + Globe).
+- **Pack 2 (Central Asia) is complete** with the merge of #91 (Afghanistan). #89 (Kyrgyzstan) and #90 (Tajikistan) are already merged.
+- **Next:** Phase 5 item 3, Caribbean and Central America: Cuba (Day 78), then Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Timeline + Globe).
+
+#### Day 78 — Pack 3 Caribbean: Cuba (Timeline + Globe) — done-in-PR
+
+Cuba had no country timeline, and on the globe before 1815 only a schematic Spanish Empire 'caribbean' ring (Cuba + Hispaniola + Jamaica + Puerto Rico from 1550) and similar British / French / Dutch Caribbean footholds. Nothing showed the Guanahatabey, the Taíno cacicazgos (Habana, Cubanacán, Camagüey, Baracoa / Bayamo), Velázquez’s conquest from Baracoa, or Spanish Cuba as its own colony. From 1815 the nations layer takes over (Spanish Cuba to 1898, US occupation, the Republic, then Cuba). Cuba is the first country of pack 3 (Caribbean and Central America).
+
+- **Timeline (`data/countries/cuba.json`, new): 17 sourced items** in 6 categories: early peoples and the Guanahatabey; Taíno cacicazgos; Columbus (1492); Spanish conquest and Hatuey; Havana and the treasure-fleet hub; sugar and enslaved Africans; British Havana (1762–63); the Ten Years’ War; the War of Independence and the Spanish–American War; US occupation and the Platt Amendment; the early republic and Machado; the 1940 Constitution and Batista; the 1959 Revolution; Bay of Pigs and the Missile Crisis; Cold War Cuba; the Special Period; and Raúl’s reforms through the 2020s. Every item has `periods`. Sources: Wikipedia, Library of Congress (de la Torre 1841 map).
+- **Shapes (`src/globe-pack-cuba.js`, lazy globe chunk): 6 polities** (Guanahatabey, Habana, Cubanacán, Camagüey, Oriente, Spanish Cuba), each with a certainty level and reason, sources and timeline links; Spanish Cuba grows villa by villa from Baracoa (1511) to the whole island (1515) and runs to 1815 (British Havana 1762–63 as a name change).
+- **Pieces: 5** cut from the globe’s own Cuba land (nations.topo.json) on longitude lines: `GUANAHATABEY`, `HABANA`, `CUBANACAN`, `CAMAGUEY`, `ORIENTE`.
+- **Existing shapes fixed (`applyCubaShapeFixes`):** the Spanish Empire’s schematic 'caribbean' ring is dropped; Spanish Cuba is drawn above. Hispaniola, Jamaica and Puerto Rico wait for their own packs for a Spanish outline.
+- **Cities: +13** (Baracoa, Santiago de Cuba, Bayamo, Trinidad, Sancti Spíritus, Camagüey, Matanzas, Cienfuegos, Santa Clara, Pinar del Río, Guantánamo, Holguín, Nueva Gerona). Havana was already there.
+- **Pins: +60**, `country:cuba:<item>` refs, from Levisa and the Guanahatabey through Columbus, Hatuey and the villas, El Morro and Piet Heyn, British Havana, Yara and Zanjón, Martí and the Maine, Platt and Guantánamo, Moncada and the Granma, Girón and the missiles, Mariel, the Special Period, the Obama thaw and the 2021 protests.
+- **Validate:** Cuba is a twelfth row in `scripts/check-country-packs.js` (land, rings, sources, capitals inside, who is on / gone at sample years, Spanish growth present/absent, the caribbean drop proven by `notOver`, no overlap with the Spanish Empire, 1000–1815). `PACK=cuba` checks just this row.
+- **Honest caveats:**
+  - Longitude cuts stand in for de la Torre’s 1841 cacicazgo sequence; Habana, Cubanacán, Camagüey and Oriente are regional bundles, not surveyed chiefdom borders. Dozens of named cacicazgos on that map (Maisí, Magón, Jagua, Marién, …) are not drawn separately.
+  - Not drawn: Isle of Youth / micro-cays as polities; pirate / buccaneer eras as separate shapes; British Havana as a western-only occupation shape (name change only); post-1815 shapes (independence wars, Platt, Revolution — timeline + pins). British / French / Dutch schematic Caribbean footholds may still wash over Cuban waters until those packs trim them.
+  - Some dates are approximate: Archaic phases (radiocarbon), Taíno expansion across the island, and the exact year Spanish control reached the far west.
+- **Next:** Haiti / Dominican Republic (pack 3, Timeline + Globe).
 
 ### 13. Fill the globe, region by region (after the packs above)
 
@@ -1392,8 +1409,8 @@ A sensible near-term sequence:
 56. Pack 1 globe backfill — Kenya (Day 69) ✅ (done-in-PR).
 57. Pack 1 globe backfill — Iraq (Day 70) ✅ (done-in-PR).
 58. Pack 1 globe backfill — Philippines (Day 71) ✅ (merged #85). Pack 1 globe backfill complete.
-59. Phase 5 pack 2 — Central Asia: Uzbekistan (Day 72) ✅ (merged #86), Kazakhstan (Day 73) ✅ (merged #87), Turkmenistan (Day 74) ✅ (merged #88), Kyrgyzstan (Day 75) ✅ (merged #89), Tajikistan (Day 76) ✅ (merged #90), Afghanistan (Day 77) ✅ (done-in-PR #91), Timeline + Globe. Pack 2 complete pending merge of #91.
-60. **Now: Phase 5 item 3 — Caribbean and Central America: Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement, Timeline + Globe. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
+59. Phase 5 pack 2 — Central Asia: Uzbekistan (Day 72) ✅ (merged #86), Kazakhstan (Day 73) ✅ (merged #87), Turkmenistan (Day 74) ✅ (merged #88), Kyrgyzstan (Day 75) ✅ (merged #89), Tajikistan (Day 76) ✅ (merged #90), Afghanistan (Day 77) ✅ (merged #91), Timeline + Globe. Pack 2 complete.
+60. **Now: Phase 5 item 3 — Caribbean and Central America: Cuba (Day 78) ✅ (done-in-PR), next Haiti/Dominican Republic, then Jamaica, Guatemala, Mexico refinement, Timeline + Globe. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
