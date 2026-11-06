@@ -988,7 +988,7 @@ Proposed order:
 
 1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, merged #79); Ghana ✅ (Day 66, merged #80); Morocco ✅ (Day 68, merged #82); Kenya ✅ (Day 69, merged #83); Iraq ✅ (Day 70, merged #84); Philippines ✅ (Day 71, merged #85). Pack 1 globe backfill complete; next item 2, Central Asia.**
 2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates). **Uzbekistan ✅ (Day 72, merged #86); Kazakhstan ✅ (Day 73, merged #87); Turkmenistan ✅ (Day 74, merged #88); Kyrgyzstan ✅ (Day 75, merged #89); Tajikistan ✅ (Day 76, merged #90); Afghanistan ✅ (Day 77, merged #91). Pack 2 complete.**
-3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits). **Cuba ✅ (Day 78, done-in-PR: new timeline + globe). Next: Haiti/Dominican Republic.**
+3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits). **Cuba ✅ (Day 78, merged #92). Haiti/Dominican Republic ✅ (Day 79, done-in-PR: new timelines + globe). Next: Jamaica.**
 4. **Central Africa:** DR Congo, Angola, Cameroon, Chad (Kongo, Luba, Lunda, Kanem-Bornu).
 5. **Southeast Europe:** Serbia, Bulgaria, Romania, Croatia, Albania, Greece refinement (Byzantine/Ottoman/medieval kingdoms).
 6. **South Asia:** Pakistan, Bangladesh, Sri Lanka, Nepal, India refinement (Mauryan → Mughal regional kingdoms).
@@ -1245,7 +1245,7 @@ Afghanistan had no country timeline, and on the globe south of the Hindu Kush (K
 - **Pack 2 (Central Asia) is complete** with the merge of #91 (Afghanistan). #89 (Kyrgyzstan) and #90 (Tajikistan) are already merged.
 - **Next:** Phase 5 item 3, Caribbean and Central America: Cuba (Day 78), then Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Timeline + Globe).
 
-#### Day 78 — Pack 3 Caribbean: Cuba (Timeline + Globe) — done-in-PR
+#### Day 78 — Pack 3 Caribbean: Cuba (Timeline + Globe) — merged (#92)
 
 Cuba had no country timeline, and on the globe before 1815 only a schematic Spanish Empire 'caribbean' ring (Cuba + Hispaniola + Jamaica + Puerto Rico from 1550) and similar British / French / Dutch Caribbean footholds. Nothing showed the Guanahatabey, the Taíno cacicazgos (Habana, Cubanacán, Camagüey, Baracoa / Bayamo), Velázquez’s conquest from Baracoa, or Spanish Cuba as its own colony. From 1815 the nations layer takes over (Spanish Cuba to 1898, US occupation, the Republic, then Cuba). Cuba is the first country of pack 3 (Caribbean and Central America).
 
@@ -1260,7 +1260,23 @@ Cuba had no country timeline, and on the globe before 1815 only a schematic Span
   - Longitude cuts stand in for de la Torre’s 1841 cacicazgo sequence; Habana, Cubanacán, Camagüey and Oriente are regional bundles, not surveyed chiefdom borders. Dozens of named cacicazgos on that map (Maisí, Magón, Jagua, Marién, …) are not drawn separately.
   - Not drawn: Isle of Youth / micro-cays as polities; pirate / buccaneer eras as separate shapes; British Havana as a western-only occupation shape (name change only); post-1815 shapes (independence wars, Platt, Revolution — timeline + pins). British / French / Dutch schematic Caribbean footholds may still wash over Cuban waters until those packs trim them.
   - Some dates are approximate: Archaic phases (radiocarbon), Taíno expansion across the island, and the exact year Spanish control reached the far west.
-- **Next:** Haiti / Dominican Republic (pack 3, Timeline + Globe).
+- **Next:** Jamaica (pack 3, Timeline + Globe).
+
+#### Day 79 — Pack 3 Caribbean: Haiti / Dominican Republic (Timeline + Globe) — done-in-PR
+
+Hispaniola had no country timelines, and on the globe before 1815 only the schematic Spanish Empire 'caribbean' ring (already dropped by Day 78) and British / French / Dutch Caribbean footholds meant for other islands. Nothing showed the five Taíno cacicazgos of Ayiti / Quisqueya (Marién, Magua, Maguana, Jaragua, Higüey), Spanish Santo Domingo, French Saint-Domingue, or revolutionary Haiti. From 1815 the nations layer takes over (Haiti; Spanish Santo Domingo / the Dominican Republic after 1844). Haiti / DR is the second country of pack 3 (Caribbean and Central America), stacked on Cuba (#92).
+
+- **Timelines:** `data/countries/haiti.json` (new, 15 sourced items) and `data/countries/dominican-republic.json` (new, 15 sourced items). Haiti covers Casimiroid/Ostionoid and Taíno Ayiti, La Navidad, Spanish west / French Saint-Domingue, sugar and slavery, the Haitian Revolution, independence 1804, Dessalines, Christophe & Pétion, Boyer and the indemnity, the US occupation, the Duvaliers, Aristide, and the 2010 earthquake through today’s crisis. The Dominican Republic covers Quisqueya’s cacicazgos, La Isabela and Santo Domingo, the Spanish colony and Enriquillo, Toussaint / French rule, España Boba, Haitian unification, independence 1844, the Restoration War, Heureaux, the US occupation, Trujillo, and modern democracy. Every item has `periods`. Sources: Wikipedia.
+- **Shapes (`src/globe-pack-haiti-dr.js`, lazy globe chunk): 9 polities** (Marién, Magua, Maguana, Jaragua, Higüey, Spanish Santo Domingo, French Saint-Domingue, Haiti, España Boba), each with a certainty level and reason, sources and timeline links; Spanish Santo Domingo grows from La Isabela (1493) across the island then keeps the east after Ryswick (1697) until Basel; French Saint-Domingue holds the west from 1697 and the whole island 1796–1803; Haiti from 1804 (Christophe north / Pétion south after 1807); España Boba restores the Spanish east 1809–1815.
+- **Pieces: 5** cut from the globe’s own Hispaniola land (nations.topo.json shape 430) on a latitude cut (~19.05°N) and a longitude cut (~70.15°W) plus the modern Haiti/DR shore: `MARIEN`, `JARAGUA`, `MAGUA`, `MAGUANA`, `HIGUEY`.
+- **Existing shapes:** the Spanish Empire’s schematic 'caribbean' ring stays dropped (Cuba pack); French / British / Dutch Caribbean footholds remain on the Lesser Antilles schematics and do not cover this island.
+- **Cities: +14** on Hispaniola (La Isabela, La Vega, Santiago de los Caballeros, Puerto Plata, Azua, San Juan de la Maguana, Higüey, Monte Cristi, Les Cayes, Gonaïves, Jacmel, Jérémie, Saint-Marc, Fort-Liberté); Santo Domingo, Port-au-Prince and Cap-Haïtien were already present.
+- **Pins: +55**, `country:haiti:<item>` and `country:dominican-republic:<item>` refs, from Casimiroid and the five cacicazgos through La Navidad / La Isabela / Santo Domingo, Ryswick and Basel, Vertières and Gonaïves, Christophe and Pétion, Boyer, 1844 and the Restoration, the two US occupations, the Duvaliers and Trujillo, the 2010 earthquake and Moïse.
+- **Validate:** Haiti is a thirteenth row in `scripts/check-country-packs.js` (land, rings, sources, capitals inside, who is on / gone at sample years, Spanish / French growth present/absent, no overlap with the Spanish Empire or Spanish Cuba, 1200–1815). `PACK=haiti` checks just this row. Dominican Republic timeline is validated with the other country files.
+- **Preview:** (filled in when the PR opens).
+
+- **Next:** Jamaica (pack 3, Timeline + Globe).
+
 
 ### 13. Fill the globe, region by region (after the packs above)
 
@@ -1410,7 +1426,7 @@ A sensible near-term sequence:
 57. Pack 1 globe backfill — Iraq (Day 70) ✅ (done-in-PR).
 58. Pack 1 globe backfill — Philippines (Day 71) ✅ (merged #85). Pack 1 globe backfill complete.
 59. Phase 5 pack 2 — Central Asia: Uzbekistan (Day 72) ✅ (merged #86), Kazakhstan (Day 73) ✅ (merged #87), Turkmenistan (Day 74) ✅ (merged #88), Kyrgyzstan (Day 75) ✅ (merged #89), Tajikistan (Day 76) ✅ (merged #90), Afghanistan (Day 77) ✅ (merged #91), Timeline + Globe. Pack 2 complete.
-60. **Now: Phase 5 item 3 — Caribbean and Central America: Cuba (Day 78) ✅ (done-in-PR), next Haiti/Dominican Republic, then Jamaica, Guatemala, Mexico refinement, Timeline + Globe. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
+60. **Now: Phase 5 item 3 — Caribbean and Central America: Cuba (Day 78) ✅ (merged #92), Haiti/Dominican Republic (Day 79) ✅ (done-in-PR), next Jamaica, then Guatemala, Mexico refinement, Timeline + Globe. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 

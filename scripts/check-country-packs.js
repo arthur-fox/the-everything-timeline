@@ -6,7 +6,8 @@
  * Uzbekistan (Day 72, src/globe-pack-uzbekistan.js), Kazakhstan (Day 73,
  * src/globe-pack-kazakhstan.js), Turkmenistan (Day 74, src/globe-pack-turkmenistan.js), Kyrgyzstan
  * (Day 75, src/globe-pack-kyrgyzstan.js), Tajikistan (Day 76, src/globe-pack-tajikistan.js),
- * Afghanistan (Day 77, src/globe-pack-afghanistan.js) and Cuba (Day 78, src/globe-pack-cuba.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * Afghanistan (Day 77, src/globe-pack-afghanistan.js), Cuba (Day 78, src/globe-pack-cuba.js) and
+ * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -39,6 +40,7 @@ import { kyrgyzstanPolities, kyrgyzstanShapeFixes } from '../src/globe-pack-kyrg
 import { tajikistanPolities, tajikistanShapeFixes } from '../src/globe-pack-tajikistan.js';
 import { afghanistanPolities, afghanistanShapeFixes } from '../src/globe-pack-afghanistan.js';
 import { cubaPolities, cubaShapeFixes } from '../src/globe-pack-cuba.js';
+import { haitiDrPolities, haitiDrShapeFixes } from '../src/globe-pack-haiti-dr.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -1280,6 +1282,90 @@ const PACKS = [
       box: [-85.2, 19.6, -74.0, 23.4],
       planar: true,
       with: ['spanish-empire'],
+    },
+  },
+  {
+    country: 'haiti',
+    polities: haitiDrPolities,
+    fixes: haitiDrShapeFixes,
+    redrawn: {},
+    dropped: [],
+    capitals: [
+      ['marien-cacicazgo', 1492, -72.20, 19.76, 'Cap-Haïtien / Marién'],
+      ['jaragua-cacicazgo', 1492, -72.34, 18.54, 'Jaragua / Port-au-Prince plain'],
+      ['magua-cacicazgo', 1492, -70.53, 19.22, 'Magua / La Vega'],
+      ['maguana-cacicazgo', 1492, -71.23, 18.81, 'San Juan de la Maguana'],
+      ['higuey-cacicazgo', 1492, -68.71, 18.62, 'Higüey'],
+      ['spanish-santo-domingo', 1493, -71.09, 19.89, 'La Isabela'],
+      ['spanish-santo-domingo', 1496, -69.89, 18.47, 'Santo Domingo'],
+      ['spanish-santo-domingo', 1600, -69.89, 18.47, 'Santo Domingo'],
+      ['spanish-santo-domingo', 1697, -69.89, 18.47, 'Santo Domingo (east)'],
+      ['french-saint-domingue', 1697, -72.20, 19.76, 'Cap-Français'],
+      ['french-saint-domingue', 1789, -72.34, 18.54, 'Port-au-Prince'],
+      ['french-saint-domingue', 1801, -69.89, 18.47, 'Santo Domingo under Toussaint'],
+      ['haiti-1804', 1804, -72.69, 19.45, 'Gonaïves'],
+      ['haiti-1804', 1811, -72.20, 19.76, 'Cap-Haïtien (Christophe)'],
+      ['haiti-1804', 1811, -72.34, 18.54, 'Port-au-Prince (Pétion)'],
+      ['espana-boba', 1809, -69.89, 18.47, 'Santo Domingo'],
+      ['espana-boba', 1815, -69.89, 18.47, 'Santo Domingo'],
+    ],
+    on: {
+      1400: ['marien-cacicazgo', 'magua-cacicazgo', 'maguana-cacicazgo', 'jaragua-cacicazgo', 'higuey-cacicazgo'],
+      1492: ['marien-cacicazgo', 'magua-cacicazgo', 'maguana-cacicazgo', 'jaragua-cacicazgo', 'higuey-cacicazgo'],
+      1493: ['marien-cacicazgo', 'maguana-cacicazgo', 'jaragua-cacicazgo', 'higuey-cacicazgo', 'spanish-santo-domingo'],
+      1500: ['marien-cacicazgo', 'jaragua-cacicazgo', 'spanish-santo-domingo'],
+      1510: ['spanish-santo-domingo'],
+      1700: ['spanish-santo-domingo', 'french-saint-domingue'],
+      1789: ['spanish-santo-domingo', 'french-saint-domingue'],
+      1801: ['french-saint-domingue'],
+      1805: ['haiti-1804'],
+      1810: ['haiti-1804', 'espana-boba'],
+      1815: ['haiti-1804', 'espana-boba'],
+    },
+    gone: {
+      1100: ['marien-cacicazgo', 'magua-cacicazgo', 'maguana-cacicazgo', 'jaragua-cacicazgo', 'higuey-cacicazgo'],
+      1494: ['magua-cacicazgo'],
+      1497: ['higuey-cacicazgo', 'maguana-cacicazgo'],
+      1505: ['marien-cacicazgo', 'jaragua-cacicazgo'],
+      1797: ['spanish-santo-domingo'],
+      1805: ['french-saint-domingue'],
+      1830: ['haiti-1804', 'espana-boba'],
+    },
+    absent: [
+      ['spanish-santo-domingo', 1494, 'higuey'],
+      ['spanish-santo-domingo', 1494, 'jaragua'],
+      ['spanish-santo-domingo', 1700, 'marien'],
+      ['spanish-santo-domingo', 1700, 'jaragua'],
+      ['french-saint-domingue', 1789, 'higuey'],
+      ['french-saint-domingue', 1789, 'magua'],
+      ['haiti-1804', 1810, 'higuey'],
+    ],
+    present: [
+      ['spanish-santo-domingo', 1493, 'magua'],
+      ['spanish-santo-domingo', 1496, 'higuey'],
+      ['spanish-santo-domingo', 1504, 'marien'],
+      ['spanish-santo-domingo', 1697, 'higuey'],
+      ['french-saint-domingue', 1697, 'marien'],
+      ['french-saint-domingue', 1801, 'higuey'],
+      ['haiti-1804', 1804, 'marien'],
+      ['haiti-1804', 1807, 'jaragua'],
+      ['espana-boba', 1809, 'higuey'],
+      ['marien-cacicazgo', 1492, 'marien'],
+      ['higuey-cacicazgo', 1492, 'higuey'],
+    ],
+    notOver: [
+      ['spanish-santo-domingo', 1494, -72.34, 18.54, 'Jaragua (before conquest)'],
+      ['spanish-santo-domingo', 1700, -72.20, 19.76, 'Cap-Français (French)'],
+      ['french-saint-domingue', 1789, -69.89, 18.47, 'Santo Domingo (Spanish)'],
+      ['haiti-1804', 1810, -69.89, 18.47, 'Santo Domingo (España Boba)'],
+      ['espana-boba', 1810, -72.34, 18.54, 'Port-au-Prince (Haiti)'],
+    ],
+    noOverlap: {
+      from: 1200,
+      to: 1815,
+      box: [-74.6, 17.5, -68.2, 20.0],
+      planar: true,
+      with: ['spanish-empire', 'spanish-cuba'],
     },
   },
 ];

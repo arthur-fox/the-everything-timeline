@@ -278,6 +278,13 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assert(regionIds('spanish-empire', 1700).every((id) => id !== 'caribbean'), 'Spanish 1700 has no Caribbean fragment (Day 78)');
   assert(regionIds('spanish-empire', 1800).every((id) => id !== 'caribbean'), 'Spanish 1800 has no Caribbean fragment (Day 78)');
   assert(idsAt(1600).has('spanish-cuba'), 'Spanish Cuba ON at 1600');
+  // Day 79: Hispaniola pack — Spanish Santo Domingo, French Saint-Domingue, Haiti.
+  assert(idsAt(1492).has('marien-cacicazgo'), 'Marién ON at 1492');
+  assert(idsAt(1600).has('spanish-santo-domingo'), 'Spanish Santo Domingo ON at 1600');
+  assert(idsAt(1700).has('french-saint-domingue'), 'French Saint-Domingue ON at 1700');
+  assert(idsAt(1805).has('haiti-1804'), 'Haiti ON at 1805');
+  assert(idsAt(1810).has('espana-boba'), 'España Boba ON at 1810');
+  assert(!idsAt(1800).has('spanish-santo-domingo'), 'Spanish Santo Domingo OFF at 1800 (ceded)');
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
 

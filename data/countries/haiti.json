@@ -1,0 +1,269 @@
+{
+  "id": "haiti",
+  "name": "Haiti",
+  "flag": "🇭🇹",
+  "minYear": -4000,
+  "maxYear": 2025,
+  "categories": [
+    { "id": "indigenous", "name": "Indigenous Ayiti", "color": "#F59E0B" },
+    { "id": "colonial", "name": "Colonial", "color": "#EF4444" },
+    { "id": "revolution", "name": "Revolution & Independence", "color": "#DC2626" },
+    { "id": "state", "name": "State Building", "color": "#7C3AED" },
+    { "id": "occupation", "name": "Occupation & Dictatorship", "color": "#B45309" },
+    { "id": "modern", "name": "Modern Haiti", "color": "#10B981" }
+  ],
+  "items": [
+    {
+      "id": "ht-early-peoples",
+      "name": "Early peoples: Casimiroid & Ostionoid",
+      "start": -4000,
+      "end": 1200,
+      "region": "indigenous",
+      "icon": "🐚",
+      "description": "Lithic and Archaic (Casimiroid) foragers reached Hispaniola by about 4000 BCE from Central America / the Yucatán. From around the start of the Common Era, Ostionoid / Saladoid-related agriculturalists expanded from South America through the Antilles. By late pre-Columbian times Classic Taíno culture dominated the island they called Ayiti (“land of high mountains”) and Quisqueya.",
+      "sources": [
+        { "title": "Wikipedia — History of Haiti", "url": "https://en.wikipedia.org/wiki/History_of_Haiti" },
+        { "title": "Wikipedia — Casimiroid culture", "url": "https://en.wikipedia.org/wiki/Casimiroid_culture" },
+        { "title": "Wikipedia — Taíno", "url": "https://en.wikipedia.org/wiki/Ta%C3%ADno" }
+      ],
+      "periods": [
+        { "name": "Casimiroid / Archaic Hispaniola", "start": -4000, "end": 1 },
+        { "name": "Ostionoid & early Taíno", "start": 1, "end": 1200 }
+      ]
+    },
+    {
+      "id": "ht-taino-cacicazgos",
+      "name": "Taíno cacicazgos of Ayiti",
+      "start": 1200,
+      "end": 1504,
+      "region": "indigenous",
+      "icon": "🛶",
+      "description": "At European contact Hispaniola was divided among five major Taíno cacicazgos: Marién (Guacanagarí, north-west), Magua (Guarionex, Cibao), Maguana (Caonabo, centre), Jaragua / Xaragua (Bohechío then Anacaona, south-west), and Higüey (Cayacoa / Cotubanamá, east). They grew cassava, maize and cotton, played batey, and organised large village confederacies under caciques. Spanish conquest, disease and forced labour destroyed the political order within a generation; Anacaona was hanged in 1503.",
+      "sources": [
+        { "title": "Wikipedia — Chiefdoms of Hispaniola", "url": "https://en.wikipedia.org/wiki/Chiefdoms_of_Hispaniola" },
+        { "title": "Wikipedia — Anacaona", "url": "https://en.wikipedia.org/wiki/Anacaona" },
+        { "title": "Wikipedia — Taíno", "url": "https://en.wikipedia.org/wiki/Ta%C3%ADno" }
+      ],
+      "periods": [
+        { "name": "Five chiefdoms before contact", "start": 1200, "end": 1492 },
+        { "name": "Conquest and collapse", "start": 1492, "end": 1504 }
+      ]
+    },
+    {
+      "id": "ht-columbus-navidad",
+      "name": "Columbus & La Navidad (1492)",
+      "start": 1492,
+      "end": 1493,
+      "region": "colonial",
+      "icon": "⛵",
+      "description": "On Christmas Eve 1492 the Santa María wrecked on the north coast of Haiti. Columbus left about 39 men in the fort of La Navidad in Guacanagarí’s Marién and sailed home. When he returned in November 1493 the fort had been destroyed and the garrison killed after conflicts with Caonabo and others — the first major Indigenous–Spanish clash in the Americas.",
+      "sources": [
+        { "title": "Wikipedia — La Navidad", "url": "https://en.wikipedia.org/wiki/La_Navidad" },
+        { "title": "Wikipedia — Voyages of Christopher Columbus", "url": "https://en.wikipedia.org/wiki/Voyages_of_Christopher_Columbus" }
+      ],
+      "periods": [
+        { "name": "La Navidad founded and destroyed", "start": 1492, "end": 1493 }
+      ]
+    },
+    {
+      "id": "ht-spanish-conquest",
+      "name": "Spanish conquest of the west",
+      "start": 1493,
+      "end": 1697,
+      "region": "colonial",
+      "icon": "⚔️",
+      "description": "After La Isabela and Santo Domingo, Spanish captains subdued the western cacicazgos: Caonabo was captured, Jaragua was broken by Ovando’s massacre (1503), and the encomienda plus disease collapsed the Taíno population. The west later emptied of Spanish settlers as the colony centred on Santo Domingo; French flibustiers and settlers filled the vacuum from Tortuga and the north-west shore in the 1600s.",
+      "sources": [
+        { "title": "Wikipedia — History of Haiti", "url": "https://en.wikipedia.org/wiki/History_of_Haiti" },
+        { "title": "Wikipedia — Nicolás de Ovando", "url": "https://en.wikipedia.org/wiki/Nicol%C3%A1s_de_Ovando" }
+      ],
+      "periods": [
+        { "name": "Conquest of the cacicazgos", "start": 1493, "end": 1510 },
+        { "name": "Spanish west declines; French arrive", "start": 1510, "end": 1697 }
+      ]
+    },
+    {
+      "id": "ht-saint-domingue",
+      "name": "French Saint-Domingue",
+      "start": 1697,
+      "end": 1804,
+      "region": "colonial",
+      "icon": "🇫🇷",
+      "description": "The Treaty of Ryswick (1697) recognised French possession of the western third of Hispaniola as Saint-Domingue. Cap-Français (Cap-Haïtien), Port-au-Prince (from 1749) and the plains of the north and west became the core of the richest sugar and coffee colony in the Americas. A small white planter elite and free people of colour ruled over a large majority of enslaved Africans.",
+      "sources": [
+        { "title": "Wikipedia — Saint-Domingue", "url": "https://en.wikipedia.org/wiki/Saint-Domingue" },
+        { "title": "Wikipedia — Treaty of Ryswick", "url": "https://en.wikipedia.org/wiki/Treaty_of_Ryswick" }
+      ],
+      "periods": [
+        { "name": "Colony recognised at Ryswick", "start": 1697, "end": 1789 },
+        { "name": "Revolution and war", "start": 1789, "end": 1804 }
+      ]
+    },
+    {
+      "id": "ht-sugar-slavery",
+      "name": "Sugar, coffee & slavery",
+      "start": 1700,
+      "end": 1791,
+      "region": "colonial",
+      "icon": "⛓️",
+      "description": "By the 1780s Saint-Domingue produced roughly 40% of the world’s sugar and 60% of its coffee, on the labour of around half a million enslaved people — many newly arrived from West and Central Africa. The Code Noir, plantation violence and a rigid racial hierarchy shaped a society that exploded when the French Revolution reached the colony.",
+      "sources": [
+        { "title": "Wikipedia — Saint-Domingue", "url": "https://en.wikipedia.org/wiki/Saint-Domingue" },
+        { "title": "Wikipedia — Code Noir", "url": "https://en.wikipedia.org/wiki/Code_Noir" }
+      ],
+      "periods": [
+        { "name": "Plantation boom", "start": 1700, "end": 1789 },
+        { "name": "On the eve of revolt", "start": 1789, "end": 1791 }
+      ]
+    },
+    {
+      "id": "ht-haitian-revolution",
+      "name": "Haitian Revolution",
+      "start": 1791,
+      "end": 1804,
+      "region": "revolution",
+      "icon": "🔥",
+      "description": "A massive slave uprising began in the northern plain in August 1791. Toussaint Louverture emerged as the dominant general, defeated rival factions and foreign invaders, and by 1801 governed the whole island under a constitution that abolished slavery. Napoleon’s Leclerc expedition (1802) captured Toussaint, but yellow fever and renewed resistance under Dessalines destroyed the French army; the victory at Vertières (November 1803) ended French rule.",
+      "sources": [
+        { "title": "Wikipedia — Haitian Revolution", "url": "https://en.wikipedia.org/wiki/Haitian_Revolution" },
+        { "title": "Wikipedia — Toussaint Louverture", "url": "https://en.wikipedia.org/wiki/Toussaint_Louverture" },
+        { "title": "Wikipedia — Battle of Vertières", "url": "https://en.wikipedia.org/wiki/Battle_of_Verti%C3%A8res" }
+      ],
+      "periods": [
+        { "name": "Uprising and civil war", "start": 1791, "end": 1801 },
+        { "name": "Leclerc, Vertières, French defeat", "start": 1801, "end": 1804 }
+      ]
+    },
+    {
+      "id": "ht-independence-1804",
+      "name": "Independence (1 January 1804)",
+      "start": 1804,
+      "end": 1806,
+      "region": "revolution",
+      "icon": "🇭🇹",
+      "description": "On 1 January 1804 at Gonaïves, Jean-Jacques Dessalines declared the independence of Haiti — restoring a Taíno name for the island. It was the first Black republic and the only state born of a successful slave revolution. The new state was diplomatically isolated; France would demand a massive indemnity in 1825 as the price of recognition.",
+      "sources": [
+        { "title": "Wikipedia — Haitian Declaration of Independence", "url": "https://en.wikipedia.org/wiki/Haitian_Declaration_of_Independence" },
+        { "title": "Wikipedia — Jean-Jacques Dessalines", "url": "https://en.wikipedia.org/wiki/Jean-Jacques_Dessalines" }
+      ],
+      "periods": [
+        { "name": "Declaration and early empire", "start": 1804, "end": 1806 }
+      ]
+    },
+    {
+      "id": "ht-dessalines",
+      "name": "Dessalines’s empire",
+      "start": 1804,
+      "end": 1806,
+      "region": "state",
+      "icon": "👑",
+      "description": "Dessalines crowned himself emperor (Jacques I) in October 1804. He ordered the 1804 massacre of much of the remaining French population, fortified the country against reconquest, and tried to keep plantation labour under state discipline. He was assassinated at Pont-Rouge in October 1806; Haiti then split between north and south.",
+      "sources": [
+        { "title": "Wikipedia — Jean-Jacques Dessalines", "url": "https://en.wikipedia.org/wiki/Jean-Jacques_Dessalines" },
+        { "title": "Wikipedia — 1804 Haiti massacre", "url": "https://en.wikipedia.org/wiki/1804_Haiti_massacre" }
+      ],
+      "periods": [
+        { "name": "Empire of Haiti", "start": 1804, "end": 1806 }
+      ]
+    },
+    {
+      "id": "ht-christophe-petion",
+      "name": "Christophe & Pétion",
+      "start": 1807,
+      "end": 1820,
+      "region": "state",
+      "icon": "🗡️",
+      "description": "After Dessalines’s death the state split: Henry Christophe ruled the north (State, then Kingdom of Haiti, with its Citadelle Laferrière and Sans-Souci palace), while Alexandre Pétion led a republic in the south from Port-au-Prince, distributing land to veterans. Christophe shot himself in 1820; Jean-Pierre Boyer then reunified Haiti.",
+      "sources": [
+        { "title": "Wikipedia — Henri Christophe", "url": "https://en.wikipedia.org/wiki/Henri_Christophe" },
+        { "title": "Wikipedia — Alexandre Pétion", "url": "https://en.wikipedia.org/wiki/Alexandre_P%C3%A9tion" },
+        { "title": "Wikipedia — Citadelle Laferrière", "url": "https://en.wikipedia.org/wiki/Citadelle_Laferri%C3%A8re" }
+      ],
+      "periods": [
+        { "name": "North–south split", "start": 1807, "end": 1820 }
+      ]
+    },
+    {
+      "id": "ht-boyer-unification",
+      "name": "Boyer & unification of the island",
+      "start": 1820,
+      "end": 1843,
+      "region": "state",
+      "icon": "🗺️",
+      "description": "Jean-Pierre Boyer reunified Haiti in 1820 and in 1822 occupied the newly independent eastern Spanish side, ruling the whole island until the Dominican separation of 1844. In 1825 he accepted France’s demand for a 150-million-franc indemnity (later reduced) for recognition — a debt that weighed on Haitian finances for generations. He was overthrown in 1843.",
+      "sources": [
+        { "title": "Wikipedia — Jean-Pierre Boyer", "url": "https://en.wikipedia.org/wiki/Jean-Pierre_Boyer" },
+        { "title": "Wikipedia — Haiti indemnity controversy", "url": "https://en.wikipedia.org/wiki/Haiti_indemnity_controversy" }
+      ],
+      "periods": [
+        { "name": "Reunification and whole-island rule", "start": 1820, "end": 1843 }
+      ]
+    },
+    {
+      "id": "ht-us-occupation",
+      "name": "US occupation (1915–1934)",
+      "start": 1915,
+      "end": 1934,
+      "region": "occupation",
+      "icon": "🇺🇸",
+      "description": "After years of political instability and foreign debt pressure, US Marines occupied Haiti in 1915. The occupation reorganised the gendarmerie, finances and infrastructure, faced the Caco resistance, and ended in 1934 under Franklin Roosevelt’s Good Neighbor policy. It left a centralised state and bitter memories of racialised rule.",
+      "sources": [
+        { "title": "Wikipedia — United States occupation of Haiti", "url": "https://en.wikipedia.org/wiki/United_States_occupation_of_Haiti" }
+      ],
+      "periods": [
+        { "name": "Marine occupation", "start": 1915, "end": 1934 }
+      ]
+    },
+    {
+      "id": "ht-duvaliers",
+      "name": "The Duvaliers",
+      "start": 1957,
+      "end": 1986,
+      "region": "occupation",
+      "icon": "🕶️",
+      "description": "François “Papa Doc” Duvalier won the 1957 presidency and built a personalist dictatorship backed by the Tonton Macoute militia. His son Jean-Claude “Baby Doc” succeeded him in 1971 and fled in 1986 after popular protests. The Duvalier years were marked by repression, corruption and a large diaspora.",
+      "sources": [
+        { "title": "Wikipedia — François Duvalier", "url": "https://en.wikipedia.org/wiki/Fran%C3%A7ois_Duvalier" },
+        { "title": "Wikipedia — Jean-Claude Duvalier", "url": "https://en.wikipedia.org/wiki/Jean-Claude_Duvalier" }
+      ],
+      "periods": [
+        { "name": "Papa Doc", "start": 1957, "end": 1971 },
+        { "name": "Baby Doc", "start": 1971, "end": 1986 }
+      ]
+    },
+    {
+      "id": "ht-aristide-democracy",
+      "name": "Aristide & contested democracy",
+      "start": 1990,
+      "end": 2004,
+      "region": "modern",
+      "icon": "🗳️",
+      "description": "Jean-Bertrand Aristide, a former priest, won Haiti’s first democratic presidential election in 1990, was ousted by a coup in 1991, restored with US backing in 1994, and re-elected in 2000. He left office again in 2004 amid rebellion and foreign pressure. UN stabilisation missions (MINUSTAH) followed.",
+      "sources": [
+        { "title": "Wikipedia — Jean-Bertrand Aristide", "url": "https://en.wikipedia.org/wiki/Jean-Bertrand_Aristide" },
+        { "title": "Wikipedia — 2004 Haitian coup d'état", "url": "https://en.wikipedia.org/wiki/2004_Haitian_coup_d%27%C3%A9tat" }
+      ],
+      "periods": [
+        { "name": "First presidency and coup", "start": 1990, "end": 1994 },
+        { "name": "Return and 2004 crisis", "start": 1994, "end": 2004 }
+      ]
+    },
+    {
+      "id": "ht-earthquake-recent",
+      "name": "2010 earthquake & recent crises",
+      "start": 2010,
+      "end": 2025,
+      "region": "modern",
+      "icon": "🏚️",
+      "description": "The 12 January 2010 earthquake near Port-au-Prince killed well over 100,000 people and devastated the capital. Cholera introduced by UN peacekeepers, contested elections, the assassination of President Jovenel Moïse (2021), and the expansion of armed gangs in the capital have deepened a prolonged political and humanitarian crisis.",
+      "sources": [
+        { "title": "Wikipedia — 2010 Haiti earthquake", "url": "https://en.wikipedia.org/wiki/2010_Haiti_earthquake" },
+        { "title": "Wikipedia — Assassination of Jovenel Moïse", "url": "https://en.wikipedia.org/wiki/Assassination_of_Jovenel_Mo%C3%AFse" }
+      ],
+      "periods": [
+        { "name": "Earthquake and reconstruction", "start": 2010, "end": 2020 },
+        { "name": "Political and security crisis", "start": 2020, "end": 2025 }
+      ]
+    }
+  ]
+}
