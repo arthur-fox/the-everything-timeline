@@ -251,10 +251,12 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   }
 
   const b1850 = regionIds('british-empire', 1850);
-  for (const id of ['british-isles', 'india-north', 'australia-east', 'south-africa', 'canada-east', 'caribbean']) {
+  for (const id of ['british-isles', 'india-north', 'australia-east', 'south-africa', 'canada-east']) {
     assert(b1850.includes(id), `British 1850 has fragment ${id}`);
   }
-  assert(new Set(b1850).size >= 6, `British 1850 has ≥6 region ids (got ${new Set(b1850).size})`);
+  // Day 80: schematic caribbean fringe dropped (British Jamaica drawn by the Jamaica pack).
+  assert(!b1850.includes('caribbean'), 'British 1850 has no Caribbean fragment (Day 80)');
+  assert(new Set(b1850).size >= 5, `British 1850 has ≥5 region ids (got ${new Set(b1850).size})`);
   assertNoOceanSpan('british-empire', 1850, 55);
   assertNoOceanSpan('british-empire', 1920, 55);
   const b1920 = regionIds('british-empire', 1920);
@@ -285,6 +287,14 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assert(idsAt(1805).has('haiti-1804'), 'Haiti ON at 1805');
   assert(idsAt(1810).has('espana-boba'), 'España Boba ON at 1810');
   assert(!idsAt(1800).has('spanish-santo-domingo'), 'Spanish Santo Domingo OFF at 1800 (ceded)');
+  // Day 80: Jamaica pack — Taíno Yamaye, Spanish Jamaica, British Jamaica; British / Colonial Americas caribbean dropped.
+  assert(idsAt(1492).has('taino-yamaye'), 'Taíno Yamaye ON at 1492');
+  assert(idsAt(1600).has('spanish-jamaica'), 'Spanish Jamaica ON at 1600');
+  assert(idsAt(1700).has('british-jamaica'), 'British Jamaica ON at 1700');
+  assert(idsAt(1815).has('british-jamaica'), 'British Jamaica ON at 1815');
+  assert(!idsAt(1510).has('taino-yamaye'), 'Taíno Yamaye OFF at 1510');
+  assert(!idsAt(1656).has('spanish-jamaica'), 'Spanish Jamaica OFF at 1656');
+  assert(regionIds('colonial-americas', 1700).every((id) => id !== 'caribbean'), 'Colonial Americas 1700 has no Caribbean fragment (Day 80)');
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
 
