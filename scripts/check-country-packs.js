@@ -7,7 +7,8 @@
  * src/globe-pack-kazakhstan.js), Turkmenistan (Day 74, src/globe-pack-turkmenistan.js), Kyrgyzstan
  * (Day 75, src/globe-pack-kyrgyzstan.js), Tajikistan (Day 76, src/globe-pack-tajikistan.js),
  * Afghanistan (Day 77, src/globe-pack-afghanistan.js), Cuba (Day 78, src/globe-pack-cuba.js) and
- * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js) and Jamaica (Day 80,
+ * src/globe-pack-jamaica.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -41,6 +42,7 @@ import { tajikistanPolities, tajikistanShapeFixes } from '../src/globe-pack-taji
 import { afghanistanPolities, afghanistanShapeFixes } from '../src/globe-pack-afghanistan.js';
 import { cubaPolities, cubaShapeFixes } from '../src/globe-pack-cuba.js';
 import { haitiDrPolities, haitiDrShapeFixes } from '../src/globe-pack-haiti-dr.js';
+import { jamaicaPolities, jamaicaShapeFixes } from '../src/globe-pack-jamaica.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -1366,6 +1368,67 @@ const PACKS = [
       box: [-74.6, 17.5, -68.2, 20.0],
       planar: true,
       with: ['spanish-empire', 'spanish-cuba'],
+    },
+  },
+  {
+    country: 'jamaica',
+    polities: jamaicaPolities,
+    fixes: jamaicaShapeFixes,
+    redrawn: {},
+    dropped: [
+      ['british-empire', 'caribbean'],
+      ['colonial-americas', 'caribbean'],
+    ],
+    capitals: [
+      ['taino-yamaye', 1494, -77.27, 18.40, 'St Ann’s Bay / Yamaye'],
+      ['spanish-jamaica', 1509, -77.27, 18.40, 'Sevilla la Nueva'],
+      ['spanish-jamaica', 1534, -76.96, 17.99, 'Villa de la Vega'],
+      ['spanish-jamaica', 1654, -76.96, 17.99, 'Spanish Town'],
+      ['british-jamaica', 1655, -76.84, 17.94, 'Port Royal'],
+      ['british-jamaica', 1692, -76.79, 17.99, 'Kingston'],
+      ['british-jamaica', 1739, -76.96, 17.99, 'Spanish Town'],
+      ['british-jamaica', 1815, -76.79, 17.99, 'Kingston'],
+    ],
+    on: {
+      1400: ['taino-yamaye'],
+      1494: ['taino-yamaye'],
+      1509: ['spanish-jamaica'],
+      1534: ['spanish-jamaica'],
+      1654: ['spanish-jamaica'],
+      1655: ['british-jamaica'],
+      1692: ['british-jamaica'],
+      1815: ['british-jamaica'],
+    },
+    gone: {
+      1100: ['taino-yamaye'],
+      1510: ['taino-yamaye'],
+      1656: ['spanish-jamaica'],
+      1830: ['british-jamaica'],
+    },
+    absent: [
+      ['spanish-jamaica', 1509, 'west'],
+      ['spanish-jamaica', 1509, 'east'],
+      ['spanish-jamaica', 1511, 'east'],
+    ],
+    present: [
+      ['taino-yamaye', 1494, 'yamaye'],
+      ['spanish-jamaica', 1509, 'central'],
+      ['spanish-jamaica', 1511, 'west'],
+      ['spanish-jamaica', 1534, 'east'],
+      ['british-jamaica', 1655, 'west'],
+      ['british-jamaica', 1815, 'east'],
+    ],
+    notOver: [
+      ['spanish-jamaica', 1509, -78.13, 18.22, 'Savanna-la-Mar (west before spread)'],
+      ['spanish-jamaica', 1511, -76.46, 18.17, 'Port Antonio (east before full)'],
+      ['taino-yamaye', 1494, -72.34, 18.54, 'Port-au-Prince (Hispaniola)'],
+    ],
+    noOverlap: {
+      from: 1200,
+      to: 1815,
+      box: [-78.5, 17.6, -76.1, 18.6],
+      planar: true,
+      with: ['spanish-empire', 'spanish-cuba', 'spanish-santo-domingo', 'french-saint-domingue', 'haiti-1804'],
     },
   },
 ];

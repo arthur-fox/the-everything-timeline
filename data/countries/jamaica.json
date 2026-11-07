@@ -1,0 +1,304 @@
+{
+  "id": "jamaica",
+  "name": "Jamaica",
+  "flag": "🇯🇲",
+  "minYear": -4000,
+  "maxYear": 2025,
+  "categories": [
+    { "id": "indigenous", "name": "Indigenous Yamaye", "color": "#F59E0B" },
+    { "id": "colonial", "name": "Colonial Jamaica", "color": "#EF4444" },
+    { "id": "slavery", "name": "Slavery & Resistance", "color": "#B45309" },
+    { "id": "politics", "name": "Politics & State", "color": "#3B82F6" },
+    { "id": "culture", "name": "Culture", "color": "#A855F7" },
+    { "id": "modern", "name": "Modern Jamaica", "color": "#10B981" }
+  ],
+  "items": [
+    {
+      "id": "jm-early-peoples",
+      "name": "Archaic foragers & Ostionoid farmers",
+      "start": -4000,
+      "end": 1200,
+      "region": "indigenous",
+      "icon": "🐚",
+      "description": "Lithic and Archaic foragers reached Jamaica by about 4000 BCE (Redware / pre-Arawak sites). From around 600 CE Ostionoid agriculturalists related to the Antillean Saladoid–Ostionoid expansion settled the island, growing cassava and living in coastal and inland villages. By late pre-Columbian times Classic Taíno culture of Yamaye had absorbed or replaced earlier traditions.",
+      "sources": [
+        { "title": "Wikipedia — History of Jamaica", "url": "https://en.wikipedia.org/wiki/History_of_Jamaica" },
+        { "title": "Wikipedia — Ostionoid", "url": "https://en.wikipedia.org/wiki/Ostionoid" },
+        { "title": "Wikipedia — Taíno", "url": "https://en.wikipedia.org/wiki/Ta%C3%ADno" }
+      ],
+      "periods": [
+        { "name": "Archaic Jamaica", "start": -4000, "end": 600 },
+        { "name": "Ostionoid settlement", "start": 600, "end": 1200 }
+      ]
+    },
+    {
+      "id": "jm-taino-yamaye",
+      "name": "Taíno Yamaye",
+      "start": 1200,
+      "end": 1510,
+      "region": "indigenous",
+      "icon": "🛶",
+      "description": "The Taíno called the island Yamaye (or Xaymaca, “land of wood and water”). At European contact it was organised in village chiefdoms under caciques rather than a single surveyed kingdom; Spanish accounts name several leaders but do not leave a map like Hispaniola’s five cacicazgos. Communities grew cassava, cotton and tobacco, played batey, and traded with Cuba and Hispaniola. Disease, forced labour and flight emptied most Taíno settlements within a generation of Spanish colonisation.",
+      "sources": [
+        { "title": "Wikipedia — Taíno", "url": "https://en.wikipedia.org/wiki/Ta%C3%ADno" },
+        { "title": "Wikipedia — History of Jamaica", "url": "https://en.wikipedia.org/wiki/History_of_Jamaica" },
+        { "title": "Wikipedia — Jamaican Maroons", "url": "https://en.wikipedia.org/wiki/Jamaican_Maroons" }
+      ],
+      "periods": [
+        { "name": "Classic Taíno Yamaye", "start": 1200, "end": 1494 },
+        { "name": "Contact and collapse", "start": 1494, "end": 1510 }
+      ]
+    },
+    {
+      "id": "jm-columbus",
+      "name": "Columbus reaches Jamaica (1494)",
+      "start": 1494,
+      "end": 1494,
+      "region": "colonial",
+      "icon": "⛵",
+      "description": "On his second voyage Christopher Columbus sighted Jamaica on 5 May 1494 and landed at Discovery Bay / St Ann’s Bay. He claimed the island for Spain as Santiago. A later stranding on the north coast (1503–04, during the fourth voyage) left him and his crew dependent on Taíno food until rescue — an episode recorded in his son Ferdinand’s biography and in Diego Méndez’s account.",
+      "sources": [
+        { "title": "Wikipedia — Voyages of Christopher Columbus", "url": "https://en.wikipedia.org/wiki/Voyages_of_Christopher_Columbus" },
+        { "title": "Wikipedia — History of Jamaica", "url": "https://en.wikipedia.org/wiki/History_of_Jamaica" }
+      ],
+      "periods": [
+        { "name": "Second-voyage landfall", "start": 1494, "end": 1494 }
+      ]
+    },
+    {
+      "id": "jm-spanish-jamaica",
+      "name": "Spanish Jamaica",
+      "start": 1509,
+      "end": 1655,
+      "region": "colonial",
+      "icon": "⛪",
+      "description": "Juan de Esquivel began permanent Spanish settlement in 1509. Sevilla la Nueva (New Seville) on the north coast near St Ann’s Bay was the first capital; after it failed, the Spanish moved inland to Villa de la Vega (Spanish Town, founded 1534), which remained the capital under Spain and then Britain until 1872. Jamaica stayed a thinly peopled Spanish cattle-and-pig frontier; many Taíno fled or died, and some escaped Africans joined them in the interior — ancestors of the later Maroons.",
+      "sources": [
+        { "title": "Wikipedia — Colony of Santiago (Jamaica)", "url": "https://en.wikipedia.org/wiki/Colony_of_Santiago_(Jamaica)" },
+        { "title": "Wikipedia — Sevilla la Nueva", "url": "https://en.wikipedia.org/wiki/Sevilla_la_Nueva" },
+        { "title": "Wikipedia — Spanish Town, Jamaica", "url": "https://en.wikipedia.org/wiki/Spanish_Town,_Jamaica" }
+      ],
+      "periods": [
+        { "name": "Sevilla la Nueva", "start": 1509, "end": 1534 },
+        { "name": "Villa de la Vega (Spanish Town)", "start": 1534, "end": 1655 }
+      ]
+    },
+    {
+      "id": "jm-english-conquest",
+      "name": "English conquest (1655)",
+      "start": 1655,
+      "end": 1670,
+      "region": "colonial",
+      "icon": "⚔️",
+      "description": "Oliver Cromwell’s Western Design sent an expedition under Penn and Venables against Spanish America. After failing at Hispaniola they took Jamaica in May 1655 with little resistance; Spanish guerrillas and allied Africans held out in the hills for years. The Treaty of Madrid (1670) confirmed English possession. Port Royal became the island’s harbour boomtown; Spanish Town remained the administrative capital.",
+      "sources": [
+        { "title": "Wikipedia — Invasion of Jamaica", "url": "https://en.wikipedia.org/wiki/Invasion_of_Jamaica" },
+        { "title": "Wikipedia — Western Design", "url": "https://en.wikipedia.org/wiki/Western_Design" },
+        { "title": "Wikipedia — Treaty of Madrid (1670)", "url": "https://en.wikipedia.org/wiki/Treaty_of_Madrid_(1670)" }
+      ],
+      "periods": [
+        { "name": "Invasion and Spanish holdouts", "start": 1655, "end": 1660 },
+        { "name": "Treaty of Madrid confirms English rule", "start": 1660, "end": 1670 }
+      ]
+    },
+    {
+      "id": "jm-port-royal",
+      "name": "Port Royal & the buccaneers",
+      "start": 1655,
+      "end": 1692,
+      "region": "colonial",
+      "icon": "🏴‍☠️",
+      "description": "Port Royal, on the spit guarding Kingston Harbour, became one of the richest and most notorious ports in the Americas — a base for English privateers and buccaneers (Henry Morgan among them) raiding Spanish shipping and towns. On 7 June 1692 a catastrophic earthquake and tsunami sank much of the town into the harbour. Survivors and commerce shifted across the bay to the new settlement of Kingston (1692).",
+      "sources": [
+        { "title": "Wikipedia — Port Royal", "url": "https://en.wikipedia.org/wiki/Port_Royal" },
+        { "title": "Wikipedia — 1692 Jamaica earthquake", "url": "https://en.wikipedia.org/wiki/1692_Jamaica_earthquake" },
+        { "title": "Wikipedia — Henry Morgan", "url": "https://en.wikipedia.org/wiki/Henry_Morgan" }
+      ],
+      "periods": [
+        { "name": "Privateer boomtown", "start": 1655, "end": 1692 },
+        { "name": "Earthquake and shift to Kingston", "start": 1692, "end": 1692 }
+      ]
+    },
+    {
+      "id": "jm-sugar-slavery",
+      "name": "Sugar & slavery",
+      "start": 1670,
+      "end": 1838,
+      "region": "slavery",
+      "icon": "🍬",
+      "description": "From the late 17th century Jamaica became Britain’s premier sugar colony. Enslaved Africans, brought in rising numbers across the Middle Passage, worked cane, coffee and livestock estates under a brutal plantocracy. By the 18th century the enslaved majority far outnumbered free whites. Resistance took the form of flight to the Maroons, estate rebellions (including Tacky’s War, 1760), and everyday sabotage. The trade and the plantation complex shaped Jamaica’s demography, landscape and politics into the 19th century.",
+      "sources": [
+        { "title": "Wikipedia — History of Jamaica", "url": "https://en.wikipedia.org/wiki/History_of_Jamaica" },
+        { "title": "Wikipedia — Tacky's War", "url": "https://en.wikipedia.org/wiki/Tacky%27s_War" },
+        { "title": "Wikipedia — Atlantic slave trade", "url": "https://en.wikipedia.org/wiki/Atlantic_slave_trade" }
+      ],
+      "periods": [
+        { "name": "Rise of the sugar plantocracy", "start": 1670, "end": 1760 },
+        { "name": "Peak slavery and rebellions", "start": 1760, "end": 1838 }
+      ]
+    },
+    {
+      "id": "jm-maroons",
+      "name": "Maroons: wars & treaties",
+      "start": 1655,
+      "end": 1796,
+      "region": "slavery",
+      "icon": "🏞️",
+      "description": "Africans who escaped Spanish and then English enslavement formed free communities in the Cockpit Country (Leeward Maroons) and the Blue Mountains (Windward Maroons, associated with Nanny of the Maroons). The First Maroon War ended with the 1739–40 treaties recognising Maroon autonomy in return for returning future runaways. The Second Maroon War (1795–96) against Trelawny Town ended in deportation of many Leeward Maroons to Nova Scotia and then Sierra Leone; Accompong and other towns endured.",
+      "sources": [
+        { "title": "Wikipedia — Jamaican Maroons", "url": "https://en.wikipedia.org/wiki/Jamaican_Maroons" },
+        { "title": "Wikipedia — First Maroon War", "url": "https://en.wikipedia.org/wiki/First_Maroon_War" },
+        { "title": "Wikipedia — Second Maroon War", "url": "https://en.wikipedia.org/wiki/Second_Maroon_War" },
+        { "title": "Wikipedia — Nanny of the Maroons", "url": "https://en.wikipedia.org/wiki/Nanny_of_the_Maroons" }
+      ],
+      "periods": [
+        { "name": "Formation of Maroon towns", "start": 1655, "end": 1730 },
+        { "name": "First Maroon War & treaties", "start": 1730, "end": 1740 },
+        { "name": "Second Maroon War", "start": 1795, "end": 1796 }
+      ]
+    },
+    {
+      "id": "jm-emancipation",
+      "name": "Emancipation",
+      "start": 1831,
+      "end": 1838,
+      "region": "slavery",
+      "icon": "🕊️",
+      "description": "Sam Sharpe’s Baptist War (Christmas Rebellion) of 1831–32 shook the plantocracy and strengthened the British abolitionist case. Parliament’s Slavery Abolition Act (1833) freed the enslaved across the empire after a transitional “apprenticeship”; full emancipation in Jamaica took effect on 1 August 1838. Free villages, peasant holdings and ongoing struggles over land and labour defined the post-emancipation decades.",
+      "sources": [
+        { "title": "Wikipedia — Baptist War", "url": "https://en.wikipedia.org/wiki/Baptist_War" },
+        { "title": "Wikipedia — Slavery Abolition Act 1833", "url": "https://en.wikipedia.org/wiki/Slavery_Abolition_Act_1833" },
+        { "title": "Wikipedia — Sam Sharpe", "url": "https://en.wikipedia.org/wiki/Samuel_Sharpe" }
+      ],
+      "periods": [
+        { "name": "Baptist War", "start": 1831, "end": 1832 },
+        { "name": "Apprenticeship to full freedom", "start": 1834, "end": 1838 }
+      ]
+    },
+    {
+      "id": "jm-morant-bay",
+      "name": "Morant Bay Rebellion (1865)",
+      "start": 1865,
+      "end": 1865,
+      "region": "politics",
+      "icon": "⚖️",
+      "description": "On 11 October 1865 Paul Bogle led a protest march from Stony Gut to the courthouse at Morant Bay; fighting followed and Governor Edward Eyre launched a brutal martial-law repression in which hundreds were killed, including Bogle and the mixed-race assemblyman George William Gordon. The scandal in Britain ended Jamaica’s old representative assembly: the island became a Crown Colony in 1866.",
+      "sources": [
+        { "title": "Wikipedia — Morant Bay rebellion", "url": "https://en.wikipedia.org/wiki/Morant_Bay_rebellion" },
+        { "title": "Wikipedia — Paul Bogle", "url": "https://en.wikipedia.org/wiki/Paul_Bogle" },
+        { "title": "Wikipedia — George William Gordon", "url": "https://en.wikipedia.org/wiki/George_William_Gordon" }
+      ],
+      "periods": [
+        { "name": "Rebellion and repression", "start": 1865, "end": 1865 }
+      ]
+    },
+    {
+      "id": "jm-crown-colony",
+      "name": "Crown Colony Jamaica",
+      "start": 1866,
+      "end": 1944,
+      "region": "politics",
+      "icon": "🏛️",
+      "description": "After Morant Bay, Jamaica was ruled as a Crown Colony with a governor and nominated council, later gradually reintroducing elected elements. Kingston became the capital (1872). Banana exports, the Panama Canal labour migration, the 1907 Kingston earthquake, Marcus Garvey’s UNIA (founded 1914 in Jamaica), labour unrest in the 1930s, and the 1944 constitution with universal adult suffrage reshaped politics toward self-government.",
+      "sources": [
+        { "title": "Wikipedia — Colony of Jamaica", "url": "https://en.wikipedia.org/wiki/Colony_of_Jamaica" },
+        { "title": "Wikipedia — Marcus Garvey", "url": "https://en.wikipedia.org/wiki/Marcus_Garvey" },
+        { "title": "Wikipedia — 1907 Kingston earthquake", "url": "https://en.wikipedia.org/wiki/1907_Kingston_earthquake" }
+      ],
+      "periods": [
+        { "name": "Crown Colony administration", "start": 1866, "end": 1938 },
+        { "name": "Labour unrest & 1944 constitution", "start": 1938, "end": 1944 }
+      ]
+    },
+    {
+      "id": "jm-federation-independence",
+      "name": "Federation & independence (1962)",
+      "start": 1958,
+      "end": 1962,
+      "region": "politics",
+      "icon": "🇯🇲",
+      "description": "Jamaica joined the West Indies Federation in 1958. A 1961 referendum rejected continued membership; the Federation dissolved in 1962. Under Premier (then Prime Minister) Alexander Bustamante and the Jamaica Labour Party, Jamaica became independent within the Commonwealth on 6 August 1962, with a new constitution, flag and anthem. Norman Manley’s PNP had led earlier self-government; the two parties dominated the new nation.",
+      "sources": [
+        { "title": "Wikipedia — West Indies Federation", "url": "https://en.wikipedia.org/wiki/West_Indies_Federation" },
+        { "title": "Wikipedia — Independence of Jamaica", "url": "https://en.wikipedia.org/wiki/Independence_of_Jamaica" },
+        { "title": "Wikipedia — Alexander Bustamante", "url": "https://en.wikipedia.org/wiki/Alexander_Bustamante" }
+      ],
+      "periods": [
+        { "name": "West Indies Federation", "start": 1958, "end": 1962 },
+        { "name": "Independence", "start": 1962, "end": 1962 }
+      ]
+    },
+    {
+      "id": "jm-manley-seaga",
+      "name": "Manley–Seaga era",
+      "start": 1972,
+      "end": 1989,
+      "region": "politics",
+      "icon": "🗳️",
+      "description": "Michael Manley’s PNP governments (1972–80) pursued democratic socialism, closer ties to Cuba and social programmes amid oil shocks and political violence. Edward Seaga’s JLP (1980–89) turned toward the United States, IMF-backed stabilisation and market reforms. The rivalry, garrison politics and the 1980 election’s death toll marked a bitter Cold War chapter in Caribbean democracy; power later alternated more peacefully.",
+      "sources": [
+        { "title": "Wikipedia — Michael Manley", "url": "https://en.wikipedia.org/wiki/Michael_Manley" },
+        { "title": "Wikipedia — Edward Seaga", "url": "https://en.wikipedia.org/wiki/Edward_Seaga" },
+        { "title": "Wikipedia — People's National Party", "url": "https://en.wikipedia.org/wiki/People%27s_National_Party" }
+      ],
+      "periods": [
+        { "name": "Manley’s democratic socialism", "start": 1972, "end": 1980 },
+        { "name": "Seaga and structural adjustment", "start": 1980, "end": 1989 }
+      ]
+    },
+    {
+      "id": "jm-reggae",
+      "name": "Reggae, Rastafari & cultural export",
+      "start": 1930,
+      "end": 2025,
+      "region": "culture",
+      "icon": "🎵",
+      "description": "Rastafari emerged in Jamaica in the 1930s around reverence for Haile Selassie and a critique of colonial Babylon. Ska, rocksteady and then reggae (from the late 1960s) — Bob Marley and the Wailers, Toots, Burning Spear, later dancehall — carried Jamaican language, rhythm and politics worldwide. UNESCO inscribed reggae on the Intangible Cultural Heritage list in 2018. Culture is as central to modern Jamaica’s global presence as bauxite or tourism.",
+      "sources": [
+        { "title": "Wikipedia — Reggae", "url": "https://en.wikipedia.org/wiki/Reggae" },
+        { "title": "Wikipedia — Rastafari", "url": "https://en.wikipedia.org/wiki/Rastafari" },
+        { "title": "Wikipedia — Bob Marley", "url": "https://en.wikipedia.org/wiki/Bob_Marley" }
+      ],
+      "periods": [
+        { "name": "Rastafari beginnings", "start": 1930, "end": 1960 },
+        { "name": "Ska, rocksteady, reggae & dancehall", "start": 1960, "end": 2025 }
+      ]
+    },
+    {
+      "id": "jm-modern",
+      "name": "Independent Jamaica to today",
+      "start": 1962,
+      "end": 2025,
+      "region": "modern",
+      "icon": "🏙️",
+      "description": "Since independence Jamaica has remained a parliamentary democracy within the Commonwealth, alternating PNP and JLP governments (Patterson, Patterson–P.J. Patterson, Portia Simpson-Miller, Andrew Holness and others). Bauxite, tourism and remittances anchor the economy; crime, debt and hurricanes (e.g. Gilbert 1988, Ivan 2004) have been recurring challenges. Kingston is the political and cultural capital; the island’s music, athletics and diaspora keep a global profile.",
+      "sources": [
+        { "title": "Wikipedia — History of Jamaica", "url": "https://en.wikipedia.org/wiki/History_of_Jamaica" },
+        { "title": "Wikipedia — Politics of Jamaica", "url": "https://en.wikipedia.org/wiki/Politics_of_Jamaica" },
+        { "title": "Wikipedia — Andrew Holness", "url": "https://en.wikipedia.org/wiki/Andrew_Holness" }
+      ],
+      "periods": [
+        { "name": "Early independence", "start": 1962, "end": 1972 },
+        { "name": "Contemporary democracy", "start": 1989, "end": 2025 }
+      ]
+    },
+    {
+      "id": "jm-tacky-garvey",
+      "name": "Tacky, Garvey & Black political tradition",
+      "start": 1760,
+      "end": 1940,
+      "region": "politics",
+      "icon": "✊",
+      "description": "Tacky’s War (1760), the largest 18th-century slave uprising in the British Caribbean, showed organised Akan-led resistance across multiple parishes. A century and a half later Marcus Garvey (born St Ann’s Bay, 1887) founded the Universal Negro Improvement Association in Jamaica (1914) and built a mass pan-African movement from Harlem to the Caribbean and Africa. Both belong to a long Jamaican tradition of Black political assertion that feeds into labour politics, Rastafari and independence.",
+      "sources": [
+        { "title": "Wikipedia — Tacky's War", "url": "https://en.wikipedia.org/wiki/Tacky%27s_War" },
+        { "title": "Wikipedia — Marcus Garvey", "url": "https://en.wikipedia.org/wiki/Marcus_Garvey" },
+        { "title": "Wikipedia — Universal Negro Improvement Association", "url": "https://en.wikipedia.org/wiki/Universal_Negro_Improvement_Association_and_African_Communities_League" }
+      ],
+      "periods": [
+        { "name": "Tacky’s War", "start": 1760, "end": 1761 },
+        { "name": "Garvey and the UNIA", "start": 1914, "end": 1940 }
+      ]
+    }
+  ]
+}

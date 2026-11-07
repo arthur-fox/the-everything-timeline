@@ -29,17 +29,17 @@ Honest caveat: only Peru (Day 65: 17 polities from Caral to the Neo-Inca State, 
 | Bonaire, Sint Eustatius and Saba | BQ | none | none | Caribbean & Central America | scheduled: outline or marker |
 | Cayman Islands | KY | none | none | Caribbean & Central America | scheduled: outline or marker |
 | Costa Rica | CR | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
-| Cuba | CU | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
+| Cuba | CU | done | done | Caribbean & Central America | modern borders 1815/1914–2025 |
 | Curaçao | CW | none | none | Caribbean & Central America | scheduled: outline or marker |
 | Dominica | DM | none | none | Caribbean & Central America | scheduled: outline or marker |
-| Dominican Republic | DO | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
+| Dominican Republic | DO | done | done | Caribbean & Central America | modern borders 1815/1914–2025 |
 | El Salvador | SV | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
 | Grenada | GD | none | none | Caribbean & Central America | scheduled: outline or marker |
 | Guadeloupe | GP | none | none | Caribbean & Central America | scheduled: outline or marker |
 | Guatemala | GT | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
-| Haiti | HT | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
+| Haiti | HT | done | done | Caribbean & Central America | modern borders 1815/1914–2025 |
 | Honduras | HN | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
-| Jamaica | JM | none | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
+| Jamaica | JM | done | done | Caribbean & Central America | modern borders 1815/1914–2025 |
 | Martinique | MQ | none | none | Caribbean & Central America | scheduled: outline or marker |
 | Mexico | MX | done | partial | Caribbean & Central America | modern borders 1815/1914–2025 |
 | Montserrat | MS | none | none | Caribbean & Central America | scheduled: outline or marker |
