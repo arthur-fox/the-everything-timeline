@@ -46,6 +46,7 @@ import { tajikistanPolities, applyTajikistanShapeFixes } from './globe-pack-taji
 import { afghanistanPolities, applyAfghanistanShapeFixes } from './globe-pack-afghanistan.js';
 import { cubaPolities, applyCubaShapeFixes } from './globe-pack-cuba.js';
 import { haitiDrPolities, applyHaitiDrShapeFixes } from './globe-pack-haiti-dr.js';
+import { jamaicaPolities, applyJamaicaShapeFixes } from './globe-pack-jamaica.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6408,6 +6409,15 @@ for (const ent of haitiDrPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 80 — Phase 5 country pack 3, Jamaica (globe-pack-jamaica.js): Taíno Yamaye, Spanish Jamaica
+// and British Jamaica, drawn from island pieces; British Empire / Colonial Americas caribbean
+// fringes over Jamaica are dropped.
+for (const ent of jamaicaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6474,6 +6484,8 @@ applyAfghanistanShapeFixes(spatialEntities);
 applyCubaShapeFixes(spatialEntities);
 // Day 79 — Hispaniola pack (no extra empire drops; Spanish caribbean already cleared by Cuba).
 applyHaitiDrShapeFixes(spatialEntities);
+// Day 80 — British Empire and Colonial Americas schematic caribbean fringes give way to British Jamaica.
+applyJamaicaShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
