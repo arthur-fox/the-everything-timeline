@@ -178,6 +178,15 @@ Shipped:
 
 These ideas may become useful, but they are less essential than search, validation, sources, filters, compare mode, and Globe Mode.
 
+### Civilisations — condensed overview within Timeline (future)
+
+**Civilisations** (working title) is an overview option within **Timeline**, not a third top-level mode; **Timeline** and **Globe** remain the main navigation choices. Show time against regions with coloured duration bands, visually distinguishing cultures/peoples from polities/empires. Keep it overview-first, mobile-readable and consistent with the navy-and-gold style, with optional expansion/zoom and links into the detailed Timeline or Globe at the selected place and year.
+
+- Reuse static, sourced data where reliable and make uncertain dates explicit. Political succession must not imply cultural disappearance; band widths must not suggest arbitrary importance or encode unsupported measures of territory or power.
+- Stage the work: audit data coverage and semantics; prototype a real, sourced subset; verify historical accuracy and desktop/mobile readability before expanding.
+- This is a future exploration track, not a reprioritisation or interruption of daily country packs and country coverage.
+- General inspiration: [Visual Capitalist’s empire timeline](https://www.visualcapitalist.com/the-worlds-biggest-empires-of-history-on-one-epic-visual-timeline/), shared via [Instagram](https://www.instagram.com/p/Dfem1ymF4Cg/); develop our own visual treatment rather than copying its layout or artwork.
+
 ### Story mode
 
 Curated guided paths through the data.
