@@ -1312,7 +1312,7 @@ Guatemala had no country timeline, and on the globe before 1815 only the Maya ci
   - Pieces are today's departments, not ancient or colonial borders. Classic kingdoms are drawn as their core domains (Tikal as north-east Petén, Quiriguá as Izabal, Dos Pilas as southern Petén), not their shifting hegemonies, and many lesser kingdoms (Naranjo, Yaxha, Waka’, Machaquilá, Cancuén) are cities and pins only.
   - Not drawn as shapes: the Preclassic Pacific coast (Tak’alik Ab’aj, Izapa), the Ch’orti’, Poqomam, Pipil and Xinca lands, the Manche Ch’ol and Lakandon, the Kowoj apart from the Itza, and Belize (British settlement from the 1600s; still the Maya civilisation ring and, from 1815, the nations layer). The rest of the Kingdom of Guatemala (Chiapas to Costa Rica) waits for its own packs and is no longer covered by the new-spain ring south-east of Guatemala.
   - Some dates are approximate: the Itza arrival in Petén (dated variously from the 13th to the 15th century), the K’iche’ founding years, the Kaqchikel revolt (shown to 1526, though it lasted to 1530), Verapaz (1545, between 1537 and 1547), and Spanish control of Izabal and southern Petén.
-- **Preview:** (filled in when the PR opens).
+- **Preview:** PR #95, https://theeverythingtimeline.com/pr-preview/pr-95/?view=globe&year=1500&at=15.6,-90.4,0.38&fullscreen=1
 
 - **Next:** Mexico refinement (pack 3: Maya city-states of Yucatán and Chiapas, the Aztec Triple Alliance and its neighbours, colonial New Spain splits; Timeline + Globe).
 
