@@ -7,8 +7,8 @@
  * src/globe-pack-kazakhstan.js), Turkmenistan (Day 74, src/globe-pack-turkmenistan.js), Kyrgyzstan
  * (Day 75, src/globe-pack-kyrgyzstan.js), Tajikistan (Day 76, src/globe-pack-tajikistan.js),
  * Afghanistan (Day 77, src/globe-pack-afghanistan.js), Cuba (Day 78, src/globe-pack-cuba.js) and
- * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js) and Jamaica (Day 80,
- * src/globe-pack-jamaica.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js), Jamaica (Day 80,
+ * src/globe-pack-jamaica.js) and Guatemala (Day 81, src/globe-pack-guatemala.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -43,6 +43,7 @@ import { afghanistanPolities, afghanistanShapeFixes } from '../src/globe-pack-af
 import { cubaPolities, cubaShapeFixes } from '../src/globe-pack-cuba.js';
 import { haitiDrPolities, haitiDrShapeFixes } from '../src/globe-pack-haiti-dr.js';
 import { jamaicaPolities, jamaicaShapeFixes } from '../src/globe-pack-jamaica.js';
+import { guatemalaPolities, guatemalaShapeFixes } from '../src/globe-pack-guatemala.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -1429,6 +1430,78 @@ const PACKS = [
       box: [-78.5, 17.6, -76.1, 18.6],
       planar: true,
       with: ['spanish-empire', 'spanish-cuba', 'spanish-santo-domingo', 'french-saint-domingue', 'haiti-1804'],
+    },
+  },
+  {
+    country: 'guatemala',
+    polities: guatemalaPolities,
+    fixes: guatemalaShapeFixes,
+    redrawn: {},
+    // The Spanish Empire's schematic new-spain ring is trimmed clear of Guatemala (it runs through the sea).
+    trimmed: ['spanish-empire'],
+    capitals: [
+      ['kaminaljuyu', -100, -90.55, 14.63, 'Kaminaljuyu'],
+      ['mutal-tikal', 378, -89.62, 17.22, 'Tikal'],
+      ['mutal-tikal', 695, -89.62, 17.22, 'Tikal'],
+      ['petexbatun', 700, -90.30, 16.44, 'Dos Pilas'],
+      ['petexbatun', 809, -90.19, 16.40, 'Aguateca'],
+      ['quirigua', 738, -89.04, 15.27, 'Quiriguá'],
+      ['kiche-kingdom', 1450, -91.17, 15.02, 'Q’umarkaj'],
+      ['kiche-kingdom', 1470, -91.52, 14.84, 'Xelajú (K’iche’ conquest)'],
+      ['kaqchikel-kingdom', 1500, -90.99, 14.74, 'Iximche'],
+      ['tzutujil-kingdom', 1450, -91.23, 14.64, 'Chiya’ / Atitlán'],
+      ['mam-kingdom', 1450, -91.51, 15.33, 'Zaculeu'],
+      ['tezulutlan', 1537, -90.37, 15.47, 'Cobán'],
+      ['itza-kingdom', 1618, -89.89, 16.93, 'Nojpetén'],
+      ['spanish-guatemala', 1527, -90.76, 14.52, 'Santiago (Almolonga)'],
+      ['spanish-guatemala', 1600, -90.73, 14.56, 'Santiago (Antigua)'],
+      ['spanish-guatemala', 1815, -90.51, 14.63, 'Nueva Guatemala'],
+      ['spanish-guatemala', 1697, -89.89, 16.93, 'Flores (Petén)'],
+    ],
+    on: {
+      [-100]: ['kaminaljuyu'],
+      300: ['mutal-tikal', 'kaminaljuyu'],
+      700: ['mutal-tikal', 'petexbatun', 'quirigua', 'kaminaljuyu'],
+      1450: ['kiche-kingdom', 'tzutujil-kingdom', 'mam-kingdom', 'tezulutlan', 'itza-kingdom'],
+      1500: ['kiche-kingdom', 'kaqchikel-kingdom', 'tzutujil-kingdom', 'mam-kingdom', 'tezulutlan', 'itza-kingdom'],
+      1525: ['spanish-guatemala', 'kaqchikel-kingdom', 'mam-kingdom', 'tezulutlan', 'itza-kingdom'],
+      1600: ['spanish-guatemala', 'itza-kingdom'],
+      1697: ['spanish-guatemala'],
+      1815: ['spanish-guatemala'],
+    },
+    gone: {
+      [-600]: ['kaminaljuyu'],
+      900: ['mutal-tikal', 'petexbatun', 'quirigua', 'kaminaljuyu'],
+      1525: ['kiche-kingdom', 'tzutujil-kingdom'],
+      1528: ['kaqchikel-kingdom', 'mam-kingdom'],
+      1546: ['tezulutlan'],
+      1698: ['itza-kingdom'],
+      1830: ['spanish-guatemala'],
+    },
+    absent: [],
+    present: [
+      ['kiche-kingdom', 1450, 'core'],
+      ['spanish-guatemala', 1524, 'highlands'],
+      ['spanish-guatemala', 1815, 'highlands'],
+    ],
+    notOver: [
+      ['spanish-guatemala', 1524, -91.51, 15.33, 'Zaculeu (Mam until 1525)'],
+      ['spanish-guatemala', 1524, -90.99, 14.74, 'Iximche (Kaqchikel until 1527)'],
+      ['spanish-guatemala', 1600, -89.89, 16.93, 'Nojpetén (Itza until 1697)'],
+      ['spanish-guatemala', 1530, -90.37, 15.47, 'Cobán (Tezulutlán until 1545)'],
+      ['kiche-kingdom', 1500, -90.99, 14.74, 'Iximche (Kaqchikel from 1470)'],
+      ['mutal-tikal', 700, -90.30, 16.44, 'Dos Pilas (Petexbatún)'],
+      ['spanish-empire', 1550, -90.51, 14.63, 'Guatemala City (trimmed new-spain)'],
+      ['spanish-empire', 1600, -89.89, 16.93, 'Nojpetén (trimmed new-spain)'],
+      ['spanish-empire', 1750, -91.17, 15.02, 'Q’umarkaj (trimmed new-spain)'],
+      ['spanish-empire', 1800, -89.62, 17.22, 'Tikal (trimmed new-spain)'],
+    ],
+    noOverlap: {
+      from: -500,
+      to: 1815,
+      box: [-92.3, 13.7, -88.2, 17.9],
+      planar: true,
+      with: ['spanish-empire'],
     },
   },
 ];

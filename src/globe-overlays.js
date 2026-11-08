@@ -47,6 +47,7 @@ import { afghanistanPolities, applyAfghanistanShapeFixes } from './globe-pack-af
 import { cubaPolities, applyCubaShapeFixes } from './globe-pack-cuba.js';
 import { haitiDrPolities, applyHaitiDrShapeFixes } from './globe-pack-haiti-dr.js';
 import { jamaicaPolities, applyJamaicaShapeFixes } from './globe-pack-jamaica.js';
+import { guatemalaPolities, applyGuatemalaShapeFixes } from './globe-pack-guatemala.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6418,6 +6419,16 @@ for (const ent of jamaicaPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 81 — Phase 5 country pack 3, Guatemala (globe-pack-guatemala.js): Kaminaljuyu, Mutal (Tikal),
+// Dos Pilas, Quiriguá, the K’iche’, Kaqchikel, Tz’utujil and Mam kingdoms, Tezulutlán, the Itza and
+// Spanish Guatemala, drawn from department-group pieces; the Spanish Empire's new-spain ring is
+// trimmed clear of Guatemala.
+for (const ent of guatemalaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6486,6 +6497,8 @@ applyCubaShapeFixes(spatialEntities);
 applyHaitiDrShapeFixes(spatialEntities);
 // Day 80 — British Empire and Colonial Americas schematic caribbean fringes give way to British Jamaica.
 applyJamaicaShapeFixes(spatialEntities);
+// Day 81 — Spanish Empire new-spain ring trimmed clear of Guatemala (Spanish Guatemala / Itza drawn by the pack).
+applyGuatemalaShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

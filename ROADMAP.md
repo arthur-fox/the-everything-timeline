@@ -988,7 +988,7 @@ Proposed order:
 
 1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, merged #79); Ghana ✅ (Day 66, merged #80); Morocco ✅ (Day 68, merged #82); Kenya ✅ (Day 69, merged #83); Iraq ✅ (Day 70, merged #84); Philippines ✅ (Day 71, merged #85). Pack 1 globe backfill complete; next item 2, Central Asia.**
 2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates). **Uzbekistan ✅ (Day 72, merged #86); Kazakhstan ✅ (Day 73, merged #87); Turkmenistan ✅ (Day 74, merged #88); Kyrgyzstan ✅ (Day 75, merged #89); Tajikistan ✅ (Day 76, merged #90); Afghanistan ✅ (Day 77, merged #91). Pack 2 complete.**
-3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits). **Cuba ✅ (Day 78, merged #92). Haiti/Dominican Republic ✅ (Day 79, merged #93). Jamaica ✅ (Day 80, done-in-PR: new timeline + globe). Next: Guatemala.**
+3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits). **Cuba ✅ (Day 78, merged #92). Haiti/Dominican Republic ✅ (Day 79, merged #93). Jamaica ✅ (Day 80, merged #94). Guatemala ✅ (Day 81, done-in-PR: new timeline + globe). Next: Mexico refinement.**
 4. **Central Africa:** DR Congo, Angola, Cameroon, Chad (Kongo, Luba, Lunda, Kanem-Bornu).
 5. **Southeast Europe:** Serbia, Bulgaria, Romania, Croatia, Albania, Greece refinement (Byzantine/Ottoman/medieval kingdoms).
 6. **South Asia:** Pakistan, Bangladesh, Sri Lanka, Nepal, India refinement (Mauryan → Mughal regional kingdoms).
@@ -1277,7 +1277,7 @@ Hispaniola had no country timelines, and on the globe before 1815 only the schem
 
 - **Next:** Jamaica (pack 3, Timeline + Globe) — shipped Day 80.
 
-#### Day 80 — Pack 3 Caribbean: Jamaica (Timeline + Globe) — done-in-PR
+#### Day 80 — Pack 3 Caribbean: Jamaica (Timeline + Globe) — merged (#94)
 
 Jamaica had no country timeline, and on the globe before 1815 only the schematic Spanish Empire 'caribbean' ring (dropped by Day 78) and a British Empire / Colonial Americas 'caribbean' fringe. Nothing showed Taíno Yamaye, Spanish Jamaica (Sevilla la Nueva / Spanish Town), or British Jamaica as its own colony. From 1815 the nations layer takes over (British Jamaica to 1962, then independent Jamaica). Jamaica is the third country of pack 3 (Caribbean and Central America).
 
@@ -1294,8 +1294,27 @@ Jamaica had no country timeline, and on the globe before 1815 only the schematic
   - Some dates are approximate: Archaic and Ostionoid phases (radiocarbon), the exact pace of Spanish control across the island, and Maroon treaty town locations.
 - **Preview:** (filled in when the PR opens).
 
-- **Next:** Guatemala (pack 3, Timeline + Globe).
+- **Next:** Guatemala (pack 3, Timeline + Globe) — shipped Day 81.
 
+
+#### Day 81 — Pack 3 Central America: Guatemala (Timeline + Globe) — done-in-PR
+
+Guatemala had no country timeline, and on the globe before 1815 only the Maya civilisation's single 'yucatan' ring (to 900), lidar presence shapes in Petén, and from 1530 the Spanish Empire's schematic 'new-spain' ring, which covered the whole country, including Itza Petén that Spain did not take until 1697, and grew in across the Maya lands from 1492, before Cortés had landed. No Maya kingdom was drawn by name. From 1815 the nations layer takes over (the Captaincy General, the Federation, then Guatemala). Guatemala is the fourth country of pack 3 and the first on the mainland.
+
+- **Timeline (`data/countries/guatemala.json`, new): 20 sourced items** in 6 categories: first peoples; Kaminaljuyu; El Mirador and the Preclassic Petén; Mutal (Tikal); Dos Pilas, Aguateca and the Petexbatún; Quiriguá; the Classic collapse; the K’iche’ of Q’umarkaj; the Kaqchikel of Iximche; Tz’utujil, Mam and the other highland nations; the Spanish conquest; Tezulutlán becoming Verapaz; the Itza of Nojpetén; the Kingdom / Captaincy General; Santiago (Antigua) and the move to Guatemala City; independence, the Federation and Carrera; the Liberal Reform, coffee and United Fruit; the October Revolution and the 1954 coup; the civil war and the Maya genocide; and Guatemala since the Peace Accords. Every item has `periods`. Sources: Wikipedia.
+- **Shapes (`src/globe-pack-guatemala.js`, lazy globe chunk): 11 polities**: Kaminaljuyu (−500–800), Mutal / Tikal (250–869), Dos Pilas / Petexbatún (629–809), Quiriguá (426–810), the K’iche’ kingdom (1225–1523, with K’iq’ab’s western conquests from 1425 and the Kaqchikel valley 1450–69), the Kaqchikel kingdom (1470–1526), the Tz’utujil (1250–1523), the Mam of Zaculeu (1250–1525), Tezulutlán (1300–1544), the Itza of Nojpetén (1440–1696) and Spanish Guatemala (1524–1815), which grows with the conquest: Zaculeu 1526, the Kaqchikel valley 1527, Chiquimula 1530, Verapaz 1545, the Izabal coast 1600 and Petén 1697. Each has a certainty level and reason, sources and timeline links.
+- **Pieces: 13** Natural Earth departments grouped into historical regions and clipped to the globe's Guatemala land (shape 421), simplified as one coverage; Petén is split three ways. `ALL` (their union) is used for the whole country.
+- **Existing shapes fixed (`applyGuatemalaShapeFixes`):** the Spanish Empire's 'new-spain' ring is split at 22°N. The fixed southern part has Guatemala cut out, and the moving northern part (`new-spain-north`) keeps New Spain's northward growth, so no year between keyframes sweeps over Guatemala (measured at every year from 1495 to 1815). New Spain now starts at Veracruz in 1519 (it used to grow from 1492), the southern part is in place by 1521 (the fall of Tenochtitlan), and the 1800 extent is held to 1815.
+- **Cities: +17** (Kaminaljuyu, Nakbe, Uaxactun, Yaxha, Naranjo, Dos Pilas, Aguateca, Ceibal, Quiriguá, Tak’alik Ab’aj, Zaculeu, Xelajú / Quetzaltenango, Santiago Atitlán, Santiago at Almolonga, Cobán, Escuintla, Puerto Barrios). Tikal, El Mirador, Q’umarkaj, Iximche, Nojpetén / Flores, Antigua and Guatemala City were already present.
+- **Pins: +57**, `country:guatemala:<item>` refs, from Los Tapiales and the first coastal villages through Kaminaljuyu, El Mirador, Tikal’s wars, Dos Pilas, Quiriguá’s capture of Copán’s king, the K’iche’, Kaqchikel, Tz’utujil and Mam conquests, Verapaz, Nojpetén 1697, Antigua’s earthquakes, independence, United Fruit, 1944–54, the Ixil massacres, Menchú’s Nobel, the Peace Accords and Arévalo’s inauguration.
+- **Validate:** Guatemala is a sixteenth row in `scripts/check-country-packs.js` (land, rings, sources, capitals inside, who is on / gone at sample years, conquest order via `notOver`, the trimmed new-spain proven by `notOver`, no overlap with the Spanish Empire at any sampled year, −500 to 1815). `PACK=guatemala` checks just this row. `check-overlay-lifespan.js` asserts that New Spain doesn't exist before Cortés.
+- **Honest caveats:**
+  - Pieces are today's departments, not ancient or colonial borders. Classic kingdoms are drawn as their core domains (Tikal as north-east Petén, Quiriguá as Izabal, Dos Pilas as southern Petén), not their shifting hegemonies, and many lesser kingdoms (Naranjo, Yaxha, Waka’, Machaquilá, Cancuén) are cities and pins only.
+  - Not drawn as shapes: the Preclassic Pacific coast (Tak’alik Ab’aj, Izapa), the Ch’orti’, Poqomam, Pipil and Xinca lands, the Manche Ch’ol and Lakandon, the Kowoj apart from the Itza, and Belize (British settlement from the 1600s; still the Maya civilisation ring and, from 1815, the nations layer). The rest of the Kingdom of Guatemala (Chiapas to Costa Rica) waits for its own packs and is no longer covered by the new-spain ring south-east of Guatemala.
+  - Some dates are approximate: the Itza arrival in Petén (dated variously from the 13th to the 15th century), the K’iche’ founding years, the Kaqchikel revolt (shown to 1526, though it lasted to 1530), Verapaz (1545, between 1537 and 1547), and Spanish control of Izabal and southern Petén.
+- **Preview:** (filled in when the PR opens).
+
+- **Next:** Mexico refinement (pack 3: Maya city-states of Yucatán and Chiapas, the Aztec Triple Alliance and its neighbours, colonial New Spain splits; Timeline + Globe).
 
 ### 13. Fill the globe, region by region (after the packs above)
 

@@ -295,6 +295,15 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assert(!idsAt(1510).has('taino-yamaye'), 'Taíno Yamaye OFF at 1510');
   assert(!idsAt(1656).has('spanish-jamaica'), 'Spanish Jamaica OFF at 1656');
   assert(regionIds('colonial-americas', 1700).every((id) => id !== 'caribbean'), 'Colonial Americas 1700 has no Caribbean fragment (Day 80)');
+  // Day 81: Guatemala pack — Maya kingdoms, highland kingdoms, the Itza and Spanish Guatemala; New Spain split / trimmed.
+  assert(idsAt(700).has('mutal-tikal'), 'Mutal (Tikal) ON at 700');
+  assert(idsAt(1500).has('kiche-kingdom'), 'K’iche’ kingdom ON at 1500');
+  assert(idsAt(1600).has('itza-kingdom'), 'Itza kingdom ON at 1600');
+  assert(idsAt(1600).has('spanish-guatemala'), 'Spanish Guatemala ON at 1600');
+  assert(!idsAt(1700).has('itza-kingdom'), 'Itza kingdom OFF at 1700');
+  assert(!idsAt(1510).has('spanish-guatemala'), 'Spanish Guatemala OFF at 1510');
+  assert(!regionIds('spanish-empire', 1510).includes('new-spain'), 'No New Spain before Cortés (Day 81)');
+  assert(regionIds('spanish-empire', 1700).includes('new-spain-north'), 'New Spain north part at 1700 (Day 81)');
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
 
