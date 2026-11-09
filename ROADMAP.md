@@ -988,7 +988,7 @@ Proposed order:
 
 1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, merged #79); Ghana ✅ (Day 66, merged #80); Morocco ✅ (Day 68, merged #82); Kenya ✅ (Day 69, merged #83); Iraq ✅ (Day 70, merged #84); Philippines ✅ (Day 71, merged #85). Pack 1 globe backfill complete; next item 2, Central Asia.**
 2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates). **Uzbekistan ✅ (Day 72, merged #86); Kazakhstan ✅ (Day 73, merged #87); Turkmenistan ✅ (Day 74, merged #88); Kyrgyzstan ✅ (Day 75, merged #89); Tajikistan ✅ (Day 76, merged #90); Afghanistan ✅ (Day 77, merged #91). Pack 2 complete.**
-3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits). **Cuba ✅ (Day 78, merged #92). Haiti/Dominican Republic ✅ (Day 79, merged #93). Jamaica ✅ (Day 80, merged #94). Guatemala ✅ (Day 81, done-in-PR #95: new timeline + globe). Mexico refinement ✅ (Day 82, done-in-PR: timeline 7 → 33 items + globe). Pack 3 complete once #95 and the Mexico PR merge; next item 4, Central Africa (DR Congo first).**
+3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits). **Cuba ✅ (Day 78, merged #92). Haiti/Dominican Republic ✅ (Day 79, merged #93). Jamaica ✅ (Day 80, merged #94). Guatemala ✅ (Day 81, done-in-PR #95: new timeline + globe). Mexico refinement ✅ (Day 82, done-in-PR #97: timeline 7 → 33 items + globe). Pack 3 complete once #95 and #97 merge; next item 4, Central Africa (DR Congo first).**
 4. **Central Africa:** DR Congo, Angola, Cameroon, Chad (Kongo, Luba, Lunda, Kanem-Bornu).
 5. **Southeast Europe:** Serbia, Bulgaria, Romania, Croatia, Albania, Greece refinement (Byzantine/Ottoman/medieval kingdoms).
 6. **South Asia:** Pakistan, Bangladesh, Sri Lanka, Nepal, India refinement (Mauryan → Mughal regional kingdoms).
@@ -1316,7 +1316,7 @@ Guatemala had no country timeline, and on the globe before 1815 only the Maya ci
 
 - **Next:** Mexico refinement (pack 3: Maya city-states of Yucatán and Chiapas, the Aztec Triple Alliance and its neighbours, colonial New Spain splits; Timeline + Globe) — shipped Day 82.
 
-#### Day 82 — Pack 3: Mexico refinement (Timeline + Globe) — done-in-PR
+#### Day 82 — Pack 3: Mexico refinement (Timeline + Globe) — done-in-PR (#97)
 
 Mexico had a 7-item timeline (Day 1) and, on the globe before 1815, only schematic rings: an Olmec heartland with a 'mesoamerica' fringe, a Toltec 'central-mexico' block, a four-keyframe Aztec Empire whose 1519 ring swallowed the Tarascans, Tlaxcala and Tututepec, the Maya civilisation's 'yucatan' box, and from 1519 the Spanish Empire's 'new-spain' / 'new-spain-north' and Colonial Americas' 'new-spain-core' rings, which covered the whole country from the conquest (Yucatán before Montejo, Baja California a century before Loreto). No Classic Maya kingdom, Monte Albán, Teotihuacan, the Purépecha or any Postclassic Maya state was drawn. Mexico is the last country of pack 3; it is stacked on Guatemala (#95), whose New Spain split it builds on.
 
@@ -1332,7 +1332,7 @@ Mexico had a 7-item timeline (Day 1) and, on the globe before 1815, only schemat
   - The Aztec tributary provinces are rounded to whole states (most of Puebla, all of northern Veracruz from 1486); the Purépecha are drawn as Michoacán only. New Spain's founding dates run ahead of real control in the north and the forests: Apache, Comanche, Seri, Yaqui, Chichimec and Maya peoples held much of that land (left to the peoples layer).
   - Not drawn: the Spanish borderlands north of today's border (Spanish Texas, New Mexico, the Californias north of Velicatá), which lost their schematic `new-spain-north` / `new-spain-core` cover and wait for a United States refinement; Belize (still the nations layer from 1815); post-1815 shapes (the First Empire, Texas, the US war, the Caste War's Chan Santa Cruz, the French intervention) — timeline + pins / nations layer.
   - Some dates are approximate: the Olmec and Teotihuacan phases (radiocarbon), Dzibanche → Calakmul (c. 635), Mayapán's fall (1441 or later), Zaachila's rise, the Aztec reign-by-reign conquests, and the year each northern state is counted as Spanish.
-- **Preview:** (filled in when the PR opens).
+- **Preview:** https://theeverythingtimeline.com/pr-preview/pr-97/ (globe: https://theeverythingtimeline.com/pr-preview/pr-97/?view=globe&year=1500&at=19.5,-98.5,0.7&fullscreen=1).
 
 - **Next:** Phase 5 item 4, Central Africa: DR Congo (Kongo, Luba, Lunda; Timeline + Globe).
 
@@ -1484,7 +1484,7 @@ A sensible near-term sequence:
 57. Pack 1 globe backfill — Iraq (Day 70) ✅ (done-in-PR).
 58. Pack 1 globe backfill — Philippines (Day 71) ✅ (merged #85). Pack 1 globe backfill complete.
 59. Phase 5 pack 2 — Central Asia: Uzbekistan (Day 72) ✅ (merged #86), Kazakhstan (Day 73) ✅ (merged #87), Turkmenistan (Day 74) ✅ (merged #88), Kyrgyzstan (Day 75) ✅ (merged #89), Tajikistan (Day 76) ✅ (merged #90), Afghanistan (Day 77) ✅ (merged #91), Timeline + Globe. Pack 2 complete.
-60. **Now: Phase 5 item 3 — Caribbean and Central America: Cuba (Day 78) ✅ (merged #92), Haiti/Dominican Republic (Day 79) ✅ (merged #93), Jamaica (Day 80) ✅ (merged #94), Guatemala (Day 81) ✅ (done-in-PR #95), Mexico refinement (Day 82) ✅ (done-in-PR), Timeline + Globe. Next: item 4, Central Africa (DR Congo). Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
+60. **Now: Phase 5 item 3 — Caribbean and Central America: Cuba (Day 78) ✅ (merged #92), Haiti/Dominican Republic (Day 79) ✅ (merged #93), Jamaica (Day 80) ✅ (merged #94), Guatemala (Day 81) ✅ (done-in-PR #95), Mexico refinement (Day 82) ✅ (done-in-PR #97), Timeline + Globe. Next: item 4, Central Africa (DR Congo). Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
