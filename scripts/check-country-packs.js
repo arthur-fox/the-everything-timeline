@@ -8,8 +8,8 @@
  * (Day 75, src/globe-pack-kyrgyzstan.js), Tajikistan (Day 76, src/globe-pack-tajikistan.js),
  * Afghanistan (Day 77, src/globe-pack-afghanistan.js), Cuba (Day 78, src/globe-pack-cuba.js) and
  * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js), Jamaica (Day 80,
- * src/globe-pack-jamaica.js), Guatemala (Day 81, src/globe-pack-guatemala.js) and the Mexico refinement (Day 82,
- * src/globe-pack-mexico.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * src/globe-pack-jamaica.js), Guatemala (Day 81, src/globe-pack-guatemala.js), the Mexico refinement (Day 82,
+ * src/globe-pack-mexico.js) and DR Congo (Day 83, src/globe-pack-dr-congo.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -46,6 +46,7 @@ import { haitiDrPolities, haitiDrShapeFixes } from '../src/globe-pack-haiti-dr.j
 import { jamaicaPolities, jamaicaShapeFixes } from '../src/globe-pack-jamaica.js';
 import { guatemalaPolities, guatemalaShapeFixes } from '../src/globe-pack-guatemala.js';
 import { mexicoPolities, mexicoShapeFixes, MX_DROPS } from '../src/globe-pack-mexico.js';
+import { drCongoPolities, drCongoShapeFixes } from '../src/globe-pack-dr-congo.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -1609,6 +1610,54 @@ const PACKS = [
       box: [-117.2, 14.5, -86.7, 32.8],
       planar: true,
       with: ['spanish-empire', 'colonial-americas', ...guatemalaPolities.map((e) => e.id)],
+    },
+  },
+  {
+    country: 'dr-congo',
+    polities: drCongoPolities,
+    fixes: drCongoShapeFixes,
+    // The Day 58 Luba and Lunda rings are replaced by id; nothing older is trimmed or dropped.
+    redrawn: {},
+    capitals: [
+      ['upemba-cultures', 1000, 26.53, -8.22, 'Lake Kisale (Sanga)'],
+      ['luba-kingdom', 1585, 25.58, -7.33, 'Kabongo'],
+      ['luba-kingdom', 1780, 26.53, -8.22, 'Lake Kisale'],
+      ['lunda-empire', 1665, 22.58, -8.35, 'Musumba'],
+      ['lunda-empire', 1815, 22.58, -8.35, 'Musumba'],
+      ['lunda-empire', 1740, 28.73, -9.82, 'Kazembe (Mwansabombwe)'],
+      ['kuba-kingdom', 1700, 21.92, -4.80, 'Nsheng'],
+      ['yaka-kingdom', 1700, 16.83, -6.48, 'Kasongo-Lunda'],
+    ],
+    on: {
+      800: ['upemba-cultures'],
+      1400: ['upemba-cultures'],
+      1600: ['luba-kingdom'],
+      1650: ['luba-kingdom', 'kuba-kingdom'],
+      1700: ['luba-kingdom', 'lunda-empire', 'kuba-kingdom', 'yaka-kingdom'],
+      1800: ['luba-kingdom', 'lunda-empire', 'kuba-kingdom', 'yaka-kingdom'],
+    },
+    gone: {
+      600: ['upemba-cultures', 'luba-kingdom'],
+      1590: ['upemba-cultures'],
+      1600: ['lunda-empire', 'kuba-kingdom', 'yaka-kingdom'],
+    },
+    absent: [],
+    present: [
+      ['lunda-empire', 1800, 'kazembe'],
+      ['luba-kingdom', 1800, 'luba'],
+    ],
+    notOver: [
+      ['luba-kingdom', 1700, 29.20, -5.93, 'Lake Tanganyika shore (before Ilunga Sungu)'],
+      ['lunda-empire', 1700, 25.47, -10.72, 'Kolwezi (before the eastward route)'],
+      ['lunda-empire', 1800, 16.83, -6.48, 'Kasongo-Lunda (Yaka, not Lunda proper)'],
+      ['kongo', 1750, 16.83, -6.48, 'Kasongo-Lunda (Yaka)'],
+    ],
+    noOverlap: {
+      from: 600,
+      to: 1815,
+      box: [12, -13.5, 31.5, -2],
+      planar: true,
+      with: ['kongo', 'portuguese-empire'],
     },
   },
 ];
