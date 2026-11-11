@@ -321,6 +321,16 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assert(idsAt(1650).has('kuba-kingdom') && !idsAt(1600).has('kuba-kingdom'), 'Kuba ON at 1650, OFF at 1600');
   assert(idsAt(1750).has('yaka-kingdom') && !idsAt(1650).has('yaka-kingdom'), 'Yaka ON at 1750, OFF at 1650');
   assert(regionIds('lunda-empire', 1750).includes('kazembe') && !regionIds('lunda-empire', 1700).includes('kazembe'), 'Lunda has Kazembe at 1750, not 1700 (Day 83)');
+  // Day 84: Angola pack — Kongo on pieces, Soyo, Ndongo, Matamba, Kasanje, Portuguese Angola, Bailundo, Viye.
+  assert(idsAt(1400).has('kongo') && !idsAt(1380).has('kongo'), 'Kongo ON at 1400, OFF at 1380');
+  assert(regionIds('kongo', 1500).includes('soyo') && !regionIds('kongo', 1700).includes('soyo'), 'Kongo has Soyo at 1500, not 1700 (Day 84)');
+  assert(idsAt(1650).has('soyo') && !idsAt(1600).has('soyo'), 'Soyo ON at 1650, OFF at 1600');
+  assert(idsAt(1600).has('ndongo') && !idsAt(1680).has('ndongo'), 'Ndongo ON at 1600, OFF at 1680');
+  assert(idsAt(1550).has('matamba') && idsAt(1800).has('matamba'), 'Matamba ON at 1550 and 1800');
+  assert(idsAt(1650).has('kasanje') && !idsAt(1600).has('kasanje'), 'Kasanje ON at 1650, OFF at 1600');
+  assert(idsAt(1600).has('portuguese-angola') && !idsAt(1570).has('portuguese-angola'), 'Portuguese Angola ON at 1600, OFF at 1570');
+  assert(idsAt(1750).has('bailundo-kingdom') && idsAt(1750).has('viye-kingdom') && !idsAt(1690).has('bailundo-kingdom'), 'Bailundo and Viye ON at 1750; Bailundo OFF at 1690');
+  assert(!regionIds('portuguese-empire', 1650).includes('angola-coast'), 'Portuguese Empire has no angola-coast (Day 84)');
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
 

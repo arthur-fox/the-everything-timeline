@@ -993,6 +993,18 @@ export const CITIES = [
   C('kananga', -5.89, 22.40, 3, 1884, null, 'Luluabourg', 1966, 'Kananga', { ne: 'Kananga' }),
   C('lubumbashi', -11.68, 27.48, 3, 1910, null, 'Élisabethville', 1966, 'Lubumbashi', { ne: 'Lubumbashi' }),
   C('kolwezi', -10.72, 25.47, 4, 1937, null, 'Kolwezi', { ne: 'Kolwezi' }),
+  // Day 84 — Angola (globe-pack-angola.js): the Kwanza forts, Benguela, Soyo, Pungo a Ndongo, the
+  // Ovimbundu capital of Bailundo and the colonial highland cities (Luanda and Mbanza Kongo already listed).
+  C('soyo', -6.13, 12.37, 4, 1491, null, 'Soyo', { ne: 'Soyo' }),
+  C('massangano', -9.62, 14.28, 4, 1583, null, 'Massangano'),
+  C('muxima', -9.52, 13.97, 4, 1599, null, 'Muxima'),
+  C('cambambe', -9.76, 14.51, 4, 1602, null, 'Cambambe'),
+  C('benguela', -12.58, 13.41, 3, 1617, null, 'Benguela', { ne: 'Benguela' }),
+  C('pungo-andongo', -9.66, 15.58, 4, 1626, null, 'Pungo a Ndongo', 1671, 'Pungo Andongo'),
+  C('bailundo', -12.20, 15.86, 4, 1700, null, 'Bailundo'),
+  C('mocamedes', -15.19, 12.15, 4, 1840, null, 'Moçâmedes', 1985, 'Namibe', 2016, 'Moçâmedes', { ne: 'Moçâmedes' }),
+  C('lubango', -14.92, 13.49, 3, 1885, null, 'Lubango', 1923, 'Sá da Bandeira', 1975, 'Lubango', { ne: 'Lubango' }),
+  C('huambo', -12.78, 15.74, 3, 1912, null, 'Huambo', 1928, 'Nova Lisboa', 1975, 'Huambo', { ne: 'Huambo' }),
 ];
 
 const BY_ID = new Map(CITIES.map((c) => [c.id, c]));
