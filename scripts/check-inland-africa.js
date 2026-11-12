@@ -10,6 +10,7 @@
 import { geoContains } from 'd3-geo';
 import { inlandAfricaPolities } from '../src/globe-inland-africa.js';
 import { ghanaPolities } from '../src/globe-pack-ghana.js';
+import { drCongoPolities } from '../src/globe-pack-dr-congo.js';
 import { getActiveOverlaysAtYear, entityNameAt, spatialEntities } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
 
@@ -63,8 +64,9 @@ for (const e of inlandAfricaPolities) {
 }
 
 const byId = new Map(spatialEntities.map((e) => [e.id, e]));
-// Day 66: a country pack may redraw one of these under the same id (the Ghana pack's Asante).
-const PACK_REDRAWS = new Map(ghanaPolities.map((e) => [e.id, e]));
+// Day 66: a country pack may redraw one of these under the same id (the Ghana pack's Asante;
+// Day 83: the DR Congo pack's Luba and Lunda).
+const PACK_REDRAWS = new Map([...ghanaPolities, ...drCongoPolities].map((e) => [e.id, e]));
 for (const id of REQUIRED) {
   const want = PACK_REDRAWS.get(id) || inlandAfricaPolities.find((e) => e.id === id);
   if (byId.get(id) !== want) fail(`${id} not wired into spatialEntities`);

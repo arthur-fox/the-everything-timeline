@@ -979,6 +979,20 @@ export const CITIES = [
   C('ai-khanoum', 37.17, 69.41, 3, -280, -145, 'Ai-Khanoum'),
   C('khujand', 40.28, 69.62, 3, -329, null, 'Alexandria Eschate', 700, 'Khujand'),
   C('sialkot', 32.49, 74.53, 3, -500, null, 'Sagala', 1500, 'Sialkot', { ranks: [[-150, 2], [0, 3]] }),
+  // Day 83 — DR Congo (globe-pack-dr-congo.js): royal towns of the Lunda, Luba, Kuba and Yaka, the
+  // 19th-century trading towns and the colonial cities (Kinshasa and Mbanza Kongo already listed).
+  C('musumba', -8.35, 22.58, 4, 1695, null, 'Musumba', 1920, 'Kapanga'),
+  C('kabongo', -7.33, 25.58, 4, 1700, null, 'Kabongo'),
+  C('nsheng', -4.80, 21.92, 4, 1625, null, 'Nsheng', 1920, 'Mushenge'),
+  C('kasongo-lunda', -6.48, 16.83, 4, 1700, null, 'Kasongo-Lunda', { ne: 'Kasongo-Lunda' }),
+  C('boma', -5.83, 13.05, 4, 1700, null, 'Boma', { ranks: [[1886, 3], [1926, 4]], ne: 'Boma' }),
+  C('nyangwe', -4.22, 26.18, 4, 1860, null, 'Nyangwe'),
+  C('bunkeya', -10.40, 26.97, 4, 1856, null, 'Bunkeya'),
+  C('matadi', -5.82, 13.45, 4, 1879, null, 'Matadi', { ne: 'Matadi' }),
+  C('kisangani', 0.52, 25.22, 3, 1883, null, 'Stanleyville', 1966, 'Kisangani', { ne: 'Kisangani' }),
+  C('kananga', -5.89, 22.40, 3, 1884, null, 'Luluabourg', 1966, 'Kananga', { ne: 'Kananga' }),
+  C('lubumbashi', -11.68, 27.48, 3, 1910, null, 'Élisabethville', 1966, 'Lubumbashi', { ne: 'Lubumbashi' }),
+  C('kolwezi', -10.72, 25.47, 4, 1937, null, 'Kolwezi', { ne: 'Kolwezi' }),
 ];
 
 const BY_ID = new Map(CITIES.map((c) => [c.id, c]));

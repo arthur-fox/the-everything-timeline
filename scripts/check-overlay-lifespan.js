@@ -315,6 +315,12 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assert(idsAt(1500).has('purepecha-empire') && idsAt(1500).has('tlaxcala-state'), 'Purépecha and Tlaxcala ON at 1500');
   assert(idsAt(1600).has('spanish-new-spain') && !idsAt(1517).has('spanish-new-spain'), 'New Spain ON at 1600, OFF at 1517');
   assert(!regionIds('colonial-americas', 1700).includes('new-spain-core'), 'Colonial Americas 1700 has no new-spain-core (Day 82)');
+  // Day 83: DR Congo pack — the Upemba lakes, Luba, Lunda (with Kazembe), Kuba and Yaka.
+  assert(idsAt(1000).has('upemba-cultures') && !idsAt(1600).has('upemba-cultures'), 'Upemba cultures ON at 1000, OFF at 1600');
+  assert(idsAt(1600).has('luba-kingdom') && !idsAt(1500).has('luba-kingdom'), 'Luba ON at 1600, OFF at 1500');
+  assert(idsAt(1650).has('kuba-kingdom') && !idsAt(1600).has('kuba-kingdom'), 'Kuba ON at 1650, OFF at 1600');
+  assert(idsAt(1750).has('yaka-kingdom') && !idsAt(1650).has('yaka-kingdom'), 'Yaka ON at 1750, OFF at 1650');
+  assert(regionIds('lunda-empire', 1750).includes('kazembe') && !regionIds('lunda-empire', 1700).includes('kazembe'), 'Lunda has Kazembe at 1750, not 1700 (Day 83)');
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
 

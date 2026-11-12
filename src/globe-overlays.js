@@ -49,6 +49,7 @@ import { haitiDrPolities, applyHaitiDrShapeFixes } from './globe-pack-haiti-dr.j
 import { jamaicaPolities, applyJamaicaShapeFixes } from './globe-pack-jamaica.js';
 import { guatemalaPolities, applyGuatemalaShapeFixes } from './globe-pack-guatemala.js';
 import { mexicoPolities, applyMexicoShapeFixes } from './globe-pack-mexico.js';
+import { drCongoPolities, applyDrCongoShapeFixes } from './globe-pack-dr-congo.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6441,6 +6442,15 @@ for (const ent of mexicoPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 83 — Phase 5 country pack 4, DR Congo (globe-pack-dr-congo.js): the Upemba Depression's
+// Kisalian and Kabambian villages, the Luba Kingdom, the Lunda Empire, the Kuba Kingdom and the
+// Yaka kingdom, drawn from province pieces; the Day 58 Luba and Lunda rings are replaced by id.
+for (const ent of drCongoPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6513,6 +6523,8 @@ applyJamaicaShapeFixes(spatialEntities);
 applyGuatemalaShapeFixes(spatialEntities);
 // Day 82 — Spanish Empire new-spain / new-spain-north and Colonial Americas new-spain-core give way to the Mexico pack's New Spain.
 applyMexicoShapeFixes(spatialEntities);
+// Day 83 — DR Congo: no older shape is trimmed (Luba and Lunda are replaced by id).
+applyDrCongoShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
