@@ -48,6 +48,7 @@ import { cubaPolities, applyCubaShapeFixes } from './globe-pack-cuba.js';
 import { haitiDrPolities, applyHaitiDrShapeFixes } from './globe-pack-haiti-dr.js';
 import { jamaicaPolities, applyJamaicaShapeFixes } from './globe-pack-jamaica.js';
 import { guatemalaPolities, applyGuatemalaShapeFixes } from './globe-pack-guatemala.js';
+import { mexicoPolities, applyMexicoShapeFixes } from './globe-pack-mexico.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6429,6 +6430,17 @@ for (const ent of guatemalaPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 82 — Phase 5 country pack 3, Mexico refinement (globe-pack-mexico.js): the Olmec, Monte Albán,
+// Teotihuacan, the Kaan and Palenque kingdoms, Cobá, Xochicalco, Cacaxtla, El Tajín, Uxmal, Chichén
+// Itzá, the Toltecs, the Mixtec kingdoms and Tututepec, Mayapán and the Maya provinces, Zaachila,
+// the Purépecha, Tlaxcala, Metztitlán, the Aztec Triple Alliance and New Spain, drawn from state
+// pieces; the olmec, toltec and aztec-empire schematic shapes are replaced by id.
+for (const ent of mexicoPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6499,6 +6511,8 @@ applyHaitiDrShapeFixes(spatialEntities);
 applyJamaicaShapeFixes(spatialEntities);
 // Day 81 — Spanish Empire new-spain ring trimmed clear of Guatemala (Spanish Guatemala / Itza drawn by the pack).
 applyGuatemalaShapeFixes(spatialEntities);
+// Day 82 — Spanish Empire new-spain / new-spain-north and Colonial Americas new-spain-core give way to the Mexico pack's New Spain.
+applyMexicoShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

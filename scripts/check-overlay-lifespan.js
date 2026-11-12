@@ -267,7 +267,9 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assert(sp.overlays.some((o) => o.year === 1550), 'Spanish has 1550 keyframe');
   assert(sp.overlays.some((o) => o.year === 1800), 'Spanish has 1800 contraction keyframe');
   const s1550 = regionIds('spanish-empire', 1550);
-  for (const id of ['iberia', 'new-spain', 'andes']) {
+  // Day 82: New Spain is drawn by the Mexico pack (spanish-new-spain), not as a Spanish Empire fragment.
+  assert(!s1550.includes('new-spain'), 'Spanish 1550 has no new-spain fragment (Day 82)');
+  for (const id of ['iberia', 'andes']) {
     assert(s1550.includes(id), `Spanish 1550 has fragment ${id}`);
   }
   // Day 71: the schematic Philippines fragment is dropped (Legazpi only lands in 1565);
@@ -303,7 +305,16 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assert(!idsAt(1700).has('itza-kingdom'), 'Itza kingdom OFF at 1700');
   assert(!idsAt(1510).has('spanish-guatemala'), 'Spanish Guatemala OFF at 1510');
   assert(!regionIds('spanish-empire', 1510).includes('new-spain'), 'No New Spain before Cortés (Day 81)');
-  assert(regionIds('spanish-empire', 1700).includes('new-spain-north'), 'New Spain north part at 1700 (Day 81)');
+  // (Day 82: the Mexico pack draws New Spain itself, so the Spanish Empire's new-spain regions are dropped.)
+  assert(!regionIds('spanish-empire', 1700).includes('new-spain-north'), 'Spanish Empire 1700 has no new-spain-north (Day 82: drawn by the Mexico pack)');
+  // Day 82: Mexico refinement — Monte Albán, Teotihuacan, the Kaan kingdom, Chichén Itzá, Mayapán, the Purépecha, Tlaxcala and New Spain.
+  assert(idsAt(450).has('teotihuacan') && idsAt(450).has('monte-alban'), 'Teotihuacan and Monte Albán ON at 450');
+  assert(idsAt(650).has('kaan-kingdom'), 'Kaan kingdom ON at 650');
+  assert(idsAt(1000).has('chichen-itza-state'), 'Chichén Itzá ON at 1000');
+  assert(idsAt(1300).has('mayapan') && !idsAt(1460).has('mayapan'), 'Mayapán ON at 1300, OFF at 1460');
+  assert(idsAt(1500).has('purepecha-empire') && idsAt(1500).has('tlaxcala-state'), 'Purépecha and Tlaxcala ON at 1500');
+  assert(idsAt(1600).has('spanish-new-spain') && !idsAt(1517).has('spanish-new-spain'), 'New Spain ON at 1600, OFF at 1517');
+  assert(!regionIds('colonial-americas', 1700).includes('new-spain-core'), 'Colonial Americas 1700 has no new-spain-core (Day 82)');
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
 

@@ -8,7 +8,8 @@
  * (Day 75, src/globe-pack-kyrgyzstan.js), Tajikistan (Day 76, src/globe-pack-tajikistan.js),
  * Afghanistan (Day 77, src/globe-pack-afghanistan.js), Cuba (Day 78, src/globe-pack-cuba.js) and
  * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js), Jamaica (Day 80,
- * src/globe-pack-jamaica.js) and Guatemala (Day 81, src/globe-pack-guatemala.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * src/globe-pack-jamaica.js), Guatemala (Day 81, src/globe-pack-guatemala.js) and the Mexico refinement (Day 82,
+ * src/globe-pack-mexico.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -44,6 +45,7 @@ import { cubaPolities, cubaShapeFixes } from '../src/globe-pack-cuba.js';
 import { haitiDrPolities, haitiDrShapeFixes } from '../src/globe-pack-haiti-dr.js';
 import { jamaicaPolities, jamaicaShapeFixes } from '../src/globe-pack-jamaica.js';
 import { guatemalaPolities, guatemalaShapeFixes } from '../src/globe-pack-guatemala.js';
+import { mexicoPolities, mexicoShapeFixes, MX_DROPS } from '../src/globe-pack-mexico.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -1502,6 +1504,111 @@ const PACKS = [
       box: [-92.3, 13.7, -88.2, 17.9],
       planar: true,
       with: ['spanish-empire'],
+    },
+  },
+  {
+    country: 'mexico',
+    polities: mexicoPolities,
+    fixes: mexicoShapeFixes,
+    redrawn: {},
+    // New Spain is drawn once, by the pack: the Spanish Empire's and Colonial Americas' New Spain rings are dropped.
+    dropped: MX_DROPS,
+    capitals: [
+      ['olmec', -1150, -94.76, 17.75, 'San Lorenzo'],
+      ['olmec', -900, -94.04, 18.10, 'La Venta'],
+      ['olmec', -400, -95.44, 18.47, 'Tres Zapotes'],
+      ['monte-alban', 200, -96.77, 17.04, 'Monte Albán'],
+      ['teotihuacan', 450, -98.84, 19.69, 'Teotihuacan'],
+      ['kaan-kingdom', 500, -88.76, 18.64, 'Dzibanche'],
+      ['kaan-kingdom', 635, -89.81, 18.11, 'Calakmul'],
+      ['baakal-palenque', 615, -91.98, 17.48, 'Palenque'],
+      ['coba', 730, -87.73, 20.49, 'Cobá'],
+      ['xochicalco', 800, -99.30, 18.80, 'Xochicalco'],
+      ['cacaxtla', 750, -98.34, 19.24, 'Cacaxtla'],
+      ['el-tajin', 850, -97.38, 20.45, 'El Tajín'],
+      ['uxmal', 875, -89.77, 20.36, 'Uxmal'],
+      ['chichen-itza-state', 950, -88.57, 20.68, 'Chichén Itzá'],
+      ['toltec', 1000, -99.34, 20.06, 'Tula'],
+      ['mixtec-kingdoms', 1063, -97.30, 17.28, 'Tilantongo'],
+      ['mixtec-kingdoms', 1457, -97.32, 17.71, 'Coixtlahuaca'],
+      ['tututepec', 1458, -97.60, 16.13, 'Tututepec'],
+      ['mayapan', 1300, -89.46, 20.63, 'Mayapán'],
+      ['maya-provinces-yucatan', 1441, -89.39, 20.39, 'Maní (Xiu)'],
+      ['maya-provinces-yucatan', 1441, -88.30, 18.50, 'Chetumal (Chactemal)'],
+      ['zaachila', 1350, -96.75, 16.95, 'Zaachila'],
+      ['zaachila', 1497, -95.24, 16.32, 'Tehuantepec'],
+      ['purepecha-empire', 1450, -101.58, 19.63, 'Tzintzuntzan'],
+      ['tlaxcala-state', 1519, -98.24, 19.32, 'Tlaxcala'],
+      ['metztitlan', 1481, -98.76, 20.60, 'Metztitlán'],
+      ['aztec-empire', 1428, -99.13, 19.43, 'Tenochtitlan'],
+      ['aztec-empire', 1458, -96.40, 18.83, 'Cotaxtla'],
+      ['aztec-empire', 1502, -96.73, 17.06, 'Huaxyacac (Oaxaca)'],
+      ['aztec-empire', 1502, -92.38, 15.02, 'Huehuetán (Xoconochco)'],
+      ['spanish-new-spain', 1519, -96.43, 19.65, 'Villa Rica de la Vera Cruz'],
+      ['spanish-new-spain', 1535, -99.13, 19.43, 'Mexico City'],
+      ['spanish-new-spain', 1542, -89.62, 20.97, 'Mérida'],
+      ['spanish-new-spain', 1548, -102.58, 22.77, 'Zacatecas'],
+      ['spanish-new-spain', 1697, -111.35, 26.01, 'Loreto'],
+      ['spanish-new-spain', 1815, -100.31, 25.67, 'Monterrey'],
+    ],
+    on: {
+      [-1150]: ['olmec'],
+      200: ['monte-alban', 'teotihuacan'],
+      700: ['monte-alban', 'kaan-kingdom', 'baakal-palenque', 'coba', 'xochicalco', 'cacaxtla', 'el-tajin'],
+      1000: ['el-tajin', 'chichen-itza-state', 'toltec', 'mixtec-kingdoms'],
+      1300: ['mayapan', 'mixtec-kingdoms', 'tututepec'],
+      1400: ['mayapan', 'purepecha-empire', 'tlaxcala-state', 'metztitlan', 'zaachila'],
+      1500: ['aztec-empire', 'purepecha-empire', 'tlaxcala-state', 'metztitlan', 'tututepec', 'zaachila', 'maya-provinces-yucatan'],
+      1525: ['spanish-new-spain', 'purepecha-empire', 'maya-provinces-yucatan'],
+      1600: ['spanish-new-spain'],
+      1815: ['spanish-new-spain'],
+    },
+    gone: {
+      [-200]: ['olmec'],
+      600: ['teotihuacan'],
+      1000: ['monte-alban', 'kaan-kingdom', 'baakal-palenque', 'coba', 'xochicalco', 'cacaxtla', 'uxmal'],
+      1250: ['chichen-itza-state', 'toltec', 'el-tajin'],
+      1450: ['mayapan'],
+      1500: ['mixtec-kingdoms'],
+      1522: ['aztec-empire', 'tlaxcala-state'],
+      1523: ['tututepec', 'zaachila', 'metztitlan'],
+      1531: ['purepecha-empire'],
+      1548: ['maya-provinces-yucatan'],
+      1830: ['spanish-new-spain'],
+    },
+    absent: [
+      ['aztec-empire', 1450, 'aztec-tributary'],
+      ['spanish-new-spain', 1700, 'yucatan'],
+      ['spanish-new-spain', 1780, 'californias'],
+    ],
+    present: [
+      ['aztec-empire', 1470, 'aztec-tributary'],
+      ['aztec-empire', 1510, 'soconusco'],
+      ['spanish-new-spain', 1600, 'yucatan'],
+      ['spanish-new-spain', 1700, 'californias'],
+    ],
+    notOver: [
+      ['aztec-empire', 1510, -98.24, 19.32, 'Tlaxcala (never conquered)'],
+      ['aztec-empire', 1510, -101.58, 19.63, 'Tzintzuntzan (Purépecha)'],
+      ['aztec-empire', 1510, -97.60, 16.13, 'Tututepec'],
+      ['aztec-empire', 1510, -98.76, 20.60, 'Metztitlán'],
+      ['aztec-empire', 1510, -95.24, 16.32, 'Tehuantepec (Zapotec)'],
+      ['spanish-new-spain', 1530, -89.62, 20.97, 'T’ho / Mérida (Maya until 1542)'],
+      ['spanish-new-spain', 1600, -111.35, 26.01, 'Loreto (before 1697)'],
+      ['spanish-new-spain', 1600, -89.81, 18.11, 'Calakmul forest (before 1697)'],
+      ['spanish-new-spain', 1600, -91.98, 17.48, 'Palenque / Lacandon (before 1695)'],
+      ['spanish-new-spain', 1700, -99.13, 23.74, 'Nuevo Santander (before 1748)'],
+      ['spanish-empire', 1550, -99.13, 19.43, 'Mexico City (new-spain dropped)'],
+      ['spanish-empire', 1700, -102.58, 22.77, 'Zacatecas (new-spain dropped)'],
+      ['spanish-empire', 1800, -106.09, 28.64, 'Chihuahua (new-spain-north dropped)'],
+      ['colonial-americas', 1700, -99.13, 19.43, 'Mexico City (new-spain-core dropped)'],
+    ],
+    noOverlap: {
+      from: -1500,
+      to: 1815,
+      box: [-117.2, 14.5, -86.7, 32.8],
+      planar: true,
+      with: ['spanish-empire', 'colonial-americas', ...guatemalaPolities.map((e) => e.id)],
     },
   },
 ];
