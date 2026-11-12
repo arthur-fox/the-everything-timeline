@@ -1,0 +1,792 @@
+{
+  "id": "angola",
+  "name": "Angola",
+  "flag": "🇦🇴",
+  "minYear": -25000,
+  "maxYear": 2025,
+  "categories": [
+    {
+      "id": "ancient",
+      "name": "Early Peoples",
+      "color": "#A16207"
+    },
+    {
+      "id": "kingdoms",
+      "name": "Kingdoms",
+      "color": "#7C3AED"
+    },
+    {
+      "id": "trade",
+      "name": "Trade & Slavery",
+      "color": "#0891B2"
+    },
+    {
+      "id": "colonial",
+      "name": "Colonial Angola",
+      "color": "#EF4444"
+    },
+    {
+      "id": "politics",
+      "name": "Politics & State",
+      "color": "#3B82F6"
+    },
+    {
+      "id": "conflict",
+      "name": "War & Liberation",
+      "color": "#B45309"
+    },
+    {
+      "id": "modern",
+      "name": "Modern Angola",
+      "color": "#10B981"
+    }
+  ],
+  "items": [
+    {
+      "id": "ao-early-peoples",
+      "name": "First peoples: Stone Age hunters and Khoisan foragers",
+      "start": -25000,
+      "end": -500,
+      "region": "ancient",
+      "icon": "🏹",
+      "description": "People have lived in Angola since the Stone Age: stone tools have been found along the coast and on the plateaus, and the deserts and savannas of the south were home to Khoisan-speaking hunter-gatherers whose descendants (the !Kung and other San groups) still live in the south-east. Rock paintings and engravings, such as those at Tchitundu-Hulu in Namibe, are among the traces they left.",
+      "sources": [
+        {
+          "title": "Wikipedia — History of Angola",
+          "url": "https://en.wikipedia.org/wiki/History_of_Angola"
+        },
+        {
+          "title": "Wikipedia — San people",
+          "url": "https://en.wikipedia.org/wiki/San_people"
+        },
+        {
+          "title": "Wikipedia — Tchitundu-Hulu",
+          "url": "https://en.wikipedia.org/wiki/Tchitundu-Hulu"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Stone Age hunters",
+          "start": -25000,
+          "end": -5000
+        },
+        {
+          "name": "Khoisan foragers of the south",
+          "start": -5000,
+          "end": -500
+        }
+      ]
+    },
+    {
+      "id": "ao-bantu",
+      "name": "Bantu farmers, iron and cattle",
+      "start": -500,
+      "end": 1300,
+      "region": "ancient",
+      "icon": "🌾",
+      "description": "In the last centuries BCE Bantu-speaking farmers moved south into Angola from the Congo basin, bringing pottery, crops and, by the early first millennium CE, iron working. Over the next thousand years they settled the northern forests and savannas and the central highlands, and in the drier south cattle-keeping peoples (ancestors of the Ovambo and Herero) took up herding; the Khoisan foragers were absorbed or pushed to the margins.",
+      "sources": [
+        {
+          "title": "Wikipedia — Bantu expansion",
+          "url": "https://en.wikipedia.org/wiki/Bantu_expansion"
+        },
+        {
+          "title": "Wikipedia — History of Angola",
+          "url": "https://en.wikipedia.org/wiki/History_of_Angola"
+        },
+        {
+          "title": "Wikipedia — Ambundu",
+          "url": "https://en.wikipedia.org/wiki/Ambundu"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Farmers reach the north",
+          "start": -500,
+          "end": 300
+        },
+        {
+          "name": "Iron, villages and herders",
+          "start": 300,
+          "end": 1300
+        }
+      ]
+    },
+    {
+      "id": "ao-kongo",
+      "name": "The Kingdom of Kongo and Mbanza Kongo",
+      "start": 1390,
+      "end": 1914,
+      "region": "kingdoms",
+      "icon": "👑",
+      "description": "Around 1390 Lukeni lua Nimi founded the Kingdom of Kongo at Mbanza Kongo, on a hilltop in what is now northern Angola. Its Manikongo ruled provinces on both sides of the lower Congo (Soyo, Mbamba, Mpemba, Nsundi, Mpangu, Mbata). Diogo Cão reached the river mouth in 1482–83; King Nzinga a Nkuwu was baptised João I in 1491, and Afonso I (1509–42) built a Christian, literate court and wrote to the kings of Portugal about the slave trade. After the battle of Mbwila (1665) Kongo split into rival factions and Mbanza Kongo, renamed São Salvador, was abandoned; Pedro IV reunited the kingdom in 1709. Pedro V won the throne with Portuguese help in 1859 as a vassal of Portugal, and Portugal abolished the monarchy in 1914 after a Kongo revolt. Mbanza Kongo became a UNESCO World Heritage Site in 2017.",
+      "sources": [
+        {
+          "title": "Wikipedia — Kingdom of Kongo",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Kongo"
+        },
+        {
+          "title": "Wikipedia — Afonso I of Kongo",
+          "url": "https://en.wikipedia.org/wiki/Afonso_I_of_Kongo"
+        },
+        {
+          "title": "Wikipedia — Battle of Mbwila",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Mbwila"
+        },
+        {
+          "title": "Wikipedia — M'banza-Kongo",
+          "url": "https://en.wikipedia.org/wiki/M%27banza-Kongo"
+        },
+        {
+          "title": "UNESCO World Heritage — Mbanza Kongo, Vestiges of the Capital of the former Kingdom of Kongo",
+          "url": "https://whc.unesco.org/en/list/1511/"
+        },
+        {
+          "title": "UNESCO General History of Africa, vols. II–V",
+          "url": "https://www.unesco.org/en/general-history-africa"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Founding and expansion",
+          "start": 1390,
+          "end": 1482
+        },
+        {
+          "name": "Christian Kongo",
+          "start": 1482,
+          "end": 1665
+        },
+        {
+          "name": "Civil wars and restoration",
+          "start": 1665,
+          "end": 1859
+        },
+        {
+          "name": "Portuguese vassal",
+          "start": 1859,
+          "end": 1914
+        }
+      ]
+    },
+    {
+      "id": "ao-soyo",
+      "name": "Soyo: Kongo’s coastal province breaks away",
+      "start": 1483,
+      "end": 1815,
+      "region": "kingdoms",
+      "icon": "⚓",
+      "description": "Soyo, Kongo’s province at the mouth of the Congo River, was the first place the Portuguese landed in 1483 and grew rich on its port at Mpinda. Under its own counts (mani Soyo) it acted independently from the 1640s, beat Kongo’s armies and, at the battle of Kitombo in 1670, routed a Portuguese army from Angola. It stayed a separate principality through the 18th century.",
+      "sources": [
+        {
+          "title": "Wikipedia — Soyo",
+          "url": "https://en.wikipedia.org/wiki/Soyo"
+        },
+        {
+          "title": "Wikipedia — Mpinda",
+          "url": "https://en.wikipedia.org/wiki/Mpinda"
+        },
+        {
+          "title": "Wikipedia — Battle of Kitombo",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Kitombo"
+        },
+        {
+          "title": "Wikipedia — Kingdom of Kongo",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Kongo"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Kongo’s coastal province",
+          "start": 1483,
+          "end": 1641
+        },
+        {
+          "name": "Independent Soyo",
+          "start": 1641,
+          "end": 1815
+        }
+      ]
+    },
+    {
+      "id": "ao-ndongo",
+      "name": "The Kingdom of Ndongo and the Ngola",
+      "start": 1518,
+      "end": 1671,
+      "region": "kingdoms",
+      "icon": "🛡️",
+      "description": "Ndongo was the kingdom of the Kimbundu-speaking Mbundu between the Lukala and Kwanza rivers, ruled by a king called the ngola (the origin of the name Angola) from his capital at Kabasa, near today’s N’dalatando. In 1518 Ngola Kiluanje sent envoys to Portugal; at first under Kongo’s loose overlordship, it fought the Portuguese colony from 1579, beat it at the Lukala in 1590, and was overrun by Portuguese and Imbangala armies in 1617–21. From 1626 the Portuguese kept a client king at the rock fortress of Pungo a Ndongo, which fell in 1671.",
+      "sources": [
+        {
+          "title": "Wikipedia — Kingdom of Ndongo",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Ndongo"
+        },
+        {
+          "title": "Wikipedia — Ngola (title)",
+          "url": "https://en.wikipedia.org/wiki/Ngola_(title)"
+        },
+        {
+          "title": "Wikipedia — Black Rocks at Pungo Andongo",
+          "url": "https://en.wikipedia.org/wiki/Black_Rocks_at_Pungo_Andongo"
+        },
+        {
+          "title": "Thornton, A History of West Central Africa to 1850 (2020)",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Ndongo#Bibliography"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Ngola Kiluanje’s kingdom",
+          "start": 1518,
+          "end": 1579
+        },
+        {
+          "name": "Wars with Portugal",
+          "start": 1579,
+          "end": 1626
+        },
+        {
+          "name": "Client kings at Pungo a Ndongo",
+          "start": 1626,
+          "end": 1671
+        }
+      ]
+    },
+    {
+      "id": "ao-matamba",
+      "name": "The Kingdom of Matamba",
+      "start": 1530,
+      "end": 1909,
+      "region": "kingdoms",
+      "icon": "🏰",
+      "description": "Matamba, north-east of Ndongo towards the Kwango, is first recorded in 1530 paying tribute to Kongo. Its army helped Ndongo rout the Portuguese at the Lukala in 1590. Queen Njinga conquered it around 1631 and made it the base of a joint kingdom of Ndongo and Matamba; after her the Guterres dynasty, including Queen Verónica I (1681–1721), kept it independent against Portuguese attacks (Katole, 1681). After a war in 1744 it accepted Portuguese vassalage but kept its own rulers until the colonial conquest of the late 19th and early 20th centuries.",
+      "sources": [
+        {
+          "title": "Wikipedia — Kingdom of Matamba",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Matamba"
+        },
+        {
+          "title": "Wikipedia — Verónica I of Matamba",
+          "url": "https://en.wikipedia.org/wiki/Verónica_I_of_Matamba"
+        },
+        {
+          "title": "Wikipedia — Battle of Katole",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Katole"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Early Matamba",
+          "start": 1530,
+          "end": 1631
+        },
+        {
+          "name": "Njinga’s kingdom",
+          "start": 1631,
+          "end": 1663
+        },
+        {
+          "name": "Guterres dynasty",
+          "start": 1663,
+          "end": 1744
+        },
+        {
+          "name": "Portuguese vassal",
+          "start": 1744,
+          "end": 1909
+        }
+      ]
+    },
+    {
+      "id": "ao-portuguese-angola",
+      "name": "Portuguese Luanda and the conquest of Angola",
+      "start": 1575,
+      "end": 1700,
+      "region": "colonial",
+      "icon": "🏴",
+      "description": "Paulo Dias de Novais landed at Luanda in 1575 with a royal charter to conquer the “Kingdom of Angola” and founded São Paulo de Loanda in 1576. The colony pushed up the Kwanza with forts at Massangano (1582–83), Muxima (1599) and Cambambe (1602), using African allies and, from 1615, Imbangala mercenaries; it founded Benguela in 1617. Its wars with Ndongo, Matamba and Kongo fed the slave trade. Pungo a Ndongo was taken in 1671, but the colony stayed a string of forts and tributary sobas, not a bordered territory.",
+      "sources": [
+        {
+          "title": "Wikipedia — Portuguese Angola",
+          "url": "https://en.wikipedia.org/wiki/Portuguese_Angola"
+        },
+        {
+          "title": "Wikipedia — Paulo Dias de Novais",
+          "url": "https://en.wikipedia.org/wiki/Paulo_Dias_de_Novais"
+        },
+        {
+          "title": "Wikipedia — Massangano",
+          "url": "https://en.wikipedia.org/wiki/Massangano"
+        },
+        {
+          "title": "Wikipedia — Fortress of Muxima",
+          "url": "https://en.wikipedia.org/wiki/Fortress_of_Muxima"
+        },
+        {
+          "title": "Wikipedia — Benguela",
+          "url": "https://en.wikipedia.org/wiki/Benguela"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Luanda founded",
+          "start": 1575,
+          "end": 1583
+        },
+        {
+          "name": "Forts up the Kwanza",
+          "start": 1583,
+          "end": 1617
+        },
+        {
+          "name": "Wars of conquest",
+          "start": 1617,
+          "end": 1700
+        }
+      ]
+    },
+    {
+      "id": "ao-njinga",
+      "name": "Queen Njinga of Ndongo and Matamba",
+      "start": 1622,
+      "end": 1663,
+      "region": "politics",
+      "icon": "👸",
+      "description": "Njinga Mbandi (c. 1583–1663) negotiated a peace in Luanda for her brother Ngola Mbandi in 1622, where she was baptised Ana de Sousa, and took power in Ndongo in 1624. Driven from the Kindonga islands by the Portuguese in 1626 and 1628, she allied with Imbangala bands, conquered Matamba around 1631, sided with the Dutch after they took Luanda in 1641 and defeated the Portuguese at Kombi in 1647. She made peace with Portugal in 1657 and died in 1663, one of the best-documented African rulers of her century and today a national heroine of Angola.",
+      "sources": [
+        {
+          "title": "Wikipedia — Nzinga of Ndongo and Matamba",
+          "url": "https://en.wikipedia.org/wiki/Nzinga_of_Ndongo_and_Matamba"
+        },
+        {
+          "title": "Wikipedia — Battle of Kombi",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Kombi"
+        },
+        {
+          "title": "Wikipedia — Kingdom of Matamba",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Matamba"
+        },
+        {
+          "title": "Heywood, Njinga of Angola: Africa’s Warrior Queen (2017)",
+          "url": "https://en.wikipedia.org/wiki/Nzinga_of_Ndongo_and_Matamba#Further_reading"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Envoy and queen of Ndongo",
+          "start": 1622,
+          "end": 1631
+        },
+        {
+          "name": "Queen of Ndongo and Matamba",
+          "start": 1631,
+          "end": 1663
+        }
+      ]
+    },
+    {
+      "id": "ao-kasanje",
+      "name": "Kasanje and the Imbangala",
+      "start": 1615,
+      "end": 1912,
+      "region": "kingdoms",
+      "icon": "⚔️",
+      "description": "The Imbangala were warrior bands from south of the Kwanza who fought for the Portuguese from 1615. Around 1620 the band of Kasanje deserted and settled in the Baixa de Cassanje on the upper Kwango, founding a kingdom ruled by an elected king, the kinguri. Kasanje fought Njinga’s Matamba and became the great inland market of the slave trade between the Lunda and Luanda, until Ovimbundu routes eclipsed it in the 1850s. Portugal absorbed it in 1910–12.",
+      "sources": [
+        {
+          "title": "Wikipedia — Kasanje Kingdom",
+          "url": "https://en.wikipedia.org/wiki/Kasanje_Kingdom"
+        },
+        {
+          "title": "Wikipedia — Imbangala",
+          "url": "https://en.wikipedia.org/wiki/Imbangala"
+        },
+        {
+          "title": "Wikipedia — Baixa de Cassanje",
+          "url": "https://en.wikipedia.org/wiki/Baixa_de_Cassanje"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Imbangala bands",
+          "start": 1615,
+          "end": 1620
+        },
+        {
+          "name": "Kingdom of Kasanje",
+          "start": 1620,
+          "end": 1850
+        },
+        {
+          "name": "Decline and conquest",
+          "start": 1850,
+          "end": 1912
+        }
+      ]
+    },
+    {
+      "id": "ao-dutch",
+      "name": "Dutch Luanda and the Atlantic war",
+      "start": 1641,
+      "end": 1648,
+      "region": "colonial",
+      "icon": "🇳🇱",
+      "description": "In August 1641 a Dutch West India Company fleet took Luanda, part of the Dutch war on the Portuguese Atlantic. The Portuguese retreated up the Kwanza to Massangano, Muxima and Cambambe, while Njinga, Kongo and the Dutch formed an alliance against them and beat them at Kombi in 1647. In August 1648 a fleet from Brazil under Salvador Correia de Sá retook Luanda and the Dutch left Angola.",
+      "sources": [
+        {
+          "title": "Wikipedia — Dutch Loango-Angola",
+          "url": "https://en.wikipedia.org/wiki/Dutch_Loango-Angola"
+        },
+        {
+          "title": "Wikipedia — Salvador Correia de Sá",
+          "url": "https://en.wikipedia.org/wiki/Salvador_Correia_de_Sá"
+        },
+        {
+          "title": "Wikipedia — Battle of Kombi",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Kombi"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Dutch Luanda",
+          "start": 1641,
+          "end": 1648
+        }
+      ]
+    },
+    {
+      "id": "ao-slave-trade",
+      "name": "The Atlantic slave trade from Angola",
+      "start": 1500,
+      "end": 1867,
+      "region": "trade",
+      "icon": "⛓️",
+      "description": "West Central Africa was the largest source of captives in the Atlantic slave trade: about 5.7 million people were shipped from its ports, more than from any other region, most of them to Brazil. Luanda and Benguela were the busiest ports. War captives from Kongo, Ndongo, Matamba and the interior were sold through markets such as Kasanje and carried by caravans of pombeiros. Portugal banned the export of slaves in 1836, but the illegal trade went on into the 1860s; slavery itself was ended in stages from 1869 to 1878, followed by forced “contract” labour.",
+      "sources": [
+        {
+          "title": "Wikipedia — Atlantic slave trade",
+          "url": "https://en.wikipedia.org/wiki/Atlantic_slave_trade"
+        },
+        {
+          "title": "Wikipedia — Slavery in Angola",
+          "url": "https://en.wikipedia.org/wiki/Slavery_in_Angola"
+        },
+        {
+          "title": "Wikipedia — Luanda",
+          "url": "https://en.wikipedia.org/wiki/Luanda"
+        },
+        {
+          "title": "SlaveVoyages — Trans-Atlantic Slave Trade Database",
+          "url": "https://www.slavevoyages.org/"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Kongo and São Tomé trade",
+          "start": 1500,
+          "end": 1575
+        },
+        {
+          "name": "Luanda and Benguela trade",
+          "start": 1575,
+          "end": 1836
+        },
+        {
+          "name": "Illegal trade",
+          "start": 1836,
+          "end": 1867
+        }
+      ]
+    },
+    {
+      "id": "ao-ovimbundu",
+      "name": "The Ovimbundu kingdoms of the central highlands",
+      "start": 1700,
+      "end": 1902,
+      "region": "kingdoms",
+      "icon": "🐂",
+      "description": "On the central highlands the Umbundu-speaking Ovimbundu formed more than a dozen kingdoms. Bailundo (Mbalundu), founded around 1700 by Katyavala, and Viye (Bié), founded in the early 18th century, were the largest; Wambu (Huambo) was smaller. Their caravans carried wax, ivory, rubber and slaves between the interior and Benguela. Portugal beat Bailundo in the Mbailundu War of 1773–76 and made it a vassal, but the kingdoms kept their kings until the Bailundo revolt of 1902 was crushed.",
+      "sources": [
+        {
+          "title": "Wikipedia — Ovimbundu",
+          "url": "https://en.wikipedia.org/wiki/Ovimbundu"
+        },
+        {
+          "title": "Wikipedia — Bailundo (kingdom)",
+          "url": "https://en.wikipedia.org/wiki/Bailundo_(kingdom)"
+        },
+        {
+          "title": "Wikipedia — Viye",
+          "url": "https://en.wikipedia.org/wiki/Viye"
+        },
+        {
+          "title": "Wikipedia — Huambo",
+          "url": "https://en.wikipedia.org/wiki/Huambo"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Bailundo and Viye founded",
+          "start": 1700,
+          "end": 1773
+        },
+        {
+          "name": "Vassals and caravan trade",
+          "start": 1773,
+          "end": 1902
+        }
+      ]
+    },
+    {
+      "id": "ao-colonial-conquest",
+      "name": "Conquest and colonial Angola",
+      "start": 1836,
+      "end": 1930,
+      "region": "colonial",
+      "icon": "🚂",
+      "description": "In the 19th century Portugal pushed inland from Luanda, Benguela and Moçâmedes (1840), and settlers from Madeira founded Lubango (1885). The Berlin Conference (1884–85) and treaties with Britain, France, Belgium and Germany fixed Angola’s borders. Military campaigns then subdued the Kongo revolt (1913–14) and the Kwanyama of the south, whose king Mandume ya Ndemufayo died fighting in 1917. The Benguela Railway (1903–29) and the Diamang diamond company (1917) opened the interior; Huambo was founded in 1912. Africans faced forced labour and the head tax.",
+      "sources": [
+        {
+          "title": "Wikipedia — Portuguese Angola",
+          "url": "https://en.wikipedia.org/wiki/Portuguese_Angola"
+        },
+        {
+          "title": "Wikipedia — Berlin Conference",
+          "url": "https://en.wikipedia.org/wiki/Berlin_Conference"
+        },
+        {
+          "title": "Wikipedia — Mandume ya Ndemufayo",
+          "url": "https://en.wikipedia.org/wiki/Mandume_ya_Ndemufayo"
+        },
+        {
+          "title": "Wikipedia — Benguela railway",
+          "url": "https://en.wikipedia.org/wiki/Benguela_railway"
+        },
+        {
+          "title": "Wikipedia — Huambo",
+          "url": "https://en.wikipedia.org/wiki/Huambo"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Inland advance",
+          "start": 1836,
+          "end": 1885
+        },
+        {
+          "name": "Borders and conquest",
+          "start": 1885,
+          "end": 1917
+        },
+        {
+          "name": "Railway, diamonds and forced labour",
+          "start": 1917,
+          "end": 1930
+        }
+      ]
+    },
+    {
+      "id": "ao-estado-novo",
+      "name": "Overseas province under the Estado Novo",
+      "start": 1930,
+      "end": 1961,
+      "region": "colonial",
+      "icon": "☕",
+      "description": "Under Salazar’s Estado Novo, Angola was ruled as part of Portugal itself: a colony under the Colonial Act of 1930 and an “overseas province” from 1951. Coffee, cotton, diamonds and later oil made it Portugal’s richest territory, and white settlement rose from about 44,000 in 1940 to some 170,000 by 1960. Most Africans had no political rights; forced cultivation of cotton and contract labour continued. The first nationalist movements formed in the 1950s: the UPA (later FNLA) in 1954 and the MPLA, which dates its founding to 1956.",
+      "sources": [
+        {
+          "title": "Wikipedia — Portuguese Angola",
+          "url": "https://en.wikipedia.org/wiki/Portuguese_Angola"
+        },
+        {
+          "title": "Wikipedia — Estado Novo (Portugal)",
+          "url": "https://en.wikipedia.org/wiki/Estado_Novo_(Portugal)"
+        },
+        {
+          "title": "Wikipedia — MPLA",
+          "url": "https://en.wikipedia.org/wiki/MPLA"
+        },
+        {
+          "title": "Wikipedia — National Front for the Liberation of Angola",
+          "url": "https://en.wikipedia.org/wiki/National_Front_for_the_Liberation_of_Angola"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Colonial Act",
+          "start": 1930,
+          "end": 1951
+        },
+        {
+          "name": "Overseas province",
+          "start": 1951,
+          "end": 1961
+        }
+      ]
+    },
+    {
+      "id": "ao-independence-war",
+      "name": "War of independence",
+      "start": 1961,
+      "end": 1974,
+      "region": "conflict",
+      "icon": "✊",
+      "description": "The war began in 1961: the Baixa de Cassanje cotton revolt in January, the MPLA-linked attack on Luanda’s prisons on 4 February, and the UPA’s uprising in the north on 15 March, which was answered with massacres. Three movements — the MPLA, the FNLA and, from 1966, Jonas Savimbi’s UNITA — fought Portugal and each other. The war ended when the Carnation Revolution of 25 April 1974 overthrew the Estado Novo in Lisbon.",
+      "sources": [
+        {
+          "title": "Wikipedia — Angolan War of Independence",
+          "url": "https://en.wikipedia.org/wiki/Angolan_War_of_Independence"
+        },
+        {
+          "title": "Wikipedia — Baixa de Cassanje revolt",
+          "url": "https://en.wikipedia.org/wiki/Baixa_de_Cassanje_revolt"
+        },
+        {
+          "title": "Wikipedia — UNITA",
+          "url": "https://en.wikipedia.org/wiki/UNITA"
+        },
+        {
+          "title": "Wikipedia — Carnation Revolution",
+          "url": "https://en.wikipedia.org/wiki/Carnation_Revolution"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Risings of 1961",
+          "start": 1961,
+          "end": 1962
+        },
+        {
+          "name": "Guerrilla war",
+          "start": 1962,
+          "end": 1974
+        }
+      ]
+    },
+    {
+      "id": "ao-independence",
+      "name": "Independence and the civil war",
+      "start": 1975,
+      "end": 1991,
+      "region": "conflict",
+      "icon": "🇦🇴",
+      "description": "The Alvor Agreement (January 1975) set up a transition, but it collapsed into war between the MPLA, FNLA and UNITA. The MPLA, helped by Cuban troops, held Luanda and declared independence on 11 November 1975 with Agostinho Neto as president; FNLA, UNITA, Zaire and South Africa fought it, and the war became a Cold War proxy conflict. José Eduardo dos Santos became president in 1979. After the battle of Cuito Cuanavale (1987–88), the New York Accords of 1988 led to Cuban and South African withdrawal and Namibia’s independence, and the Bicesse Accords of 1991 brought a ceasefire.",
+      "sources": [
+        {
+          "title": "Wikipedia — Angolan Civil War",
+          "url": "https://en.wikipedia.org/wiki/Angolan_Civil_War"
+        },
+        {
+          "title": "Wikipedia — Alvor Agreement",
+          "url": "https://en.wikipedia.org/wiki/Alvor_Agreement"
+        },
+        {
+          "title": "Wikipedia — Agostinho Neto",
+          "url": "https://en.wikipedia.org/wiki/Agostinho_Neto"
+        },
+        {
+          "title": "Wikipedia — Battle of Cuito Cuanavale",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Cuito_Cuanavale"
+        },
+        {
+          "title": "Wikipedia — Bicesse Accords",
+          "url": "https://en.wikipedia.org/wiki/Bicesse_Accords"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Independence war of 1975",
+          "start": 1975,
+          "end": 1976
+        },
+        {
+          "name": "Cold War civil war",
+          "start": 1976,
+          "end": 1991
+        }
+      ]
+    },
+    {
+      "id": "ao-war-to-peace",
+      "name": "Elections, renewed war and peace",
+      "start": 1992,
+      "end": 2002,
+      "region": "conflict",
+      "icon": "🕊️",
+      "description": "Angola’s first multiparty elections in September 1992 were won by the MPLA and dos Santos; UNITA rejected the result and the war resumed, more destructive than before. The Lusaka Protocol of 1994 brought a fragile pause, but fighting returned in 1998. Jonas Savimbi was killed in battle in Moxico on 22 February 2002, and the Luena Memorandum of 4 April 2002 ended the civil war after 27 years, half a million or more deaths and millions displaced.",
+      "sources": [
+        {
+          "title": "Wikipedia — Angolan Civil War",
+          "url": "https://en.wikipedia.org/wiki/Angolan_Civil_War"
+        },
+        {
+          "title": "Wikipedia — Lusaka Protocol",
+          "url": "https://en.wikipedia.org/wiki/Lusaka_Protocol"
+        },
+        {
+          "title": "Wikipedia — Jonas Savimbi",
+          "url": "https://en.wikipedia.org/wiki/Jonas_Savimbi"
+        },
+        {
+          "title": "Wikipedia — 1992 Angolan general election",
+          "url": "https://en.wikipedia.org/wiki/1992_Angolan_general_election"
+        }
+      ],
+      "periods": [
+        {
+          "name": "War after the election",
+          "start": 1992,
+          "end": 1994
+        },
+        {
+          "name": "Lusaka and the last war",
+          "start": 1994,
+          "end": 2002
+        }
+      ]
+    },
+    {
+      "id": "ao-modern",
+      "name": "Angola since 2002",
+      "start": 2002,
+      "end": 2025,
+      "region": "modern",
+      "icon": "🛢️",
+      "description": "Peace and high oil prices brought a reconstruction boom: Angola became one of Africa’s largest oil producers and rebuilt roads, railways and Luanda, while wealth stayed concentrated around the ruling elite. A 2010 constitution ended direct presidential elections. Dos Santos stepped down in 2017 after 38 years; his successor João Lourenço launched anti-corruption cases against the old elite and was re-elected in 2022. Angola left OPEC in 2024, split three new provinces off in 2024 (21 in all), and marked 50 years of independence on 11 November 2025.",
+      "sources": [
+        {
+          "title": "Wikipedia — Angola",
+          "url": "https://en.wikipedia.org/wiki/Angola"
+        },
+        {
+          "title": "Wikipedia — João Lourenço",
+          "url": "https://en.wikipedia.org/wiki/João_Lourenço"
+        },
+        {
+          "title": "Wikipedia — José Eduardo dos Santos",
+          "url": "https://en.wikipedia.org/wiki/José_Eduardo_dos_Santos"
+        },
+        {
+          "title": "Wikipedia — Provinces of Angola",
+          "url": "https://en.wikipedia.org/wiki/Provinces_of_Angola"
+        },
+        {
+          "title": "Wikipedia — Lobito Corridor",
+          "url": "https://en.wikipedia.org/wiki/Lobito_Corridor"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Oil boom",
+          "start": 2002,
+          "end": 2017
+        },
+        {
+          "name": "Lourenço era",
+          "start": 2017,
+          "end": 2025
+        }
+      ]
+    }
+  ]
+}

@@ -9,7 +9,8 @@
  * Afghanistan (Day 77, src/globe-pack-afghanistan.js), Cuba (Day 78, src/globe-pack-cuba.js) and
  * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js), Jamaica (Day 80,
  * src/globe-pack-jamaica.js), Guatemala (Day 81, src/globe-pack-guatemala.js), the Mexico refinement (Day 82,
- * src/globe-pack-mexico.js) and DR Congo (Day 83, src/globe-pack-dr-congo.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * src/globe-pack-mexico.js), DR Congo (Day 83, src/globe-pack-dr-congo.js) and Angola (Day 84,
+ * src/globe-pack-angola.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -47,6 +48,7 @@ import { jamaicaPolities, jamaicaShapeFixes } from '../src/globe-pack-jamaica.js
 import { guatemalaPolities, guatemalaShapeFixes } from '../src/globe-pack-guatemala.js';
 import { mexicoPolities, mexicoShapeFixes, MX_DROPS } from '../src/globe-pack-mexico.js';
 import { drCongoPolities, drCongoShapeFixes } from '../src/globe-pack-dr-congo.js';
+import { angolaPolities, angolaShapeFixes, AO_DROPS } from '../src/globe-pack-angola.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -1658,6 +1660,78 @@ const PACKS = [
       box: [12, -13.5, 31.5, -2],
       planar: true,
       with: ['kongo', 'portuguese-empire'],
+    },
+  },
+  {
+    country: 'angola',
+    polities: angolaPolities,
+    fixes: angolaShapeFixes,
+    // Kongo is replaced by id; Portuguese Angola is drawn once, by the pack (angola-coast dropped).
+    redrawn: {},
+    dropped: AO_DROPS,
+    capitals: [
+      ['kongo', 1390, 14.24, -6.27, 'Mbanza Kongo'],
+      ['kongo', 1491, 14.24, -6.27, 'Mbanza Kongo'],
+      ['kongo', 1709, 14.24, -6.27, 'São Salvador (Mbanza Kongo)'],
+      ['kongo', 1491, 13.45, -5.82, 'Matadi (Nsundi)'],
+      ['soyo', 1670, 12.37, -6.13, 'Soyo'],
+      ['ndongo', 1518, 14.91, -9.30, 'Kabasa (near N’dalatando)'],
+      ['ndongo', 1518, 13.23, -8.84, 'Luanda coast'],
+      ['ndongo', 1626, 15.58, -9.66, 'Pungo a Ndongo'],
+      ['matamba', 1631, 16.70, -8.70, 'Matamba'],
+      ['kasanje', 1680, 17.60, -9.80, 'Baixa de Cassanje'],
+      ['portuguese-angola', 1576, 13.23, -8.84, 'Luanda'],
+      ['portuguese-angola', 1583, 14.28, -9.62, 'Massangano'],
+      ['portuguese-angola', 1583, 13.97, -9.52, 'Muxima'],
+      ['portuguese-angola', 1617, 13.41, -12.58, 'Benguela'],
+      ['portuguese-angola', 1626, 14.91, -9.30, 'Kabasa / Ambaca lands'],
+      ['portuguese-angola', 1641, 14.28, -9.62, 'Massangano (Dutch years)'],
+      ['portuguese-angola', 1671, 15.58, -9.66, 'Pungo Andongo'],
+      ['bailundo-kingdom', 1700, 15.86, -12.20, 'Bailundo'],
+      ['viye-kingdom', 1797, 16.93, -12.38, 'Kuito (Viye)'],
+    ],
+    on: {
+      1400: ['kongo'],
+      1520: ['kongo', 'ndongo'],
+      1550: ['kongo', 'ndongo', 'matamba'],
+      1600: ['kongo', 'ndongo', 'matamba', 'portuguese-angola'],
+      1650: ['kongo', 'soyo', 'ndongo', 'matamba', 'kasanje', 'portuguese-angola'],
+      1750: ['kongo', 'soyo', 'matamba', 'kasanje', 'portuguese-angola', 'bailundo-kingdom', 'viye-kingdom'],
+      1815: ['kongo', 'soyo', 'matamba', 'kasanje', 'portuguese-angola', 'bailundo-kingdom', 'viye-kingdom'],
+    },
+    gone: {
+      1380: ['kongo'],
+      1500: ['ndongo', 'matamba', 'portuguese-angola', 'soyo'],
+      1600: ['soyo', 'kasanje', 'bailundo-kingdom'],
+      1680: ['ndongo'],
+      1700: ['viye-kingdom'],
+    },
+    absent: [
+      ['kongo', 1700, 'soyo'],
+      ['portuguese-angola', 1600, 'benguela'],
+    ],
+    present: [
+      ['kongo', 1500, 'soyo'],
+      ['portuguese-angola', 1650, 'benguela'],
+    ],
+    notOver: [
+      ['portuguese-angola', 1645, 13.23, -8.84, 'Luanda (Dutch 1641–48)'],
+      ['portuguese-angola', 1600, 14.91, -9.30, 'Kabasa (Ndongo until 1626)'],
+      ['portuguese-angola', 1660, 15.58, -9.66, 'Pungo a Ndongo (before 1671)'],
+      ['ndongo', 1600, 13.23, -8.84, 'Luanda (Portuguese from 1576)'],
+      ['ndongo', 1600, 14.28, -9.62, 'Massangano (Portuguese from 1583)'],
+      ['ndongo', 1650, 14.91, -9.30, 'Kabasa (Portuguese forts from 1626)'],
+      ['kongo', 1750, 12.37, -6.13, 'Soyo (independent from 1641)'],
+      ['kasanje', 1700, 18.70, -9.00, 'Lunda Norte (east of the Kwango)'],
+      ['portuguese-empire', 1650, 13.41, -12.58, 'Benguela (angola-coast dropped)'],
+      ['portuguese-empire', 1700, 14.28, -9.62, 'Massangano (angola-coast dropped)'],
+    ],
+    noOverlap: {
+      from: 1380,
+      to: 1815,
+      box: [11.7, -14, 19.5, -4.3],
+      planar: true,
+      with: ['portuguese-empire', 'lunda-empire', 'yaka-kingdom', 'luba-kingdom', 'kuba-kingdom'],
     },
   },
 ];

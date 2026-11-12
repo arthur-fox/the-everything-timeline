@@ -50,6 +50,7 @@ import { jamaicaPolities, applyJamaicaShapeFixes } from './globe-pack-jamaica.js
 import { guatemalaPolities, applyGuatemalaShapeFixes } from './globe-pack-guatemala.js';
 import { mexicoPolities, applyMexicoShapeFixes } from './globe-pack-mexico.js';
 import { drCongoPolities, applyDrCongoShapeFixes } from './globe-pack-dr-congo.js';
+import { angolaPolities, applyAngolaShapeFixes } from './globe-pack-angola.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6451,6 +6452,14 @@ for (const ent of drCongoPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 84 — Phase 5 country pack 4, Angola (globe-pack-angola.js): Kongo (the Day 58 ring replaced by
+// id), Soyo, Ndongo, Matamba, Kasanje, Portuguese Angola, Bailundo and Viye, drawn from province pieces.
+for (const ent of angolaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6525,6 +6534,8 @@ applyGuatemalaShapeFixes(spatialEntities);
 applyMexicoShapeFixes(spatialEntities);
 // Day 83 — DR Congo: no older shape is trimmed (Luba and Lunda are replaced by id).
 applyDrCongoShapeFixes(spatialEntities);
+// Day 84 — Portuguese Empire 'angola-coast' gives way to the Angola pack's Portuguese Angola.
+applyAngolaShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
