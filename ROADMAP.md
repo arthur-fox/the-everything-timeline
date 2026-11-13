@@ -998,7 +998,7 @@ Proposed order:
 1. **Pack 1 globe backfill:** Peru, Ghana, Kenya, Morocco, Iraq, Philippines. Add shapes over time, cities and pinned events for the six existing timeline packs. **Peru ✅ (Day 65, merged #79); Ghana ✅ (Day 66, merged #80); Morocco ✅ (Day 68, merged #82); Kenya ✅ (Day 69, merged #83); Iraq ✅ (Day 70, merged #84); Philippines ✅ (Day 71, merged #85). Pack 1 globe backfill complete; next item 2, Central Asia.**
 2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates). **Uzbekistan ✅ (Day 72, merged #86); Kazakhstan ✅ (Day 73, merged #87); Turkmenistan ✅ (Day 74, merged #88); Kyrgyzstan ✅ (Day 75, merged #89); Tajikistan ✅ (Day 76, merged #90); Afghanistan ✅ (Day 77, merged #91). Pack 2 complete.**
 3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits). **Cuba ✅ (Day 78, merged #92). Haiti/Dominican Republic ✅ (Day 79, merged #93). Jamaica ✅ (Day 80, merged #94). Guatemala ✅ (Day 81, done-in-PR #95: new timeline + globe). Mexico refinement ✅ (Day 82, done-in-PR #97: timeline 7 → 33 items + globe). Pack 3 complete once #95 and #97 merge; next item 4, Central Africa (DR Congo first).**
-4. **Central Africa:** DR Congo, Angola, Cameroon, Chad (Kongo, Luba, Lunda, Kanem-Bornu). **DR Congo ✅ (Day 83, done-in-PR #98: new timeline + globe). Angola ✅ (Day 84, done-in-PR #99: new timeline + globe). Next: Cameroon.**
+4. **Central Africa:** DR Congo, Angola, Cameroon, Chad (Kongo, Luba, Lunda, Kanem-Bornu). **DR Congo ✅ (Day 83, merged #98: new timeline + globe). Angola ✅ (Day 84, merged #99: new timeline + globe). Cameroon ✅ (Day 85, done-in-PR: new timeline + globe). Next: Chad.**
 5. **Southeast Europe:** Serbia, Bulgaria, Romania, Croatia, Albania, Greece refinement (Byzantine/Ottoman/medieval kingdoms).
 6. **South Asia:** Pakistan, Bangladesh, Sri Lanka, Nepal, India refinement (Mauryan → Mughal regional kingdoms).
 7. **Globe refinement of the existing 38 countries**, one or a few per day, biggest gaps first. These packs are mostly globe work, as their timelines already exist.
@@ -1379,7 +1379,21 @@ Angola had no country timeline, and on the globe before 1815 only the Day 58 Kin
   - Kongo is drawn whole through the civil wars of 1665–1709, when rival houses split it; Benguela is kept Portuguese during the Dutch years; Ndongo's coast before 1576 includes Luanda, whose island was Kongo's.
 - **Preview:** https://theeverythingtimeline.com/pr-preview/pr-99/ (globe: https://theeverythingtimeline.com/pr-preview/pr-99/?view=globe&year=1650&at=-9.5,15.5,1.2&fullscreen=1).
 
-- **Next:** Cameroon (pack 4: Timeline + Globe).
+- **Next:** Cameroon (pack 4: Timeline + Globe) — shipped Day 85.
+
+#### Day 85 — Pack 4 Central Africa: Cameroon (Timeline + Globe) — done-in-PR
+
+Cameroon had no country timeline, and on the globe before 1815 only the Day 58 Kanem–Bornu rings (which spilled south over the Mandara Mountains), the Bantu peoples bands and a Cameroon / Congo fringe presence. Nothing showed Mandara, Bamum, Nso or the Duala of the Wouri. From 1815 the nations layer takes over (Cameroon itself only from German Kamerun in 1884). Cameroon is the third country of pack 4 (Central Africa).
+
+- **Timeline:** 18 sourced items (Shum Laka and forest foragers, the Bantu homeland, the Sao, Bamum, Nso and the Grassfields fondoms, the Kotoko city-states, Mandara, the Portuguese name, the Duala, the slave trade, the Adamawa Emirate, German Kamerun, King Njoya and the Bamum script, the French and British mandates, the UPC, independence and reunification, Ahidjo, and Cameroon under Biya).
+- **Globe (to 1815):** 4 polities on 4 Natural Earth province pieces (Mandara Mountains, Bamum’s Noun highlands, Nso’s Bui, the Wouri estuary), clipped to the globe’s Cameroon land (shape 244) and simplified as one coverage. Kanem–Bornu is not replaced (its centre is in Chad and Nigeria); its 1390, 1500, 1600 and 1800 rings are trimmed off the Mandara Mountains so Mandara can be drawn as a neighbour. The Logone floodplain stays in the Bornu fill; Kotoko is a timeline item with pins, not a second overlapping outline. The Adamawa Emirate is timeline-only: most of its Cameroon lamidates were founded after 1815.
+- **Pieces: 4 of 10** Natural Earth 1:10m regions, cut on straight lines into historical regions. Generator: et-tools day85-pieces.py (outside the repo).
+- **Cities / pins:** 11 cities (Foumban, Douala, Mora, Garoua, Kumbo, Ngaoundéré, Limbe/Victoria, Yaoundé, Buea, Bamenda, Maroua); pins on the new timeline.
+- **Validate:** Cameroon is a twentieth row in `scripts/check-country-packs.js` (land, rings, sources, capitals inside, who is on / gone at sample years, Maroua / Bafoussam / Bamenda / Fundong / Edéa outside the tight pieces, Mora and Doulo outside the trimmed Bornu rings at keyframe years, and no overlap with each other or Sokoto every 5 years from 1390 to 1815; Kanem–Bornu is checked with notOver at 1500 and 1600 rather than the 5-year grid, because the schematic morph between trimmed rings can briefly brush the mountains). Day 85 assertions in `check-overlay-lifespan.js`.
+- **Honesty:** pieces are regions, not surveyed borders. The 1394 Bamum (and sometimes Nso) founding year is Sultan Njoya’s reconstructed chronology. The Duala were lineage towns, not a territorial kingdom. Shum Laka dates are radiocarbon ranges. Kanem–Bornu is trimmed off the Mandara Mountains at its 1390, 1500, 1600 and 1800 keyframes; the schematic morph between those rings can briefly brush the mountains.
+- **Preview:** _this PR._
+- **Next:** Chad (pack 4: Kanem–Bornu redrawn, Timeline + Globe).
+
 
 ### 13. Fill the globe, region by region (after the packs above)
 
@@ -1529,7 +1543,7 @@ A sensible near-term sequence:
 57. Pack 1 globe backfill — Iraq (Day 70) ✅ (done-in-PR).
 58. Pack 1 globe backfill — Philippines (Day 71) ✅ (merged #85). Pack 1 globe backfill complete.
 59. Phase 5 pack 2 — Central Asia: Uzbekistan (Day 72) ✅ (merged #86), Kazakhstan (Day 73) ✅ (merged #87), Turkmenistan (Day 74) ✅ (merged #88), Kyrgyzstan (Day 75) ✅ (merged #89), Tajikistan (Day 76) ✅ (merged #90), Afghanistan (Day 77) ✅ (merged #91), Timeline + Globe. Pack 2 complete.
-60. **Now: Phase 5 item 3 — Caribbean and Central America: Cuba (Day 78) ✅ (merged #92), Haiti/Dominican Republic (Day 79) ✅ (merged #93), Jamaica (Day 80) ✅ (merged #94), Guatemala (Day 81) ✅ (done-in-PR #95), Mexico refinement (Day 82) ✅ (done-in-PR #97), Timeline + Globe. Phase 5 item 4 — Central Africa: DR Congo (Day 83) ✅ (done-in-PR #98), Angola (Day 84) ✅ (done-in-PR #99). Next: Cameroon. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
+60. **Now: Phase 5 item 3 — Caribbean and Central America: Cuba (Day 78) ✅ (merged #92), Haiti/Dominican Republic (Day 79) ✅ (merged #93), Jamaica (Day 80) ✅ (merged #94), Guatemala (Day 81) ✅ (done-in-PR #95), Mexico refinement (Day 82) ✅ (done-in-PR #97), Timeline + Globe. Phase 5 item 4 — Central Africa: DR Congo (Day 83) ✅ (merged #98), Angola (Day 84) ✅ (merged #99), Cameroon (Day 85) ✅ (done-in-PR). Next: Chad. Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes.**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 

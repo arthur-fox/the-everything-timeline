@@ -51,6 +51,7 @@ import { guatemalaPolities, applyGuatemalaShapeFixes } from './globe-pack-guatem
 import { mexicoPolities, applyMexicoShapeFixes } from './globe-pack-mexico.js';
 import { drCongoPolities, applyDrCongoShapeFixes } from './globe-pack-dr-congo.js';
 import { angolaPolities, applyAngolaShapeFixes } from './globe-pack-angola.js';
+import { cameroonPolities, applyCameroonShapeFixes } from './globe-pack-cameroon.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6460,6 +6461,14 @@ for (const ent of angolaPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 85 — Phase 5 country pack 4, Cameroon (globe-pack-cameroon.js): Mandara, Bamum, Nso and the
+// Duala of the Wouri, drawn from province pieces; Kanem–Bornu is trimmed off the Mandara Mountains.
+for (const ent of cameroonPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6536,6 +6545,8 @@ applyMexicoShapeFixes(spatialEntities);
 applyDrCongoShapeFixes(spatialEntities);
 // Day 84 — Portuguese Empire 'angola-coast' gives way to the Angola pack's Portuguese Angola.
 applyAngolaShapeFixes(spatialEntities);
+// Day 85 — Kanem–Bornu rings trimmed off the Mandara Mountains (Logone floodplain stays in Bornu).
+applyCameroonShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

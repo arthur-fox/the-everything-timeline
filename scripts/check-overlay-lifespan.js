@@ -331,6 +331,11 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assert(idsAt(1600).has('portuguese-angola') && !idsAt(1570).has('portuguese-angola'), 'Portuguese Angola ON at 1600, OFF at 1570');
   assert(idsAt(1750).has('bailundo-kingdom') && idsAt(1750).has('viye-kingdom') && !idsAt(1690).has('bailundo-kingdom'), 'Bailundo and Viye ON at 1750; Bailundo OFF at 1690');
   assert(!regionIds('portuguese-empire', 1650).includes('angola-coast'), 'Portuguese Empire has no angola-coast (Day 84)');
+  // Day 85: Cameroon pack — Mandara, Bamum, Nso and the Duala; Kanem–Bornu trimmed off Mora.
+  assert(idsAt(1400).has('bamum-kingdom') && idsAt(1400).has('nso-kingdom') && !idsAt(1390).has('bamum-kingdom'), 'Bamum and Nso ON at 1400, Bamum OFF at 1390');
+  assert(idsAt(1600).has('mandara') && !idsAt(1490).has('mandara'), 'Mandara ON at 1600, OFF at 1490');
+  assert(idsAt(1650).has('duala') && !idsAt(1590).has('duala'), 'Duala ON at 1650, OFF at 1590');
+  assert(idsAt(1815).has('mandara') && idsAt(1815).has('bamum-kingdom') && idsAt(1815).has('nso-kingdom') && idsAt(1815).has('duala'), 'All four Cameroon polities ON at 1815');
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
 

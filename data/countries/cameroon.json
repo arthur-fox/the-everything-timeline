@@ -1,0 +1,347 @@
+{
+  "id": "cameroon",
+  "name": "Cameroon",
+  "flag": "🇨🇲",
+  "minYear": -30000,
+  "maxYear": 2025,
+  "categories": [
+    { "id": "ancient", "name": "Early Peoples", "color": "#A16207" },
+    { "id": "kingdoms", "name": "Kingdoms", "color": "#7C3AED" },
+    { "id": "trade", "name": "Trade & the Coast", "color": "#0891B2" },
+    { "id": "colonial", "name": "Colonial Cameroon", "color": "#EF4444" },
+    { "id": "politics", "name": "Politics & State", "color": "#3B82F6" },
+    { "id": "modern", "name": "Modern Cameroon", "color": "#10B981" }
+  ],
+  "items": [
+    {
+      "id": "cm-early-peoples",
+      "name": "First peoples: Shum Laka and the forest foragers",
+      "start": -30000,
+      "end": -2000,
+      "region": "ancient",
+      "icon": "🪨",
+      "description": "People have lived in what is now Cameroon since the Late Stone Age. The rock shelter of Shum Laka, about 15 km from Bamenda, has one of West Africa’s longest archaeological sequences: deposits dated from about 30,000 years ago to recent centuries, with microlithic tools, later pottery and polished stone from about 7000 BP, and burials. In the southern forests, ancestors of today’s Baka, Bakola and other foragers hunted and gathered; their history is older than the farming kingdoms of the Grassfields and the north.",
+      "sources": [
+        { "title": "Wikipedia — Shum Laka", "url": "https://en.wikipedia.org/wiki/Shum_Laka" },
+        { "title": "Wikipedia — History of Cameroon", "url": "https://en.wikipedia.org/wiki/History_of_Cameroon" },
+        { "title": "Wikipedia — Baka people (Cameroon and Gabon)", "url": "https://en.wikipedia.org/wiki/Baka_people_(Cameroon_and_Gabon)" }
+      ],
+      "periods": [
+        { "name": "Late Stone Age at Shum Laka", "start": -30000, "end": -5000 },
+        { "name": "Pottery, polish and forest foragers", "start": -5000, "end": -2000 }
+      ]
+    },
+    {
+      "id": "cm-bantu",
+      "name": "Bantu homeland and the spread of farming",
+      "start": -2000,
+      "end": 800,
+      "region": "ancient",
+      "icon": "🌾",
+      "description": "Linguists place the homeland of the Bantu languages near the Nigeria–Cameroon border, in the Grassfields and the Cross River country. From this region, over many centuries, Bantu-speaking farmers spread south and east through the forests and into the Congo basin, taking pottery, crops and later iron with them (the globe already shows this as a migration). In Cameroon itself related farming communities settled the plateau, the coast and the southern forest; the exact dates are still debated, and the spread was gradual, not a single march.",
+      "sources": [
+        { "title": "Wikipedia — Bantu expansion", "url": "https://en.wikipedia.org/wiki/Bantu_expansion" },
+        { "title": "Wikipedia — History of Cameroon", "url": "https://en.wikipedia.org/wiki/History_of_Cameroon" },
+        { "title": "Wikipedia — Shum Laka", "url": "https://en.wikipedia.org/wiki/Shum_Laka" }
+      ],
+      "periods": [
+        { "name": "Grassfields homeland", "start": -2000, "end": -500 },
+        { "name": "Farmers in the south and east", "start": -500, "end": 800 }
+      ]
+    },
+    {
+      "id": "cm-sao",
+      "name": "The Sao of the Lake Chad plains",
+      "start": -500,
+      "end": 1600,
+      "region": "ancient",
+      "icon": "🏺",
+      "description": "South and east of Lake Chad, in what is now northern Cameroon, Chad and Nigeria, the Sao built walled settlements, worked iron and terracotta, and left cemeteries and figurines from about the 6th century BCE to the 16th century CE. They were not a single kingdom. Their descendants and successors along the Logone included the Kotoko city-states; Kanem–Bornu later claimed tribute over much of this plain. The culture is known from archaeology and from later traditions, not from its own writings.",
+      "sources": [
+        { "title": "Wikipedia — Sao civilisation", "url": "https://en.wikipedia.org/wiki/Sao_civilisation" },
+        { "title": "Wikipedia — History of Cameroon", "url": "https://en.wikipedia.org/wiki/History_of_Cameroon" },
+        { "title": "UNESCO General History of Africa, vols. II–IV", "url": "https://www.unesco.org/en/general-history-africa" }
+      ],
+      "periods": [
+        { "name": "Early Sao settlements", "start": -500, "end": 800 },
+        { "name": "Later Sao and the rise of successors", "start": 800, "end": 1600 }
+      ]
+    },
+    {
+      "id": "cm-bamum",
+      "name": "The Kingdom of Bamum and Foumban",
+      "start": 1394,
+      "end": 2025,
+      "region": "kingdoms",
+      "icon": "👑",
+      "description": "Nchare Yen, a Tikar prince from Rifum (Bankim), crossed the Mapé, proclaimed a state at Njimom and made his capital at Foumban (Mfomben). The year 1394 is the traditional founding date later reconstructed by Sultan Ibrahim Njoya; it is a convention, not a contemporary record. The Bamum kept their own mfon through the German and French years. Njoya (c. 1889–1933) invented a script, built a palace and tried to hold the kingdom together under colonial rule; the French later sent him into exile. A traditional kingdom remains at Foumban today.",
+      "sources": [
+        { "title": "Wikipedia — Kingdom of Bamum", "url": "https://en.wikipedia.org/wiki/Kingdom_of_Bamum" },
+        { "title": "Wikipedia — Nchare Yen", "url": "https://en.wikipedia.org/wiki/Nchare_Yen" },
+        { "title": "Wikipedia — Ibrahim Njoya", "url": "https://en.wikipedia.org/wiki/Ibrahim_Njoya" },
+        { "title": "Wikipedia — Foumban", "url": "https://en.wikipedia.org/wiki/Foumban" }
+      ],
+      "periods": [
+        { "name": "Nchare Yen and the early mfon", "start": 1394, "end": 1889 },
+        { "name": "Njoya and the colonial years", "start": 1889, "end": 1933 },
+        { "name": "Traditional kingdom at Foumban", "start": 1933, "end": 2025 }
+      ]
+    },
+    {
+      "id": "cm-nso",
+      "name": "Nso and the Grassfields fondoms",
+      "start": 1400,
+      "end": 2025,
+      "region": "kingdoms",
+      "icon": "⛰️",
+      "description": "The Bamenda Grassfields held many fondoms — Nso, Kom, Bafut, Bamiléké chiefdoms and others — linked by trade, marriage and sometimes war. Nso, the largest, traces itself to Ngonnso’, sister of Nchare Yen of Bamum, who settled with the Visale at Kovifem; the 1394 date sometimes given is the same reconstructed Bamum year. Chamba raids around 1780 sacked Kovifem. Fon Sehm I moved the capital to Kumbo around 1820–25. The fondoms came under German, then British, rule but survive as traditional kingdoms; Nso remains centred on Kumbo.",
+      "sources": [
+        { "title": "Wikipedia — Nso people", "url": "https://en.wikipedia.org/wiki/Nso_people" },
+        { "title": "Wikipedia — Kumbo", "url": "https://en.wikipedia.org/wiki/Kumbo" },
+        { "title": "Wikipedia — Grassfields peoples", "url": "https://en.wikipedia.org/wiki/Grassfields_peoples" },
+        { "title": "UNESCO General History of Africa, vol. V", "url": "https://www.unesco.org/en/general-history-africa" }
+      ],
+      "periods": [
+        { "name": "Kovifem", "start": 1400, "end": 1820 },
+        { "name": "Kumbo and the colonial fondoms", "start": 1820, "end": 1961 },
+        { "name": "Traditional fondoms", "start": 1961, "end": 2025 }
+      ]
+    },
+    {
+      "id": "cm-kotoko",
+      "name": "The Kotoko city-states of the Logone",
+      "start": 1400,
+      "end": 1909,
+      "region": "kingdoms",
+      "icon": "🏰",
+      "description": "Along the Logone, in today’s Far North, the Kotoko succeeded the Sao in a string of fortified city-states — among them Kousseri (Mser), Makari, Goulfey and Logone-Birni — rather than one kingdom. They farmed the floodplain, fished and traded, and often paid tribute to Kanem–Bornu while keeping their own rulers. In the 19th century they came under pressure from Bornu, from Rabih az-Zubayr and then from the European partition; Germany and France took the towns in the early 1900s. Their territory is shown on the globe as part of the older Bornu fill, not as a separate outline, because the two would overlap.",
+      "sources": [
+        { "title": "Wikipedia — Kotoko people", "url": "https://en.wikipedia.org/wiki/Kotoko_people" },
+        { "title": "Wikipedia — Sao civilisation", "url": "https://en.wikipedia.org/wiki/Sao_civilisation" },
+        { "title": "Wikipedia — Kousseri", "url": "https://en.wikipedia.org/wiki/Kousseri" },
+        { "title": "UNESCO General History of Africa, vols. IV–V", "url": "https://www.unesco.org/en/general-history-africa" }
+      ],
+      "periods": [
+        { "name": "Logone city-states", "start": 1400, "end": 1800 },
+        { "name": "Under Bornu, Rabih and the colonial conquest", "start": 1800, "end": 1909 }
+      ]
+    },
+    {
+      "id": "cm-mandara",
+      "name": "The Kingdom of Mandara",
+      "start": 1500,
+      "end": 1902,
+      "region": "kingdoms",
+      "icon": "🏔️",
+      "description": "The Wandala state of the Mandara Mountains, south of Lake Chad. Tradition places its founding shortly before 1500; Fra Mauro noted “Mandera” in 1459 and Leo Africanus described Medra in 1526. The first capital was Kerawa; around 1580 the court moved to Doulo. Idris Alooma of Bornu installed King Nanda in 1614. Mai Bukar Aaji made Mandara a sultanate around 1715 (Forkl: 1723/24). After a war with Bornu around 1781 the sultanate stood at its height (c. 1757–1813). Dixon Denham saw it in 1823. Germany conquered the kingdom in 1902; the sultan’s palace later stood at Mora.",
+      "sources": [
+        { "title": "Wikipedia — Mandara Kingdom", "url": "https://en.wikipedia.org/wiki/Mandara_Kingdom" },
+        { "title": "Wikipedia — Mandara people", "url": "https://en.wikipedia.org/wiki/Mandara_people" },
+        { "title": "Barkindo, The Sultanate of Mandara to 1902 (1989)", "url": "https://en.wikipedia.org/wiki/Mandara_Kingdom#Bibliography" }
+      ],
+      "periods": [
+        { "name": "Kerawa and Doulo", "start": 1500, "end": 1715 },
+        { "name": "Sultanate and the height of Mandara", "start": 1715, "end": 1813 },
+        { "name": "Decline and German conquest", "start": 1813, "end": 1902 }
+      ]
+    },
+    {
+      "id": "cm-name",
+      "name": "Rio dos Camarões: the Portuguese on the Wouri",
+      "start": 1472,
+      "end": 1600,
+      "region": "trade",
+      "icon": "🦐",
+      "description": "In 1472 Portuguese navigators, in the generation of Fernão do Pó, sailed into the Wouri estuary and named it Rio dos Camarões, “river of prawns” (or shrimp). The name, later Kamerun in German and Cameroun / Cameroon in French and English, is the country’s. They met a fishing people they called Ambos or Ambozi — not certainly the Duala, who most historians place on the estuary later. The Portuguese did not settle; malaria and the lack of an easy inland route kept them on the coast. The name stuck as Dutch, British and other traders followed in the 17th century.",
+      "sources": [
+        { "title": "Wikipedia — History of Cameroon", "url": "https://en.wikipedia.org/wiki/History_of_Cameroon" },
+        { "title": "Wikipedia — Cameroon", "url": "https://en.wikipedia.org/wiki/Cameroon" },
+        { "title": "Wikipedia — Fernão do Pó", "url": "https://en.wikipedia.org/wiki/Fern%C3%A3o_do_P%C3%B3" }
+      ],
+      "periods": [
+        { "name": "Portuguese naming of the Wouri", "start": 1472, "end": 1600 }
+      ]
+    },
+    {
+      "id": "cm-duala",
+      "name": "The Duala of the Wouri",
+      "start": 1600,
+      "end": 1884,
+      "region": "trade",
+      "icon": "🛶",
+      "description": "Around 1600 the Duala settled the Wouri estuary, around today’s Douala, and became the chief brokers of the Cameroon coast. They were lineage towns — Bell (Bonanjo), Akwa (Bonambela), later Deido and Bonaberi — whose heads Europeans called kings, not a single territorial kingdom, and they did not rule far inland. They traded ivory, then enslaved people, then palm oil, with the Dutch, the British and others, and stayed independent of Europe until 12 July 1884, when kings Bell and Akwa signed a treaty with Gustav Nachtigal that made the coast a German protectorate.",
+      "sources": [
+        { "title": "Wikipedia — Duala people", "url": "https://en.wikipedia.org/wiki/Duala_people" },
+        { "title": "Wikipedia — Douala", "url": "https://en.wikipedia.org/wiki/Douala" },
+        { "title": "Wikipedia — History of Cameroon", "url": "https://en.wikipedia.org/wiki/History_of_Cameroon" }
+      ],
+      "periods": [
+        { "name": "Settlement and early trade", "start": 1600, "end": 1750 },
+        { "name": "Brokers of the Wouri, to the German treaty", "start": 1750, "end": 1884 }
+      ]
+    },
+    {
+      "id": "cm-slave-trade",
+      "name": "The Atlantic slave trade on the Cameroon coast",
+      "start": 1650,
+      "end": 1848,
+      "region": "trade",
+      "icon": "⚓",
+      "description": "From the 17th century the Duala and other coastal groups sold captives from the interior to Dutch, British and other ships in the Bight of Biafra trade, as well as ivory. The Cameroon coast was a smaller source than the Niger Delta or Angola, but the trade still marked the Wouri towns and the routes inland. British abolition (1807) and naval patrols pushed the trade down; by the 1830s–40s the Duala were shifting to palm oil and other “legitimate” goods. Britain’s Emancipation Act and the later treaties did not reach far inland, where raiding and servitude continued.",
+      "sources": [
+        { "title": "Wikipedia — Duala people", "url": "https://en.wikipedia.org/wiki/Duala_people" },
+        { "title": "Wikipedia — Atlantic slave trade", "url": "https://en.wikipedia.org/wiki/Atlantic_slave_trade" },
+        { "title": "Wikipedia — History of Cameroon", "url": "https://en.wikipedia.org/wiki/History_of_Cameroon" }
+      ],
+      "periods": [
+        { "name": "Wouri and Bight of Biafra trade", "start": 1650, "end": 1807 },
+        { "name": "Abolition at sea, palm oil on the coast", "start": 1807, "end": 1848 }
+      ]
+    },
+    {
+      "id": "cm-adamawa",
+      "name": "The Adamawa Emirate and the Fulani jihad",
+      "start": 1809,
+      "end": 1903,
+      "region": "kingdoms",
+      "icon": "🌙",
+      "description": "In 1806 Modibo Adama received a flag from Usman dan Fodio; in 1809 he began a jihad in Fombina, south of Bornu, and founded the Adamawa Emirate, a wing of the Sokoto Caliphate. Its first centres were at Gurin and later Yola (on the Benue, in today’s Nigeria, from 1841). Fulani lamidates spread into what is now northern Cameroon — Rey-Bouba from about 1806, then Garoua, Ngaoundéré (1830) and others — often after 1815, so this pack does not draw the emirate as a fill on the globe before the nations layer. Germany and Britain divided and conquered Adamawa in the early 1900s; Yola fell in 1901, the last resistance around 1903.",
+      "sources": [
+        { "title": "Wikipedia — Adamawa Emirate", "url": "https://en.wikipedia.org/wiki/Adamawa_Emirate" },
+        { "title": "Wikipedia — Modibo Adama", "url": "https://en.wikipedia.org/wiki/Modibo_Adama" },
+        { "title": "Wikipedia — Ngaoundéré", "url": "https://en.wikipedia.org/wiki/Ngaound%C3%A9r%C3%A9" }
+      ],
+      "periods": [
+        { "name": "Adama’s jihad", "start": 1809, "end": 1847 },
+        { "name": "Lamidates of the north", "start": 1847, "end": 1903 }
+      ]
+    },
+    {
+      "id": "cm-kamerun",
+      "name": "German Kamerun",
+      "start": 1884,
+      "end": 1916,
+      "region": "colonial",
+      "icon": "🦅",
+      "description": "On 12 July 1884 Gustav Nachtigal signed a treaty with Duala kings Bell and Akwa; Germany proclaimed the Kamerun protectorate and, at the Berlin Conference, secured a claim that later reached Lake Chad. The Germans moved the capital from Douala to Buea (1901) on the slope of Mount Cameroon, founded Yaoundé as a post in 1888, and fought wars of conquest against fondoms and lamidates, including Mandara in 1902. Plantations, a railway from Douala and forced labour marked the colony. In 1914 Rudolf Duala Manga Bell, who had protested land seizures, was hanged. During the First World War, French and British forces took Kamerun; the last German garrison surrendered in February 1916.",
+      "sources": [
+        { "title": "Wikipedia — Kamerun", "url": "https://en.wikipedia.org/wiki/Kamerun" },
+        { "title": "Wikipedia — Gustav Nachtigal", "url": "https://en.wikipedia.org/wiki/Gustav_Nachtigal" },
+        { "title": "Wikipedia — Rudolf Duala Manga Bell", "url": "https://en.wikipedia.org/wiki/Rudolf_Duala_Manga_Bell" },
+        { "title": "Wikipedia — Buea", "url": "https://en.wikipedia.org/wiki/Buea" }
+      ],
+      "periods": [
+        { "name": "Protectorate and conquest", "start": 1884, "end": 1907 },
+        { "name": "Plantations, Buea and the First World War", "start": 1907, "end": 1916 }
+      ]
+    },
+    {
+      "id": "cm-njoya",
+      "name": "King Njoya and the Bamum script",
+      "start": 1896,
+      "end": 1933,
+      "region": "kingdoms",
+      "icon": "📜",
+      "description": "Ibrahim Njoya, mfon of Bamum from about 1889, invented a writing system (A-ka-u-ku) around 1896, years before the first Germans reached Foumban in 1902, and used it for a royal chronicle, maps and a printing press. He built a new palace, tried to keep the kingdom intact under German and then French rule, and experimented with religion and administration. The French stripped him of power and sent him to Yaoundé, where he died in 1933. The script and the palace remain central to Bamum memory; a traditional kingdom continues at Foumban.",
+      "sources": [
+        { "title": "Wikipedia — Ibrahim Njoya", "url": "https://en.wikipedia.org/wiki/Ibrahim_Njoya" },
+        { "title": "Wikipedia — Bamum script", "url": "https://en.wikipedia.org/wiki/Bamum_script" },
+        { "title": "Wikipedia — Kingdom of Bamum", "url": "https://en.wikipedia.org/wiki/Kingdom_of_Bamum" }
+      ],
+      "periods": [
+        { "name": "Invention of the script", "start": 1896, "end": 1916 },
+        { "name": "French rule, exile and death", "start": 1916, "end": 1933 }
+      ]
+    },
+    {
+      "id": "cm-mandates",
+      "name": "French Cameroun and the British Cameroons",
+      "start": 1916,
+      "end": 1960,
+      "region": "colonial",
+      "icon": "🏛️",
+      "description": "After Germany’s defeat, France administered about four-fifths of Kamerun (French Cameroun, capital Yaoundé) and Britain the narrow west (British Cameroons, in two strips along the Nigerian border). League of Nations mandates from 1922 became UN trust territories in 1946. France ruled through chiefs and, later, a limited assembly; Britain administered its strips as part of Nigeria. Baptist and other missions, already on the coast from the 1840s (Victoria, now Limbe, was founded by Alfred Saker in 1858), expanded. By the 1950s parties in French Cameroun were pressing for independence, while the UPC took up an armed struggle.",
+      "sources": [
+        { "title": "Wikipedia — French Cameroon", "url": "https://en.wikipedia.org/wiki/French_Cameroon" },
+        { "title": "Wikipedia — British Cameroons", "url": "https://en.wikipedia.org/wiki/British_Cameroons" },
+        { "title": "Wikipedia — History of Cameroon", "url": "https://en.wikipedia.org/wiki/History_of_Cameroon" }
+      ],
+      "periods": [
+        { "name": "League of Nations mandates", "start": 1916, "end": 1946 },
+        { "name": "UN trust territories and the road to independence", "start": 1946, "end": 1960 }
+      ]
+    },
+    {
+      "id": "cm-upc",
+      "name": "The UPC and the independence war",
+      "start": 1948,
+      "end": 1971,
+      "region": "politics",
+      "icon": "✊",
+      "description": "The Union des Populations du Cameroun (UPC), founded in 1948 and led by Ruben Um Nyobè, demanded immediate independence and reunification with the British Cameroons. France banned it in 1955; an insurgency followed, especially in the Sanaga-Maritime and the Bamiléké country. Um Nyobè was killed by French forces in September 1958. The war did not stop at independence: Félix-Roland Moumié was poisoned in 1960, and fighting continued into the 1960s. The last historic leader, Ernest Ouandié, was executed in January 1971. The death toll is still disputed; tens of thousands were killed or displaced.",
+      "sources": [
+        { "title": "Wikipedia — Union of the Peoples of Cameroon", "url": "https://en.wikipedia.org/wiki/Union_of_the_Peoples_of_Cameroon" },
+        { "title": "Wikipedia — Ruben Um Nyobè", "url": "https://en.wikipedia.org/wiki/Ruben_Um_Nyob%C3%A8" },
+        { "title": "Wikipedia — History of Cameroon", "url": "https://en.wikipedia.org/wiki/History_of_Cameroon" }
+      ],
+      "periods": [
+        { "name": "Party and ban", "start": 1948, "end": 1955 },
+        { "name": "Insurgency, Um Nyobè’s death and the years after independence", "start": 1955, "end": 1971 }
+      ]
+    },
+    {
+      "id": "cm-independence",
+      "name": "Independence and reunification",
+      "start": 1960,
+      "end": 1961,
+      "region": "politics",
+      "icon": "🎉",
+      "description": "French Cameroun became independent on 1 January 1960 as the Republic of Cameroun, with Ahmadou Ahidjo as president. In a UN plebiscite on 11 February 1961, the Southern British Cameroons voted to join Cameroun and the Northern Cameroons to join Nigeria. On 1 October 1961 the Southern Cameroons and the Republic formed the Federal Republic of Cameroon, with East and West Cameroon as federated states and Yaoundé the capital. The union was peaceful at the start; how equally the two sides would live together became the long political question of the decades that followed.",
+      "sources": [
+        { "title": "Wikipedia — History of Cameroon", "url": "https://en.wikipedia.org/wiki/History_of_Cameroon" },
+        { "title": "Wikipedia — Ahmadou Ahidjo", "url": "https://en.wikipedia.org/wiki/Ahmadou_Ahidjo" },
+        { "title": "Wikipedia — Southern Cameroons", "url": "https://en.wikipedia.org/wiki/Southern_Cameroons" }
+      ],
+      "periods": [
+        { "name": "Independence of French Cameroun", "start": 1960, "end": 1961 },
+        { "name": "Plebiscite and the Federal Republic", "start": 1961, "end": 1961 }
+      ]
+    },
+    {
+      "id": "cm-ahidjo",
+      "name": "Ahidjo and the United Republic",
+      "start": 1961,
+      "end": 1982,
+      "region": "politics",
+      "icon": "🗳️",
+      "description": "Ahmadou Ahidjo, a Muslim from the north, ruled first the federation and then, after the 1972 referendum that abolished the federal states, the United Republic of Cameroon. He built a one-party state around the Cameroon National Union, put down the remnants of the UPC, and balanced regions through patronage and a strong presidency, with oil becoming important after the mid-1970s. On 4 November 1982 he suddenly resigned and handed power to his prime minister, Paul Biya; a 1984 coup attempt by Ahidjo’s allies failed, and Ahidjo died in exile in 1989.",
+      "sources": [
+        { "title": "Wikipedia — Ahmadou Ahidjo", "url": "https://en.wikipedia.org/wiki/Ahmadou_Ahidjo" },
+        { "title": "Wikipedia — History of Cameroon", "url": "https://en.wikipedia.org/wiki/History_of_Cameroon" },
+        { "title": "Wikipedia — Cameroon", "url": "https://en.wikipedia.org/wiki/Cameroon" }
+      ],
+      "periods": [
+        { "name": "Federal Republic", "start": 1961, "end": 1972 },
+        { "name": "United Republic and resignation", "start": 1972, "end": 1982 }
+      ]
+    },
+    {
+      "id": "cm-biya",
+      "name": "Cameroon under Paul Biya",
+      "start": 1982,
+      "end": 2025,
+      "region": "modern",
+      "icon": "🌍",
+      "description": "Paul Biya, a Christian from the south, has been president since 6 November 1982 — one of the world’s longest-serving heads of state. A shy multi-party system returned in 1990–92; Biya’s RDPC has won every presidential election since, amid opposition claims of fraud. The 1990s brought economic crisis and an IMF programme; oil, timber and agriculture remained the base of the economy, with Douala the port and Yaoundé the capital. From 2016 an Anglophone crisis in the Northwest and Southwest, after protests over language and law, turned into an armed conflict that has killed thousands and displaced many more. In 2018 Biya was re-elected; he remains in office in 2025.",
+      "sources": [
+        { "title": "Wikipedia — Paul Biya", "url": "https://en.wikipedia.org/wiki/Paul_Biya" },
+        { "title": "Wikipedia — Anglophone Crisis", "url": "https://en.wikipedia.org/wiki/Anglophone_Crisis" },
+        { "title": "Wikipedia — History of Cameroon", "url": "https://en.wikipedia.org/wiki/History_of_Cameroon" }
+      ],
+      "periods": [
+        { "name": "Succession and the return of multi-party politics", "start": 1982, "end": 2016 },
+        { "name": "Anglophone crisis and the later Biya years", "start": 2016, "end": 2025 }
+      ]
+    }
+  ]
+}
