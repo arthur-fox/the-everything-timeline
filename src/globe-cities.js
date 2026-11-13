@@ -1005,7 +1005,21 @@ export const CITIES = [
   C('mocamedes', -15.19, 12.15, 4, 1840, null, 'Moçâmedes', 1985, 'Namibe', 2016, 'Moçâmedes', { ne: 'Moçâmedes' }),
   C('lubango', -14.92, 13.49, 3, 1885, null, 'Lubango', 1923, 'Sá da Bandeira', 1975, 'Lubango', { ne: 'Lubango' }),
   C('huambo', -12.78, 15.74, 3, 1912, null, 'Huambo', 1928, 'Nova Lisboa', 1975, 'Huambo', { ne: 'Huambo' }),
+  // Day 85 — Cameroon (globe-pack-cameroon.js): Foumban, the Wouri towns, the German and federal
+  // capitals, and the northern and Grassfields towns (Douala and Yaoundé are new; no earlier row).
+  C('foumban', 5.730385, 10.899996, 3, 1394, null, 'Foumban', { ne: 'Foumban' }),
+  C('douala', 4.062356, 9.708045, 3, 1600, null, 'Douala', { ne: 'Douala', ranks: [[1884, 2], [1960, 2]] }),
+  C('mora', 11.046, 14.140, 4, 1800, null, 'Mora'),
+  C('garoua', 9.300012, 13.390025, 3, 1820, null, 'Garoua', { ne: 'Garoua' }),
+  C('kumbo', 6.220381, 10.680009, 4, 1820, null, 'Kumbo', { ne: 'Kumbo' }),
+  C('ngaoundere', 7.320366, 13.579987, 3, 1830, null, 'Ngaoundéré', { ne: 'Ngaoundéré' }),
+  C('limbe', 4.030386, 9.190023, 4, 1858, null, 'Victoria', 1982, 'Limbe', { ne: 'Limbe' }),
+  C('yaounde', 3.868647, 11.514705, 3, 1888, null, 'Yaoundé', { ne: 'Yaoundé', ranks: [[1960, 2]] }),
+  C('buea', 4.155003, 9.231003, 3, 1901, null, 'Buea', { ne: 'Buea' }),
+  C('bamenda', 5.959984, 10.150016, 3, 1902, null, 'Bamenda', { ne: 'Bamenda' }),
+  C('maroua', 10.595566, 14.324696, 3, 1800, null, 'Maroua', { ne: 'Maroua' }),
 ];
+
 
 const BY_ID = new Map(CITIES.map((c) => [c.id, c]));
 

@@ -9,8 +9,8 @@
  * Afghanistan (Day 77, src/globe-pack-afghanistan.js), Cuba (Day 78, src/globe-pack-cuba.js) and
  * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js), Jamaica (Day 80,
  * src/globe-pack-jamaica.js), Guatemala (Day 81, src/globe-pack-guatemala.js), the Mexico refinement (Day 82,
- * src/globe-pack-mexico.js), DR Congo (Day 83, src/globe-pack-dr-congo.js) and Angola (Day 84,
- * src/globe-pack-angola.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * src/globe-pack-mexico.js), DR Congo (Day 83, src/globe-pack-dr-congo.js) Angola (Day 84,
+ * src/globe-pack-angola.js) and Cameroon (Day 85, src/globe-pack-cameroon.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -49,6 +49,7 @@ import { guatemalaPolities, guatemalaShapeFixes } from '../src/globe-pack-guatem
 import { mexicoPolities, mexicoShapeFixes, MX_DROPS } from '../src/globe-pack-mexico.js';
 import { drCongoPolities, drCongoShapeFixes } from '../src/globe-pack-dr-congo.js';
 import { angolaPolities, angolaShapeFixes, AO_DROPS } from '../src/globe-pack-angola.js';
+import { cameroonPolities, cameroonShapeFixes } from '../src/globe-pack-cameroon.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -1734,7 +1735,67 @@ const PACKS = [
       with: ['portuguese-empire', 'lunda-empire', 'yaka-kingdom', 'luba-kingdom', 'kuba-kingdom'],
     },
   },
+  {
+    country: 'cameroon',
+    polities: cameroonPolities,
+    fixes: cameroonShapeFixes,
+    // Kanem–Bornu is trimmed off the Mandara Mountains; not replaced (centre in Chad / Nigeria).
+    redrawn: {},
+    trimmed: ['kanem-bornu'],
+    capitals: [
+      ['mandara', 1500, 13.95, 11.00, 'Kerawa'],
+      ['mandara', 1580, 14.036, 10.997, 'Doulo'],
+      ['mandara', 1815, 14.036, 10.997, 'Doulo'],
+      ['bamum-kingdom', 1394, 11.023, 5.842, 'Njimom'],
+      ['bamum-kingdom', 1418, 10.900, 5.730, 'Foumban'],
+      ['bamum-kingdom', 1815, 10.900, 5.730, 'Foumban'],
+      ['nso-kingdom', 1400, 10.75, 6.40, 'Kovifem'],
+      ['nso-kingdom', 1815, 10.75, 6.40, 'Kovifem'],
+      ['duala', 1600, 9.708, 4.062, 'Douala'],
+      ['duala', 1815, 9.708, 4.062, 'Douala'],
+    ],
+    on: {
+      1400: ['bamum-kingdom', 'nso-kingdom'],
+      1500: ['bamum-kingdom', 'nso-kingdom', 'mandara'],
+      1600: ['bamum-kingdom', 'nso-kingdom', 'mandara', 'duala'],
+      1650: ['bamum-kingdom', 'nso-kingdom', 'mandara', 'duala'],
+      1750: ['bamum-kingdom', 'nso-kingdom', 'mandara', 'duala'],
+      1815: ['bamum-kingdom', 'nso-kingdom', 'mandara', 'duala'],
+    },
+    gone: {
+      1390: ['bamum-kingdom', 'nso-kingdom', 'mandara', 'duala'],
+      1490: ['mandara'],
+      1590: ['duala'],
+    },
+    absent: [],
+    present: [
+      ['bamum-kingdom', 1418, 'bamum'],
+      ['nso-kingdom', 1780, 'nso'],
+      ['mandara', 1715, 'mandara'],
+      ['duala', 1650, 'duala'],
+    ],
+    notOver: [
+      ['mandara', 1600, 14.316, 10.591, 'Maroua (Diamaré, not Mandara proper)'],
+      ['bamum-kingdom', 1700, 10.410, 5.490, 'Bafoussam (Bamiléké, not Bamum)'],
+      ['nso-kingdom', 1700, 10.150, 5.960, 'Bamenda (not Nso)'],
+      ['nso-kingdom', 1700, 10.270, 6.250, 'Fundong (Kom, not Nso)'],
+      ['duala', 1700, 10.120, 3.800, 'Edéa (inland Sanaga, not Duala)'],
+      ['kanem-bornu', 1600, 14.14, 11.046, 'Mora (Mandara, trimmed off Bornu)'],
+      ['kanem-bornu', 1500, 14.036, 10.997, 'Doulo (Mandara, trimmed off Bornu)'],
+    ],
+    noOverlap: {
+      from: 1390,
+      to: 1815,
+      box: [8.4, 1.6, 16.3, 13.2],
+      planar: true,
+      // Sokoto only: Kanem–Bornu is trimmed off Mandara at its keyframes (see notOver), but the
+      // schematic perimeter morph between those rings can briefly brush the mountains, so it is
+      // not in this every-5-year grid.
+      with: ['sokoto-caliphate'],
+    },
+  },
 ];
+
 
 // A shape another pack extended may also link a later pack's items (Day 75: the Karakhanids link
 // kg-karakhanids), so links may resolve in any country file.
