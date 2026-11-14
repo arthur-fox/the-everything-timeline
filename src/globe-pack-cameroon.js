@@ -150,19 +150,37 @@ export const cameroonShapeFixes = {
   'kanem-bornu': { trimBornuYears: [1390, 1500, 1600, 1800] },
 };
 
-/** Apply `cameroonShapeFixes` (throws if a target keyframe or the bornu region is missing). */
+function ringContains(ring, lng, lat) {
+  let n = 0;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    if (((yi > lat) !== (yj > lat)) && (lng < ((xj - xi) * (lat - yi)) / (yj - yi) + xi)) n += 1;
+  }
+  return n % 2 === 1;
+}
+
+/** Day 86 redraws Kanem–Bornu from province pieces already cut clear of Mandara. This hook
+ *  still proves the 1390, 1500, 1600 and 1800 Bornu regions exist and do not cover Mora or
+ *  Doulo (it no longer replaces those rings with the Day 85 schematic trims). */
 export function applyCameroonShapeFixes(entities) {
   const ent = entities.find((e) => e.id === 'kanem-bornu');
   if (!ent) throw new Error('cameroon fixes: no entity kanem-bornu');
+  const mora = [14.14, 11.046];
+  const doulo = [14.036, 10.997];
   let n = 0;
-  for (const kf of ent.overlays) {
-    const ring = CM_TRIMS[kf.year];
-    if (!ring) continue;
-    const i = kf.regions.findIndex((r) => (typeof r === 'string' ? r : r.id) === 'bornu');
-    if (i < 0) throw new Error(`cameroon fixes: kanem-bornu ${kf.year} has no bornu region`);
-    const r = kf.regions[i];
-    const name = typeof r === 'string' ? 'Bornu' : r.name;
-    kf.regions[i] = { id: 'bornu', name, ring: ensureClockwise(ring) };
+  for (const year of [1390, 1500, 1600, 1800]) {
+    const kf = ent.overlays.find((o) => o.year === year);
+    if (!kf) throw new Error(`cameroon fixes: kanem-bornu missing ${year}`);
+    const bornu = kf.regions.filter((r) => (typeof r === 'string' ? r : r.id) === 'bornu');
+    if (!bornu.length) throw new Error(`cameroon fixes: kanem-bornu ${year} has no bornu region`);
+    for (const r of bornu) {
+      const ring = typeof r === 'string' ? null : r.ring;
+      if (!ring) throw new Error(`cameroon fixes: kanem-bornu ${year} bornu has no ring`);
+      if (ringContains(ring, mora[0], mora[1]) || ringContains(ring, doulo[0], doulo[1])) {
+        throw new Error(`cameroon fixes: kanem-bornu ${year} still covers Mora or Doulo`);
+      }
+    }
     n += 1;
   }
   if (n !== 4) throw new Error(`cameroon fixes: expected 4 Bornu keyframes, got ${n}`);

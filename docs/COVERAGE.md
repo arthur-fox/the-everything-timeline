@@ -62,7 +62,7 @@ Honest caveat: only Peru (Day 65: 17 polities from Caral to the Neo-Inca State, 
 | Angola | AO | done | done | Central Africa | modern borders 1815/1914–2025 |
 | Cameroon | CM | done | done | Central Africa | Day 85: Mandara, Bamum, Nso and Duala (1500–1815 / 1394–1815), Kanem–Bornu trimmed off the Mandara Mountains, 11 cities, 46 pins, new 18-item timeline |
 | Central African Republic | CF | none | partial | Central Africa | modern borders 1815/1914–2025 |
-| Chad | TD | none | partial | Central Africa | modern borders 1815/1914–2025 |
+| Chad | TD | done | done | Central Africa | Day 86: Kanem–Bornu redrawn (800–1815), Bagirmi and Wadai, Mandara trim kept, 9 cities, 49 pins, new 18-item timeline |
 | Congo | CG | none | partial | Central Africa | modern borders 1815/1914–2025 |
 | Congo, Democratic Republic of the | CD | done | done | Central Africa | modern borders 1815/1914–2025 |
 | Equatorial Guinea | GQ | none | partial | Central Africa | modern borders 1815/1914–2025 |
