@@ -1018,6 +1018,17 @@ export const CITIES = [
   C('buea', 4.155003, 9.231003, 3, 1901, null, 'Buea', { ne: 'Buea' }),
   C('bamenda', 5.959984, 10.150016, 3, 1902, null, 'Bamenda', { ne: 'Bamenda' }),
   C('maroua', 10.595566, 14.324696, 3, 1800, null, 'Maroua', { ne: 'Maroua' }),
+  // Day 86 — Chad (globe-pack-chad.js): Njimi, the later Bornu and Wadai capitals, Massenya,
+  // and the colonial / independent cities (N'Djamena is new; Ngazargamu already exists).
+  C('njimi', 14.12, 15.60, 3, 800, 1390, 'Njimi'),
+  C('massenya', 11.400, 16.167, 3, 1522, null, 'Massenya'),
+  C('ouara', 14.22667, 20.67222, 3, 1635, 1850, 'Ouara'),
+  C('kukawa', 12.92, 13.57, 3, 1814, null, 'Kukawa', { ranks: [[1893, 4]] }),
+  C('abeche', 13.83999, 20.82998, 3, 1850, null, 'Abéché', { ne: 'Abéché' }),
+  C('ndjamena', 12.11504, 15.04720, 3, 1900, null, 'Fort-Lamy', 1973, "N'Djamena", { ne: "N'Djamena", ranks: [[1960, 2]] }),
+  C('sarh', 9.14997, 18.39003, 3, 1899, null, 'Fort-Archambault', 1973, 'Sarh', { ne: 'Sarh' }),
+  C('moundou', 8.54998, 16.09002, 3, 1923, null, 'Moundou', { ne: 'Moundou' }),
+  C('faya-largeau', 17.91667, 19.11670, 4, 1913, null, 'Faya-Largeau', { ne: 'Faya Largeau' }),
 ];
 
 

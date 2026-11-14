@@ -1,0 +1,348 @@
+{
+  "id": "chad",
+  "name": "Chad",
+  "flag": "🇹🇩",
+  "minYear": -8000,
+  "maxYear": 2025,
+  "categories": [
+    { "id": "ancient", "name": "Early Peoples", "color": "#A16207" },
+    { "id": "kingdoms", "name": "Kingdoms", "color": "#7C3AED" },
+    { "id": "faith", "name": "Islam & Trade", "color": "#0891B2" },
+    { "id": "colonial", "name": "Colonial Chad", "color": "#EF4444" },
+    { "id": "politics", "name": "Politics & State", "color": "#3B82F6" },
+    { "id": "conflict", "name": "War & Conflict", "color": "#B91C1C" },
+    { "id": "modern", "name": "Modern Chad", "color": "#10B981" }
+  ],
+  "items": [
+    {
+      "id": "td-early-peoples",
+      "name": "First peoples of the Lake Chad basin",
+      "start": -8000,
+      "end": -500,
+      "region": "ancient",
+      "icon": "🪨",
+      "description": "When the Sahara was wetter, people fished, hunted and herded around a much larger Lake Mega-Chad, leaving tools, bone harpoons and later pottery on old shorelines in what is now Chad, Niger, Nigeria and Cameroon. As the lake shrank through the later Holocene, communities concentrated on the remaining water and the Sahel. The dates are archaeological ranges, not a single migration; the Gajiganna and related cultures south of the lake, from the second millennium BCE, belong to this long settling of the basin, before the walled settlements of the Sao.",
+      "sources": [
+        { "title": "Wikipedia — History of Chad", "url": "https://en.wikipedia.org/wiki/History_of_Chad" },
+        { "title": "Wikipedia — Lake Chad", "url": "https://en.wikipedia.org/wiki/Lake_Chad" },
+        { "title": "Wikipedia — Gajiganna culture", "url": "https://en.wikipedia.org/wiki/Gajiganna_culture" },
+        { "title": "UNESCO General History of Africa, vols. I–II", "url": "https://www.unesco.org/en/general-history-africa" }
+      ],
+      "periods": [
+        { "name": "Wet Sahara and Mega-Chad", "start": -8000, "end": -2000 },
+        { "name": "Later Holocene communities", "start": -2000, "end": -500 }
+      ]
+    },
+    {
+      "id": "td-sao",
+      "name": "The Sao of the Lake Chad plains",
+      "start": -500,
+      "end": 1600,
+      "region": "ancient",
+      "icon": "🏺",
+      "description": "South and east of Lake Chad, in what is now Chad, Cameroon and Nigeria, the Sao built walled settlements, worked iron and terracotta, and left cemeteries and figurines from about the 6th century BCE to the 16th century CE. They were not a single kingdom. Sites such as Mdaga, near today’s N’Djamena, belong to this world. Their descendants and successors along the Logone included the Kotoko city-states; Kanem–Bornu later claimed tribute over much of the plain. The culture is known from archaeology and later traditions, not from its own writings, and is not drawn as a territorial outline on the globe.",
+      "sources": [
+        { "title": "Wikipedia — Sao civilisation", "url": "https://en.wikipedia.org/wiki/Sao_civilisation" },
+        { "title": "Wikipedia — History of Chad", "url": "https://en.wikipedia.org/wiki/History_of_Chad" },
+        { "title": "UNESCO General History of Africa, vols. II–IV", "url": "https://www.unesco.org/en/general-history-africa" }
+      ],
+      "periods": [
+        { "name": "Early Sao settlements", "start": -500, "end": 800 },
+        { "name": "Later Sao and the rise of successors", "start": 800, "end": 1600 }
+      ]
+    },
+    {
+      "id": "td-kanem",
+      "name": "The Kanem Empire",
+      "start": 700,
+      "end": 1380,
+      "region": "kingdoms",
+      "icon": "👑",
+      "description": "Kanem grew north-east of Lake Chad from about the 8th century, first under the Duguwa and then, from the late 11th century, under the Muslim Sayfawa (Sefuwa) mais. The capital is known in Arabic sources as Njimi; its exact site is not securely identified, though the fired-brick enclosure at Tié, east of Mao, is now the usual tentative identification. Under Mai Dunama Dabbalemi (c. 1221–59) Kanem reached the height of its power: it held the Kawar oases and, loosely, the Fezzan, and kept a hostel in Cairo for pilgrims. Influence farther west or south was real but uneven — tribute and raids, not a solid border. In the 14th century civil war and the Bulala made the eastern heartland untenable.",
+      "sources": [
+        { "title": "Wikipedia — Kanem Empire", "url": "https://en.wikipedia.org/wiki/Kanem_Empire" },
+        { "title": "Wikipedia — Kanem–Bornu Empire", "url": "https://en.wikipedia.org/wiki/Kanem–Bornu_Empire" },
+        { "title": "Wikipedia — Njimi", "url": "https://en.wikipedia.org/wiki/Njimi" },
+        { "title": "Wikipedia — Dunama Dabbalemi", "url": "https://en.wikipedia.org/wiki/Dunama_Dabbalemi" },
+        { "title": "UNESCO General History of Africa, vols. III–IV", "url": "https://www.unesco.org/en/general-history-africa" }
+      ],
+      "periods": [
+        { "name": "Early Kanem", "start": 700, "end": 1080 },
+        { "name": "Sayfawa Kanem and Dunama’s height", "start": 1080, "end": 1380 }
+      ]
+    },
+    {
+      "id": "td-bornu",
+      "name": "The court moves west to Bornu",
+      "start": 1380,
+      "end": 1470,
+      "region": "kingdoms",
+      "icon": "➡️",
+      "description": "Around 1380 the Sayfawa court abandoned Njimi and crossed to Bornu, west of Lake Chad, in what is now north-eastern Nigeria and the neighbouring lake plains. Kanem itself fell to the Bulala. The move was a retreat, not a planned transfer of a capital: for several decades the mais ruled a reduced western province while they fought to survive. The new centre of the state would only be fixed when Ali Gaji built Ngazargamu later in the 15th century.",
+      "sources": [
+        { "title": "Wikipedia — Bornu Empire", "url": "https://en.wikipedia.org/wiki/Bornu_Empire" },
+        { "title": "Wikipedia — Kanem–Bornu Empire", "url": "https://en.wikipedia.org/wiki/Kanem–Bornu_Empire" },
+        { "title": "UNESCO General History of Africa, vol. IV", "url": "https://www.unesco.org/en/general-history-africa" }
+      ],
+      "periods": [
+        { "name": "Flight from Kanem", "start": 1380, "end": 1470 }
+      ]
+    },
+    {
+      "id": "td-ngazargamu",
+      "name": "Ngazargamu and the retaking of Kanem",
+      "start": 1460,
+      "end": 1564,
+      "region": "kingdoms",
+      "icon": "🏰",
+      "description": "Mai Ali Gaji (Ali ibn Dunama) founded Birni Ngazargamu, a walled capital in today’s Yobe State, Nigeria, around 1460–72. From there the Sayfawa reconquered Kanem from the Bulala and again claimed both shores of the lake. Ngazargamu became the political and scholarly centre of Bornu for more than three centuries, on the trans-Saharan roads that linked the lake to Fezzan and the Mediterranean. The city’s precise ruins are still discussed; the globe uses the long-standing map point near Gashua.",
+      "sources": [
+        { "title": "Wikipedia — Ngazargamu", "url": "https://en.wikipedia.org/wiki/Ngazargamu" },
+        { "title": "Wikipedia — Ali Gaji", "url": "https://en.wikipedia.org/wiki/Ali_Gaji" },
+        { "title": "Wikipedia — Bornu Empire", "url": "https://en.wikipedia.org/wiki/Bornu_Empire" },
+        { "title": "UNESCO General History of Africa, vol. IV", "url": "https://www.unesco.org/en/general-history-africa" }
+      ],
+      "periods": [
+        { "name": "Ngazargamu founded; Kanem retaken", "start": 1460, "end": 1564 }
+      ]
+    },
+    {
+      "id": "td-alooma",
+      "name": "Idris Alooma’s Bornu",
+      "start": 1564,
+      "end": 1700,
+      "region": "kingdoms",
+      "icon": "⚔️",
+      "description": "Mai Idris Alooma (c. 1564–96) rebuilt Bornu as a musket-armed power, with Ottoman-style firearms, fortified camps and a written legal order described by his imam, Ibn Furtu. He campaigned in Kanem against the Bulala, against the Sao and Kotoko of the Logone, and toward the desert. Mandara became a neighbour, and later, in 1614, a client when a successor installed King Nanda. After Alooma the state remained the great power of the lake, though less expansionist, into the 18th century.",
+      "sources": [
+        { "title": "Wikipedia — Idris Alooma", "url": "https://en.wikipedia.org/wiki/Idris_Alooma" },
+        { "title": "Wikipedia — Bornu Empire", "url": "https://en.wikipedia.org/wiki/Bornu_Empire" },
+        { "title": "UNESCO General History of Africa, vol. V", "url": "https://www.unesco.org/en/general-history-africa" }
+      ],
+      "periods": [
+        { "name": "Idris Alooma", "start": 1564, "end": 1596 },
+        { "name": "Later Sayfawa Bornu", "start": 1596, "end": 1700 }
+      ]
+    },
+    {
+      "id": "td-kotoko",
+      "name": "The Kotoko city-states of the Logone",
+      "start": 1400,
+      "end": 1900,
+      "region": "kingdoms",
+      "icon": "🏰",
+      "description": "Along the Logone, on both the Chadian and Cameroonian banks, the Kotoko succeeded the Sao in a string of fortified towns — among them Makari, Goulfey, Logone-Birni and Kousséri — rather than one kingdom. They farmed the floodplain, fished and traded, and often paid tribute to Kanem–Bornu while keeping their own rulers. In the 19th century they came under pressure from Bornu, from Rabih az-Zubayr and then from the European partition. Their territory is shown on the globe as part of the Bornu fill from 1500, not as a separate outline, because the two would overlap (the same choice as the Cameroon pack).",
+      "sources": [
+        { "title": "Wikipedia — Kotoko people", "url": "https://en.wikipedia.org/wiki/Kotoko_people" },
+        { "title": "Wikipedia — Sao civilisation", "url": "https://en.wikipedia.org/wiki/Sao_civilisation" },
+        { "title": "Wikipedia — Kousséri", "url": "https://en.wikipedia.org/wiki/Kousséri" },
+        { "title": "UNESCO General History of Africa, vols. IV–V", "url": "https://www.unesco.org/en/general-history-africa" }
+      ],
+      "periods": [
+        { "name": "Logone city-states", "start": 1400, "end": 1800 },
+        { "name": "Under Bornu, Rabih and the colonial conquest", "start": 1800, "end": 1900 }
+      ]
+    },
+    {
+      "id": "td-bagirmi",
+      "name": "The Sultanate of Bagirmi",
+      "start": 1522,
+      "end": 1897,
+      "region": "kingdoms",
+      "icon": "👑",
+      "description": "Bagirmi, a sultanate of the Chari basin, was founded traditionally in 1522 and ruled from Massenya by the mbang. It lived by the floodplain, by tribute and by southern slave raids that fed the desert trade. Bornu claimed suzerainty in the later 17th century; Sabun of Wadai sacked Massenya in 1805 and installed a client. The sultanate survived, weaker, until Rabih az-Zubayr burned Massenya in 1894; the last mbang accepted French protection in 1897. A traditional court remains at Massenya.",
+      "sources": [
+        { "title": "Wikipedia — Sultanate of Bagirmi", "url": "https://en.wikipedia.org/wiki/Sultanate_of_Bagirmi" },
+        { "title": "Wikipedia — Massenya", "url": "https://en.wikipedia.org/wiki/Massenya" },
+        { "title": "Wikipedia — History of Chad", "url": "https://en.wikipedia.org/wiki/History_of_Chad" },
+        { "title": "UNESCO General History of Africa, vols. V–VI", "url": "https://www.unesco.org/en/general-history-africa" }
+      ],
+      "periods": [
+        { "name": "Massenya and the height of the mbangs", "start": 1522, "end": 1805 },
+        { "name": "After Sabun; Rabih and the French", "start": 1805, "end": 1897 }
+      ]
+    },
+    {
+      "id": "td-wadai",
+      "name": "The Sultanate of Wadai",
+      "start": 1635,
+      "end": 1912,
+      "region": "kingdoms",
+      "icon": "👑",
+      "description": "In eastern Chad the Tunjur had ruled before ʿAbd al-Karim, a Maba leader, overthrew them around 1635 and founded the sultanate of Wadai (Ouaddaï), with its capital at Ouara (Wara). Wadai sat on the pilgrimage and trade road toward Darfur and the Nile, and in the 18th century became Bornu’s main eastern rival. Sabun sacked Massenya in 1805. When Ouara’s wells failed, the court moved to Abéché around 1850. France, after a long campaign, took Abéché in 1909 and ended the sultanate’s independence in 1912. A traditional sultanate continues.",
+      "sources": [
+        { "title": "Wikipedia — Wadai Empire", "url": "https://en.wikipedia.org/wiki/Wadai_Empire" },
+        { "title": "Wikipedia — Ouara", "url": "https://en.wikipedia.org/wiki/Ouara" },
+        { "title": "Wikipedia — Abéché", "url": "https://en.wikipedia.org/wiki/Abéché" },
+        { "title": "UNESCO General History of Africa, vols. V–VII", "url": "https://www.unesco.org/en/general-history-africa" }
+      ],
+      "periods": [
+        { "name": "Ouara", "start": 1635, "end": 1850 },
+        { "name": "Abéché and the French conquest", "start": 1850, "end": 1912 }
+      ]
+    },
+    {
+      "id": "td-kanemi",
+      "name": "El-Kanemi, Kukawa and the end of the Sayfawa",
+      "start": 1808,
+      "end": 1893,
+      "region": "kingdoms",
+      "icon": "🕌",
+      "description": "In 1808 a Fulani army from the Sokoto jihad sacked Ngazargamu. Muhammad al-Amin al-Kanemi, a scholar and commander, saved Bornu, sidelined the mais and in 1814 founded a new capital at Kukawa, west of the lake. His descendants, the shehus, replaced the Sayfawa line. Kukawa was a major Sahelian city until Rabih az-Zubayr took Bornu in 1893 and the court fled. The shehuate later continued under the British in Nigeria; the Chadian side of old Bornu passed to France.",
+      "sources": [
+        { "title": "Wikipedia — Muhammad al-Amin al-Kanemi", "url": "https://en.wikipedia.org/wiki/Muhammad_al-Amin_al-Kanemi" },
+        { "title": "Wikipedia — Kukawa", "url": "https://en.wikipedia.org/wiki/Kukawa" },
+        { "title": "Wikipedia — Bornu Empire", "url": "https://en.wikipedia.org/wiki/Bornu_Empire" },
+        { "title": "UNESCO General History of Africa, vols. VI–VII", "url": "https://www.unesco.org/en/general-history-africa" }
+      ],
+      "periods": [
+        { "name": "El-Kanemi and the founding of Kukawa", "start": 1808, "end": 1837 },
+        { "name": "The shehus until Rabih", "start": 1837, "end": 1893 }
+      ]
+    },
+    {
+      "id": "td-tubu",
+      "name": "The Tubu of Tibesti, Borkou and Ennedi",
+      "start": 1000,
+      "end": 1920,
+      "region": "faith",
+      "icon": "🏜️",
+      "description": "The dry north — Tibesti, Borkou and Ennedi — was never a tight province of Kanem, Bagirmi or Wadai. It was the country of the Tubu (Teda and Daza), camel herders and oasis farmers who controlled desert roads, raided and traded, and kept their own clans and chiefs. Islam spread here later and more loosely than around the lake. France only occupied the better-known posts in the 1900s and fought a long campaign in Tibesti into the 1910s and 1920s. The north is left off the pre-1815 globe shapes: a single outline would pretend to a state that was not there.",
+      "sources": [
+        { "title": "Wikipedia — Toubou people", "url": "https://en.wikipedia.org/wiki/Toubou_people" },
+        { "title": "Wikipedia — Tibesti Mountains", "url": "https://en.wikipedia.org/wiki/Tibesti_Mountains" },
+        { "title": "Wikipedia — Borkou", "url": "https://en.wikipedia.org/wiki/Borkou_(region_of_Chad)" },
+        { "title": "Wikipedia — History of Chad", "url": "https://en.wikipedia.org/wiki/History_of_Chad" }
+      ],
+      "periods": [
+        { "name": "Desert clans and oasis roads", "start": 1000, "end": 1900 },
+        { "name": "French campaigns in the north", "start": 1900, "end": 1920 }
+      ]
+    },
+    {
+      "id": "td-rabih",
+      "name": "Rabih az-Zubayr",
+      "start": 1893,
+      "end": 1900,
+      "region": "conflict",
+      "icon": "⚔️",
+      "description": "Rabih az-Zubayr, a Sudanese warlord who had served under al-Zubayr Rahma and then carved a slave-raiding state in the Bahar el-Ghazal, turned west, took Bornu in 1893, burned Massenya in 1894 and ruled from Dikwa. He fought the French as they advanced from the Congo and the Sahara. On 22 April 1900, at Kousséri on the Chari, a French column under Lamy (with allies from Bagirmi and others) defeated and killed him; Lamy also died. The battle opened the way for French rule at the lake.",
+      "sources": [
+        { "title": "Wikipedia — Rabih az-Zubayr", "url": "https://en.wikipedia.org/wiki/Rabih_az-Zubayr" },
+        { "title": "Wikipedia — Battle of Kousséri", "url": "https://en.wikipedia.org/wiki/Battle_of_Kousséri" },
+        { "title": "Wikipedia — History of Chad", "url": "https://en.wikipedia.org/wiki/History_of_Chad" }
+      ],
+      "periods": [
+        { "name": "Rabih in Bornu", "start": 1893, "end": 1900 }
+      ]
+    },
+    {
+      "id": "td-french",
+      "name": "French Chad",
+      "start": 1900,
+      "end": 1960,
+      "region": "colonial",
+      "icon": "🇫🇷",
+      "description": "After Kousséri the French founded Fort-Lamy (today’s N’Djamena) in 1900 at the Chari–Logone confluence. Chad became a military territory, was tied to French Equatorial Africa from 1910, and became a separate colony in 1920. The south was taxed and drawn into cotton; the Muslim north was held more lightly and later. Wadai was conquered in 1909–12; Tibesti took longer. In the Second World War Chad, under Félix Éboué, was the first French colony to join Free France, in August 1940. Territorial assembly politics and parties grew in the 1950s; independence was agreed for 11 August 1960.",
+      "sources": [
+        { "title": "Wikipedia — French Chad", "url": "https://en.wikipedia.org/wiki/French_Chad" },
+        { "title": "Wikipedia — French Equatorial Africa", "url": "https://en.wikipedia.org/wiki/French_Equatorial_Africa" },
+        { "title": "Wikipedia — N'Djamena", "url": "https://en.wikipedia.org/wiki/N%27Djamena" },
+        { "title": "Wikipedia — Félix Éboué", "url": "https://en.wikipedia.org/wiki/Félix_Éboué" }
+      ],
+      "periods": [
+        { "name": "Conquest and the military territory", "start": 1900, "end": 1920 },
+        { "name": "Colony, AEF and the road to independence", "start": 1920, "end": 1960 }
+      ]
+    },
+    {
+      "id": "td-independence",
+      "name": "Independence and Tombalbaye",
+      "start": 1960,
+      "end": 1975,
+      "region": "politics",
+      "icon": "🎉",
+      "description": "Chad became independent on 11 August 1960, with François Tombalbaye (later Ngarta Tombalbaye), a southerner and leader of the PPT, as president. The new state kept Fort-Lamy as capital (renamed N’Djamena in 1973). Tombalbaye banned opposition parties, leaned on the south, and from the mid-1960s faced a Muslim-led rebellion in the north and east (FROLINAT, 1966). A 1969–71 French intervention propped him up. His “authenticity” campaign and harsh rule alienated even southern officers; he was killed in a coup on 13 April 1975.",
+      "sources": [
+        { "title": "Wikipedia — François Tombalbaye", "url": "https://en.wikipedia.org/wiki/François_Tombalbaye" },
+        { "title": "Wikipedia — History of Chad", "url": "https://en.wikipedia.org/wiki/History_of_Chad" },
+        { "title": "Wikipedia — FROLINAT", "url": "https://en.wikipedia.org/wiki/FROLINAT" }
+      ],
+      "periods": [
+        { "name": "Independence and one-party rule", "start": 1960, "end": 1966 },
+        { "name": "Rebellion, intervention and the 1975 coup", "start": 1966, "end": 1975 }
+      ]
+    },
+    {
+      "id": "td-civil-war",
+      "name": "Civil war after Tombalbaye",
+      "start": 1975,
+      "end": 1982,
+      "region": "conflict",
+      "icon": "💥",
+      "description": "General Félix Malloum took power after the 1975 coup but could not end the war. In 1979, after fighting in N’Djamena, a series of peace conferences produced a Transitional Government of National Unity under Goukouni Oueddei, a northerner. Libya occupied the Aouzou Strip and in 1980–81 intervened in the capital in Goukouni’s favour. His defence minister, Hissène Habré, broke with him and, with French and American support, took N’Djamena in June 1982.",
+      "sources": [
+        { "title": "Wikipedia — Chadian Civil War (1965–1979)", "url": "https://en.wikipedia.org/wiki/Chadian_Civil_War_(1965–1979)" },
+        { "title": "Wikipedia — Félix Malloum", "url": "https://en.wikipedia.org/wiki/Félix_Malloum" },
+        { "title": "Wikipedia — Goukouni Oueddei", "url": "https://en.wikipedia.org/wiki/Goukouni_Oueddei" },
+        { "title": "Wikipedia — History of Chad", "url": "https://en.wikipedia.org/wiki/History_of_Chad" }
+      ],
+      "periods": [
+        { "name": "Malloum", "start": 1975, "end": 1979 },
+        { "name": "GUNT and the fall of Goukouni", "start": 1979, "end": 1982 }
+      ]
+    },
+    {
+      "id": "td-habre",
+      "name": "Hissène Habré",
+      "start": 1982,
+      "end": 1990,
+      "region": "conflict",
+      "icon": "⚖️",
+      "description": "Hissène Habré ruled Chad from 1982 to 1990. He drove Libyan forces back with French help (Operation Manta, then Epervier) and after the 1987 “Toyota War” recovered most of the north, though the Aouzou Strip was only settled later at the International Court of Justice (1994). At home his secret police, the DDS, jailed, tortured and killed thousands; a later Chadian court and a Senegalese-African Union Extraordinary Chambers convicted him of crimes against humanity (2016). Idriss Déby, once his commander, overthrew him on 1 December 1990. Habré died in a Senegalese prison in 2021.",
+      "sources": [
+        { "title": "Wikipedia — Hissène Habré", "url": "https://en.wikipedia.org/wiki/Hissène_Habré" },
+        { "title": "Wikipedia — Toyota War", "url": "https://en.wikipedia.org/wiki/Toyota_War" },
+        { "title": "Wikipedia — History of Chad", "url": "https://en.wikipedia.org/wiki/History_of_Chad" }
+      ],
+      "periods": [
+        { "name": "Habré, Libya and the DDS", "start": 1982, "end": 1990 }
+      ]
+    },
+    {
+      "id": "td-deby",
+      "name": "Idriss Déby",
+      "start": 1990,
+      "end": 2021,
+      "region": "modern",
+      "icon": "🌍",
+      "description": "Idriss Déby Itno took N’Djamena in December 1990 and held the presidency for thirty years, through elections his opponents called unfair, rebellions from the east and Sudanese border, and a close military relationship with France. Oil production began in 2003 from the Doba basin, with a pipeline to Kribi, and became the main source of state revenue, unevenly shared. Déby’s army also fought in the Sahel and against Boko Haram around Lake Chad. He was killed on 20 April 2021, on the front against the FACT rebellion in the north.",
+      "sources": [
+        { "title": "Wikipedia — Idriss Déby", "url": "https://en.wikipedia.org/wiki/Idriss_Déby" },
+        { "title": "Wikipedia — History of Chad", "url": "https://en.wikipedia.org/wiki/History_of_Chad" },
+        { "title": "Wikipedia — Petroleum in Chad", "url": "https://en.wikipedia.org/wiki/Petroleum_industry_in_Chad" }
+      ],
+      "periods": [
+        { "name": "Déby’s first decade", "start": 1990, "end": 2003 },
+        { "name": "Oil, rebellions and the 2021 death", "start": 2003, "end": 2021 }
+      ]
+    },
+    {
+      "id": "td-transition",
+      "name": "The transitional years after Déby",
+      "start": 2021,
+      "end": 2025,
+      "region": "modern",
+      "icon": "📜",
+      "description": "On Idriss Déby’s death the army installed his son, Mahamat Idriss Déby Itno, at the head of a Transitional Military Council, setting aside the constitutional succession. A dialogue, a new constitution and a 2024 presidential election — boycotted by part of the opposition — confirmed him in office. Insurrections and negotiations continued; the gold and oil economy, the Lake Chad crisis and the strained French military presence all remained. As of 2025 he is president of Chad.",
+      "sources": [
+        { "title": "Wikipedia — Mahamat Déby", "url": "https://en.wikipedia.org/wiki/Mahamat_Déby" },
+        { "title": "Wikipedia — History of Chad", "url": "https://en.wikipedia.org/wiki/History_of_Chad" },
+        { "title": "Wikipedia — 2024 Chadian presidential election", "url": "https://en.wikipedia.org/wiki/2024_Chadian_presidential_election" }
+      ],
+      "periods": [
+        { "name": "Military council and the 2024 election", "start": 2021, "end": 2025 }
+      ]
+    }
+  ]
+}
