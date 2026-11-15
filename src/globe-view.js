@@ -1776,7 +1776,7 @@ let hostOverlayHomes = [];
 
 function attachLegend() {
   if (!hostEl) return;
-  const els = document.querySelectorAll('.globe-legend, .globe-fullscreen-toggle, .globe-credit, .fs-mode-switch');
+  const els = document.querySelectorAll('.globe-legend, .globe-fullscreen-toggle, .globe-credit, .fs-mode-switch, .globe-info-toggle');
   for (const el of els) {
     if (el.parentElement === hostEl) continue;
     hostOverlayHomes.push({ el, parent: el.parentElement, next: el.nextSibling });

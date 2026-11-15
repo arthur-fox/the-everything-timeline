@@ -50,6 +50,7 @@ import { initFeedback, openFeedback } from './feedback.js';
 import { initSupport } from './support.js';
 import { initShare } from './share.js';
 import { initMobileMenu } from './mobile-menu.js';
+import { initGlobeInfoToggle } from './globe-info-toggle.js';
 import { confidenceForEntity, confidenceForNationPeriod, CONFIDENCE_LABEL, CONFIDENCE_DRAWING } from './globe-confidence.js';
 
 // ============================================================
@@ -4595,6 +4596,7 @@ canvas.style.cursor = 'grab';
 // Day 45 — Feedback button + panel (src/feedback.js; where it goes is set in src/feedback-config.js).
 initSupport();
 initMobileMenu();
+initGlobeInfoToggle();
 // Day 60 — 🔗 Share: this exact view (deep link + caption), copy, social links, globe PNG.
 initShare({
   getShare: () => {

@@ -5443,3 +5443,88 @@ body.globe-active .fab-dock:focus-within {
     min-width: 34px;
   }
 }
+
+/* ============================================================
+   Phones — hide / show the globe's map key + credits (src/globe-info-toggle.js).
+   Arthur: "On mobile there's too much info, can you have the overlay be able to hide?"
+   Phones start with the key hidden; one ≥44px pill brings it back. Everything here is
+   inside the phone media query, so the desktop layout is unchanged.
+   ============================================================ */
+.globe-info-toggle {
+  display: none;
+}
+
+.globe-info-toggle .gi-show {
+  display: none;
+}
+
+body.globe-info-hidden .globe-info-toggle .gi-show {
+  display: block;
+}
+
+body.globe-info-hidden .globe-info-toggle .gi-hide {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .globe-canvas-host > .globe-info-toggle {
+    position: absolute;
+    z-index: 5;
+    left: 10px;
+    bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 14px 0 12px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
+    background: color-mix(in srgb, var(--bg-surface) 82%, transparent);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    color: var(--text);
+    font: 600 0.9rem/1 var(--font-ui);
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    box-shadow: 0 4px 14px var(--shadow-tooltip);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* collapsed: gold outline so the way back to the key is easy to spot */
+  body.globe-info-hidden .globe-canvas-host > .globe-info-toggle {
+    border-color: color-mix(in srgb, var(--accent) 70%, transparent);
+    color: var(--accent-strong);
+  }
+
+  .globe-canvas-host > .globe-info-toggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* windowed (card) globe: icon-only, under the full-screen button (the key sits at the bottom,
+     the credit top-left) */
+  body:not(.globe-fullscreen) .globe-canvas-host > .globe-info-toggle {
+    left: auto;
+    bottom: auto;
+    top: 56px;
+    right: 8px;
+    padding: 0;
+  }
+
+  body:not(.globe-fullscreen) .globe-canvas-host > .globe-info-toggle .globe-info-toggle-label {
+    display: none;
+  }
+
+  /* full-screen globe: bottom-left, just above the year scrubber (same row as the ☕ 💬 dock) */
+  body.globe-fullscreen .globe-canvas-host > .globe-info-toggle {
+    left: max(12px, env(safe-area-inset-left, 0px));
+    bottom: calc(max(12px, env(safe-area-inset-bottom, 0px)) + 132px);
+  }
+
+  body.globe-info-hidden .globe-canvas-host > .globe-legend,
+  body.globe-info-hidden .globe-canvas-host > .globe-credit {
+    display: none;
+  }
+}
