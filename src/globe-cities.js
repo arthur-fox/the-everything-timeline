@@ -1029,7 +1029,21 @@ export const CITIES = [
   C('sarh', 9.14997, 18.39003, 3, 1899, null, 'Fort-Archambault', 1973, 'Sarh', { ne: 'Sarh' }),
   C('moundou', 8.54998, 16.09002, 3, 1923, null, 'Moundou', { ne: 'Moundou' }),
   C('faya-largeau', 17.91667, 19.11670, 4, 1913, null, 'Faya-Largeau', { ne: 'Faya Largeau' }),
+  // Day 87 — Serbia (globe-pack-serbia.js): Vinča, Sirmium, Ras / Novi Pazar, the medieval
+  // seats, Niš and the uprising towns (Belgrade and Skopje already exist).
+  C('vinca', 44.762, 20.623, 4, -5400, -4500, 'Vinča'),
+  C('sirmium', 44.976, 19.612, 3, -100, null, 'Sirmium', 878, 'Sremska Mitrovica', { ne: 'Sremska Mitrovica' }),
+  C('ras', 43.128, 20.416, 3, 800, 1460, 'Ras'),
+  C('novi-pazar', 43.137, 20.512, 3, 1461, null, 'Novi Pazar', { ne: 'Novi Pazar' }),
+  C('prizren', 42.213, 20.739, 3, 400, null, 'Prizren', { ne: 'Prizren' }),
+  C('pec', 42.659, 20.288, 4, 1200, null, 'Peć', { ne: 'Peć' }),
+  C('krusevac', 43.583, 21.327, 3, 1371, null, 'Kruševac', { ne: 'Kruševac' }),
+  C('smederevo', 44.663, 20.930, 3, 1428, null, 'Smederevo', { ne: 'Smederevo' }),
+  C('nis', 43.321, 21.896, 3, -50, null, 'Naissus', 800, 'Niš', { ne: 'Niš' }),
+  C('kragujevac', 44.012, 20.917, 3, 1476, null, 'Kragujevac', { ne: 'Kragujevac' }),
+  C('novi-sad', 45.255, 19.845, 3, 1694, null, 'Novi Sad', { ne: 'Novi Sad' }),
 ];
+
 
 
 const BY_ID = new Map(CITIES.map((c) => [c.id, c]));

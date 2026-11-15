@@ -53,6 +53,7 @@ import { drCongoPolities, applyDrCongoShapeFixes } from './globe-pack-dr-congo.j
 import { angolaPolities, applyAngolaShapeFixes } from './globe-pack-angola.js';
 import { cameroonPolities, applyCameroonShapeFixes } from './globe-pack-cameroon.js';
 import { chadPolities, applyChadShapeFixes } from './globe-pack-chad.js';
+import { serbiaPolities, applySerbiaShapeFixes } from './globe-pack-serbia.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6478,6 +6479,15 @@ for (const ent of chadPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 87 — Phase 5 country pack 5, Serbia (globe-pack-serbia.js): medieval Serbia (Nemanja to the
+// Despotate), the Habsburg Kingdom of Serbia (1718–1739) and Revolutionary Serbia (1804–1813),
+// drawn from province pieces; the Ottoman 1683 Balkans ring is holed off Habsburg Serbia.
+for (const ent of serbiaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6559,6 +6569,8 @@ applyAngolaShapeFixes(spatialEntities);
 applyCameroonShapeFixes(spatialEntities);
 // Day 86 — Kanem–Bornu is replaced by id (no extra empire drops).
 applyChadShapeFixes(spatialEntities);
+// Day 87 — Ottoman 1683 Balkans ring holed off Habsburg Serbia, 1718–1739.
+applySerbiaShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

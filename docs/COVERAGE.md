@@ -213,7 +213,7 @@ Honest caveat: only Peru (Day 65: 17 polities from Caral to the Neo-Inca State, 
 | Montenegro | ME | none | partial | Southeast Europe | modern borders 1815/1914–2025 |
 | North Macedonia | MK | none | partial | Southeast Europe | modern borders 1815/1914–2025 |
 | Romania | RO | none | partial | Southeast Europe | modern borders 1815/1914–2025 |
-| Serbia | RS | none | partial | Southeast Europe | modern borders 1815/1914–2025 |
+| Serbia | RS | done | done | Southeast Europe | Day 87: medieval Serbia (1166–1459), Habsburg Kingdom 1718–1739, Revolutionary Serbia 1804–1813, Ottoman 1683 ring holed 1718–1739, 13 cities, 47 pins, new 18-item timeline |
 | Slovenia | SI | none | partial | Southeast Europe | modern borders 1815/1914–2025 |
 | Botswana | BW | none | partial | Southern Africa | modern borders 1815/1914–2025 |
 | Eswatini | SZ | none | partial | Southern Africa | modern borders 1815/1914–2025 |

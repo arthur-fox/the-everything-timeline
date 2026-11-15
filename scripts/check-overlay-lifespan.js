@@ -343,6 +343,14 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assert(idsAt(1600).has('bagirmi') && !idsAt(1520).has('bagirmi'), 'Bagirmi ON at 1600, OFF at 1520');
   assert(idsAt(1650).has('wadai') && !idsAt(1630).has('wadai'), 'Wadai ON at 1650, OFF at 1630');
   assert(idsAt(1815).has('kanem-bornu') && idsAt(1815).has('bagirmi') && idsAt(1815).has('wadai'), 'Kanem–Bornu, Bagirmi and Wadai ON at 1815');
+  // Day 87: Serbia pack — medieval Serbia, Habsburg Kingdom (1718–1739), Revolutionary Serbia (1804–1813).
+  assert(idsAt(1166).has('medieval-serbia') && !idsAt(1164).has('medieval-serbia'), 'Medieval Serbia ON at 1166, OFF at 1164');
+  assert(idsAt(1348).has('medieval-serbia') && idsAt(1459).has('medieval-serbia') && !idsAt(1461).has('medieval-serbia'), 'Medieval Serbia ON at 1348 and 1459, OFF at 1461');
+  assert(idsAt(1718).has('habsburg-serbia') && !idsAt(1716).has('habsburg-serbia') && idsAt(1739).has('habsburg-serbia') && !idsAt(1741).has('habsburg-serbia'), 'Habsburg Serbia 1718–1739 only');
+  assert(idsAt(1804).has('revolutionary-serbia') && !idsAt(1802).has('revolutionary-serbia') && idsAt(1813).has('revolutionary-serbia') && !idsAt(1815).has('revolutionary-serbia'), 'Revolutionary Serbia 1804–1813 only');
+  assert(regionIds('medieval-serbia', 1348).includes('epirus') && regionIds('medieval-serbia', 1348).includes('thessaly') && !regionIds('medieval-serbia', 1346).includes('epirus'), 'Epirus and Thessaly at 1348, not 1346');
+  assert(regionIds('medieval-serbia', 1282).includes('skopje') && !regionIds('medieval-serbia', 1217).includes('skopje'), 'Skopje from 1282');
+  assert(!idsAt(1815).has('medieval-serbia') && !idsAt(1815).has('habsburg-serbia') && !idsAt(1815).has('revolutionary-serbia'), 'Serbia pack polities off at the 1815 nations hand-off');
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
 
