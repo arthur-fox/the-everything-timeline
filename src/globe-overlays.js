@@ -52,6 +52,7 @@ import { mexicoPolities, applyMexicoShapeFixes } from './globe-pack-mexico.js';
 import { drCongoPolities, applyDrCongoShapeFixes } from './globe-pack-dr-congo.js';
 import { angolaPolities, applyAngolaShapeFixes } from './globe-pack-angola.js';
 import { cameroonPolities, applyCameroonShapeFixes } from './globe-pack-cameroon.js';
+import { chadPolities, applyChadShapeFixes } from './globe-pack-chad.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6469,6 +6470,14 @@ for (const ent of cameroonPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 86 — Phase 5 country pack 4, Chad (globe-pack-chad.js): Kanem–Bornu (the Day 58 ring replaced
+// by id, on province pieces, still clear of the Mandara Mountains), Bagirmi and Wadai.
+for (const ent of chadPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6545,8 +6554,11 @@ applyMexicoShapeFixes(spatialEntities);
 applyDrCongoShapeFixes(spatialEntities);
 // Day 84 — Portuguese Empire 'angola-coast' gives way to the Angola pack's Portuguese Angola.
 applyAngolaShapeFixes(spatialEntities);
-// Day 85 — Kanem–Bornu rings trimmed off the Mandara Mountains (Logone floodplain stays in Bornu).
+// Day 85 — Kanem–Bornu stays clear of the Mandara Mountains (Logone floodplain stays in Bornu).
+// Day 86 redraws the rings from province pieces; the Cameroon check still proves Mora / Doulo are outside.
 applyCameroonShapeFixes(spatialEntities);
+// Day 86 — Kanem–Bornu is replaced by id (no extra empire drops).
+applyChadShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

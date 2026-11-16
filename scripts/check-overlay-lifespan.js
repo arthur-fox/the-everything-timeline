@@ -336,6 +336,13 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assert(idsAt(1600).has('mandara') && !idsAt(1490).has('mandara'), 'Mandara ON at 1600, OFF at 1490');
   assert(idsAt(1650).has('duala') && !idsAt(1590).has('duala'), 'Duala ON at 1650, OFF at 1590');
   assert(idsAt(1815).has('mandara') && idsAt(1815).has('bamum-kingdom') && idsAt(1815).has('nso-kingdom') && idsAt(1815).has('duala'), 'All four Cameroon polities ON at 1815');
+  // Day 86: Chad pack — Kanem–Bornu redrawn on pieces; Bagirmi and Wadai; Fezzan only at the 1250 peak.
+  assert(idsAt(800).has('kanem-bornu') && !idsAt(790).has('kanem-bornu'), 'Kanem–Bornu ON at 800, OFF at 790');
+  assert(regionIds('kanem-bornu', 1250).includes('fezzan') && regionIds('kanem-bornu', 1250).includes('kawar') && !regionIds('kanem-bornu', 1100).includes('fezzan'), 'Kanem has Fezzan and Kawar at 1250, not 1100');
+  assert(regionIds('kanem-bornu', 1500).includes('kanem') && regionIds('kanem-bornu', 1500).includes('bornu') && !regionIds('kanem-bornu', 1400).includes('kanem'), 'Bornu has Kanem at 1500, not 1400');
+  assert(idsAt(1600).has('bagirmi') && !idsAt(1520).has('bagirmi'), 'Bagirmi ON at 1600, OFF at 1520');
+  assert(idsAt(1650).has('wadai') && !idsAt(1630).has('wadai'), 'Wadai ON at 1650, OFF at 1630');
+  assert(idsAt(1815).has('kanem-bornu') && idsAt(1815).has('bagirmi') && idsAt(1815).has('wadai'), 'Kanem–Bornu, Bagirmi and Wadai ON at 1815');
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
 

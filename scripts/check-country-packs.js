@@ -10,7 +10,7 @@
  * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js), Jamaica (Day 80,
  * src/globe-pack-jamaica.js), Guatemala (Day 81, src/globe-pack-guatemala.js), the Mexico refinement (Day 82,
  * src/globe-pack-mexico.js), DR Congo (Day 83, src/globe-pack-dr-congo.js) Angola (Day 84,
- * src/globe-pack-angola.js) and Cameroon (Day 85, src/globe-pack-cameroon.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * src/globe-pack-angola.js), Cameroon (Day 85, src/globe-pack-cameroon.js) and Chad (Day 86, src/globe-pack-chad.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -50,6 +50,7 @@ import { mexicoPolities, mexicoShapeFixes, MX_DROPS } from '../src/globe-pack-me
 import { drCongoPolities, drCongoShapeFixes } from '../src/globe-pack-dr-congo.js';
 import { angolaPolities, angolaShapeFixes, AO_DROPS } from '../src/globe-pack-angola.js';
 import { cameroonPolities, cameroonShapeFixes } from '../src/globe-pack-cameroon.js';
+import { chadPolities, chadShapeFixes } from '../src/globe-pack-chad.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -1788,10 +1789,81 @@ const PACKS = [
       to: 1815,
       box: [8.4, 1.6, 16.3, 13.2],
       planar: true,
-      // Sokoto only: Kanem–Bornu is trimmed off Mandara at its keyframes (see notOver), but the
-      // schematic perimeter morph between those rings can briefly brush the mountains, so it is
-      // not in this every-5-year grid.
+      // Sokoto only: Kanem–Bornu is trimmed off Mandara at its keyframes (see notOver). Day 86
+      // redraws those rings from province pieces with one-year steps, so the old schematic morph
+      // no longer brushes the mountains, but this pack still leaves Kanem–Bornu off the grid
+      // (the Chad pack checks it).
       with: ['sokoto-caliphate'],
+    },
+  },
+  {
+    country: 'chad',
+    polities: chadPolities,
+    fixes: chadShapeFixes,
+    // Kanem–Bornu is replaced by id from province pieces (centre in Chad / Nigeria / Niger).
+    redrawn: {},
+    capitals: [
+      ['kanem-bornu', 800, 15.60, 14.12, 'Njimi (Tié, tentative)'],
+      ['kanem-bornu', 1100, 15.60, 14.12, 'Njimi'],
+      ['kanem-bornu', 1250, 15.60, 14.12, 'Njimi'],
+      ['kanem-bornu', 1500, 11.03, 13.00, 'Ngazargamu'],
+      ['kanem-bornu', 1600, 11.03, 13.00, 'Ngazargamu'],
+      ['kanem-bornu', 1815, 13.57, 12.92, 'Kukawa'],
+      ['bagirmi', 1522, 16.167, 11.400, 'Massenya'],
+      ['bagirmi', 1815, 16.167, 11.400, 'Massenya'],
+      ['wadai', 1635, 20.67222, 14.22667, 'Ouara'],
+      ['wadai', 1815, 20.67222, 14.22667, 'Ouara'],
+    ],
+    on: {
+      800: ['kanem-bornu'],
+      1250: ['kanem-bornu'],
+      1500: ['kanem-bornu'],
+      1600: ['kanem-bornu', 'bagirmi'],
+      1650: ['kanem-bornu', 'bagirmi', 'wadai'],
+      1800: ['kanem-bornu', 'bagirmi', 'wadai'],
+      1815: ['kanem-bornu', 'bagirmi', 'wadai'],
+    },
+    gone: {
+      790: ['kanem-bornu', 'bagirmi', 'wadai'],
+      1520: ['bagirmi', 'wadai'],
+      1630: ['wadai'],
+    },
+    absent: [
+      ['kanem-bornu', 1100, 'fezzan'],
+      ['kanem-bornu', 1400, 'kanem'],
+      ['kanem-bornu', 1390, 'fezzan'],
+      ['kanem-bornu', 1390, 'logone'],
+      ['kanem-bornu', 1800, 'kanem'],
+      ['kanem-bornu', 1800, 'logone'],
+    ],
+    present: [
+      ['kanem-bornu', 1250, 'kanem'],
+      ['kanem-bornu', 1250, 'kawar'],
+      ['kanem-bornu', 1250, 'fezzan'],
+      ['kanem-bornu', 1500, 'kanem'],
+      ['kanem-bornu', 1500, 'bornu'],
+      ['kanem-bornu', 1500, 'logone'],
+      ['kanem-bornu', 1500, 'diffa'],
+      ['kanem-bornu', 1814, 'bornu'],
+      ['bagirmi', 1650, 'bagirmi'],
+      ['wadai', 1805, 'wadai'],
+    ],
+    notOver: [
+      ['kanem-bornu', 1600, 14.14, 11.046, 'Mora (Mandara, still outside Bornu)'],
+      ['kanem-bornu', 1500, 14.036, 10.997, 'Doulo (Mandara, still outside Bornu)'],
+      ['kanem-bornu', 1800, 14.14, 11.046, 'Mora (Mandara, still outside Bornu)'],
+      ['kanem-bornu', 1600, 16.167, 11.400, 'Massenya (Bagirmi, not Bornu fill)'],
+      ['kanem-bornu', 1800, 20.67222, 14.22667, 'Ouara (Wadai, not Bornu fill)'],
+      ['bagirmi', 1700, 15.04720, 12.11504, "N'Djamena (not Bagirmi proper)"],
+      ['wadai', 1700, 16.167, 11.400, 'Massenya (Bagirmi, not Wadai)'],
+      ['kanem-bornu', 1600, 14.316, 10.591, 'Maroua (Diamaré, not Bornu’s Logone)'],
+    ],
+    noOverlap: {
+      from: 1390,
+      to: 1815,
+      box: [10.3, 9.8, 22.5, 16.5],
+      planar: true,
+      with: ['mandara', 'sokoto-caliphate', 'hausa-states'],
     },
   },
 ];
