@@ -10,7 +10,7 @@
  * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js), Jamaica (Day 80,
  * src/globe-pack-jamaica.js), Guatemala (Day 81, src/globe-pack-guatemala.js), the Mexico refinement (Day 82,
  * src/globe-pack-mexico.js), DR Congo (Day 83, src/globe-pack-dr-congo.js) Angola (Day 84,
- * src/globe-pack-angola.js), Cameroon (Day 85, src/globe-pack-cameroon.js) and Chad (Day 86, src/globe-pack-chad.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * src/globe-pack-angola.js), Cameroon (Day 85, src/globe-pack-cameroon.js), Chad (Day 86, src/globe-pack-chad.js) and Serbia (Day 87, src/globe-pack-serbia.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -51,6 +51,7 @@ import { drCongoPolities, drCongoShapeFixes } from '../src/globe-pack-dr-congo.j
 import { angolaPolities, angolaShapeFixes, AO_DROPS } from '../src/globe-pack-angola.js';
 import { cameroonPolities, cameroonShapeFixes } from '../src/globe-pack-cameroon.js';
 import { chadPolities, chadShapeFixes } from '../src/globe-pack-chad.js';
+import { serbiaPolities, serbiaShapeFixes } from '../src/globe-pack-serbia.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -1864,6 +1865,100 @@ const PACKS = [
       box: [10.3, 9.8, 22.5, 16.5],
       planar: true,
       with: ['mandara', 'sokoto-caliphate', 'hausa-states'],
+    },
+  },
+  {
+    country: 'serbia',
+    polities: serbiaPolities,
+    fixes: serbiaShapeFixes,
+    redrawn: {},
+    trimmed: ['ottoman-empire'],
+    capitals: [
+      ['medieval-serbia', 1166, 20.416, 43.128, 'Stari Ras'],
+      ['medieval-serbia', 1190, 20.416, 43.128, 'Ras'],
+      ['medieval-serbia', 1217, 20.416, 43.128, 'Ras'],
+      ['medieval-serbia', 1282, 21.43, 42.00, 'Skopje'],
+      ['medieval-serbia', 1346, 21.43, 42.00, 'Skopje'],
+      ['medieval-serbia', 1348, 21.43, 42.00, 'Skopje'],
+      ['medieval-serbia', 1371, 21.327, 43.583, 'Kruševac'],
+      ['medieval-serbia', 1389, 21.327, 43.583, 'Kruševac'],
+      ['medieval-serbia', 1403, 20.46, 44.82, 'Belgrade'],
+      ['medieval-serbia', 1430, 20.930, 44.663, 'Smederevo'],
+      ['medieval-serbia', 1459, 20.930, 44.663, 'Smederevo'],
+      ['habsburg-serbia', 1718, 20.46, 44.82, 'Belgrade'],
+      ['habsburg-serbia', 1739, 20.46, 44.82, 'Belgrade'],
+      ['revolutionary-serbia', 1804, 20.917, 44.012, 'Kragujevac / Šumadija'],
+      ['revolutionary-serbia', 1807, 20.46, 44.82, 'Belgrade'],
+      ['revolutionary-serbia', 1813, 20.46, 44.82, 'Belgrade'],
+    ],
+    on: {
+      1166: ['medieval-serbia'],
+      1217: ['medieval-serbia'],
+      1282: ['medieval-serbia'],
+      1348: ['medieval-serbia'],
+      1371: ['medieval-serbia'],
+      1403: ['medieval-serbia'],
+      1430: ['medieval-serbia'],
+      1459: ['medieval-serbia'],
+      1718: ['habsburg-serbia'],
+      1739: ['habsburg-serbia'],
+      1804: ['revolutionary-serbia'],
+      1807: ['revolutionary-serbia'],
+      1813: ['revolutionary-serbia'],
+    },
+    gone: {
+      1164: ['medieval-serbia', 'habsburg-serbia', 'revolutionary-serbia'],
+      1461: ['medieval-serbia'],
+      1716: ['habsburg-serbia'],
+      1741: ['habsburg-serbia'],
+      1802: ['revolutionary-serbia'],
+      1815: ['revolutionary-serbia', 'medieval-serbia', 'habsburg-serbia'],
+    },
+    absent: [
+      ['medieval-serbia', 1166, 'kosovo'],
+      ['medieval-serbia', 1217, 'skopje'],
+      ['medieval-serbia', 1282, 'macedonia'],
+      ['medieval-serbia', 1346, 'epirus'],
+      ['medieval-serbia', 1372, 'kosovo'],
+      ['medieval-serbia', 1403, 'kosovo'],
+      ['medieval-serbia', 1346, 'thessaly'],
+    ],
+    present: [
+      ['medieval-serbia', 1166, 'serbia'],
+      ['medieval-serbia', 1190, 'kosovo'],
+      ['medieval-serbia', 1190, 'zeta'],
+      ['medieval-serbia', 1282, 'skopje'],
+      ['medieval-serbia', 1346, 'macedonia'],
+      ['medieval-serbia', 1348, 'epirus'],
+      ['medieval-serbia', 1348, 'thessaly'],
+      ['medieval-serbia', 1371, 'serbia'],
+      ['medieval-serbia', 1403, 'serbia'],
+      ['medieval-serbia', 1427, 'kosovo'],
+      ['habsburg-serbia', 1718, 'serbia'],
+      ['revolutionary-serbia', 1804, 'serbia'],
+      ['revolutionary-serbia', 1807, 'serbia'],
+    ],
+    notOver: [
+      ['ottoman-empire', 1718, 20.46, 44.82, 'Belgrade (Habsburg Kingdom of Serbia)'],
+      ['ottoman-empire', 1730, 20.46, 44.82, 'Belgrade (Habsburg)'],
+      ['ottoman-empire', 1739, 20.917, 44.012, 'Kragujevac (Habsburg)'],
+      ['ottoman-empire', 1718, 20.930, 44.663, 'Smederevo (Habsburg)'],
+      ['medieval-serbia', 1166, 20.46, 44.82, 'Belgrade (not yet Nemanja’s)'],
+      ['medieval-serbia', 1430, 20.46, 44.82, 'Belgrade (returned to Hungary 1427)'],
+      ['medieval-serbia', 1348, 22.95, 40.64, 'Thessaloniki (never taken)'],
+      ['medieval-serbia', 1403, 19.845, 45.255, 'Novi Sad (Vojvodina, not the Despotate)'],
+      ['habsburg-serbia', 1718, 21.896, 43.321, 'Niš (stayed Ottoman)'],
+      ['habsburg-serbia', 1718, 20.512, 43.137, 'Novi Pazar (Ottoman Sandžak)'],
+      ['habsburg-serbia', 1718, 19.845, 45.255, 'Novi Sad (not this kingdom)'],
+      ['revolutionary-serbia', 1807, 21.896, 43.321, 'Niš (Čegar failed, 1809)'],
+      ['revolutionary-serbia', 1807, 20.512, 43.137, 'Novi Pazar (not held)'],
+      ['revolutionary-serbia', 1804, 20.46, 44.82, 'Belgrade (not yet taken in 1804)'],
+    ],
+    noOverlap: {
+      from: 1166,
+      to: 1813,
+      box: [18.3, 38.8, 23.5, 45.3],
+      planar: true,
     },
   },
 ];
