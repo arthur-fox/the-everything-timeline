@@ -54,6 +54,7 @@ import { angolaPolities, applyAngolaShapeFixes } from './globe-pack-angola.js';
 import { cameroonPolities, applyCameroonShapeFixes } from './globe-pack-cameroon.js';
 import { chadPolities, applyChadShapeFixes } from './globe-pack-chad.js';
 import { serbiaPolities, applySerbiaShapeFixes } from './globe-pack-serbia.js';
+import { bulgariaPolities, applyBulgariaShapeFixes } from './globe-pack-bulgaria.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6488,6 +6489,15 @@ for (const ent of serbiaPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 88 — Phase 5 country pack 5, Bulgaria (globe-pack-bulgaria.js): the First Bulgarian Empire
+// (681–1018), the Second Bulgarian Empire (1185–1393) and the Tsardom of Vidin (1356–1396), drawn
+// from province pieces; the Byzantine 800 rectangle is cut back from the First Empire, 680–1019.
+for (const ent of bulgariaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6571,6 +6581,8 @@ applyCameroonShapeFixes(spatialEntities);
 applyChadShapeFixes(spatialEntities);
 // Day 87 — Ottoman 1683 Balkans ring holed off Habsburg Serbia, 1718–1739.
 applySerbiaShapeFixes(spatialEntities);
+// Day 88 — Byzantine 800 keyframe replaced by one-year steps cut back from the First Bulgarian Empire.
+applyBulgariaShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

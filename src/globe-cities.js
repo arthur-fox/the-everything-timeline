@@ -1042,6 +1042,19 @@ export const CITIES = [
   C('nis', 43.321, 21.896, 3, -50, null, 'Naissus', 800, 'Niš', { ne: 'Niš' }),
   C('kragujevac', 44.012, 20.917, 3, 1476, null, 'Kragujevac', { ne: 'Kragujevac' }),
   C('novi-sad', 45.255, 19.845, 3, 1694, null, 'Novi Sad', { ne: 'Novi Sad' }),
+  // Day 88 — Bulgaria (globe-pack-bulgaria.js): Pliska and Preslav, Tarnovo, the Danube and
+  // coast towns, Ohrid and Prespa (Sofia, Plovdiv, Varna and Adrianople already exist).
+  C('pliska', 43.38, 27.13, 3, 681, 1100, 'Pliska'),
+  C('preslav', 43.16, 26.82, 3, 821, null, 'Preslav', { ranks: [[972, 4]] }),
+  C('tarnovo', 43.08, 25.63, 3, 1100, null, 'Tarnovo', 1965, 'Veliko Tarnovo', { ne: 'Turnovo' }),
+  C('vidin', 43.99, 22.88, 3, 100, null, 'Bononia', 800, 'Bdin', 1400, 'Vidin'),
+  C('silistra', 44.12, 27.26, 3, 106, null, 'Durostorum', 700, 'Drastar', 1400, 'Silistra'),
+  C('ruse', 43.85, 25.97, 4, 70, null, 'Sexaginta Prista', 1400, 'Rusçuk', 1878, 'Ruse', { ne: 'Ruse' }),
+  C('nesebar', 42.66, 27.73, 4, -510, null, 'Mesembria', 1400, 'Nesebar'),
+  C('kyustendil', 42.28, 22.69, 4, 100, null, 'Pautalia', 1100, 'Velbazhd', 1400, 'Kyustendil', { ne: 'Kyustendil' }),
+  C('ohrid', 41.12, 20.80, 3, -300, null, 'Lychnidos', 879, 'Ohrid'),
+  C('prespa', 40.85, 21.08, 4, 980, 1100, 'Prespa'),
+  C('shumen', 43.27, 26.93, 4, 1150, null, 'Shumen', { ne: 'Shumen' }),
 ];
 
 
