@@ -206,7 +206,7 @@ Honest caveat: only Peru (Day 65: 17 polities from Caral to the Neo-Inca State, 
 | Viet Nam | VN | done | partial | South-eastern Asia | modern borders 1815/1914–2025 |
 | Albania | AL | none | partial | Southeast Europe | modern borders 1815/1914–2025 |
 | Bosnia and Herzegovina | BA | none | partial | Southeast Europe | modern borders 1815/1914–2025 |
-| Bulgaria | BG | none | partial | Southeast Europe | modern borders 1815/1914–2025 |
+| Bulgaria | BG | done | done | Southeast Europe | Day 88: First Bulgarian Empire (681–1018), Second Bulgarian Empire (1185–1393), Tsardom of Vidin (1356–1396), Byzantine 800 rectangle cut back 680–1019, 11 cities, 61 pins, new 19-item timeline |
 | Croatia | HR | none | partial | Southeast Europe | modern borders 1815/1914–2025 |
 | Greece | GR | done | partial | Southeast Europe | modern borders 1815/1914–2025 |
 | Moldova, Republic of | MD | none | partial | Southeast Europe | modern borders 1815/1914–2025 |

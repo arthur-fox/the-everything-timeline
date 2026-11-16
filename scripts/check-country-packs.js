@@ -10,7 +10,7 @@
  * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js), Jamaica (Day 80,
  * src/globe-pack-jamaica.js), Guatemala (Day 81, src/globe-pack-guatemala.js), the Mexico refinement (Day 82,
  * src/globe-pack-mexico.js), DR Congo (Day 83, src/globe-pack-dr-congo.js) Angola (Day 84,
- * src/globe-pack-angola.js), Cameroon (Day 85, src/globe-pack-cameroon.js), Chad (Day 86, src/globe-pack-chad.js) and Serbia (Day 87, src/globe-pack-serbia.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * src/globe-pack-angola.js), Cameroon (Day 85, src/globe-pack-cameroon.js), Chad (Day 86, src/globe-pack-chad.js), Serbia (Day 87, src/globe-pack-serbia.js) and Bulgaria (Day 88, src/globe-pack-bulgaria.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -52,6 +52,7 @@ import { angolaPolities, angolaShapeFixes, AO_DROPS } from '../src/globe-pack-an
 import { cameroonPolities, cameroonShapeFixes } from '../src/globe-pack-cameroon.js';
 import { chadPolities, chadShapeFixes } from '../src/globe-pack-chad.js';
 import { serbiaPolities, serbiaShapeFixes } from '../src/globe-pack-serbia.js';
+import { bulgariaPolities, bulgariaShapeFixes } from '../src/globe-pack-bulgaria.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -1961,6 +1962,107 @@ const PACKS = [
       planar: true,
     },
   },
+  {
+    country: 'bulgaria',
+    polities: bulgariaPolities,
+    fixes: bulgariaShapeFixes,
+    redrawn: {},
+    trimmed: ['byzantine-empire'],
+    capitals: [
+      ['first-bulgarian-empire', 681, 27.13, 43.38, 'Pliska'],
+      ['first-bulgarian-empire', 809, 23.32, 42.70, 'Serdica (Sofia)'],
+      ['first-bulgarian-empire', 842, 24.75, 42.15, 'Philippopolis (Plovdiv)'],
+      ['first-bulgarian-empire', 893, 26.82, 43.16, 'Preslav'],
+      ['first-bulgarian-empire', 917, 26.82, 43.16, 'Preslav'],
+      ['first-bulgarian-empire', 924, 20.46, 44.82, 'Belgrade'],
+      ['first-bulgarian-empire', 971, 20.80, 41.12, 'Ohrid'],
+      ['first-bulgarian-empire', 986, 26.82, 43.16, 'Preslav (retaken)'],
+      ['first-bulgarian-empire', 1003, 20.80, 41.12, 'Ohrid'],
+      ['first-bulgarian-empire', 1018, 20.80, 41.12, 'Ohrid'],
+      ['second-bulgarian-empire', 1185, 25.63, 43.08, 'Tarnovo'],
+      ['second-bulgarian-empire', 1203, 21.43, 42.00, 'Skopje'],
+      ['second-bulgarian-empire', 1230, 25.63, 43.08, 'Tarnovo'],
+      ['second-bulgarian-empire', 1230, 24.40, 40.94, 'Kavala (Aegean Thrace)'],
+      ['second-bulgarian-empire', 1344, 24.75, 42.15, 'Plovdiv'],
+      ['second-bulgarian-empire', 1393, 25.63, 43.08, 'Tarnovo'],
+      ['tsardom-of-vidin', 1356, 22.88, 43.99, 'Vidin'],
+      ['tsardom-of-vidin', 1396, 22.88, 43.99, 'Vidin'],
+    ],
+    on: {
+      681: ['first-bulgarian-empire'],
+      917: ['first-bulgarian-empire'],
+      1014: ['first-bulgarian-empire'],
+      1018: ['first-bulgarian-empire'],
+      1185: ['second-bulgarian-empire'],
+      1230: ['second-bulgarian-empire'],
+      1356: ['second-bulgarian-empire', 'tsardom-of-vidin'],
+      1393: ['second-bulgarian-empire', 'tsardom-of-vidin'],
+      1396: ['tsardom-of-vidin'],
+    },
+    gone: {
+      679: ['first-bulgarian-empire'],
+      1020: ['first-bulgarian-empire'],
+      1183: ['second-bulgarian-empire'],
+      1354: ['tsardom-of-vidin'],
+      1395: ['second-bulgarian-empire'],
+      1398: ['tsardom-of-vidin'],
+      1815: ['first-bulgarian-empire', 'second-bulgarian-empire', 'tsardom-of-vidin'],
+    },
+    absent: [
+      ['first-bulgarian-empire', 681, 'wallachia'],
+      ['first-bulgarian-empire', 917, 'kosovo'],
+      ['first-bulgarian-empire', 972, 'dobruja'],
+      ['second-bulgarian-empire', 1185, 'macedonia'],
+      ['second-bulgarian-empire', 1247, 'macedonia'],
+      ['second-bulgarian-empire', 1247, 'albania'],
+      ['second-bulgarian-empire', 1331, 'morava'],
+      ['second-bulgarian-empire', 1357, 'dobruja'],
+    ],
+    present: [
+      ['first-bulgarian-empire', 681, 'dobruja'],
+      ['first-bulgarian-empire', 809, 'wallachia'],
+      ['first-bulgarian-empire', 842, 'macedonia'],
+      ['first-bulgarian-empire', 917, 'w-greece'],
+      ['first-bulgarian-empire', 924, 'kosovo'],
+      ['first-bulgarian-empire', 1003, 'macedonia'],
+      ['second-bulgarian-empire', 1203, 'morava'],
+      ['second-bulgarian-empire', 1230, 'thrace'],
+      ['second-bulgarian-empire', 1230, 'albania'],
+      ['tsardom-of-vidin', 1356, 'vidin'],
+    ],
+    notOver: [
+      ['byzantine-empire', 700, 27.13, 43.38, 'Pliska (Bulgarian from 681)'],
+      ['byzantine-empire', 850, 23.32, 42.70, 'Serdica (Bulgarian from 809)'],
+      ['byzantine-empire', 920, 24.75, 42.15, 'Philippopolis (Simeon)'],
+      ['byzantine-empire', 925, 26.82, 43.16, 'Preslav'],
+      ['byzantine-empire', 990, 26.82, 43.16, 'Preslav (Samuel, 986–1000)'],
+      ['byzantine-empire', 1010, 23.32, 42.70, 'Sofia (Samuel)'],
+      ['byzantine-empire', 1017, 22.69, 42.28, 'Kyustendil (Samuel)'],
+      ['first-bulgarian-empire', 924, 22.95, 40.64, 'Thessaloniki (never taken)'],
+      ['first-bulgarian-empire', 917, 28.98, 41.01, 'Constantinople'],
+      ['first-bulgarian-empire', 917, 22.42, 39.64, 'Larissa (Thessaly only 986–1000)'],
+      ['first-bulgarian-empire', 1002, 22.42, 39.64, 'Larissa (lost c. 1000)'],
+      ['first-bulgarian-empire', 1004, 22.88, 43.99, 'Vidin (fell 1003)'],
+      ['first-bulgarian-empire', 1002, 26.82, 43.16, 'Preslav (retaken by Basil II)'],
+      ['second-bulgarian-empire', 1185, 23.32, 42.70, 'Sofia (not yet, 1195)'],
+      ['second-bulgarian-empire', 1247, 21.43, 42.00, 'Skopje (to Nicaea)'],
+      ['second-bulgarian-empire', 1247, 20.46, 44.82, 'Belgrade (to Hungary)'],
+      ['second-bulgarian-empire', 1357, 22.88, 43.99, 'Vidin (Ivan Sratsimir)'],
+      ['second-bulgarian-empire', 1365, 24.75, 42.15, 'Plovdiv (Ottoman c. 1363)'],
+      ['second-bulgarian-empire', 1386, 23.32, 42.70, 'Sofia (Ottoman)'],
+      ['second-bulgarian-empire', 1390, 26.82, 43.16, 'Preslav / Shumen (Ottoman 1388)'],
+      ['second-bulgarian-empire', 1230, 22.95, 40.64, 'Thessaloniki (not Bulgarian)'],
+      ['second-bulgarian-empire', 1230, 26.56, 41.68, 'Adrianople (not drawn as Bulgarian)'],
+    ],
+    noOverlap: {
+      from: 681,
+      to: 1396,
+      box: [19.0, 38.8, 30.0, 46.2],
+      planar: true,
+      with: ['byzantine-empire', 'medieval-serbia', 'avar-khaganate'],
+      remnants: [[971, 'first-bulgarian-empire', 'wallachia'], [971, 'first-bulgarian-empire', 'dobruja']],
+    },
+  },
 ];
 
 
@@ -1970,6 +2072,7 @@ const countriesDir = new URL('../data/countries/', import.meta.url);
 const allCountryItems = new Set(fs.readdirSync(countriesDir).filter((f) => f.endsWith('.json')).flatMap((f) => JSON.parse(fs.readFileSync(new URL(f, countriesDir), 'utf8')).items.map((i) => i.id)));
 
 let rings = 0;
+const landMemo = new Map();
 for (const pack of PACKS.filter((p) => !process.env.PACK || p.country === process.env.PACK)) {
   const file = new URL(`../data/countries/${pack.country}.json`, import.meta.url);
   const items = new Set(JSON.parse(fs.readFileSync(file, 'utf8')).items.map((i) => i.id));
@@ -1981,7 +2084,10 @@ for (const pack of PACKS.filter((p) => !process.env.PACK || p.country === proces
     const b = ring[ring.length - 1];
     if (a[0] !== b[0] || a[1] !== b[1]) fail(`${tag} is not closed`);
     if (crossings(ring)) fail(`${tag} crosses itself`);
-    const { off, share } = landStats(ring, pack.fineLand ? (lat, lng) => landAtSimple(lat, lng) || landAtFine(lat, lng) : landAtSimple);
+    // Day 88: identical rings (a step's y−1 and y keyframes) are land-checked once.
+    const key = `${pack.fineLand ? 'fine' : 'simple'}:${JSON.stringify(ring)}`;
+    if (!landMemo.has(key)) landMemo.set(key, landStats(ring, pack.fineLand ? (lat, lng) => landAtSimple(lat, lng) || landAtFine(lat, lng) : landAtSimple));
+    const { off, share } = landMemo.get(key);
     if (off.length) fail(`${tag}: ${off.length} vertex(es) in the sea, e.g. ${off[0].map((v) => v.toFixed(2)).join(',')}`);
     if (share < 0.97) fail(`${tag}: only ${(share * 100).toFixed(0)}% of its interior is land`);
   };

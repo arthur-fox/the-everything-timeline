@@ -351,6 +351,13 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assert(regionIds('medieval-serbia', 1348).includes('epirus') && regionIds('medieval-serbia', 1348).includes('thessaly') && !regionIds('medieval-serbia', 1346).includes('epirus'), 'Epirus and Thessaly at 1348, not 1346');
   assert(regionIds('medieval-serbia', 1282).includes('skopje') && !regionIds('medieval-serbia', 1217).includes('skopje'), 'Skopje from 1282');
   assert(!idsAt(1815).has('medieval-serbia') && !idsAt(1815).has('habsburg-serbia') && !idsAt(1815).has('revolutionary-serbia'), 'Serbia pack polities off at the 1815 nations hand-off');
+  // Day 88: Bulgaria pack — First Empire (681–1018), Second Empire (1185–1393), Tsardom of Vidin (1356–1396).
+  assert(idsAt(681).has('first-bulgarian-empire') && !idsAt(679).has('first-bulgarian-empire') && idsAt(1018).has('first-bulgarian-empire') && !idsAt(1020).has('first-bulgarian-empire'), 'First Bulgarian Empire 681–1018');
+  assert(idsAt(1185).has('second-bulgarian-empire') && !idsAt(1183).has('second-bulgarian-empire') && idsAt(1393).has('second-bulgarian-empire') && !idsAt(1395).has('second-bulgarian-empire'), 'Second Bulgarian Empire 1185–1393');
+  assert(idsAt(1356).has('tsardom-of-vidin') && !idsAt(1354).has('tsardom-of-vidin') && idsAt(1396).has('tsardom-of-vidin') && !idsAt(1398).has('tsardom-of-vidin'), 'Tsardom of Vidin 1356–1396');
+  assert(regionIds('first-bulgarian-empire', 924).includes('kosovo') && !regionIds('first-bulgarian-empire', 917).includes('kosovo'), 'Simeon takes Serbia and Kosovo in 924');
+  assert(regionIds('second-bulgarian-empire', 1230).includes('thrace') && !regionIds('second-bulgarian-empire', 1247).includes('thrace') && !regionIds('second-bulgarian-empire', 1228).includes('thrace'), 'Aegean Thrace only 1230–1245');
+  assert(idsAt(900).has('byzantine-empire') && idsAt(1019).has('byzantine-empire'), 'Byzantine still on beside the First Bulgarian Empire and after 1018');
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
 
