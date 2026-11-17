@@ -1055,6 +1055,25 @@ export const CITIES = [
   C('ohrid', 41.12, 20.80, 3, -300, null, 'Lychnidos', 879, 'Ohrid'),
   C('prespa', 40.85, 21.08, 4, 980, 1100, 'Prespa'),
   C('shumen', 43.27, 26.93, 4, 1150, null, 'Shumen', { ne: 'Shumen' }),
+  // Day 89 — Romania (globe-pack-romania.js): the Dacian capital and Roman Dacia, the princely
+  // seats of Wallachia and Moldavia, the Transylvanian towns and Kaliakra (Bucharest, Chișinău,
+  // Histria and Constanța already exist).
+  C('sarmizegetusa-regia', 45.62, 23.31, 3, -82, 106, 'Sarmizegetusa Regia'),
+  C('ulpia-traiana', 45.52, 22.79, 3, 106, 400, 'Ulpia Traiana Sarmizegetusa'),
+  C('alba-iulia', 46.07, 23.58, 3, 106, null, 'Apulum', 900, 'Bălgrad', 1600, 'Alba Iulia', { ne: 'Alba Iulia' }),
+  C('cluj', 46.77, 23.59, 3, 124, null, 'Napoca', 1300, 'Kolozsvár', 1920, 'Cluj', 1974, 'Cluj-Napoca', { ne: 'Cluj-Napoca' }),
+  C('drobeta', 44.63, 22.66, 4, 103, null, 'Drobeta', 1300, 'Severin', 1850, 'Turnu Severin', { ne: 'Drobeta-Turnu Severin' }),
+  C('curtea-de-arges', 45.14, 24.68, 4, 1300, null, 'Curtea de Argeș'),
+  C('campulung', 45.27, 25.05, 4, 1300, null, 'Câmpulung'),
+  C('targoviste', 44.93, 25.46, 3, 1396, null, 'Târgoviște', { ne: 'Targoviste' }),
+  C('baia', 47.42, 26.22, 4, 1340, 1500, 'Baia'),
+  C('suceava', 47.65, 26.26, 3, 1388, null, 'Suceava'),
+  C('iasi', 47.16, 27.59, 3, 1408, null, 'Iași', { ne: 'Iasi' }),
+  C('brasov', 45.64, 25.59, 3, 1235, null, 'Kronstadt', 1920, 'Brașov', { ne: 'Brasov' }),
+  C('sibiu', 45.79, 24.15, 3, 1191, null, 'Hermannstadt', 1920, 'Sibiu'),
+  C('timisoara', 45.75, 21.23, 3, 1212, null, 'Temesvár', 1920, 'Timișoara', { ne: 'Timisoara' }),
+  C('craiova', 44.32, 23.80, 4, 1475, null, 'Craiova'),
+  C('kaliakra', 43.36, 28.47, 4, 1300, 1450, 'Kaliakra'),
 ];
 
 

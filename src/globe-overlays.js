@@ -55,6 +55,7 @@ import { cameroonPolities, applyCameroonShapeFixes } from './globe-pack-cameroon
 import { chadPolities, applyChadShapeFixes } from './globe-pack-chad.js';
 import { serbiaPolities, applySerbiaShapeFixes } from './globe-pack-serbia.js';
 import { bulgariaPolities, applyBulgariaShapeFixes } from './globe-pack-bulgaria.js';
+import { romaniaPolities, applyRomaniaShapeFixes } from './globe-pack-romania.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6498,6 +6499,15 @@ for (const ent of bulgariaPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 89 — Phase 5 country pack 5, Romania (globe-pack-romania.js): Dacia (c. 82 BCE–106), Roman
+// Dacia (106–271), the Despotate of Dobruja (1356–1388), Wallachia and Moldavia (to 1813) and the
+// Principality of Transylvania (1570–1711), drawn from province pieces.
+for (const ent of romaniaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6583,6 +6593,8 @@ applyChadShapeFixes(spatialEntities);
 applySerbiaShapeFixes(spatialEntities);
 // Day 88 — Byzantine 800 keyframe replaced by one-year steps cut back from the First Bulgarian Empire.
 applyBulgariaShapeFixes(spatialEntities);
+// Day 89 — Roman (117–395) and Ottoman (1520–1740) rings cut back from the lands north of the Danube.
+applyRomaniaShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
