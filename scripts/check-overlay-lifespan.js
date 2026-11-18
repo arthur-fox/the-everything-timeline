@@ -374,6 +374,23 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
     assert(over('ottoman-empire', 1600, [21.23, 45.75]) && over('ottoman-empire', 1600, [28.65, 44.17]), 'Ottoman ring keeps the Banat and Dobruja');
     assert(spatialEntities.find((e) => e.id === 'roman-empire').timelineItemIds.includes('ro-roman-dacia'), 'Roman Empire links Roman Dacia on the Romania timeline');
   }
+  // Day 90: Croatia pack — the Duchy and Kingdom of Croatia (879–1101), Croatia and Slavonia (1102–1813), Ragusa
+  // (1358–1808), Venetian Dalmatia (1409–1797), the Illyrian Provinces (1809–1813); Venice's schematic Dalmatia
+  // dropped and the Ottoman held steps cut back from the Croatian coast and (after 1699) Slavonia.
+  assert(idsAt(879).has('kingdom-of-croatia') && !idsAt(877).has('kingdom-of-croatia') && idsAt(1101).has('kingdom-of-croatia') && !idsAt(1103).has('kingdom-of-croatia'), 'Kingdom of Croatia 879–1101');
+  assert(idsAt(1102).has('kingdom-of-croatia-and-slavonia') && !idsAt(1100).has('kingdom-of-croatia-and-slavonia') && idsAt(1813).has('kingdom-of-croatia-and-slavonia'), 'Croatia and Slavonia 1102–1813');
+  assert(idsAt(1358).has('republic-of-ragusa') && !idsAt(1356).has('republic-of-ragusa') && idsAt(1808).has('republic-of-ragusa') && !idsAt(1810).has('republic-of-ragusa'), 'Republic of Ragusa 1358–1808');
+  assert(idsAt(1409).has('venetian-dalmatia') && !idsAt(1407).has('venetian-dalmatia') && idsAt(1797).has('venetian-dalmatia') && !idsAt(1799).has('venetian-dalmatia'), 'Venetian Dalmatia 1409–1797');
+  assert(idsAt(1809).has('illyrian-provinces') && !idsAt(1807).has('illyrian-provinces') && idsAt(1813).has('illyrian-provinces'), 'Illyrian Provinces 1809–1813');
+  assert(['kingdom-of-croatia', 'kingdom-of-croatia-and-slavonia', 'republic-of-ragusa', 'venetian-dalmatia', 'illyrian-provinces'].every((id) => !idsAt(1815).has(id)), 'Croatia pack polities off at the 1815 nations hand-off');
+  {
+    const over = (id, y, pt) => getOverlayPolygonFeatures(y).some((f) => f.entityId === id && geoContains(f, pt));
+    assert(!spatialEntities.find((e) => e.id === 'venice').overlays.some((o) => o.regions.some((r) => (typeof r === 'string' ? r : r.id) === 'dalmatia')), 'Venice has no schematic dalmatia region');
+    assert(!over('venice', 1300, [16.20, 44.04]) && over('venetian-dalmatia', 1720, [16.20, 44.04]), 'Knin: not Venetian in 1300, Venetian Dalmatia in 1720');
+    assert(!over('ottoman-empire', 1600, [18.22, 42.58]) && !over('ottoman-empire', 1720, [18.69, 45.55]), 'Ottoman ring off Ragusa and (after Karlowitz) Osijek');
+    assert(over('ottoman-empire', 1650, [18.69, 45.55]) && over('ottoman-empire', 1690, [16.20, 44.04]), 'Ottoman ring keeps Slavonia and Knin before Karlowitz');
+    assert(over('kingdom-of-croatia', 1000, [15.98, 45.81]) && !over('kingdom-of-croatia', 1095, [15.98, 45.81]), 'Zagreb Croatian under the kings, Hungarian from 1091');
+  }
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
 
