@@ -100,9 +100,10 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assert(ott.overlays.some((o) => o.year === 1600), 'Ottoman has keyframe at 1600');
   const brAt = findBracketingOverlays(ott.overlays, 1600);
   assert(brAt.next?.year === 1600 && brAt.t === 1, 'Ottoman at 1600 lands on keyframe (t=1)');
-  const brMid = findBracketingOverlays(ott.overlays, 1560);
-  assert(brMid.prev?.year === 1520 && brMid.next?.year === 1600, 'Ottoman brackets 1520–1600 at 1560');
-  assert(brMid.t > 0.4 && brMid.t < 0.6, `Ottoman t~0.5 at 1560 (got ${brMid.t})`);
+  // Day 89: 1475–1799 are held steps (globe-pack-romania.js), so the mid-morph test uses 1800–1900.
+  const brMid = findBracketingOverlays(ott.overlays, 1850);
+  assert(brMid.prev?.year === 1800 && brMid.next?.year === 1900, 'Ottoman brackets 1800–1900 at 1850');
+  assert(brMid.t > 0.4 && brMid.t < 0.6, `Ottoman t~0.5 at 1850 (got ${brMid.t})`);
 
   function totalBBoxArea(year) {
     return getOverlayPolygonFeatures(year)
@@ -358,6 +359,21 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assert(regionIds('first-bulgarian-empire', 924).includes('kosovo') && !regionIds('first-bulgarian-empire', 917).includes('kosovo'), 'Simeon takes Serbia and Kosovo in 924');
   assert(regionIds('second-bulgarian-empire', 1230).includes('thrace') && !regionIds('second-bulgarian-empire', 1247).includes('thrace') && !regionIds('second-bulgarian-empire', 1228).includes('thrace'), 'Aegean Thrace only 1230–1245');
   assert(idsAt(900).has('byzantine-empire') && idsAt(1019).has('byzantine-empire'), 'Byzantine still on beside the First Bulgarian Empire and after 1018');
+  // Day 89: Romania pack — Dacia (c. 82 BCE–105), the Despotate of Dobruja (1356–1388), Wallachia and Moldavia
+  // (to 1813), the Principality of Transylvania (1570–1711); Roman and Ottoman rings held and cut back.
+  assert(idsAt(-82).has('dacian-kingdom') && !idsAt(-84).has('dacian-kingdom') && idsAt(105).has('dacian-kingdom') && !idsAt(107).has('dacian-kingdom'), 'Dacian kingdom −82–105');
+  assert(idsAt(1356).has('despotate-of-dobruja') && !idsAt(1354).has('despotate-of-dobruja') && idsAt(1388).has('despotate-of-dobruja') && !idsAt(1390).has('despotate-of-dobruja'), 'Despotate of Dobruja 1356–1388');
+  assert(idsAt(1310).has('principality-of-wallachia') && idsAt(1359).has('principality-of-moldavia') && !idsAt(1357).has('principality-of-moldavia'), 'Wallachia from 1310, Moldavia from 1359');
+  assert(idsAt(1570).has('principality-of-transylvania') && !idsAt(1568).has('principality-of-transylvania') && idsAt(1711).has('principality-of-transylvania') && !idsAt(1713).has('principality-of-transylvania'), 'Principality of Transylvania 1570–1711');
+  assert(['dacian-kingdom', 'despotate-of-dobruja', 'principality-of-wallachia', 'principality-of-moldavia', 'principality-of-transylvania'].every((id) => !idsAt(1815).has(id)), 'Romania pack polities off at the 1815 nations hand-off');
+  {
+    const over = (id, y, pt) => getOverlayPolygonFeatures(y).some((f) => f.entityId === id && geoContains(f, pt));
+    assert(over('roman-empire', 150, [23.58, 46.07]) && !over('roman-empire', 150, [27.59, 47.16]) && !over('roman-empire', 150, [26.10, 44.43]), 'Roman ring draws Roman Dacia (Apulum), not Moldavia or the plain, in 150');
+    assert(!over('roman-empire', 95, [23.31, 45.62]) && !over('roman-empire', 300, [23.31, 45.62]), 'Sarmizegetusa not Roman in 95 or 300');
+    assert(!over('ottoman-empire', 1560, [26.10, 44.43]) && !over('ottoman-empire', 1683, [27.59, 47.16]) && !over('ottoman-empire', 1600, [23.58, 46.07]), 'Ottoman ring off Wallachia, Moldavia and Transylvania');
+    assert(over('ottoman-empire', 1600, [21.23, 45.75]) && over('ottoman-empire', 1600, [28.65, 44.17]), 'Ottoman ring keeps the Banat and Dobruja');
+    assert(spatialEntities.find((e) => e.id === 'roman-empire').timelineItemIds.includes('ro-roman-dacia'), 'Roman Empire links Roman Dacia on the Romania timeline');
+  }
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
 
