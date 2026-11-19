@@ -56,6 +56,7 @@ import { chadPolities, applyChadShapeFixes } from './globe-pack-chad.js';
 import { serbiaPolities, applySerbiaShapeFixes } from './globe-pack-serbia.js';
 import { bulgariaPolities, applyBulgariaShapeFixes } from './globe-pack-bulgaria.js';
 import { romaniaPolities, applyRomaniaShapeFixes } from './globe-pack-romania.js';
+import { croatiaPolities, applyCroatiaShapeFixes } from './globe-pack-croatia.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6508,6 +6509,16 @@ for (const ent of romaniaPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 90 — Phase 5 country pack 5, Croatia (globe-pack-croatia.js): the Duchy and Kingdom of
+// Croatia (879–1101), Croatia and Slavonia under Hungary and the Habsburgs (1102–1813), the
+// Republic of Ragusa (1358–1808), Venetian Dalmatia (1409–1797) and the Illyrian Provinces
+// (1809–1813), drawn from province pieces.
+for (const ent of croatiaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6595,6 +6606,9 @@ applySerbiaShapeFixes(spatialEntities);
 applyBulgariaShapeFixes(spatialEntities);
 // Day 89 — Roman (117–395) and Ottoman (1520–1740) rings cut back from the lands north of the Danube.
 applyRomaniaShapeFixes(spatialEntities);
+// Day 90 — Venice's schematic Dalmatia dropped; Ottoman held steps cut back from Ragusa, the Venetian coast
+// and (after Karlowitz) Slavonia, Lika and the Dalmatian hinterland.
+applyCroatiaShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

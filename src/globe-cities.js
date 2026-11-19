@@ -1074,6 +1074,24 @@ export const CITIES = [
   C('timisoara', 45.75, 21.23, 3, 1212, null, 'Temesvár', 1920, 'Timișoara', { ne: 'Timisoara' }),
   C('craiova', 44.32, 23.80, 4, 1475, null, 'Craiova'),
   C('kaliakra', 43.36, 28.47, 4, 1300, 1450, 'Kaliakra'),
+  // Day 90 — Croatia (globe-pack-croatia.js): Roman Salona, Siscia and Mursa, the royal seats (Nin,
+  // Knin, Biograd), the Dalmatian towns, the frontier fortresses and Vukovar (Zagreb, Split, Dubrovnik
+  // and Ljubljana already exist).
+  C('salona', 43.54, 16.48, 3, -200, 640, 'Salona'),
+  C('zadar', 44.12, 15.24, 3, -59, null, 'Iader', 800, 'Zadar'),
+  C('pula', 44.87, 13.85, 4, -45, null, 'Pola', 1947, 'Pula'),
+  C('nin', 44.24, 15.19, 4, -100, null, 'Aenona', 800, 'Nin'),
+  C('knin', 44.04, 16.20, 4, 900, null, 'Knin'),
+  C('biograd', 43.94, 15.44, 4, 1000, null, 'Biograd'),
+  C('sibenik', 43.73, 15.90, 4, 1066, null, 'Šibenik'),
+  C('trogir', 43.52, 16.25, 4, -250, null, 'Tragurion', 800, 'Trogir'),
+  C('osijek', 45.55, 18.69, 4, 131, null, 'Mursa', 1196, 'Osijek'),
+  C('sisak', 45.48, 16.37, 4, -35, null, 'Siscia', 900, 'Sisak'),
+  C('varazdin', 46.31, 16.34, 4, 1181, null, 'Varaždin'),
+  C('karlovac', 45.49, 15.55, 4, 1579, null, 'Karlovac'),
+  C('senj', 44.99, 14.90, 4, -100, null, 'Senia', 800, 'Senj'),
+  C('rijeka', 45.33, 14.44, 4, -100, null, 'Tarsatica', 800, 'Rijeka'),
+  C('vukovar', 45.35, 19.00, 4, 1231, null, 'Vukovar'),
 ];
 
 
