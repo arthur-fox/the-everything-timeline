@@ -101,8 +101,9 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   const brAt = findBracketingOverlays(ott.overlays, 1600);
   assert(brAt.next?.year === 1600 && brAt.t === 1, 'Ottoman at 1600 lands on keyframe (t=1)');
   // Day 89: 1475–1799 are held steps (globe-pack-romania.js), so the mid-morph test uses 1800–1900.
+  // Day 91: 1800–1813 is held too (globe-pack-albania.js), so the morph runs from the 1814 keyframe.
   const brMid = findBracketingOverlays(ott.overlays, 1850);
-  assert(brMid.prev?.year === 1800 && brMid.next?.year === 1900, 'Ottoman brackets 1800–1900 at 1850');
+  assert(brMid.prev?.year === 1814 && brMid.next?.year === 1900, 'Ottoman brackets 1814–1900 at 1850');
   assert(brMid.t > 0.4 && brMid.t < 0.6, `Ottoman t~0.5 at 1850 (got ${brMid.t})`);
 
   function totalBBoxArea(year) {
@@ -390,6 +391,26 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
     assert(!over('ottoman-empire', 1600, [18.22, 42.58]) && !over('ottoman-empire', 1720, [18.69, 45.55]), 'Ottoman ring off Ragusa and (after Karlowitz) Osijek');
     assert(over('ottoman-empire', 1650, [18.69, 45.55]) && over('ottoman-empire', 1690, [16.20, 44.04]), 'Ottoman ring keeps Slavonia and Knin before Karlowitz');
     assert(over('kingdom-of-croatia', 1000, [15.98, 45.81]) && !over('kingdom-of-croatia', 1095, [15.98, 45.81]), 'Zagreb Croatian under the kings, Hungarian from 1091');
+  }
+  // Day 91: Albania pack — the Illyrian kingdom (250–169 BCE), Arbanon (1190–1256), the Angevin Kingdom of Albania
+  // (1272–1368), Venetian Albania (1392–1501), the League of Lezhë (1444–1478) and the pashaliks of Scutari (1757–)
+  // and Yanina (1787–), both to 1813; Illyricum held back to Pydna and the Ottoman held steps cut back from the pashaliks.
+  assert(idsAt(-250).has('illyrian-kingdom') && !idsAt(-252).has('illyrian-kingdom') && idsAt(-169).has('illyrian-kingdom') && !idsAt(-167).has('illyrian-kingdom'), 'Illyrian kingdom 250–169 BCE');
+  assert(idsAt(1190).has('principality-of-arbanon') && !idsAt(1188).has('principality-of-arbanon') && idsAt(1256).has('principality-of-arbanon') && !idsAt(1258).has('principality-of-arbanon'), 'Arbanon 1190–1256');
+  assert(idsAt(1272).has('angevin-kingdom-of-albania') && !idsAt(1270).has('angevin-kingdom-of-albania') && idsAt(1294).has('angevin-kingdom-of-albania') && !idsAt(1296).has('angevin-kingdom-of-albania'), 'Angevin Kingdom of Albania 1272–1294');
+  assert(idsAt(1304).has('duchy-of-durazzo') && !idsAt(1302).has('duchy-of-durazzo') && idsAt(1368).has('duchy-of-durazzo') && !idsAt(1370).has('duchy-of-durazzo'), 'Duchy of Durazzo 1304–1368');
+  assert(!idsAt(1300).has('angevin-kingdom-of-albania') && !idsAt(1300).has('duchy-of-durazzo'), 'No Angevin Albania 1295–1303');
+  assert(idsAt(1392).has('venetian-albania') && !idsAt(1390).has('venetian-albania') && idsAt(1501).has('venetian-albania') && !idsAt(1503).has('venetian-albania'), 'Venetian Albania 1392–1501');
+  assert(idsAt(1444).has('league-of-lezhe') && !idsAt(1442).has('league-of-lezhe') && idsAt(1478).has('league-of-lezhe') && !idsAt(1480).has('league-of-lezhe'), 'League of Lezhë 1444–1478');
+  assert(idsAt(1757).has('pashalik-of-scutari') && !idsAt(1755).has('pashalik-of-scutari') && idsAt(1813).has('pashalik-of-scutari'), 'Pashalik of Scutari 1757–1813');
+  assert(idsAt(1787).has('pashalik-of-yanina') && !idsAt(1785).has('pashalik-of-yanina') && idsAt(1813).has('pashalik-of-yanina'), 'Pashalik of Yanina 1787–1813');
+  assert(['illyrian-kingdom', 'principality-of-arbanon', 'angevin-kingdom-of-albania', 'duchy-of-durazzo', 'venetian-albania', 'league-of-lezhe', 'pashalik-of-scutari', 'pashalik-of-yanina'].every((id) => !idsAt(1815).has(id)), 'Albania pack polities off at the 1815 nations hand-off');
+  {
+    const over = (id, y, pt) => getOverlayPolygonFeatures(y).some((f) => f.entityId === id && geoContains(f, pt));
+    assert(!over('roman-republic', -180, [19.64, 41.78]) && over('roman-republic', -160, [19.82, 41.33]), 'Illyricum not over Lissus before Pydna, over Tirana after');
+    assert(over('ottoman-empire', 1700, [19.82, 41.33]) && !over('ottoman-empire', 1790, [19.82, 41.33]), 'Ottoman ring over Tirana before the Bushati, off it at Kara Mahmud’s height');
+    assert(over('ottoman-empire', 1780, [20.85, 39.67]) && !over('ottoman-empire', 1790, [20.85, 39.67]), 'Ottoman ring off Ioannina from Ali Pasha');
+    assert(over('venetian-albania', 1470, [19.79, 41.51]) && over('league-of-lezhe', 1460, [19.79, 41.51]), 'Krujë: Skanderbeg’s to 1467, a Venetian garrison 1468–1478');
   }
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
