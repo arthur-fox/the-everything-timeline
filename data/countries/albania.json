@@ -1,0 +1,1001 @@
+{
+  "id": "albania",
+  "name": "Albania",
+  "flag": "🇦🇱",
+  "minYear": -6000,
+  "maxYear": 2026,
+  "categories": [
+    {
+      "id": "ancient",
+      "name": "Illyrians, Greeks and Rome",
+      "color": "#A16207"
+    },
+    {
+      "id": "medieval",
+      "name": "Medieval Albania",
+      "color": "#B91C1C"
+    },
+    {
+      "id": "adriatic",
+      "name": "Venice on the Coast",
+      "color": "#1D4ED8"
+    },
+    {
+      "id": "ottoman",
+      "name": "Ottoman Albania and the Pashaliks",
+      "color": "#6366F1"
+    },
+    {
+      "id": "national",
+      "name": "Independence and the Kingdom",
+      "color": "#BE123C"
+    },
+    {
+      "id": "modern",
+      "name": "Communist and Modern Albania",
+      "color": "#0F766E"
+    }
+  ],
+  "items": [
+    {
+      "id": "al-prehistory",
+      "name": "Early farmers, Maliq and the Illyrian hillforts",
+      "start": -6000,
+      "end": -400,
+      "region": "ancient",
+      "icon": "🏺",
+      "description": "Albania was farmed from the early Neolithic (Podgorie, Vashtëmi, c. 6000 BCE). The lake settlement of Maliq on the old Maliq marsh near Korçë, dug from 1961, gives its name to a culture that lasted from the Neolithic into the Bronze Age, with pile dwellings and copper work. In the Bronze and Iron Ages the burial mounds (tumuli) of the Mat valley, Pazhok and Kuç i Zi and the fortified hilltop towns of the Illyrians (Gajtan, Rosujë) show the peoples Greek writers later named Taulantii, Parthini, Labeates, Dassaretae and Chaonians. These are timeline items and pins, not territorial outlines.",
+      "sources": [
+        {
+          "title": "Wikipedia — Prehistoric Balkans",
+          "url": "https://en.wikipedia.org/wiki/Prehistoric_Balkans"
+        },
+        {
+          "title": "Wikipedia — Maliq",
+          "url": "https://en.wikipedia.org/wiki/Maliq"
+        },
+        {
+          "title": "Wikipedia — Illyrians",
+          "url": "https://en.wikipedia.org/wiki/Illyrians"
+        },
+        {
+          "title": "Wikipedia — Taulantii",
+          "url": "https://en.wikipedia.org/wiki/Taulantii"
+        },
+        {
+          "title": "Wikipedia — Chaonians",
+          "url": "https://en.wikipedia.org/wiki/Chaonians"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Neolithic farmers",
+          "start": -6000,
+          "end": -3000
+        },
+        {
+          "name": "Maliq and the Bronze Age",
+          "start": -3000,
+          "end": -1000
+        },
+        {
+          "name": "Iron Age hillforts and tumuli",
+          "start": -1000,
+          "end": -400
+        }
+      ]
+    },
+    {
+      "id": "al-greek-colonies",
+      "name": "Epidamnos, Apollonia and Buthrotum",
+      "start": -627,
+      "end": -229,
+      "region": "ancient",
+      "icon": "⛵",
+      "description": "Corinthians and Corcyraeans founded Epidamnos (later Dyrrachium, Durrës) in 627 BCE on the Taulantian coast, and Apollonia, near the Vjosë, around 600 BCE; Oricum and Aulon (Vlorë) were small harbours to the south. A quarrel at Epidamnos in 435 BCE was one of the causes of the Peloponnesian War. Buthrotum (Butrint), opposite Corfu, was a Chaonian town with a theatre and a sanctuary of Asclepius, and Phoenice was the capital of the Chaonians and later of the Epirote League. Apollonia struck silver coins and traded with the Illyrian interior; Cicero sent his son there to study.",
+      "sources": [
+        {
+          "title": "Wikipedia — Epidamnos",
+          "url": "https://en.wikipedia.org/wiki/Epidamnos"
+        },
+        {
+          "title": "Wikipedia — Apollonia (Illyria)",
+          "url": "https://en.wikipedia.org/wiki/Apollonia_(Illyria)"
+        },
+        {
+          "title": "Wikipedia — Butrint",
+          "url": "https://en.wikipedia.org/wiki/Butrint"
+        },
+        {
+          "title": "Wikipedia — Phoenice",
+          "url": "https://en.wikipedia.org/wiki/Phoenice"
+        },
+        {
+          "title": "Wikipedia — Durrës",
+          "url": "https://en.wikipedia.org/wiki/Durr%C3%ABs"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Corinthian colonies",
+          "start": -627,
+          "end": -435
+        },
+        {
+          "name": "Epidamnos and the Peloponnesian War",
+          "start": -435,
+          "end": -300
+        },
+        {
+          "name": "Chaonia and the Epirote League",
+          "start": -300,
+          "end": -229
+        }
+      ]
+    },
+    {
+      "id": "al-illyrian-kingdom",
+      "name": "The Illyrian kingdom of Agron, Teuta and Gentius",
+      "start": -260,
+      "end": -168,
+      "region": "ancient",
+      "icon": "👑",
+      "description": "In the 3rd century BCE the Ardiaei built a kingdom on the coast between the Neretva and Lake Shkodër, with its seats at Rhizon (Risan, in the Bay of Kotor) and Scodra (Shkodër). King Agron defeated the Aetolians at Medion in 231 BCE; his widow Teuta, regent for the young Pinnes, let her fleet raid Elis, Messenia and Phoenice and besieged Epidamnos and Corcyra. Rome answered with the First Illyrian War (229–228 BCE): Corcyra, Apollonia and Epidamnos became Roman friends, and Teuta agreed not to sail south of Lissus (Lezhë). A second war (219 BCE) drove out Demetrius of Pharos. Gentius, king from c. 181 BCE, sided with Perseus of Macedon and was defeated in a thirty-day campaign in 168 BCE; Rome broke the kingdom into three parts.",
+      "sources": [
+        {
+          "title": "Wikipedia — Ardiaei",
+          "url": "https://en.wikipedia.org/wiki/Ardiaei"
+        },
+        {
+          "title": "Wikipedia — Agron of Illyria",
+          "url": "https://en.wikipedia.org/wiki/Agron_of_Illyria"
+        },
+        {
+          "title": "Wikipedia — Teuta",
+          "url": "https://en.wikipedia.org/wiki/Teuta"
+        },
+        {
+          "title": "Wikipedia — Illyro-Roman Wars",
+          "url": "https://en.wikipedia.org/wiki/Illyro-Roman_Wars"
+        },
+        {
+          "title": "Wikipedia — Gentius",
+          "url": "https://en.wikipedia.org/wiki/Gentius"
+        },
+        {
+          "title": "Wikipedia — Scodra",
+          "url": "https://en.wikipedia.org/wiki/Scodra"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Agron",
+          "start": -260,
+          "end": -231
+        },
+        {
+          "name": "Teuta and the Illyrian Wars",
+          "start": -231,
+          "end": -181
+        },
+        {
+          "name": "Gentius",
+          "start": -181,
+          "end": -168
+        }
+      ]
+    },
+    {
+      "id": "al-roman",
+      "name": "Roman Illyricum, Epirus Nova and the Via Egnatia",
+      "start": -168,
+      "end": 395,
+      "region": "ancient",
+      "icon": "🏛️",
+      "description": "After 168 BCE the coast came under Rome, first as part of Macedonia and Illyricum and later (from the 4th-century reforms) as the provinces of Praevalitana (around Scodra), Epirus Nova (Dyrrachium) and Epirus Vetus. The Via Egnatia ran from Dyrrachium and Apollonia over the mountains to Lychnidos (Ohrid), Thessalonica and Byzantium. In 48 BCE Caesar and Pompey fought at Dyrrachium before Pharsalus; Octavian studied at Apollonia when Caesar was murdered. Dyrrachium got a large amphitheatre in the 2nd century, and the emperor Anastasius I was born there in about 431.",
+      "sources": [
+        {
+          "title": "Wikipedia — Illyricum (Roman province)",
+          "url": "https://en.wikipedia.org/wiki/Illyricum_(Roman_province)"
+        },
+        {
+          "title": "Wikipedia — Epirus Nova",
+          "url": "https://en.wikipedia.org/wiki/Epirus_Nova"
+        },
+        {
+          "title": "Wikipedia — Via Egnatia",
+          "url": "https://en.wikipedia.org/wiki/Via_Egnatia"
+        },
+        {
+          "title": "Wikipedia — Battle of Dyrrhachium (48 BC)",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Dyrrhachium_(48_BC)"
+        },
+        {
+          "title": "Wikipedia — Amphitheatre of Durrës",
+          "url": "https://en.wikipedia.org/wiki/Amphitheatre_of_Durr%C3%ABs"
+        },
+        {
+          "title": "Wikipedia — Praevalitana",
+          "url": "https://en.wikipedia.org/wiki/Praevalitana"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Republic",
+          "start": -168,
+          "end": -27
+        },
+        {
+          "name": "Principate",
+          "start": -27,
+          "end": 284
+        },
+        {
+          "name": "Late Roman provinces",
+          "start": 284,
+          "end": 395
+        }
+      ]
+    },
+    {
+      "id": "al-byzantine",
+      "name": "Byzantine Dyrrachium, Slavs and Bulgarians",
+      "start": 395,
+      "end": 1190,
+      "region": "medieval",
+      "icon": "☦️",
+      "description": "Albania stayed in the eastern empire after 395. Goths, Huns and, from the late 6th century, Slavs and Avars raided and settled; the coast and towns held out. From the 9th century the theme of Dyrrachium guarded the Adriatic end of the Via Egnatia. The First Bulgarian Empire took much of the interior, and under Samuel (from the 990s) Dyrrachium and Ohrid were Bulgarian until Basil II’s reconquest of 1018. The Normans of Robert Guiscard beat Alexios I Komnenos outside Dyrrachium in 1081; in 1043 the Byzantine historian Michael Attaleiates first named the Arbanitai, the Albanians, as a people of the area.",
+      "sources": [
+        {
+          "title": "Wikipedia — Theme of Dyrrhachium",
+          "url": "https://en.wikipedia.org/wiki/Theme_of_Dyrrhachium"
+        },
+        {
+          "title": "Wikipedia — Battle of Dyrrhachium (1081)",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Dyrrhachium_(1081)"
+        },
+        {
+          "title": "Wikipedia — Albanians",
+          "url": "https://en.wikipedia.org/wiki/Albanians"
+        },
+        {
+          "title": "Wikipedia — First Bulgarian Empire",
+          "url": "https://en.wikipedia.org/wiki/First_Bulgarian_Empire"
+        },
+        {
+          "title": "Wikipedia — Michael Attaleiates",
+          "url": "https://en.wikipedia.org/wiki/Michael_Attaleiates"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Late Antiquity and the Slavs",
+          "start": 395,
+          "end": 800
+        },
+        {
+          "name": "Theme of Dyrrachium and the Bulgarians",
+          "start": 800,
+          "end": 1018
+        },
+        {
+          "name": "Normans and Komnenoi",
+          "start": 1018,
+          "end": 1190
+        }
+      ]
+    },
+    {
+      "id": "al-arbanon",
+      "name": "Principality of Arbanon",
+      "start": 1190,
+      "end": 1257,
+      "region": "medieval",
+      "icon": "🏰",
+      "description": "The first Albanian state of recorded history was the principality of Arbanon round Krujë, founded about 1190 by the archon Progon and held by his sons Gjin and Demetrius (Dhimitër). After the Fourth Crusade it was briefly independent; Demetrius, who styled himself princeps Arbanorum and married Komnena, a daughter of Stefan Nemanjić, corresponded with Pope Innocent III. From about 1216 Epirus and then Gregorios Kamonas and Golem ruled it under Epirote, Bulgarian (after 1230) and Nicaean overlords, until George Akropolites annexed it for Nicaea in the winter of 1256–57. An inscription of 1190 at the church of Shën Mëri in Gëziq names Progon’s family.",
+      "sources": [
+        {
+          "title": "Wikipedia — Principality of Arbanon",
+          "url": "https://en.wikipedia.org/wiki/Principality_of_Arbanon"
+        },
+        {
+          "title": "Wikipedia — Progon of Kruja",
+          "url": "https://en.wikipedia.org/wiki/Progon_of_Kruja"
+        },
+        {
+          "title": "Wikipedia — Demetrius Progoni",
+          "url": "https://en.wikipedia.org/wiki/Demetrius_Progoni"
+        },
+        {
+          "title": "Wikipedia — Golem of Kruja",
+          "url": "https://en.wikipedia.org/wiki/Golem_of_Kruja"
+        },
+        {
+          "title": "Wikipedia — Krujë",
+          "url": "https://en.wikipedia.org/wiki/Kruj%C3%AB"
+        }
+      ],
+      "periods": [
+        {
+          "name": "The Progoni",
+          "start": 1190,
+          "end": 1216
+        },
+        {
+          "name": "Kamonas and Golem",
+          "start": 1216,
+          "end": 1257
+        }
+      ]
+    },
+    {
+      "id": "al-angevin",
+      "name": "The Angevin Kingdom of Albania",
+      "start": 1272,
+      "end": 1368,
+      "region": "medieval",
+      "icon": "⚜️",
+      "description": "Charles of Anjou, King of Sicily, was proclaimed King of Albania (Regnum Albaniae) by the nobles and citizens of Durrës on 21 February 1272. His kingdom ran from Durrës and the Krujë region along the coast to Vlorë and Butrint, but the Byzantines took Berat and Butrint (1274) and destroyed his army at the Siege of Berat (1280–1281); after the Sicilian Vespers Durrës fell to the Byzantines (1288) and Kanina, the last fort, about 1294. Philip of Taranto won back Durrës in 1304, and the Angevin Duchy of Durazzo held on, ringed by Albanian lords and by Stefan Dušan’s Serbian Empire (all Albania save Durrës by 1346), until Karl Thopia took the city in 1368.",
+      "sources": [
+        {
+          "title": "Wikipedia — Kingdom of Albania (medieval)",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Albania_(medieval)"
+        },
+        {
+          "title": "Wikipedia — Charles I of Anjou",
+          "url": "https://en.wikipedia.org/wiki/Charles_I_of_Anjou"
+        },
+        {
+          "title": "Wikipedia — Siege of Berat (1280–1281)",
+          "url": "https://en.wikipedia.org/wiki/Siege_of_Berat_(1280%E2%80%931281)"
+        },
+        {
+          "title": "Wikipedia — Duchy of Durazzo",
+          "url": "https://en.wikipedia.org/wiki/Duchy_of_Durazzo"
+        },
+        {
+          "title": "Wikipedia — Philip I, Prince of Taranto",
+          "url": "https://en.wikipedia.org/wiki/Philip_I,_Prince_of_Taranto"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Charles of Anjou",
+          "start": 1272,
+          "end": 1294
+        },
+        {
+          "name": "Duchy of Durazzo",
+          "start": 1304,
+          "end": 1368
+        }
+      ]
+    },
+    {
+      "id": "al-principalities",
+      "name": "Dušan’s Serbia and the Albanian lords",
+      "start": 1343,
+      "end": 1417,
+      "region": "medieval",
+      "icon": "🛡️",
+      "description": "Stefan Dušan of Serbia took Krujë, Berat, Vlorë and Kanina in 1343–1348 and called himself emperor of the Serbs and Greeks; Albanian clans moved south into Epirus and Thessaly, where Peter Losha and Gjin Bua Shpata founded the Despotate of Arta. After Dušan died in 1355 the land split among Albanian and Serbian lords: Karl Thopia, Prince of Albania, held central Albania and took Durrës in 1368; the Balšići of Zeta held Shkodër; the Dukagjini the northern highlands; the Muzaka Berat; and Gjon Zenebishi Gjirokastër. At Savra in 1385 the Ottomans defeated Balša II, and over the next thirty years the lords became Ottoman vassals or sold their towns to Venice.",
+      "sources": [
+        {
+          "title": "Wikipedia — Stefan Dušan",
+          "url": "https://en.wikipedia.org/wiki/Stefan_Du%C5%A1an"
+        },
+        {
+          "title": "Wikipedia — Principality of Albania (medieval)",
+          "url": "https://en.wikipedia.org/wiki/Principality_of_Albania_(medieval)"
+        },
+        {
+          "title": "Wikipedia — Karl Thopia",
+          "url": "https://en.wikipedia.org/wiki/Karl_Thopia"
+        },
+        {
+          "title": "Wikipedia — Balšić noble family",
+          "url": "https://en.wikipedia.org/wiki/Bal%C5%A1i%C4%87_noble_family"
+        },
+        {
+          "title": "Wikipedia — Battle of Savra",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Savra"
+        },
+        {
+          "title": "Wikipedia — Despotate of Arta",
+          "url": "https://en.wikipedia.org/wiki/Despotate_of_Arta"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Dušan’s conquest",
+          "start": 1343,
+          "end": 1355
+        },
+        {
+          "name": "Thopia, Balšići and Muzaka",
+          "start": 1355,
+          "end": 1385
+        },
+        {
+          "name": "After Savra",
+          "start": 1385,
+          "end": 1417
+        }
+      ]
+    },
+    {
+      "id": "al-venetian",
+      "name": "Venetian Albania: Durazzo, Alessio and Scutari",
+      "start": 1392,
+      "end": 1501,
+      "region": "adriatic",
+      "icon": "🦁",
+      "description": "Venice took over the Albanian coast town by town: Durrës (Durazzo) from Georg Thopia in 1392, Lezhë (Alessio) in 1393, and Shkodër (Scutari) with Drisht from Đurađ II Balšić in 1396, then Ulcinj, Bar and Budva on the Montenegrin coast. Its Albania Veneta reached rarely more than 20 km inland. Venice garrisoned Krujë after Skanderbeg’s death (1468) and held Shkodër through the Ottoman sieges of 1474 and 1478–1479, but gave it up at the Treaty of Constantinople (January 1479). Durrës fell in August 1501; Ulcinj and Bar followed in 1571, and only the Bay of Kotor stayed Venetian until 1797.",
+      "sources": [
+        {
+          "title": "Wikipedia — Albania Veneta",
+          "url": "https://en.wikipedia.org/wiki/Albania_Veneta"
+        },
+        {
+          "title": "Wikipedia — Siege of Shkodra (1478)",
+          "url": "https://en.wikipedia.org/wiki/Siege_of_Shkodra_(1478)"
+        },
+        {
+          "title": "Wikipedia — Treaty of Constantinople (1479)",
+          "url": "https://en.wikipedia.org/wiki/Treaty_of_Constantinople_(1479)"
+        },
+        {
+          "title": "Wikipedia — Durrës",
+          "url": "https://en.wikipedia.org/wiki/Durr%C3%ABs"
+        },
+        {
+          "title": "Wikipedia — Lezhë",
+          "url": "https://en.wikipedia.org/wiki/Lezh%C3%AB"
+        }
+      ],
+      "periods": [
+        {
+          "name": "The coast bought",
+          "start": 1392,
+          "end": 1443
+        },
+        {
+          "name": "Allies of Skanderbeg",
+          "start": 1443,
+          "end": 1479
+        },
+        {
+          "name": "Durazzo alone",
+          "start": 1479,
+          "end": 1501
+        }
+      ]
+    },
+    {
+      "id": "al-ottoman-conquest",
+      "name": "The Ottoman conquest and the Sanjak of Albania",
+      "start": 1385,
+      "end": 1479,
+      "region": "ottoman",
+      "icon": "🌙",
+      "description": "After Savra (1385) the Ottomans pressed in from Macedonia. They took Krujë and Gjirokastër (1415–1419), Vlorë and Kanina (1417) and organised the Sanjak of Albania, whose 1431–1432 land register (defter) is the oldest of its kind for the area. Gjergj Arianiti and Andrea Thopia led a revolt in 1432–1436. Albanian lords served as Ottoman timar holders and some, like Gjergj Kastrioti, were raised at court. Berat and the south stayed Ottoman through Skanderbeg’s wars; the fortress of Elbasan was built by Mehmed II in 1466 on the Via Egnatia, and the north was conquered in 1478–1479.",
+      "sources": [
+        {
+          "title": "Wikipedia — Sanjak of Albania",
+          "url": "https://en.wikipedia.org/wiki/Sanjak_of_Albania"
+        },
+        {
+          "title": "Wikipedia — Albanian revolt of 1432–1436",
+          "url": "https://en.wikipedia.org/wiki/Albanian_revolt_of_1432%E2%80%931436"
+        },
+        {
+          "title": "Wikipedia — Gjergj Arianiti",
+          "url": "https://en.wikipedia.org/wiki/Gjergj_Arianiti"
+        },
+        {
+          "title": "Wikipedia — Elbasan Castle",
+          "url": "https://en.wikipedia.org/wiki/Elbasan_Castle"
+        },
+        {
+          "title": "Wikipedia — Ottoman Albania",
+          "url": "https://en.wikipedia.org/wiki/Ottoman_Albania"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Vassals and conquest",
+          "start": 1385,
+          "end": 1432
+        },
+        {
+          "name": "Revolt of Arianiti",
+          "start": 1432,
+          "end": 1443
+        },
+        {
+          "name": "Elbasan and the last wars",
+          "start": 1443,
+          "end": 1479
+        }
+      ]
+    },
+    {
+      "id": "al-skanderbeg",
+      "name": "Skanderbeg and the League of Lezhë",
+      "start": 1443,
+      "end": 1479,
+      "region": "medieval",
+      "icon": "🦅",
+      "description": "Gjergj Kastrioti, called Skanderbeg, left the Ottoman army at the Battle of Niš in November 1443 and seized Krujë, raising his double-headed eagle flag. On 2 March 1444 the Albanian lords — Arianiti, Dukagjini, Muzaka, Thopia, Zaharia, Balšići and the Crnojevići of Zeta — formed the League of Lezhë in Venetian Alessio under his command. He beat Ottoman armies at Torvioll (1444), Otonetë (1446) and Albulena (1457), held Krujë through three sieges (1450, 1466, 1467), fought Venice in 1447–1448 and allied with Naples, the Papacy and Hungary. After his death at Lezhë in January 1468 Lekë Dukagjini fought on; Krujë fell in June 1478 and Shkodër in 1479.",
+      "sources": [
+        {
+          "title": "Wikipedia — Skanderbeg",
+          "url": "https://en.wikipedia.org/wiki/Skanderbeg"
+        },
+        {
+          "title": "Wikipedia — League of Lezhë",
+          "url": "https://en.wikipedia.org/wiki/League_of_Lezh%C3%AB"
+        },
+        {
+          "title": "Wikipedia — Siege of Krujë (1450)",
+          "url": "https://en.wikipedia.org/wiki/Siege_of_Kruj%C3%AB_(1450)"
+        },
+        {
+          "title": "Wikipedia — Battle of Albulena",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Albulena"
+        },
+        {
+          "title": "Wikipedia — Lekë Dukagjini",
+          "url": "https://en.wikipedia.org/wiki/Lek%C3%AB_Dukagjini"
+        },
+        {
+          "title": "Wikipedia — Skanderbeg's rebellion",
+          "url": "https://en.wikipedia.org/wiki/Skanderbeg%27s_rebellion"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Krujë and the League",
+          "start": 1443,
+          "end": 1450
+        },
+        {
+          "name": "The sieges and Albulena",
+          "start": 1450,
+          "end": 1468
+        },
+        {
+          "name": "Lekë Dukagjini and the fall",
+          "start": 1468,
+          "end": 1479
+        }
+      ]
+    },
+    {
+      "id": "al-ottoman-albania",
+      "name": "Ottoman Albania and the Arbëreshë",
+      "start": 1479,
+      "end": 1757,
+      "region": "ottoman",
+      "icon": "🕌",
+      "description": "After 1479 Albania was ruled from the sanjaks of Shkodër, Ohrid, Vlorë, Elbasan and Delvina. Thousands of Albanians fled to southern Italy and Sicily, where the Arbëreshë still speak their language. Over the 16th–18th centuries most Albanians became Muslim, many through the Bektashi order in the south, while Catholics held on in the north and Orthodox Christians in the south; Albanians served the empire as soldiers and statesmen, among them the Köprülü grand viziers. Gjon Buzuku printed the first Albanian book, a missal, in 1555, and Pjetër Bogdani wrote the Cuneus Prophetarum (1685). Berat and Gjirokastër grew into Ottoman merchant towns.",
+      "sources": [
+        {
+          "title": "Wikipedia — Ottoman Albania",
+          "url": "https://en.wikipedia.org/wiki/Ottoman_Albania"
+        },
+        {
+          "title": "Wikipedia — Arbëreshë people",
+          "url": "https://en.wikipedia.org/wiki/Arb%C3%ABresh%C3%AB_people"
+        },
+        {
+          "title": "Wikipedia — Islam in Albania",
+          "url": "https://en.wikipedia.org/wiki/Islam_in_Albania"
+        },
+        {
+          "title": "Wikipedia — Gjon Buzuku",
+          "url": "https://en.wikipedia.org/wiki/Gjon_Buzuku"
+        },
+        {
+          "title": "Wikipedia — Köprülü family",
+          "url": "https://en.wikipedia.org/wiki/K%C3%B6pr%C3%BCl%C3%BC_family"
+        },
+        {
+          "title": "Wikipedia — Pjetër Bogdani",
+          "url": "https://en.wikipedia.org/wiki/Pjet%C3%ABr_Bogdani"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Exile and the sanjaks",
+          "start": 1479,
+          "end": 1571
+        },
+        {
+          "name": "Conversion and the merchant towns",
+          "start": 1571,
+          "end": 1700
+        },
+        {
+          "name": "Local beys",
+          "start": 1700,
+          "end": 1757
+        }
+      ]
+    },
+    {
+      "id": "al-pashaliks",
+      "name": "The Bushati Pashalik of Scutari",
+      "start": 1757,
+      "end": 1831,
+      "region": "ottoman",
+      "icon": "⚔️",
+      "description": "As Ottoman power weakened, Mehmed Bushati made himself pasha of Shkodër in 1757 and ruled the north as a semi-independent pashalik. His son Kara Mahmud Bushati (1775–1796) extended it over northern Albania to the Shkumbin and into Kosovo, defied several Ottoman armies, attacked Montenegro (1785, 1796) and Venice, and courted Austria and Russia before swearing loyalty to the sultan again. He was killed by the Montenegrin tribes at the Battle of Krusi in 1796. Ibrahim Bushati (1796–1810) served the Porte against the Serbian uprising; the last pasha, Mustafa Bushati, surrendered Rozafa castle to Mehmed Reshid Pasha in 1831, ending the pashalik.",
+      "sources": [
+        {
+          "title": "Wikipedia — Pashalik of Scutari",
+          "url": "https://en.wikipedia.org/wiki/Pashalik_of_Scutari"
+        },
+        {
+          "title": "Wikipedia — Bushati family",
+          "url": "https://en.wikipedia.org/wiki/Bushati_family"
+        },
+        {
+          "title": "Wikipedia — Kara Mahmud Bushati",
+          "url": "https://en.wikipedia.org/wiki/Kara_Mahmud_Bushati"
+        },
+        {
+          "title": "Wikipedia — Battle of Krusi",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Krusi"
+        },
+        {
+          "title": "Wikipedia — Mustafa Pasha Bushati",
+          "url": "https://en.wikipedia.org/wiki/Mustafa_Pasha_Bushati"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Mehmed Bushati",
+          "start": 1757,
+          "end": 1775
+        },
+        {
+          "name": "Kara Mahmud",
+          "start": 1775,
+          "end": 1796
+        },
+        {
+          "name": "Ibrahim and Mustafa",
+          "start": 1796,
+          "end": 1831
+        }
+      ]
+    },
+    {
+      "id": "al-ali-pasha",
+      "name": "Ali Pasha and the Pashalik of Yanina",
+      "start": 1787,
+      "end": 1822,
+      "region": "ottoman",
+      "icon": "🦁",
+      "description": "Ali Pasha of Tepelenë took the sanjak of Trikala in 1787 and Ioannina in 1787–1788, and built a near-independent state in Epirus, Thessaly and southern Albania. He annexed Konitsa, Libohovë, Përmet and Tepelenë (1789–1791), sacked Moscopole and Himara, crushed Souli (1803), and took the Venetian coast towns from the French (1798). In 1809 he took over the Pashalik of Berat, in 1810 Vlorë and in 1811 Gjirokastër and Delvina; his sons governed the Morea and Lepanto. Byron visited him at Tepelenë in 1809. In 1820 Sultan Mahmud II deposed him; he was killed at Ioannina in January 1822 as the Greek War of Independence began.",
+      "sources": [
+        {
+          "title": "Wikipedia — Ali Pasha of Yanina",
+          "url": "https://en.wikipedia.org/wiki/Ali_Pasha_of_Yanina"
+        },
+        {
+          "title": "Wikipedia — Pashalik of Yanina",
+          "url": "https://en.wikipedia.org/wiki/Pashalik_of_Yanina"
+        },
+        {
+          "title": "Wikipedia — Pashalik of Berat",
+          "url": "https://en.wikipedia.org/wiki/Pashalik_of_Berat"
+        },
+        {
+          "title": "Wikipedia — Souliotes",
+          "url": "https://en.wikipedia.org/wiki/Souliotes"
+        },
+        {
+          "title": "Wikipedia — Tepelenë",
+          "url": "https://en.wikipedia.org/wiki/Tepelen%C3%AB"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Trikala and Yanina",
+          "start": 1787,
+          "end": 1799
+        },
+        {
+          "name": "Souli and the coast",
+          "start": 1799,
+          "end": 1809
+        },
+        {
+          "name": "Berat, Vlorë and the fall",
+          "start": 1809,
+          "end": 1822
+        }
+      ]
+    },
+    {
+      "id": "al-rilindja",
+      "name": "The national awakening and the League of Prizren",
+      "start": 1831,
+      "end": 1912,
+      "region": "national",
+      "icon": "📜",
+      "description": "After the Bushati and Ali Pasha were crushed, the Tanzimat reforms provoked revolts (1830s–1840s). Albanian writers abroad — Naum Veqilharxhi, Jeronim de Rada, Naim and Sami Frashëri — built the Rilindja, the national awakening. In June 1878, as the Congress of Berlin handed Albanian-inhabited lands to Montenegro, Serbia and Greece, the League of Prizren demanded autonomy; it was crushed in 1881. The Congress of Manastir agreed a Latin alphabet in 1908, and revolts in 1910–1912 forced the Porte to promise an Albanian vilayet.",
+      "sources": [
+        {
+          "title": "Wikipedia — Albanian National Awakening",
+          "url": "https://en.wikipedia.org/wiki/Albanian_National_Awakening"
+        },
+        {
+          "title": "Wikipedia — League of Prizren",
+          "url": "https://en.wikipedia.org/wiki/League_of_Prizren"
+        },
+        {
+          "title": "Wikipedia — Naim Frashëri",
+          "url": "https://en.wikipedia.org/wiki/Naim_Frash%C3%ABri"
+        },
+        {
+          "title": "Wikipedia — Congress of Manastir",
+          "url": "https://en.wikipedia.org/wiki/Congress_of_Manastir"
+        },
+        {
+          "title": "Wikipedia — Albanian revolt of 1912",
+          "url": "https://en.wikipedia.org/wiki/Albanian_revolt_of_1912"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Revolts and writers",
+          "start": 1831,
+          "end": 1878
+        },
+        {
+          "name": "League of Prizren",
+          "start": 1878,
+          "end": 1908
+        },
+        {
+          "name": "Alphabet and revolts",
+          "start": 1908,
+          "end": 1912
+        }
+      ]
+    },
+    {
+      "id": "al-independence",
+      "name": "Independence and the Principality of Albania",
+      "start": 1912,
+      "end": 1925,
+      "region": "national",
+      "icon": "🇦🇱",
+      "description": "Ismail Qemali raised the flag at Vlorë on 28 November 1912 during the First Balkan War. The great powers recognised Albania at the London conference (1913) but left Kosovo to Serbia, and set up a principality under the German prince Wilhelm of Wied, who left after six months (1914). In the First World War Albania was occupied by Italian, Austro-Hungarian, Serbian, Montenegrin, Greek and French armies. The Congress of Lushnjë (1920) moved the capital to Tirana, the Vlora War drove the Italians out the same year, and Albania joined the League of Nations; Fan Noli’s brief government (1924) was overthrown by Ahmet Zogu.",
+      "sources": [
+        {
+          "title": "Wikipedia — Albanian Declaration of Independence",
+          "url": "https://en.wikipedia.org/wiki/Albanian_Declaration_of_Independence"
+        },
+        {
+          "title": "Wikipedia — Ismail Qemali",
+          "url": "https://en.wikipedia.org/wiki/Ismail_Qemali"
+        },
+        {
+          "title": "Wikipedia — Principality of Albania",
+          "url": "https://en.wikipedia.org/wiki/Principality_of_Albania"
+        },
+        {
+          "title": "Wikipedia — Congress of Lushnjë",
+          "url": "https://en.wikipedia.org/wiki/Congress_of_Lushnj%C3%AB"
+        },
+        {
+          "title": "Wikipedia — Vlora War",
+          "url": "https://en.wikipedia.org/wiki/Vlora_War"
+        },
+        {
+          "title": "Wikipedia — Fan Noli",
+          "url": "https://en.wikipedia.org/wiki/Fan_Noli"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Vlorë and London",
+          "start": 1912,
+          "end": 1914
+        },
+        {
+          "name": "Wied and the war",
+          "start": 1914,
+          "end": 1920
+        },
+        {
+          "name": "Lushnjë and Noli",
+          "start": 1920,
+          "end": 1925
+        }
+      ]
+    },
+    {
+      "id": "al-zog",
+      "name": "Zog’s republic and kingdom",
+      "start": 1925,
+      "end": 1939,
+      "region": "national",
+      "icon": "👑",
+      "description": "Ahmet Zogu ruled as president of the Albanian Republic from 1925 and proclaimed himself Zog I, King of the Albanians, in 1928. He brought in civil and penal codes, built roads and schools, and modernised Tirana, but leaned heavily on Italian loans under the Tirana pacts (1926–1927). Italy’s grip tightened through the 1930s, and on 7 April 1939 Mussolini invaded; Zog fled into exile.",
+      "sources": [
+        {
+          "title": "Wikipedia — Albanian Republic (1925–1928)",
+          "url": "https://en.wikipedia.org/wiki/Albanian_Republic_(1925%E2%80%931928)"
+        },
+        {
+          "title": "Wikipedia — Zog I of Albania",
+          "url": "https://en.wikipedia.org/wiki/Zog_I_of_Albania"
+        },
+        {
+          "title": "Wikipedia — Albanian Kingdom (1928–1939)",
+          "url": "https://en.wikipedia.org/wiki/Albanian_Kingdom_(1928%E2%80%931939)"
+        },
+        {
+          "title": "Wikipedia — Italian invasion of Albania",
+          "url": "https://en.wikipedia.org/wiki/Italian_invasion_of_Albania"
+        }
+      ],
+      "periods": [
+        {
+          "name": "President Zogu",
+          "start": 1925,
+          "end": 1928
+        },
+        {
+          "name": "King Zog",
+          "start": 1928,
+          "end": 1939
+        }
+      ]
+    },
+    {
+      "id": "al-ww2",
+      "name": "Italian and German occupation",
+      "start": 1939,
+      "end": 1944,
+      "region": "national",
+      "icon": "⚔️",
+      "description": "Italy annexed Albania in a personal union under Victor Emmanuel III and used it to invade Greece (1940), where the Greek army pushed into southern Albania. In 1941 Kosovo and western Macedonia were joined to the Italian protectorate. After Italy surrendered in 1943 Germany occupied the country. The communist-led National Liberation Movement under Enver Hoxha and the nationalist Balli Kombëtar fought the occupiers and each other; the partisans entered Tirana on 17 November 1944. Albania sheltered its Jews, and its Jewish population was larger at the end of the war than at the start.",
+      "sources": [
+        {
+          "title": "Wikipedia — Italian protectorate of Albania (1939–1943)",
+          "url": "https://en.wikipedia.org/wiki/Italian_protectorate_of_Albania_(1939%E2%80%931943)"
+        },
+        {
+          "title": "Wikipedia — German occupation of Albania",
+          "url": "https://en.wikipedia.org/wiki/German_occupation_of_Albania"
+        },
+        {
+          "title": "Wikipedia — National Liberation Movement (Albania)",
+          "url": "https://en.wikipedia.org/wiki/National_Liberation_Movement_(Albania)"
+        },
+        {
+          "title": "Wikipedia — Balli Kombëtar",
+          "url": "https://en.wikipedia.org/wiki/Balli_Komb%C3%ABtar"
+        },
+        {
+          "title": "Wikipedia — History of the Jews in Albania",
+          "url": "https://en.wikipedia.org/wiki/History_of_the_Jews_in_Albania"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Italian Albania",
+          "start": 1939,
+          "end": 1943
+        },
+        {
+          "name": "German occupation and liberation",
+          "start": 1943,
+          "end": 1944
+        }
+      ]
+    },
+    {
+      "id": "al-communist",
+      "name": "Hoxha’s People’s Republic",
+      "start": 1944,
+      "end": 1991,
+      "region": "modern",
+      "icon": "☭",
+      "description": "Enver Hoxha ruled from 1944 to his death in 1985. Albania broke with Yugoslavia (1948), with the Soviet Union (1961) and with China (1978), and became one of the most isolated states in the world. Land was collectivised, religion was banned outright in 1967, and hundreds of thousands of concrete bunkers were built; prison camps such as Spaç held political prisoners. Literacy rose and the country was electrified. Ramiz Alia succeeded Hoxha; student protests in December 1990 and the flight of refugees by ship to Italy in 1991 brought the regime down.",
+      "sources": [
+        {
+          "title": "Wikipedia — People's Socialist Republic of Albania",
+          "url": "https://en.wikipedia.org/wiki/People%27s_Socialist_Republic_of_Albania"
+        },
+        {
+          "title": "Wikipedia — Enver Hoxha",
+          "url": "https://en.wikipedia.org/wiki/Enver_Hoxha"
+        },
+        {
+          "title": "Wikipedia — Bunkers in Albania",
+          "url": "https://en.wikipedia.org/wiki/Bunkers_in_Albania"
+        },
+        {
+          "title": "Wikipedia — Spaç Prison",
+          "url": "https://en.wikipedia.org/wiki/Spa%C3%A7_Prison"
+        },
+        {
+          "title": "Wikipedia — Ramiz Alia",
+          "url": "https://en.wikipedia.org/wiki/Ramiz_Alia"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Hoxha and the Soviet years",
+          "start": 1944,
+          "end": 1961
+        },
+        {
+          "name": "With China",
+          "start": 1961,
+          "end": 1978
+        },
+        {
+          "name": "Isolation and fall",
+          "start": 1978,
+          "end": 1991
+        }
+      ]
+    },
+    {
+      "id": "al-modern",
+      "name": "The Republic of Albania",
+      "start": 1991,
+      "end": 2026,
+      "region": "modern",
+      "icon": "🇪🇺",
+      "description": "The first multiparty elections were held in 1991, and Sali Berisha’s Democratic Party won in 1992. Pyramid schemes collapsed in 1997 and the country slid into armed unrest until an Italian-led force restored order. Albania sheltered hundreds of thousands of refugees from Kosovo in 1999, joined NATO in 2009 and became an EU candidate in 2014; accession talks opened in 2022. The Durrës earthquake of November 2019 killed 51 people. Tourism along the Riviera and remittances from emigrants are a large part of the economy.",
+      "sources": [
+        {
+          "title": "Wikipedia — Albania",
+          "url": "https://en.wikipedia.org/wiki/Albania"
+        },
+        {
+          "title": "Wikipedia — Albanian Civil War",
+          "url": "https://en.wikipedia.org/wiki/Albanian_Civil_War"
+        },
+        {
+          "title": "Wikipedia — Accession of Albania to the European Union",
+          "url": "https://en.wikipedia.org/wiki/Accession_of_Albania_to_the_European_Union"
+        },
+        {
+          "title": "Wikipedia — 2019 Albania earthquake",
+          "url": "https://en.wikipedia.org/wiki/2019_Albania_earthquake"
+        },
+        {
+          "title": "Wikipedia — Sali Berisha",
+          "url": "https://en.wikipedia.org/wiki/Sali_Berisha"
+        }
+      ],
+      "periods": [
+        {
+          "name": "Transition",
+          "start": 1991,
+          "end": 1997
+        },
+        {
+          "name": "Crisis and recovery",
+          "start": 1997,
+          "end": 2009
+        },
+        {
+          "name": "NATO and the EU road",
+          "start": 2009,
+          "end": 2026
+        }
+      ]
+    }
+  ]
+}

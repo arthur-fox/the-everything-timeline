@@ -1092,6 +1092,22 @@ export const CITIES = [
   C('senj', 44.99, 14.90, 4, -100, null, 'Senia', 800, 'Senj'),
   C('rijeka', 45.33, 14.44, 4, -100, null, 'Tarsatica', 800, 'Rijeka'),
   C('vukovar', 45.35, 19.00, 4, 1231, null, 'Vukovar'),
+  // Day 91 — Albania (globe-pack-albania.js): the Greek colonies, the Illyrian and medieval seats, the
+  // Venetian and Ottoman towns, Ioannina and Ulcinj (Tirana and Ohrid already exist).
+  C('durres', 41.32, 19.45, 3, -627, null, 'Epidamnos', -229, 'Dyrrachium', 1205, 'Durazzo', 1912, 'Durrës'),
+  C('apollonia-illyria', 40.72, 19.47, 4, -600, 400, 'Apollonia'),
+  C('butrint', 39.75, 20.02, 4, -600, 1600, 'Buthrotum', 600, 'Butrint'),
+  C('shkoder', 42.07, 19.51, 3, -400, null, 'Scodra', 1396, 'Scutari', 1912, 'Shkodër'),
+  C('lezhe', 41.78, 19.64, 4, -385, null, 'Lissus', 1393, 'Alessio', 1912, 'Lezhë'),
+  C('kruje', 41.51, 19.79, 4, 1190, null, 'Krujë'),
+  C('berat', 40.70, 19.95, 4, -200, null, 'Antipatreia', 900, 'Berat'),
+  C('vlore', 40.47, 19.49, 4, -600, null, 'Aulon', 1272, 'Valona', 1912, 'Vlorë'),
+  C('elbasan', 41.11, 20.08, 4, 100, null, 'Scampa', 1466, 'Elbasan'),
+  C('gjirokaster', 40.08, 20.14, 4, 1336, null, 'Gjirokastër'),
+  C('korce', 40.62, 20.78, 4, 1484, null, 'Korçë'),
+  C('ioannina', 39.67, 20.85, 4, 879, null, 'Ioannina'),
+  C('ulcinj', 41.93, 19.21, 4, -200, null, 'Olcinium', 1405, 'Dulcigno', 1878, 'Ulcinj'),
+  C('tepelene', 40.30, 20.02, 4, 1400, null, 'Tepelenë'),
 ];
 
 

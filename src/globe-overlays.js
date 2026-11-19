@@ -57,6 +57,7 @@ import { serbiaPolities, applySerbiaShapeFixes } from './globe-pack-serbia.js';
 import { bulgariaPolities, applyBulgariaShapeFixes } from './globe-pack-bulgaria.js';
 import { romaniaPolities, applyRomaniaShapeFixes } from './globe-pack-romania.js';
 import { croatiaPolities, applyCroatiaShapeFixes } from './globe-pack-croatia.js';
+import { albaniaPolities, applyAlbaniaShapeFixes } from './globe-pack-albania.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6519,6 +6520,16 @@ for (const ent of croatiaPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 91 — Phase 5 country pack 5, Albania (globe-pack-albania.js): the Illyrian kingdom of Agron,
+// Teuta and Gentius, Arbanon (1190–1256), the Angevin Kingdom of Albania (1272–1368), Venetian
+// Albania (1392–1501), the League of Lezhë (1444–1478) and the pashaliks of Scutari and Yanina
+// (to 1813), drawn from province pieces.
+for (const ent of albaniaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6609,6 +6620,9 @@ applyRomaniaShapeFixes(spatialEntities);
 // Day 90 — Venice's schematic Dalmatia dropped; Ottoman held steps cut back from Ragusa, the Venetian coast
 // and (after Karlowitz) Slavonia, Lika and the Dalmatian hinterland.
 applyCroatiaShapeFixes(spatialEntities);
+// Day 91 — the Roman Republic's Illyricum held back to Pydna; Ottoman held steps 1757–1799 cut back
+// from the pashaliks of Scutari and Yanina.
+applyAlbaniaShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
