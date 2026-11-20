@@ -102,6 +102,7 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
   assert(brAt.next?.year === 1600 && brAt.t === 1, 'Ottoman at 1600 lands on keyframe (t=1)');
   // Day 89: 1475–1799 are held steps (globe-pack-romania.js), so the mid-morph test uses 1800–1900.
   // Day 91: 1800–1813 is held too (globe-pack-albania.js), so the morph runs from the 1814 keyframe.
+  // Day 92: 1453–1813 is rebuilt as held steps cut back from the Greece pack (globe-pack-greece.js); 1814–1900 still morphs.
   const brMid = findBracketingOverlays(ott.overlays, 1850);
   assert(brMid.prev?.year === 1814 && brMid.next?.year === 1900, 'Ottoman brackets 1814–1900 at 1850');
   assert(brMid.t > 0.4 && brMid.t < 0.6, `Ottoman t~0.5 at 1850 (got ${brMid.t})`);
@@ -411,6 +412,27 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
     assert(over('ottoman-empire', 1700, [19.82, 41.33]) && !over('ottoman-empire', 1790, [19.82, 41.33]), 'Ottoman ring over Tirana before the Bushati, off it at Kara Mahmud’s height');
     assert(over('ottoman-empire', 1780, [20.85, 39.67]) && !over('ottoman-empire', 1790, [20.85, 39.67]), 'Ottoman ring off Ioannina from Ali Pasha');
     assert(over('venetian-albania', 1470, [19.79, 41.51]) && over('league-of-lezhe', 1460, [19.79, 41.51]), 'Krujë: Skanderbeg’s to 1467, a Venetian garrison 1468–1478');
+  }
+  // Day 92: Greece refinement — the Latin and Byzantine successor states after 1204, the Venetian and Hospitaller
+  // islands and the Venetian Morea and Septinsular Republic, all gone by 1815; the Ottoman ring cut back from them.
+  const gIn = (id, a, b) => idsAt(a).has(id) && !idsAt(a - 2).has(id) && idsAt(b).has(id) && !idsAt(b + 2).has(id);
+  assert(gIn('latin-kingdom-of-thessalonica', 1204, 1223), 'Kingdom of Thessalonica 1204–1224');
+  assert(gIn('despotate-of-epirus', 1205, 1337), 'Despotate of Epirus 1205–1337');
+  assert(gIn('principality-of-achaea', 1205, 1431), 'Principality of Achaea 1205–1432');
+  assert(gIn('duchy-of-athens', 1205, 1458), 'Duchy of Athens 1205–1458');
+  assert(gIn('despotate-of-the-morea', 1262, 1460), 'Byzantine Morea 1262–1460');
+  assert(gIn('knights-hospitaller-rhodes', 1310, 1522), 'Knights of Rhodes 1310–1522');
+  assert(gIn('venetian-crete', 1211, 1669), 'Venetian Crete 1211–1669');
+  assert(gIn('venetian-morea', 1685, 1715), 'Venetian Morea 1685–1715');
+  assert(gIn('septinsular-republic', 1800, 1807), 'Septinsular Republic 1800–1807');
+  assert(['latin-kingdom-of-thessalonica', 'despotate-of-epirus', 'principality-of-achaea', 'duchy-of-athens', 'venetian-negroponte', 'despotate-of-the-morea', 'county-palatine-of-cephalonia', 'knights-hospitaller-rhodes', 'duchy-of-the-archipelago', 'venetian-crete', 'venetian-ionian-islands', 'venetian-morea', 'septinsular-republic'].every((id) => !idsAt(1815).has(id)), 'Greece pack polities off at the 1815 nations hand-off');
+  {
+    const over = (id, y, pt) => getOverlayPolygonFeatures(y).some((f) => f.entityId === id && geoContains(f, pt));
+    assert(!over('ottoman-empire', 1660, [25.13, 35.31]) && over('ottoman-empire', 1680, [25.13, 35.31]), 'Ottoman ring off Candia until 1669, over it after');
+    assert(!over('ottoman-empire', 1500, [28.2, 36.4]) && over('ottoman-empire', 1530, [28.2, 36.4]), 'Ottoman ring off Rhodes until 1522');
+    assert(over('ottoman-empire', 1680, [22.81, 37.56]) && !over('ottoman-empire', 1700, [22.81, 37.56]) && over('ottoman-empire', 1720, [22.81, 37.56]), 'Nauplia Ottoman, Venetian 1686–1715, Ottoman again');
+    assert(!over('ottoman-empire', 1650, [19.9, 39.6]) && over('venetian-ionian-islands', 1650, [19.9, 39.6]) && over('septinsular-republic', 1805, [19.9, 39.6]), 'Corfu never Ottoman: Venetian, then Septinsular');
+    assert(!over('venice', 1300, [25.13, 35.31]) && over('venetian-crete', 1300, [25.13, 35.31]), 'Venetian Crete drawn by its own shape, not Venice’s old box');
   }
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);

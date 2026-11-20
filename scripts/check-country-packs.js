@@ -10,7 +10,7 @@
  * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js), Jamaica (Day 80,
  * src/globe-pack-jamaica.js), Guatemala (Day 81, src/globe-pack-guatemala.js), the Mexico refinement (Day 82,
  * src/globe-pack-mexico.js), DR Congo (Day 83, src/globe-pack-dr-congo.js) Angola (Day 84,
- * src/globe-pack-angola.js), Cameroon (Day 85, src/globe-pack-cameroon.js), Chad (Day 86, src/globe-pack-chad.js), Serbia (Day 87, src/globe-pack-serbia.js), Bulgaria (Day 88, src/globe-pack-bulgaria.js), Romania (Day 89, src/globe-pack-romania.js), Croatia (Day 90, src/globe-pack-croatia.js) and Albania (Day 91, src/globe-pack-albania.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * src/globe-pack-angola.js), Cameroon (Day 85, src/globe-pack-cameroon.js), Chad (Day 86, src/globe-pack-chad.js), Serbia (Day 87, src/globe-pack-serbia.js), Bulgaria (Day 88, src/globe-pack-bulgaria.js), Romania (Day 89, src/globe-pack-romania.js), Croatia (Day 90, src/globe-pack-croatia.js), Albania (Day 91, src/globe-pack-albania.js) and the Greece refinement (Day 92, src/globe-pack-greece.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -56,6 +56,7 @@ import { bulgariaPolities, bulgariaShapeFixes } from '../src/globe-pack-bulgaria
 import { romaniaPolities, romaniaShapeFixes } from '../src/globe-pack-romania.js';
 import { croatiaPolities, croatiaShapeFixes } from '../src/globe-pack-croatia.js';
 import { albaniaPolities, albaniaShapeFixes } from '../src/globe-pack-albania.js';
+import { greecePolities, greeceShapeFixes } from '../src/globe-pack-greece.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -120,23 +121,28 @@ function edgeKm(ring, lng, lat) {
 }
 
 /** Planar point-in-ring with a bounding-box prefilter (fast enough for a 0.1° grid over the Maghreb). */
+// (Day 92) A point inside one of a shape's holes (the Ottoman ring's Aegean gap, the islands cut
+// out of it) is not inside the shape.
 function planarFeature(f) {
-  const ring = f.geometry.coordinates[0];
+  const [ring, ...holes] = f.geometry.coordinates;
   let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
   for (const [x, y] of ring) {
     x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y);
   }
+  const inRing = (r, x, y) => {
+    let c = false;
+    for (let i = 0, j = r.length - 1; i < r.length; j = i++) {
+      const [a, b] = r[i];
+      const [e, g] = r[j];
+      if ((b > y) !== (g > y) && x < ((e - a) * (y - b)) / (g - b) + a) c = !c;
+    }
+    return c;
+  };
   return {
     f,
     has(x, y) {
       if (x < x0 || x > x1 || y < y0 || y > y1) return false;
-      let c = false;
-      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-        const [a, b] = ring[i];
-        const [e, g] = ring[j];
-        if ((b > y) !== (g > y) && x < ((e - a) * (y - b)) / (g - b) + a) c = !c;
-      }
-      return c;
+      return inRing(ring, x, y) && !holes.some((h) => inRing(h, x, y));
     },
   };
 }
@@ -2396,6 +2402,186 @@ const PACKS = [
       box: [18.4, 38.8, 23.0, 43.2],
       planar: true,
       with: ['roman-republic', 'roman-empire', 'epirus', 'ottoman-empire', 'byzantine-empire', 'venice', 'medieval-serbia', 'first-bulgarian-empire', 'second-bulgarian-empire', 'republic-of-ragusa', 'venetian-dalmatia', 'illyrian-provinces', 'avar-khaganate', 'mongol-empire'],
+    },
+  },
+  {
+    country: 'greece',
+    polities: greecePolities,
+    fixes: greeceShapeFixes,
+    redrawn: {},
+    // Cyclades, Rhodes, Kos and Kythira are too small for the simplified land.
+    fineLand: true,
+    dropped: [['venice', 'crete-foothold'], ['venice', 'ionian-fringe']],
+    trimmed: ['ottoman-empire'],
+    capitals: [
+      ['latin-kingdom-of-thessalonica', 1204, 22.95, 40.65, 'Thessalonica'],
+      ['latin-kingdom-of-thessalonica', 1204, 22.42, 39.64, 'Larissa'],
+      ['latin-kingdom-of-thessalonica', 1220, 23.55, 41.09, 'Serres'],
+      ['despotate-of-epirus', 1205, 20.98, 39.16, 'Arta'],
+      ['despotate-of-epirus', 1205, 20.85, 39.67, 'Ioannina'],
+      ['despotate-of-epirus', 1205, 21.83, 38.40, 'Naupaktos'],
+      ['despotate-of-epirus', 1214, 19.90, 39.60, 'Corfu'],
+      ['despotate-of-epirus', 1225, 22.95, 40.65, 'Thessalonica (Theodore’s empire)'],
+      ['despotate-of-epirus', 1241, 22.42, 39.64, 'Larissa'],
+      ['despotate-of-epirus', 1337, 20.98, 39.16, 'Arta'],
+      ['principality-of-achaea', 1205, 21.27, 37.90, 'Andravida'],
+      ['principality-of-achaea', 1205, 21.76, 38.22, 'Patras'],
+      ['principality-of-achaea', 1210, 22.87, 37.89, 'Acrocorinth'],
+      ['principality-of-achaea', 1248, 22.37, 37.07, 'Mystras'],
+      ['principality-of-achaea', 1248, 23.0, 36.72, 'Monemvasia'],
+      ['principality-of-achaea', 1278, 21.14, 37.89, 'Chlemoutsi'],
+      ['principality-of-achaea', 1431, 21.67, 37.25, 'Arcadia (Kyparissia)'],
+      ['duchy-of-athens', 1205, 23.73, 37.98, 'Athens'],
+      ['duchy-of-athens', 1205, 23.32, 38.32, 'Thebes'],
+      ['duchy-of-athens', 1212, 22.72, 37.63, 'Argos'],
+      ['duchy-of-athens', 1319, 22.24, 38.87, 'Neopatras (Ypati)'],
+      ['duchy-of-athens', 1458, 23.73, 37.98, 'Athens'],
+      ['venetian-negroponte', 1210, 21.72, 36.84, 'Modon (Methoni)'],
+      ['venetian-negroponte', 1210, 21.92, 36.83, 'Coron (Koroni)'],
+      ['venetian-negroponte', 1211, 23.66, 38.50, 'Negroponte (Chalcis)'],
+      ['venetian-negroponte', 1390, 22.81, 37.56, 'Nauplia'],
+      ['venetian-negroponte', 1470, 23.0, 36.72, 'Monemvasia'],
+      ['venetian-negroponte', 1540, 22.81, 37.56, 'Nauplia'],
+      ['despotate-of-the-morea', 1262, 22.37, 37.07, 'Mystras'],
+      ['despotate-of-the-morea', 1262, 23.0, 36.72, 'Monemvasia'],
+      ['despotate-of-the-morea', 1349, 22.37, 37.51, 'Tripolitsa plain (Arcadia)'],
+      ['despotate-of-the-morea', 1430, 21.76, 38.22, 'Patras'],
+      ['despotate-of-the-morea', 1433, 21.27, 37.90, 'Andravida (Glarentza)'],
+      ['despotate-of-the-morea', 1460, 22.37, 37.07, 'Mystras'],
+      ['county-palatine-of-cephalonia', 1195, 20.52, 38.20, 'Cephalonia'],
+      ['county-palatine-of-cephalonia', 1195, 20.85, 37.76, 'Zakynthos'],
+      ['county-palatine-of-cephalonia', 1362, 20.66, 38.79, 'Leucas (Santa Maura)'],
+      ['county-palatine-of-cephalonia', 1411, 20.85, 39.67, 'Ioannina (Carlo I Tocco)'],
+      ['county-palatine-of-cephalonia', 1479, 20.52, 38.20, 'Cephalonia'],
+      ['knights-hospitaller-rhodes', 1310, 28.20, 36.40, 'Rhodes'],
+      ['knights-hospitaller-rhodes', 1315, 27.25, 36.87, 'Kos'],
+      ['knights-hospitaller-rhodes', 1522, 28.20, 36.40, 'Rhodes'],
+      ['duchy-of-the-archipelago', 1207, 25.45, 37.06, 'Naxos'],
+      ['duchy-of-the-archipelago', 1207, 25.15, 37.06, 'Paros'],
+      ['duchy-of-the-archipelago', 1207, 24.85, 37.85, 'Andros'],
+      ['duchy-of-the-archipelago', 1566, 25.45, 37.06, 'Naxos'],
+      ['venetian-crete', 1211, 25.13, 35.31, 'Candia'],
+      ['venetian-crete', 1211, 24.0, 35.48, 'Chania (La Canea)'],
+      ['venetian-crete', 1363, 24.47, 35.35, 'Rethymno'],
+      ['venetian-crete', 1669, 25.13, 35.31, 'Candia'],
+      ['venetian-ionian-islands', 1363, 22.98, 36.25, 'Cerigo (Kythira)'],
+      ['venetian-ionian-islands', 1386, 19.90, 39.60, 'Corfu'],
+      ['venetian-ionian-islands', 1485, 20.85, 37.76, 'Zante'],
+      ['venetian-ionian-islands', 1500, 20.52, 38.20, 'Cephalonia'],
+      ['venetian-ionian-islands', 1684, 20.66, 38.79, 'Santa Maura'],
+      ['venetian-ionian-islands', 1797, 19.90, 39.60, 'Corfu'],
+      ['venetian-morea', 1685, 21.92, 36.83, 'Coron'],
+      ['venetian-morea', 1686, 22.81, 37.56, 'Nauplia'],
+      ['venetian-morea', 1687, 21.76, 38.22, 'Patras'],
+      ['venetian-morea', 1690, 23.0, 36.72, 'Monemvasia'],
+      ['venetian-morea', 1699, 22.37, 37.51, 'Tripolitsa'],
+      ['venetian-morea', 1715, 22.81, 37.56, 'Nauplia'],
+      ['septinsular-republic', 1800, 19.90, 39.60, 'Corfu'],
+      ['septinsular-republic', 1803, 20.52, 38.20, 'Cephalonia'],
+      ['septinsular-republic', 1807, 22.98, 36.25, 'Kythira'],
+    ],
+    on: {
+      1204: ['latin-kingdom-of-thessalonica'],
+      1205: ['despotate-of-epirus', 'principality-of-achaea', 'duchy-of-athens', 'county-palatine-of-cephalonia'],
+      1211: ['venetian-negroponte', 'duchy-of-the-archipelago', 'venetian-crete'],
+      1262: ['despotate-of-the-morea', 'principality-of-achaea'],
+      1310: ['knights-hospitaller-rhodes'],
+      1363: ['venetian-ionian-islands'],
+      1431: ['principality-of-achaea', 'despotate-of-the-morea'],
+      1458: ['duchy-of-athens'],
+      1460: ['despotate-of-the-morea'],
+      1479: ['county-palatine-of-cephalonia'],
+      1522: ['knights-hospitaller-rhodes'],
+      1540: ['venetian-negroponte'],
+      1566: ['duchy-of-the-archipelago'],
+      1669: ['venetian-crete', 'venetian-ionian-islands'],
+      1685: ['venetian-morea'],
+      1715: ['venetian-morea'],
+      1797: ['venetian-ionian-islands'],
+      1800: ['septinsular-republic'],
+      1807: ['septinsular-republic'],
+    },
+    gone: {
+      1193: ['county-palatine-of-cephalonia'],
+      1202: ['latin-kingdom-of-thessalonica'],
+      1203: ['despotate-of-epirus', 'principality-of-achaea', 'duchy-of-athens'],
+      1205: ['venetian-negroponte', 'duchy-of-the-archipelago'],
+      1209: ['venetian-crete'],
+      1226: ['latin-kingdom-of-thessalonica'],
+      1260: ['despotate-of-the-morea'],
+      1308: ['knights-hospitaller-rhodes'],
+      1339: ['despotate-of-epirus'],
+      1361: ['venetian-ionian-islands'],
+      1433: ['principality-of-achaea'],
+      1460: ['duchy-of-athens'],
+      1462: ['despotate-of-the-morea'],
+      1481: ['county-palatine-of-cephalonia'],
+      1524: ['knights-hospitaller-rhodes'],
+      1542: ['venetian-negroponte'],
+      1568: ['duchy-of-the-archipelago'],
+      1671: ['venetian-crete'],
+      1683: ['venetian-morea'],
+      1717: ['venetian-morea'],
+      1798: ['septinsular-republic'],
+      1799: ['venetian-ionian-islands'],
+      1809: ['septinsular-republic'],
+      1815: ['latin-kingdom-of-thessalonica', 'despotate-of-epirus', 'principality-of-achaea', 'duchy-of-athens', 'venetian-negroponte', 'despotate-of-the-morea', 'county-palatine-of-cephalonia', 'knights-hospitaller-rhodes', 'duchy-of-the-archipelago', 'venetian-crete', 'venetian-ionian-islands', 'venetian-morea', 'septinsular-republic'],
+    },
+    absent: [
+      ['latin-kingdom-of-thessalonica', 1215, 'thessaly'],
+      ['despotate-of-epirus', 1235, 'thessaly'],
+      ['despotate-of-epirus', 1300, 'lefkada'],
+      ['principality-of-achaea', 1270, 'laconia'],
+      ['principality-of-achaea', 1330, 'arcadia'],
+      ['duchy-of-athens', 1315, 'argolis'],
+      ['duchy-of-athens', 1400, 'neopatras'],
+      ['venetian-negroponte', 1475, 'negroponte'],
+      ['despotate-of-the-morea', 1459, 'achaea'],
+      ['venetian-crete', 1650, 'west'],
+      ['venetian-ionian-islands', 1716, 'kythira'],
+    ],
+    present: [
+      ['latin-kingdom-of-thessalonica', 1210, 'thessaly'],
+      ['despotate-of-epirus', 1250, 'thessaly'],
+      ['principality-of-achaea', 1250, 'laconia'],
+      ['duchy-of-athens', 1300, 'argolis'],
+      ['duchy-of-athens', 1350, 'neopatras'],
+      ['venetian-negroponte', 1460, 'negroponte'],
+      ['despotate-of-the-morea', 1445, 'achaea'],
+      ['venetian-crete', 1640, 'west'],
+      ['venetian-ionian-islands', 1720, 'kythira'],
+    ],
+    notOver: [
+      ['ottoman-empire', 1460, 28.20, 36.40, 'Rhodes (the Knights to 1522)'],
+      ['ottoman-empire', 1500, 28.20, 36.40, 'Rhodes'],
+      ['ottoman-empire', 1520, 27.25, 36.87, 'Kos'],
+      ['ottoman-empire', 1530, 19.90, 39.60, 'Corfu (Venetian)'],
+      ['ottoman-empire', 1530, 23.0, 36.72, 'Monemvasia (Venetian to 1540)'],
+      ['ottoman-empire', 1550, 25.45, 37.06, 'Naxos (the Duchy to 1566)'],
+      ['ottoman-empire', 1600, 25.13, 35.31, 'Candia (Venetian to 1669)'],
+      ['ottoman-empire', 1640, 24.0, 35.48, 'Chania (Venetian to 1645)'],
+      ['ottoman-empire', 1660, 25.13, 35.31, 'Candia (the siege)'],
+      ['ottoman-empire', 1650, 20.52, 38.20, 'Cephalonia (Venetian)'],
+      ['ottoman-empire', 1690, 22.81, 37.56, 'Nauplia (the Venetian Morea)'],
+      ['ottoman-empire', 1700, 22.37, 37.51, 'Tripolitsa (the Venetian Morea)'],
+      ['ottoman-empire', 1714, 21.76, 38.22, 'Patras (the Venetian Morea)'],
+      ['ottoman-empire', 1805, 19.90, 39.60, 'Corfu (the Septinsular Republic)'],
+      ['ottoman-empire', 1810, 20.85, 37.76, 'Zante (British from 1809)'],
+    ],
+    noOverlap: {
+      from: 1185,
+      to: 1813,
+      box: [19.2, 34.7, 28.6, 41.8],
+      planar: true,
+      // Fade-out remnants (12% size) in hand-over years, and the Ottoman ring's lead-in before its
+      // first keyframe (1453), when the whole shape is drawn growing and faint and its Rhodes gap
+      // has not yet slid onto the island.
+      remnants: [
+        [1230, 'despotate-of-epirus', 'wmac'],
+        [1320, 'principality-of-achaea', 'arcadia'],
+        [1450, 'ottoman-empire', 'anatolia-balkans'],
+      ],
+      with: ['roman-empire', 'epirus', 'ottoman-empire', 'byzantine-empire', 'venice', 'medieval-serbia', 'first-bulgarian-empire', 'second-bulgarian-empire', 'pashalik-of-yanina', 'pashalik-of-scutari', 'angevin-kingdom-of-albania', 'venetian-albania', 'duchy-of-durazzo', 'principality-of-arbanon', 'league-of-lezhe', 'argead-macedon', 'antigonid-macedon', 'athens-delian-league', 'sparta-peloponnesian-league', 'achaean-league', 'aetolian-league', 'mongol-empire'],
     },
   },
 ];

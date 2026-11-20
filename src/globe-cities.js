@@ -1108,6 +1108,24 @@ export const CITIES = [
   C('ioannina', 39.67, 20.85, 4, 879, null, 'Ioannina'),
   C('ulcinj', 41.93, 19.21, 4, -200, null, 'Olcinium', 1405, 'Dulcigno', 1878, 'Ulcinj'),
   C('tepelene', 40.30, 20.02, 4, 1400, null, 'Tepelenë'),
+  // Day 92 — Greece refinement (globe-pack-greece.js): the Frankish, Venetian and Byzantine seats of the
+  // Morea and Crete, the Ionian and Cycladic capitals, Thessaly and the 1820s battle towns (Athens,
+  // Thessaloniki, Corinth, Arta, Chalcis, Corfu, Rhodes and Ioannina already exist).
+  C('patras', 38.25, 21.73, 3, -800, null, 'Patrae', 600, 'Patras'),
+  C('nafplio', 37.57, 22.80, 4, -700, null, 'Nauplia', 1389, 'Napoli di Romania', 1540, 'Anabolu', 1686, 'Napoli di Romania', 1715, 'Anabolu', 1822, 'Nafplio'),
+  C('mystras', 37.07, 22.37, 4, 1249, 1834, 'Mystras'),
+  C('monemvasia', 36.69, 23.05, 4, 583, null, 'Monemvasia', 1464, 'Napoli di Malvasia', 1540, 'Monemvasia', { island: true }),
+  C('methoni', 36.82, 21.70, 4, -700, null, 'Methone', 1207, 'Modon', 1830, 'Methoni'),
+  C('navarino', 36.91, 21.70, 4, 1573, null, 'Navarino', 1833, 'Pylos'),
+  C('tripoli-greece', 37.51, 22.37, 4, 1467, null, 'Tripolitsa', 1828, 'Tripoli'),
+  C('heraklion', 35.34, 25.13, 3, 824, null, 'Chandax', 1211, 'Candia', 1898, 'Heraklion'),
+  C('chania', 35.51, 24.02, 4, -1000, null, 'Kydonia', 800, 'Chania', 1252, 'La Canea', 1645, 'Chania'),
+  C('zakynthos', 37.78, 20.90, 4, -700, null, 'Zakynthos', 1485, 'Zante', 1864, 'Zakynthos', { island: true }),
+  C('naxos-chora', 37.10, 25.38, 4, -700, null, 'Naxos', { island: true }),
+  C('larissa', 39.64, 22.42, 4, -600, null, 'Larissa', 1423, 'Yenişehir', 1881, 'Larissa'),
+  C('nafpaktos', 38.39, 21.83, 4, -500, null, 'Naupaktos', 1407, 'Lepanto', 1829, 'Nafpaktos'),
+  C('missolonghi', 38.37, 21.43, 4, 1400, null, 'Missolonghi'),
+  C('serres', 41.09, 23.55, 4, -400, null, 'Serrhai', 1383, 'Siroz', 1913, 'Serres'),
 ];
 
 
