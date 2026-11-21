@@ -29,6 +29,7 @@ import {
 import { geoArea, geoContains } from 'd3-geo';
 import { civilisations } from '../src/civilisations.js';
 import { lidarPresenceEntities } from '../src/globe-lidar-shapes.js';
+import { pakistanPolities } from '../src/globe-pack-pakistan.js';
 import {
   lerpRings,
   MORPH_RING_SAMPLES,
@@ -433,6 +434,24 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
     assert(over('ottoman-empire', 1680, [22.81, 37.56]) && !over('ottoman-empire', 1700, [22.81, 37.56]) && over('ottoman-empire', 1720, [22.81, 37.56]), 'Nauplia Ottoman, Venetian 1686–1715, Ottoman again');
     assert(!over('ottoman-empire', 1650, [19.9, 39.6]) && over('venetian-ionian-islands', 1650, [19.9, 39.6]) && over('septinsular-republic', 1805, [19.9, 39.6]), 'Corfu never Ottoman: Venetian, then Septinsular');
     assert(!over('venice', 1300, [25.13, 35.31]) && over('venetian-crete', 1300, [25.13, 35.31]), 'Venetian Crete drawn by its own shape, not Venice’s old box');
+  }
+  // Day 93: Pakistan — the Indus Valley Civilisation, the kingdoms and emirates of Sindh and Multan, the Delhi,
+  // Mughal and Sur Indus provinces, the Kalhoras, Talpurs, Sikh misls and Kalat, all gone by 1815.
+  assert(gIn('indus-valley-civilisation', -2600, -1700), 'Indus Valley Civilisation 2600–1700 BCE');
+  assert(gIn('kingdom-of-sindh', 489, 711), 'Kingdom of Sindh c. 489–712');
+  assert(gIn('caliphal-sind', 713, 854), 'Caliphal Sind 713–854');
+  assert(gIn('emirate-of-multan', 856, 1009), 'Emirate of Multan c. 855–1010');
+  assert(gIn('soomra-dynasty', 1030, 1350), 'Soomras c. 1030–1351');
+  assert(gIn('samma-sultanate', 1352, 1520), 'Sammas c. 1351–1520');
+  assert(gIn('langah-sultanate', 1445, 1525), 'Langah Sultanate 1445–1526');
+  assert(gIn('mughal-indus-subahs', 1556, 1750), 'Mughal Lahore and Multan 1556–1752');
+  assert(gIn('talpur-sindh', 1784, 1813) && gIn('khanate-of-kalat', 1666, 1813), 'Talpur Sindh and Kalat to 1813');
+  assert(pakistanPolities.every((e) => !idsAt(1815).has(e.id)), 'Pakistan pack polities off at the 1815 nations hand-off');
+  {
+    const over = (id, y, pt) => getOverlayPolygonFeatures(y).some((f) => f.entityId === id && geoContains(f, pt));
+    assert(!over('kabul-shahis', 1010, [71.47, 30.2]) && over('kabul-shahis', 1010, [74.34, 31.55]), 'Kabul Shahis hold Lahore, not Multan, in 1010');
+    assert(over('mughal-indus-subahs', 1650, [74.34, 31.55]) && !over('mughal-empire', 1650, [74.34, 31.55]), 'Mughal Lahore drawn once (the pack’s subahs, not india-north)');
+    assert(!over('mughal-indus-subahs', 1580, [67.92, 24.75]) && over('arghun-tarkhan-sindh', 1580, [67.92, 24.75]) && over('mughal-indus-subahs', 1600, [67.92, 24.75]), 'Thatta Tarkhan until 1591, Mughal after');
   }
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
