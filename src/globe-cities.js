@@ -1126,6 +1126,27 @@ export const CITIES = [
   C('nafpaktos', 38.39, 21.83, 4, -500, null, 'Naupaktos', 1407, 'Lepanto', 1829, 'Nafpaktos'),
   C('missolonghi', 38.37, 21.43, 4, 1400, null, 'Missolonghi'),
   C('serres', 41.09, 23.55, 4, -400, null, 'Serrhai', 1383, 'Siroz', 1913, 'Serres'),
+  // Day 93 — Pakistan (globe-pack-pakistan.js): Mehrgarh and the Harappan sites beyond Mohenjo-daro, Harappa and
+  // Lothal, the capitals of Sindh (Aror, al-Mansura, Debal, Thatta, Hyderabad), Uch, Sehwan and Bhakkar, Kalat,
+  // Quetta and Gwadar, and the 18th-century towns (Lahore, Multan, Karachi, Peshawar and Taxila already exist).
+  C('mehrgarh', 29.40, 67.60, 4, -7000, -2500, 'Mehrgarh'),
+  C('dholavira', 23.89, 70.21, 3, -2650, -1450, 'Dholavira'),
+  C('kalibangan', 29.47, 74.13, 4, -3300, -1750, 'Kalibangan'),
+  C('rakhigarhi', 29.29, 76.11, 3, -2600, -1800, 'Rakhigarhi'),
+  C('aror', 27.65, 68.95, 3, 450, 1000, 'Aror'),
+  C('mansura-sindh', 25.88, 68.77, 3, 738, 1030, 'al-Mansura'),
+  C('banbhore', 24.75, 67.52, 4, -50, 1250, 'Debal'),
+  C('thatta', 24.75, 67.92, 3, 1350, null, 'Thatta', { ranks: [[1350, 3], [1750, 4]] }),
+  C('hyderabad-sindh', 25.39, 68.37, 3, 1768, null, 'Hyderabad'),
+  C('uch', 29.24, 71.07, 4, 700, null, 'Uch'),
+  C('sehwan', 26.42, 67.86, 4, 700, null, 'Siwistan', 1600, 'Sehwan'),
+  C('bhakkar-sukkur', 27.70, 68.86, 4, 1000, null, 'Bhakkar', 1843, 'Sukkur'),
+  C('shikarpur', 27.96, 68.64, 4, 1617, null, 'Shikarpur'),
+  C('kalat', 29.03, 66.59, 4, 1400, null, 'Kalat'),
+  C('quetta', 30.18, 67.00, 4, 1500, null, 'Shal', 1830, 'Quetta', { ranks: [[1500, 4], [1950, 3]] }),
+  C('gwadar', 25.12, 62.32, 4, 1500, null, 'Gwadar'),
+  C('bahawalpur', 29.40, 71.68, 4, 1748, null, 'Bahawalpur'),
+  C('umarkot', 25.36, 69.74, 4, 1100, null, 'Amarkot', 1813, 'Umarkot'),
 ];
 
 
