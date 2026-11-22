@@ -30,6 +30,7 @@ import { geoArea, geoContains } from 'd3-geo';
 import { civilisations } from '../src/civilisations.js';
 import { lidarPresenceEntities } from '../src/globe-lidar-shapes.js';
 import { pakistanPolities } from '../src/globe-pack-pakistan.js';
+import { bangladeshPolities } from '../src/globe-pack-bangladesh.js';
 import {
   lerpRings,
   MORPH_RING_SAMPLES,
@@ -453,6 +454,24 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
     assert(over('mughal-indus-subahs', 1650, [74.34, 31.55]) && !over('mughal-empire', 1650, [74.34, 31.55]), 'Mughal Lahore drawn once (the pack’s subahs, not india-north)');
     assert(!over('mughal-indus-subahs', 1580, [67.92, 24.75]) && over('arghun-tarkhan-sindh', 1580, [67.92, 24.75]) && over('mughal-indus-subahs', 1600, [67.92, 24.75]), 'Thatta Tarkhan until 1591, Mughal after');
   }
+  // Day 94: Bangladesh — Gauda, Samatata, the Palas, Chandras, Varmans, Senas and Devas, Lakhnauti, the Bengal
+  // Sultanate, Afghan Bengal, the Bhuiyans, Mughal Bengal, the Nawabs, Mrauk U, the Koch and Tripura, all gone by 1815.
+  assert(gIn('gauda-kingdom', 600, 625), 'Gauda (Shashanka) c. 600–625');
+  assert(gIn('pala-empire', 750, 1161), 'Pala Empire c. 750–1161');
+  assert(gIn('chandra-dynasty', 905, 1045) && gIn('sena-dynasty', 1127, 1245), 'Chandras c. 905–1045, Senas c. 1127–1245');
+  assert(gIn('lakhnauti', 1206, 1324), 'Lakhnauti c. 1206–1324');
+  assert(gIn('bengal-sultanate', 1342, 1538), 'Bengal Sultanate 1342–1538');
+  assert(gIn('mughal-bengal', 1578, 1716) && gIn('nawabs-of-bengal', 1718, 1763), 'Bengal Subah 1578–1716, Nawabs 1717–1764');
+  assert(gIn('kingdom-of-mrauk-u', 1430, 1783), 'Mrauk U 1430–1784');
+  assert(gIn('twipra-kingdom', 1490, 1813), 'Tripura to 1813');
+  assert(bangladeshPolities.every((e) => !idsAt(1815).has(e.id)), 'Bangladesh pack polities off at the 1815 nations hand-off');
+  {
+    const over = (id, y, pt) => getOverlayPolygonFeatures(y).some((f) => f.entityId === id && geoContains(f, pt));
+    assert(over('mughal-bengal', 1650, [90.41, 23.71]) && !over('mughal-empire', 1650, [90.41, 23.71]), 'Mughal Dhaka drawn once (the pack’s Bengal Subah, not india-north)');
+    assert(over('kingdom-of-mrauk-u', 1600, [91.83, 22.34]) && over('mughal-bengal', 1680, [91.83, 22.34]), 'Chittagong Arakanese until 1666, Mughal after');
+    assert(!over('british-empire', 1760, [88.27, 24.18]) && over('nawabs-of-bengal', 1760, [88.27, 24.18]), 'Murshidabad the Nawabs’, not British, before the diwani');
+    assert(!over('konbaung-dynasty', 1780, [93.19, 20.6]) && over('konbaung-dynasty', 1790, [93.19, 20.6]), 'Arakan Konbaung only from 1784–1785');
+  }
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
 
@@ -473,7 +492,8 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
     'French 1700 keeps metro + New France separate',
   );
 
-  const midAus = morphEntityAtYear(brit, 1740, resolveRegionRing, getEntityLifespan(brit), OVERLAY_EDGE_GRACE);
+  // Day 94: the British Empire holds its 1700 shape to 1765 (the Bengal diwani), so the 1780 footholds fade in from 1765.
+  const midAus = morphEntityAtYear(brit, 1772, resolveRegionRing, getEntityLifespan(brit), OVERLAY_EDGE_GRACE);
   const aus = midAus.find((p) => p.regionId === 'australia-east');
   assert(!!aus, 'British australia foothold fades in before 1780');
   assert(aus.opacity < maxOp * 0.95, `fade-in australia opacity ${aus.opacity.toFixed(3)} < full ${maxOp.toFixed(3)}`);

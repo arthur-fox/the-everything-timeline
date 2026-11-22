@@ -60,6 +60,7 @@ import { croatiaPolities, applyCroatiaShapeFixes } from './globe-pack-croatia.js
 import { albaniaPolities, applyAlbaniaShapeFixes } from './globe-pack-albania.js';
 import { greecePolities, applyGreeceShapeFixes } from './globe-pack-greece.js';
 import { pakistanPolities, applyPakistanShapeFixes } from './globe-pack-pakistan.js';
+import { bangladeshPolities, applyBangladeshShapeFixes } from './globe-pack-bangladesh.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6553,6 +6554,16 @@ for (const ent of pakistanPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 94 — Phase 5 country pack 6, Bangladesh (globe-pack-bangladesh.js): Shashanka's Gauda,
+// Samatata, the Palas and the Kaivarta revolt, the Chandras, Varmans, Senas and Devas, Lakhnauti, the
+// Bengal Sultanate, Afghan Bengal, the Baro-Bhuiyans, Mughal Bengal, the Nawabs, Mrauk U Arakan,
+// the Koch kingdom and Tripura (c. 600–1813).
+for (const ent of bangladeshPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6651,6 +6662,9 @@ applyAlbaniaShapeFixes(spatialEntities);
 applyGreeceShapeFixes(spatialEntities);
 // Day 93 — the Kabul Shahis' Punjab (1001–1020) redrawn off Multan; other trims per globe-pack-pakistan.js.
 applyPakistanShapeFixes(spatialEntities);
+// Day 94 — the Delhi and Mughal 'india-north' rings trimmed off Bengal, British India and Konbaung
+// Arakan held back to Plassey/the diwani and 1784; see globe-pack-bangladesh.js.
+applyBangladeshShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
