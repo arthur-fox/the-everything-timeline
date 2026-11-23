@@ -31,6 +31,7 @@ import { civilisations } from '../src/civilisations.js';
 import { lidarPresenceEntities } from '../src/globe-lidar-shapes.js';
 import { pakistanPolities } from '../src/globe-pack-pakistan.js';
 import { bangladeshPolities } from '../src/globe-pack-bangladesh.js';
+import { sriLankaPolities } from '../src/globe-pack-sri-lanka.js';
 import {
   lerpRings,
   MORPH_RING_SAMPLES,
@@ -471,6 +472,19 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
     assert(over('kingdom-of-mrauk-u', 1600, [91.83, 22.34]) && over('mughal-bengal', 1680, [91.83, 22.34]), 'Chittagong Arakanese until 1666, Mughal after');
     assert(!over('british-empire', 1760, [88.27, 24.18]) && over('nawabs-of-bengal', 1760, [88.27, 24.18]), 'Murshidabad the Nawabs’, not British, before the diwani');
     assert(!over('konbaung-dynasty', 1780, [93.19, 20.6]) && over('konbaung-dynasty', 1790, [93.19, 20.6]), 'Arakan Konbaung only from 1784–1785');
+  }
+  // Day 95: Sri Lanka — Anuradhapura, Chola Lanka, Polonnaruwa, Magha, Dambadeniya, Gampola, Kotte, Jaffna,
+  // Sitawaka, Kandy and Portuguese, Dutch and British Ceylon, all gone by 1815.
+  assert(gIn('anuradhapura-kingdom', -377, 1017), 'Anuradhapura 377 BCE–1017');
+  assert(gIn('chola-lanka', 995, 1068) && gIn('polonnaruwa-kingdom', 1055, 1212), 'Chola Lanka c. 993–1070, Polonnaruwa 1055–1212');
+  assert(gIn('kotte-kingdom', 1412, 1594) && gIn('kingdom-of-kandy', 1471, 1813), 'Kotte 1412–1597, Kandy to 1813');
+  assert(gIn('portuguese-ceylon', 1597, 1657) && gIn('dutch-ceylon', 1641, 1795) && gIn('british-ceylon', 1797, 1813), 'Portuguese, Dutch and British Ceylon');
+  assert(sriLankaPolities.every((e) => !idsAt(1815).has(e.id)), 'Sri Lanka pack polities off at the 1815 nations hand-off');
+  {
+    const over = (id, y, pt) => getOverlayPolygonFeatures(y).some((f) => f.entityId === id && geoContains(f, pt));
+    assert(over('chola-lanka', 1000, [81.0, 7.94]) && !over('chola-empire', 1000, [81.0, 7.94]), 'Chola Polonnaruwa drawn once (the pack’s Chola Lanka)');
+    assert(over('portuguese-ceylon', 1630, [80.02, 9.66]) && over('dutch-ceylon', 1700, [80.02, 9.66]), 'Jaffna Portuguese 1619–1658, Dutch after');
+    assert(over('kingdom-of-kandy', 1750, [80.63, 7.29]) && !over('dutch-ceylon', 1750, [80.63, 7.29]), 'Kandy never Dutch');
   }
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);

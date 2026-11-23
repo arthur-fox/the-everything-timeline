@@ -10,7 +10,7 @@
  * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js), Jamaica (Day 80,
  * src/globe-pack-jamaica.js), Guatemala (Day 81, src/globe-pack-guatemala.js), the Mexico refinement (Day 82,
  * src/globe-pack-mexico.js), DR Congo (Day 83, src/globe-pack-dr-congo.js) Angola (Day 84,
- * src/globe-pack-angola.js), Cameroon (Day 85, src/globe-pack-cameroon.js), Chad (Day 86, src/globe-pack-chad.js), Serbia (Day 87, src/globe-pack-serbia.js), Bulgaria (Day 88, src/globe-pack-bulgaria.js), Romania (Day 89, src/globe-pack-romania.js), Croatia (Day 90, src/globe-pack-croatia.js), Albania (Day 91, src/globe-pack-albania.js), the Greece refinement (Day 92, src/globe-pack-greece.js), Pakistan (Day 93, src/globe-pack-pakistan.js) and Bangladesh (Day 94, src/globe-pack-bangladesh.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * src/globe-pack-angola.js), Cameroon (Day 85, src/globe-pack-cameroon.js), Chad (Day 86, src/globe-pack-chad.js), Serbia (Day 87, src/globe-pack-serbia.js), Bulgaria (Day 88, src/globe-pack-bulgaria.js), Romania (Day 89, src/globe-pack-romania.js), Croatia (Day 90, src/globe-pack-croatia.js), Albania (Day 91, src/globe-pack-albania.js), the Greece refinement (Day 92, src/globe-pack-greece.js), Pakistan (Day 93, src/globe-pack-pakistan.js), Bangladesh (Day 94, src/globe-pack-bangladesh.js) and Sri Lanka (Day 95, src/globe-pack-sri-lanka.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -59,6 +59,7 @@ import { albaniaPolities, albaniaShapeFixes } from '../src/globe-pack-albania.js
 import { greecePolities, greeceShapeFixes } from '../src/globe-pack-greece.js';
 import { pakistanPolities, pakistanShapeFixes } from '../src/globe-pack-pakistan.js';
 import { bangladeshPolities, bangladeshShapeFixes } from '../src/globe-pack-bangladesh.js';
+import { sriLankaPolities, sriLankaShapeFixes } from '../src/globe-pack-sri-lanka.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -2862,6 +2863,104 @@ const PACKS = [
       box: [83.0, 15.5, 95.5, 28.5],
       planar: true,
       with: ['maurya-empire', 'gupta-empire', 'tibetan-empire', 'chola-empire', 'delhi-sultanate', 'mughal-empire', 'maratha-empire', 'mongol-empire', 'british-empire', 'pagan-kingdom', 'ava-kingdom', 'toungoo-dynasty', 'konbaung-dynasty'],
+      remnants: [],
+    },
+  },
+  {
+    // Day 95 — Phase 5 pack 6, South Asia: Sri Lanka (src/globe-pack-sri-lanka.js).
+    country: 'sri-lanka',
+    polities: sriLankaPolities,
+    fixes: sriLankaShapeFixes,
+    redrawn: {},
+    dropped: [['chola-empire', 'sri-lanka-north']],
+    trimmed: ['chola-empire'],
+    capitals: [
+      ['anuradhapura-kingdom', -377, 80.40, 8.31, 'Anuradhapura'],
+      ['anuradhapura-kingdom', 477, 80.76, 7.96, 'Sigiriya'],
+      ['anuradhapura-kingdom', 1017, 81.29, 6.28, 'Mahagama (Ruhuna)'],
+      ['chola-lanka', 995, 81.00, 7.94, 'Polonnaruwa (Jananathamangalam)'],
+      ['polonnaruwa-kingdom', 1055, 81.29, 6.28, 'Mahagama (Ruhuna)'],
+      ['polonnaruwa-kingdom', 1153, 81.00, 7.94, 'Polonnaruwa'],
+      ['kalinga-magha', 1215, 81.00, 7.94, 'Polonnaruwa'],
+      ['dambadeniya-kingdom', 1220, 80.15, 7.37, 'Dambadeniya'],
+      ['dambadeniya-kingdom', 1272, 80.31, 7.82, 'Yapahuwa'],
+      ['dambadeniya-kingdom', 1293, 80.36, 7.49, 'Kurunegala'],
+      ['gampola-kingdom', 1341, 80.58, 7.16, 'Gampola'],
+      ['gampola-kingdom', 1371, 79.90, 6.89, 'Kotte'],
+      ['kotte-kingdom', 1412, 79.90, 6.89, 'Kotte'],
+      ['kotte-kingdom', 1450, 80.02, 9.66, 'Nallur (Sapumal)'],
+      ['jaffna-kingdom', 1279, 80.02, 9.66, 'Nallur'],
+      ['jaffna-kingdom-late', 1469, 80.02, 9.66, 'Nallur'],
+      ['sitawaka-kingdom', 1523, 80.21, 6.95, 'Sitawaka'],
+      ['kingdom-of-kandy', 1471, 80.63, 7.29, 'Senkadagala (Kandy)'],
+      ['kingdom-of-kandy', 1813, 80.63, 7.29, 'Kandy'],
+      ['portuguese-ceylon', 1597, 79.85, 6.93, 'Colombo'],
+      ['portuguese-ceylon', 1619, 80.02, 9.66, 'Jaffna'],
+      ['dutch-ceylon', 1641, 80.22, 6.03, 'Galle'],
+      ['dutch-ceylon', 1657, 79.85, 6.93, 'Colombo'],
+      ['dutch-ceylon', 1665, 81.23, 8.57, 'Trincomalee'],
+      ['british-ceylon', 1797, 79.85, 6.93, 'Colombo'],
+      ['british-ceylon', 1802, 81.23, 8.57, 'Trincomalee'],
+    ],
+    on: {
+      300: ['anuradhapura-kingdom'],
+      1000: ['chola-lanka', 'anuradhapura-kingdom'],
+      1060: ['chola-lanka', 'polonnaruwa-kingdom'],
+      1100: ['polonnaruwa-kingdom'],
+      1230: ['kalinga-magha', 'dambadeniya-kingdom'],
+      1300: ['dambadeniya-kingdom', 'jaffna-kingdom'],
+      1380: ['gampola-kingdom', 'jaffna-kingdom'],
+      1455: ['kotte-kingdom'],
+      1500: ['kotte-kingdom', 'jaffna-kingdom-late', 'kingdom-of-kandy'],
+      1550: ['kotte-kingdom', 'sitawaka-kingdom', 'jaffna-kingdom-late', 'kingdom-of-kandy'],
+      1600: ['portuguese-ceylon', 'jaffna-kingdom-late', 'kingdom-of-kandy'],
+      1650: ['portuguese-ceylon', 'dutch-ceylon', 'kingdom-of-kandy'],
+      1750: ['dutch-ceylon', 'kingdom-of-kandy'],
+      1805: ['british-ceylon', 'kingdom-of-kandy'],
+    },
+    gone: {
+      [-380]: ['anuradhapura-kingdom'],
+      990: ['chola-lanka'],
+      1020: ['anuradhapura-kingdom'],
+      1050: ['polonnaruwa-kingdom'],
+      1072: ['chola-lanka'],
+      1215: ['polonnaruwa-kingdom'],
+      1258: ['kalinga-magha'],
+      1341: ['dambadeniya-kingdom'],
+      1410: ['gampola-kingdom'],
+      1450: ['jaffna-kingdom'],
+      1595: ['sitawaka-kingdom'],
+      1596: ['kotte-kingdom'],
+      1620: ['jaffna-kingdom-late'],
+      1660: ['portuguese-ceylon'],
+      1795: ['british-ceylon'],
+      1798: ['dutch-ceylon'],
+      1815: sriLankaPolities.map((e) => e.id),
+    },
+    absent: [
+      ['kotte-kingdom', 1500, 'jaffna'],
+      ['portuguese-ceylon', 1610, 'north'],
+      ['dutch-ceylon', 1650, 'east'],
+    ],
+    present: [
+      ['kotte-kingdom', 1460, 'jaffna'],
+      ['portuguese-ceylon', 1625, 'north'],
+      ['dutch-ceylon', 1700, 'east'],
+    ],
+    notOver: [
+      ['chola-empire', 350, 80.02, 9.66, 'the Jaffna peninsula (Anuradhapura)'],
+      ['chola-empire', 700, 80.40, 8.31, 'Anuradhapura (mid-morph)'],
+      ['chola-empire', 1000, 80.40, 8.31, 'Anuradhapura (the pack’s Chola Lanka)'],
+      ['chola-empire', 1000, 80.02, 9.66, 'the Jaffna peninsula (the pack’s Chola Lanka)'],
+      ['chola-empire', 1100, 81.00, 7.94, 'Polonnaruwa (sri-lanka-north dropped)'],
+      ['chola-empire', 1200, 80.02, 9.66, 'the Jaffna peninsula (Polonnaruwa)'],
+    ],
+    noOverlap: {
+      from: -380,
+      to: 1813,
+      box: [79.0, 5.5, 82.5, 10.2],
+      planar: true,
+      with: ['maurya-empire', 'gupta-empire', 'chola-empire', 'delhi-sultanate', 'mughal-empire', 'maratha-empire', 'portuguese-empire', 'dutch-republic', 'british-empire'],
       remnants: [],
     },
   },
