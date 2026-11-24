@@ -62,6 +62,7 @@ import { greecePolities, applyGreeceShapeFixes } from './globe-pack-greece.js';
 import { pakistanPolities, applyPakistanShapeFixes } from './globe-pack-pakistan.js';
 import { bangladeshPolities, applyBangladeshShapeFixes } from './globe-pack-bangladesh.js';
 import { sriLankaPolities, applySriLankaShapeFixes } from './globe-pack-sri-lanka.js';
+import { nepalPolities, applyNepalShapeFixes } from './globe-pack-nepal.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6574,6 +6575,15 @@ for (const ent of sriLankaPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 96 — Phase 5 country pack 6, Nepal (globe-pack-nepal.js): the Licchavis, Thakuris and Mallas of
+// the Kathmandu valley, Simraungadh, the Khasa kingdom, the Baise and Chaubisi, the Sens and Gorkha
+// (c. 400–1813).
+for (const ent of nepalPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6677,6 +6687,8 @@ applyPakistanShapeFixes(spatialEntities);
 applyBangladeshShapeFixes(spatialEntities);
 // Day 95 — the Chola Empire's sri-lanka-north box dropped and its Tamil rings trimmed off the island.
 applySriLankaShapeFixes(spatialEntities);
+// Day 96 — the Maurya, Kushan, Gupta, Tibetan, Delhi, Mughal, Maratha and British rings notched off Nepal.
+applyNepalShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

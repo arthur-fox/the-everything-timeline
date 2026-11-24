@@ -32,6 +32,7 @@ import { lidarPresenceEntities } from '../src/globe-lidar-shapes.js';
 import { pakistanPolities } from '../src/globe-pack-pakistan.js';
 import { bangladeshPolities } from '../src/globe-pack-bangladesh.js';
 import { sriLankaPolities } from '../src/globe-pack-sri-lanka.js';
+import { nepalPolities } from '../src/globe-pack-nepal.js';
 import {
   lerpRings,
   MORPH_RING_SAMPLES,
@@ -485,6 +486,18 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
     assert(over('chola-lanka', 1000, [81.0, 7.94]) && !over('chola-empire', 1000, [81.0, 7.94]), 'Chola Polonnaruwa drawn once (the pack’s Chola Lanka)');
     assert(over('portuguese-ceylon', 1630, [80.02, 9.66]) && over('dutch-ceylon', 1700, [80.02, 9.66]), 'Jaffna Portuguese 1619–1658, Dutch after');
     assert(over('kingdom-of-kandy', 1750, [80.63, 7.29]) && !over('dutch-ceylon', 1750, [80.63, 7.29]), 'Kandy never Dutch');
+  }
+  // Day 96: Nepal — the Licchavis, Thakuris and Mallas, Simraungadh, the Khasas, the Baise and Chaubisi, the Sens and
+  // Gorkha, all gone by 1815.
+  assert(gIn('licchavi-nepal', 400, 877) && gIn('thakuri-nepal', 880, 1198) && gIn('malla-nepal', 1201, 1767), 'Licchavi, Thakuri and Malla valley c. 400–1768');
+  assert(gIn('karnata-mithila', 1097, 1323) && gIn('khasa-malla', 1140, 1378), 'Simraungadh 1097–1324, Khasa c. 1140–1380');
+  assert(gIn('gorkha-kingdom', 1559, 1813), 'Gorkha 1559 to 1813');
+  assert(nepalPolities.every((e) => !idsAt(1815).has(e.id)), 'Nepal pack polities off at the 1815 nations hand-off');
+  {
+    const over = (id, y, pt) => getOverlayPolygonFeatures(y).some((f) => f.entityId === id && geoContains(f, pt));
+    assert(over('maurya-empire', -250, [83.28, 27.48]) && !over('maurya-empire', -250, [85.32, 27.7]), 'Lumbini Mauryan, the valley not');
+    assert(over('gorkha-kingdom', 1800, [79.66, 29.6]) && !over('british-empire', 1810, [79.66, 29.6]), 'Kumaon Gorkha’s 1791–1815');
+    assert(over('malla-nepal', 1760, [85.32, 27.7]) && over('gorkha-kingdom', 1775, [85.32, 27.7]), 'Kathmandu Malla until 1768, Gorkha after');
   }
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);

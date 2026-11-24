@@ -10,7 +10,7 @@
  * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js), Jamaica (Day 80,
  * src/globe-pack-jamaica.js), Guatemala (Day 81, src/globe-pack-guatemala.js), the Mexico refinement (Day 82,
  * src/globe-pack-mexico.js), DR Congo (Day 83, src/globe-pack-dr-congo.js) Angola (Day 84,
- * src/globe-pack-angola.js), Cameroon (Day 85, src/globe-pack-cameroon.js), Chad (Day 86, src/globe-pack-chad.js), Serbia (Day 87, src/globe-pack-serbia.js), Bulgaria (Day 88, src/globe-pack-bulgaria.js), Romania (Day 89, src/globe-pack-romania.js), Croatia (Day 90, src/globe-pack-croatia.js), Albania (Day 91, src/globe-pack-albania.js), the Greece refinement (Day 92, src/globe-pack-greece.js), Pakistan (Day 93, src/globe-pack-pakistan.js), Bangladesh (Day 94, src/globe-pack-bangladesh.js) and Sri Lanka (Day 95, src/globe-pack-sri-lanka.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * src/globe-pack-angola.js), Cameroon (Day 85, src/globe-pack-cameroon.js), Chad (Day 86, src/globe-pack-chad.js), Serbia (Day 87, src/globe-pack-serbia.js), Bulgaria (Day 88, src/globe-pack-bulgaria.js), Romania (Day 89, src/globe-pack-romania.js), Croatia (Day 90, src/globe-pack-croatia.js), Albania (Day 91, src/globe-pack-albania.js), the Greece refinement (Day 92, src/globe-pack-greece.js), Pakistan (Day 93, src/globe-pack-pakistan.js), Bangladesh (Day 94, src/globe-pack-bangladesh.js), Sri Lanka (Day 95, src/globe-pack-sri-lanka.js) and Nepal (Day 96, src/globe-pack-nepal.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -60,6 +60,7 @@ import { greecePolities, greeceShapeFixes } from '../src/globe-pack-greece.js';
 import { pakistanPolities, pakistanShapeFixes } from '../src/globe-pack-pakistan.js';
 import { bangladeshPolities, bangladeshShapeFixes } from '../src/globe-pack-bangladesh.js';
 import { sriLankaPolities, sriLankaShapeFixes } from '../src/globe-pack-sri-lanka.js';
+import { nepalPolities, nepalShapeFixes } from '../src/globe-pack-nepal.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -2961,6 +2962,101 @@ const PACKS = [
       box: [79.0, 5.5, 82.5, 10.2],
       planar: true,
       with: ['maurya-empire', 'gupta-empire', 'chola-empire', 'delhi-sultanate', 'mughal-empire', 'maratha-empire', 'portuguese-empire', 'dutch-republic', 'british-empire'],
+      remnants: [],
+    },
+  },
+  {
+    // Day 96 — Phase 5 pack 6, South Asia: Nepal (src/globe-pack-nepal.js).
+    country: 'nepal',
+    polities: nepalPolities,
+    fixes: nepalShapeFixes,
+    redrawn: {},
+    trimmed: ['maurya-empire', 'kushan-empire', 'gupta-empire', 'tibetan-empire', 'delhi-sultanate', 'mughal-empire', 'maratha-empire', 'british-empire'],
+    capitals: [
+      ['licchavi-nepal', 464, 85.43, 27.72, 'Changu Narayan'],
+      ['licchavi-nepal', 605, 85.32, 27.70, 'Kathmandu valley'],
+      ['thakuri-nepal', 1000, 85.32, 27.67, 'Patan'],
+      ['malla-nepal', 1201, 85.43, 27.67, 'Bhaktapur'],
+      ['malla-nepal', 1641, 85.32, 27.70, 'Kathmandu'],
+      ['karnata-mithila', 1097, 85.10, 26.89, 'Simraungadh'],
+      ['khasa-malla', 1140, 82.03, 29.38, 'Sinja'],
+      ['khasa-malla', 1357, 81.62, 28.85, 'Dullu'],
+      ['baise-rajya', 1391, 82.18, 29.27, 'Jumla'],
+      ['baise-rajya', 1600, 80.94, 29.26, 'Doti'],
+      ['chaubisi-rajya', 1400, 83.88, 28.25, 'Kaskikot'],
+      ['chaubisi-rajya', 1400, 84.42, 28.27, 'Lamjung'],
+      ['chaubisi-rajya', 1786, 83.55, 27.87, 'Tansen (Palpa)'],
+      ['sen-makwanpur', 1553, 85.15, 27.42, 'Makwanpur'],
+      ['sen-makwanpur', 1762, 87.28, 26.81, 'Vijayapur'],
+      ['gorkha-kingdom', 1559, 84.63, 28.00, 'Gorkha'],
+      ['gorkha-kingdom', 1764, 85.15, 27.42, 'Makwanpur'],
+      ['gorkha-kingdom', 1769, 85.32, 27.70, 'Kathmandu'],
+      ['gorkha-kingdom', 1775, 87.28, 26.81, 'Vijayapur'],
+      ['gorkha-kingdom', 1790, 82.18, 29.27, 'Jumla'],
+      ['gorkha-kingdom', 1791, 79.66, 29.60, 'Almora'],
+      ['gorkha-kingdom', 1804, 78.78, 30.22, 'Srinagar (Garhwal)'],
+      ['gorkha-kingdom', 1806, 83.55, 27.87, 'Tansen (Palpa)'],
+    ],
+    on: {
+      450: ['licchavi-nepal'],
+      1000: ['thakuri-nepal'],
+      1150: ['karnata-mithila', 'khasa-malla', 'thakuri-nepal'],
+      1250: ['malla-nepal', 'karnata-mithila', 'khasa-malla'],
+      1450: ['malla-nepal', 'baise-rajya', 'chaubisi-rajya'],
+      1600: ['malla-nepal', 'baise-rajya', 'chaubisi-rajya', 'sen-makwanpur', 'gorkha-kingdom'],
+      1770: ['gorkha-kingdom', 'sen-makwanpur', 'baise-rajya', 'chaubisi-rajya'],
+      1800: ['gorkha-kingdom', 'chaubisi-rajya'],
+      1810: ['gorkha-kingdom'],
+    },
+    gone: {
+      395: ['licchavi-nepal'],
+      875: ['thakuri-nepal'],
+      880: ['licchavi-nepal'],
+      1090: ['karnata-mithila'],
+      1135: ['khasa-malla'],
+      1195: ['malla-nepal'],
+      1202: ['thakuri-nepal'],
+      1327: ['karnata-mithila'],
+      1382: ['khasa-malla'],
+      1387: ['baise-rajya'],
+      1395: ['chaubisi-rajya'],
+      1549: ['sen-makwanpur'],
+      1555: ['gorkha-kingdom'],
+      1770: ['malla-nepal'],
+      1777: ['sen-makwanpur'],
+      1792: ['baise-rajya'],
+      1807: ['chaubisi-rajya'],
+      1815: nepalPolities.map((e) => e.id),
+    },
+    absent: [
+      ['gorkha-kingdom', 1500, 'nepal'],
+      ['sen-makwanpur', 1800, 'sen'],
+    ],
+    present: [
+      ['gorkha-kingdom', 1800, 'nepal'],
+      ['maurya-empire', -250, 'india-north'],
+    ],
+    notOver: [
+      ['maurya-empire', -250, 85.32, 27.70, 'the Kathmandu valley (the Terai stays Mauryan)'],
+      ['kushan-empire', 100, 82.18, 29.27, 'Jumla (the Karnali hills)'],
+      ['gupta-empire', 450, 85.32, 27.70, 'the Kathmandu valley (Licchavi Nepala, a tributary)'],
+      ['tibetan-empire', 750, 85.32, 27.70, 'the Kathmandu valley (Licchavi)'],
+      ['tibetan-empire', 750, 83.28, 27.48, 'Lumbini in the Terai'],
+      ['delhi-sultanate', 1300, 82.03, 29.38, 'Sinja (the Khasa kingdom)'],
+      ['delhi-sultanate', 1300, 85.10, 26.89, 'Simraungadh (the Karnatas)'],
+      ['mughal-empire', 1600, 85.32, 27.70, 'Kathmandu (the Malla kingdoms)'],
+      ['mughal-empire', 1700, 82.18, 29.27, 'Jumla (the Baise)'],
+      ['maratha-empire', 1750, 80.94, 29.26, 'Doti (the Baise)'],
+      ['british-empire', 1800, 85.32, 27.70, 'Kathmandu (Gorkha Nepal)'],
+      ['british-empire', 1800, 85.92, 26.73, 'Janakpur (Gorkha Nepal)'],
+      ['british-empire', 1810, 79.66, 29.60, 'Almora (Gorkha Kumaon until 1815)'],
+    ],
+    noOverlap: {
+      from: 400,
+      to: 1813,
+      box: [77.5, 26.2, 88.3, 31.5],
+      planar: true,
+      with: ['maurya-empire', 'kushan-empire', 'gupta-empire', 'tibetan-empire', 'delhi-sultanate', 'mughal-empire', 'maratha-empire', 'british-empire', 'pala-empire', 'sena-dynasty', 'lakhnauti', 'bengal-sultanate', 'mughal-bengal', 'nawabs-of-bengal', 'koch-kingdom'],
       remnants: [],
     },
   },

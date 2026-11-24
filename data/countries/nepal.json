@@ -1,0 +1,1054 @@
+{
+  "id": "nepal",
+  "name": "Nepal",
+  "flag": "🇳🇵",
+  "minYear": -30000,
+  "maxYear": 2026,
+  "categories": [
+    {
+      "id": "ancient",
+      "name": "Kiratas, Lumbini and the Mauryas",
+      "color": "#B45309"
+    },
+    {
+      "id": "licchavi",
+      "name": "Licchavi Nepal",
+      "color": "#7C3AED"
+    },
+    {
+      "id": "medieval",
+      "name": "Thakuris, Khasas and Simraungadh",
+      "color": "#047857"
+    },
+    {
+      "id": "malla",
+      "name": "The Malla valley",
+      "color": "#9A3412"
+    },
+    {
+      "id": "petty",
+      "name": "Hill kingdoms and the Sens",
+      "color": "#0F766E"
+    },
+    {
+      "id": "gorkha",
+      "name": "Gorkha and unification",
+      "color": "#B91C1C"
+    },
+    {
+      "id": "modern",
+      "name": "Ranas, democracy and the republic",
+      "color": "#2563EB"
+    }
+  ],
+  "items": [
+    {
+      "id": "np-prehistory",
+      "name": "Early Nepal and the Kirata kings",
+      "start": -30000,
+      "end": 300,
+      "region": "ancient",
+      "icon": "🏔️",
+      "description": "Stone tools from the Dang and Deukhuri valleys and the Kathmandu valley show people in the Nepal Himalaya long before writing. The Newar chronicles (vamshavalis) list Gopala and Mahispala cowherd dynasties and then a long line of Kirata kings in the Kathmandu valley before the Licchavis; the Kirat peoples, the Rai and Limbu, still live in the eastern hills. The chronicles are late and legendary, but the valley was farmed and settled well before the 4th century CE.",
+      "periods": [
+        {
+          "name": "Stone Age hunter-gatherers",
+          "start": -30000,
+          "end": -1000
+        },
+        {
+          "name": "Gopala, Mahispala and Kirata kings (chronicles)",
+          "start": -1000,
+          "end": 300
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — History of Nepal",
+          "url": "https://en.wikipedia.org/wiki/History_of_Nepal"
+        },
+        {
+          "title": "Wikipedia — Kirata Kingdom",
+          "url": "https://en.wikipedia.org/wiki/Kirata_Kingdom"
+        },
+        {
+          "title": "Wikipedia — Kirati people",
+          "url": "https://en.wikipedia.org/wiki/Kirati_people"
+        },
+        {
+          "title": "Wikipedia — Gopal Raj Vamshavali",
+          "url": "https://en.wikipedia.org/wiki/Gopal_Raj_Vamshavali"
+        },
+        {
+          "title": "Wikipedia — Limbu people",
+          "url": "https://en.wikipedia.org/wiki/Limbu_people"
+        }
+      ]
+    },
+    {
+      "id": "np-lumbini",
+      "name": "Lumbini, Kapilavastu and the Buddha",
+      "start": -563,
+      "end": -400,
+      "region": "ancient",
+      "icon": "☸️",
+      "description": "Siddhartha Gautama, the Buddha, was born in the grove of Lumbini in the Nepal Terai, son of a chief of the Shakya republic whose town, Kapilavastu, is usually identified with Tilaurakot nearby. His dates are disputed (traditionally c. 563–483 BCE, many scholars now c. 480–400 BCE). Excavations at the Maya Devi Temple found a timber shrine perhaps of the 6th century BCE beneath the brick temples.",
+      "periods": [
+        {
+          "name": "The Shakya republic",
+          "start": -563,
+          "end": -483
+        },
+        {
+          "name": "The Buddha’s lifetime (later dating)",
+          "start": -480,
+          "end": -400
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Lumbini",
+          "url": "https://en.wikipedia.org/wiki/Lumbini"
+        },
+        {
+          "title": "Wikipedia — Kapilavastu",
+          "url": "https://en.wikipedia.org/wiki/Kapilavastu"
+        },
+        {
+          "title": "Wikipedia — Shakya",
+          "url": "https://en.wikipedia.org/wiki/Shakya"
+        },
+        {
+          "title": "Wikipedia — Gautama Buddha",
+          "url": "https://en.wikipedia.org/wiki/Gautama_Buddha"
+        },
+        {
+          "title": "Wikipedia — Maya Devi Temple, Lumbini",
+          "url": "https://en.wikipedia.org/wiki/Maya_Devi_Temple,_Lumbini"
+        },
+        {
+          "title": "Wikipedia — Tilaurakot",
+          "url": "https://en.wikipedia.org/wiki/Tilaurakot"
+        }
+      ]
+    },
+    {
+      "id": "np-ashoka",
+      "name": "Ashoka at Lumbini",
+      "start": -260,
+      "end": -185,
+      "region": "ancient",
+      "icon": "🗿",
+      "description": "The Mauryan emperor Ashoka visited Lumbini in the twentieth year of his reign (c. 249 BCE) and set up a pillar whose Brahmi inscription records that the Buddha was born there and that the village was freed of tax; a second pillar stands at Nigali Sagar. Rediscovered by Alois Führer and Khadga Shumsher in 1896, the Lumbini pillar fixed the site of the birthplace. Legends that Ashoka and his daughter Charumati visited the Kathmandu valley and founded the Patan stupas are not supported by evidence.",
+      "periods": [
+        {
+          "name": "Mauryan Terai",
+          "start": -260,
+          "end": -185
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Lumbini pillar inscription",
+          "url": "https://en.wikipedia.org/wiki/Lumbini_pillar_inscription"
+        },
+        {
+          "title": "Wikipedia — Ashoka",
+          "url": "https://en.wikipedia.org/wiki/Ashoka"
+        },
+        {
+          "title": "Wikipedia — Maurya Empire",
+          "url": "https://en.wikipedia.org/wiki/Maurya_Empire"
+        },
+        {
+          "title": "Wikipedia — Nigali Sagar",
+          "url": "https://en.wikipedia.org/wiki/Nigali_Sagar"
+        },
+        {
+          "title": "Wikipedia — Alois Anton Führer",
+          "url": "https://en.wikipedia.org/wiki/Alois_Anton_F%C3%BChrer"
+        }
+      ]
+    },
+    {
+      "id": "np-licchavi",
+      "name": "The Licchavi kingdom",
+      "start": 400,
+      "end": 879,
+      "region": "licchavi",
+      "icon": "🛕",
+      "description": "The Licchavis ruled the Kathmandu valley from about the 4th century until the late 9th, the first Nepali kingdom known from its own inscriptions. Samudragupta’s Allahabad pillar names Nepala as a frontier state paying tribute to the Guptas. Manadeva I’s inscription at Changu Narayan (464) is the oldest dated record in Nepal. The kings built temples, water spouts (hiti) and monasteries in a Sanskrit, Hindu and Buddhist court culture, and controlled trade between India and Tibet.",
+      "periods": [
+        {
+          "name": "Early Licchavis",
+          "start": 400,
+          "end": 464
+        },
+        {
+          "name": "Manadeva I",
+          "start": 464,
+          "end": 505
+        },
+        {
+          "name": "Later Licchavis",
+          "start": 505,
+          "end": 879
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Licchavi (kingdom)",
+          "url": "https://en.wikipedia.org/wiki/Licchavi_(kingdom)"
+        },
+        {
+          "title": "Wikipedia — Manadeva",
+          "url": "https://en.wikipedia.org/wiki/Manadeva"
+        },
+        {
+          "title": "Wikipedia — Changu Narayan Temple",
+          "url": "https://en.wikipedia.org/wiki/Changu_Narayan_Temple"
+        },
+        {
+          "title": "Wikipedia — Allahabad Pillar",
+          "url": "https://en.wikipedia.org/wiki/Allahabad_Pillar"
+        },
+        {
+          "title": "Wikipedia — Hiti",
+          "url": "https://en.wikipedia.org/wiki/Hiti"
+        }
+      ]
+    },
+    {
+      "id": "np-amshuverma",
+      "name": "Amshuverma and the Tibetan link",
+      "start": 598,
+      "end": 750,
+      "region": "licchavi",
+      "icon": "🏯",
+      "description": "Amshuverma, a Thakuri minister who ruled as king (c. 605–621), built the Kailashkut palace that the Chinese pilgrim Xuanzang heard of. Tradition makes his daughter Bhrikuti the Nepali wife of the Tibetan emperor Songtsen Gampo. After a usurpation, Narendradeva regained the throne with Tibetan help (c. 641), and Nepal sent troops with the Tang envoy Wang Xuance into India in 648; Nepal paid tribute to Tibet for part of the 7th–8th centuries, and the Kathmandu valley became the main route between India and Tibet.",
+      "periods": [
+        {
+          "name": "Amshuverma",
+          "start": 598,
+          "end": 621
+        },
+        {
+          "name": "Narendradeva and Tibetan overlordship",
+          "start": 641,
+          "end": 750
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Amshuverma",
+          "url": "https://en.wikipedia.org/wiki/Amshuverma"
+        },
+        {
+          "title": "Wikipedia — Bhrikuti",
+          "url": "https://en.wikipedia.org/wiki/Bhrikuti"
+        },
+        {
+          "title": "Wikipedia — Songtsen Gampo",
+          "url": "https://en.wikipedia.org/wiki/Songtsen_Gampo"
+        },
+        {
+          "title": "Wikipedia — Narendradeva",
+          "url": "https://en.wikipedia.org/wiki/Narendradeva"
+        },
+        {
+          "title": "Wikipedia — Wang Xuance",
+          "url": "https://en.wikipedia.org/wiki/Wang_Xuance"
+        }
+      ]
+    },
+    {
+      "id": "np-thakuri",
+      "name": "Nepal Sambat and the Thakuri kings",
+      "start": 879,
+      "end": 1200,
+      "region": "medieval",
+      "icon": "📜",
+      "description": "The Nepal Sambat era, still used by the Newars, begins in 879, about when the Licchavi line ended. The obscure \"transitional\" or Thakuri period that followed saw the Kathmandu valley’s towns grow and Buddhist and tantric learning flourish; palm-leaf manuscripts copied in Nepal preserved Sanskrit texts lost in India. Kings ruled from Kathmandu, Patan and Bhaktapur, sometimes jointly, and Raghavadeva is traditionally credited with founding the era.",
+      "periods": [
+        {
+          "name": "Nepal Sambat begins",
+          "start": 879,
+          "end": 1000
+        },
+        {
+          "name": "The later Thakuris",
+          "start": 1000,
+          "end": 1200
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Nepal Sambat",
+          "url": "https://en.wikipedia.org/wiki/Nepal_Sambat"
+        },
+        {
+          "title": "Wikipedia — Thakuri dynasty",
+          "url": "https://en.wikipedia.org/wiki/Thakuri_dynasty"
+        },
+        {
+          "title": "Wikipedia — Newar Buddhism",
+          "url": "https://en.wikipedia.org/wiki/Newar_Buddhism"
+        }
+      ]
+    },
+    {
+      "id": "np-simraungadh",
+      "name": "Simraungadh and the Karnatas of Mithila",
+      "start": 1097,
+      "end": 1324,
+      "region": "medieval",
+      "icon": "🏰",
+      "description": "Nanyadeva, a Karnata chief from the Deccan, founded a kingdom in Mithila about 1097 with its capital at Simraungadh in the Nepal Terai. His dynasty ruled Tirhut and the Terai, patronised Maithili learning and raided the Kathmandu valley. Ghiyasuddin Tughluq’s army took Simraungadh in 1324; the last king, Harisimhadeva, fled into the hills, and his family later married into the Malla court, bringing the goddess Taleju to the valley.",
+      "periods": [
+        {
+          "name": "Nanyadeva",
+          "start": 1097,
+          "end": 1147
+        },
+        {
+          "name": "The Karnata kings",
+          "start": 1147,
+          "end": 1324
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Karnat dynasty",
+          "url": "https://en.wikipedia.org/wiki/Karnat_dynasty"
+        },
+        {
+          "title": "Wikipedia — Nanyadeva",
+          "url": "https://en.wikipedia.org/wiki/Nanyadeva"
+        },
+        {
+          "title": "Wikipedia — Simraungadh",
+          "url": "https://en.wikipedia.org/wiki/Simraungadh"
+        },
+        {
+          "title": "Wikipedia — Harisimhadeva",
+          "url": "https://en.wikipedia.org/wiki/Harisimhadeva"
+        },
+        {
+          "title": "Wikipedia — Mithila (region)",
+          "url": "https://en.wikipedia.org/wiki/Mithila_(region)"
+        }
+      ]
+    },
+    {
+      "id": "np-khasa",
+      "name": "The Khasa Malla kingdom",
+      "start": 1100,
+      "end": 1400,
+      "region": "medieval",
+      "icon": "⛰️",
+      "description": "From Sinja near Jumla, the Khasa Malla kings ruled the western Himalaya from the 12th to the 14th century, from Purang and Guge in western Tibet to Kumaon and Dullu, recorded in inscriptions at Dullu and in Tibetan sources. Their speech, Khas, is the ancestor of the Nepali language. Prithvi Malla’s Dullu inscription (1357) is a key record. The kingdom broke up in the late 14th century into the Baise, the twenty-two petty kingdoms of the Karnali basin.",
+      "periods": [
+        {
+          "name": "Nagaraja and the founders",
+          "start": 1100,
+          "end": 1200
+        },
+        {
+          "name": "Ripu Malla and Prithvi Malla",
+          "start": 1300,
+          "end": 1380
+        },
+        {
+          "name": "Break-up",
+          "start": 1380,
+          "end": 1400
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Khasa Kingdom",
+          "url": "https://en.wikipedia.org/wiki/Khasa_Kingdom"
+        },
+        {
+          "title": "Wikipedia — Sinja Valley",
+          "url": "https://en.wikipedia.org/wiki/Sinja_Valley"
+        },
+        {
+          "title": "Wikipedia — Khas people",
+          "url": "https://en.wikipedia.org/wiki/Khas_people"
+        },
+        {
+          "title": "Wikipedia — Dullu",
+          "url": "https://en.wikipedia.org/wiki/Dullu"
+        },
+        {
+          "title": "Wikipedia — Ripu Malla",
+          "url": "https://en.wikipedia.org/wiki/Ripu_Malla"
+        }
+      ]
+    },
+    {
+      "id": "np-malla",
+      "name": "The Malla kings of the Kathmandu valley",
+      "start": 1200,
+      "end": 1482,
+      "region": "malla",
+      "icon": "🛕",
+      "description": "Ari Malla became king of Nepal (the valley) about 1200, founding the Malla period. Shamsuddin Ilyas Shah of Bengal raided the valley in 1349 and burnt Swayambhu and Pashupati. Jayasthiti Malla (1382–1395) reunited the valley and is remembered for codifying caste and law, and Yaksha Malla (1428–1482) was the last king of a united valley; on his death his sons divided it.",
+      "periods": [
+        {
+          "name": "Early Mallas",
+          "start": 1200,
+          "end": 1382
+        },
+        {
+          "name": "Jayasthiti Malla",
+          "start": 1382,
+          "end": 1395
+        },
+        {
+          "name": "Yaksha Malla",
+          "start": 1428,
+          "end": 1482
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Malla (Nepal)",
+          "url": "https://en.wikipedia.org/wiki/Malla_(Nepal)"
+        },
+        {
+          "title": "Wikipedia — Arimalla",
+          "url": "https://en.wikipedia.org/wiki/Arimalla"
+        },
+        {
+          "title": "Wikipedia — Jayasthiti Malla",
+          "url": "https://en.wikipedia.org/wiki/Jayasthiti_Malla"
+        },
+        {
+          "title": "Wikipedia — Yaksha Malla",
+          "url": "https://en.wikipedia.org/wiki/Yaksha_Malla"
+        },
+        {
+          "title": "Wikipedia — Shamsuddin Ilyas Shah",
+          "url": "https://en.wikipedia.org/wiki/Shamsuddin_Ilyas_Shah"
+        }
+      ]
+    },
+    {
+      "id": "np-baise-chaubisi",
+      "name": "The Baise and Chaubisi kingdoms",
+      "start": 1380,
+      "end": 1790,
+      "region": "petty",
+      "icon": "🏞️",
+      "description": "Between the Karnali and the Gandaki the hills were divided into dozens of small hill kingdoms, conventionally the Baise (twenty-two) in the west, heirs of the Khasa kingdom, with Jumla and Doti the strongest, and the Chaubisi (twenty-four) in the Gandaki basin, among them Lamjung, Kaski, Tanahun, Parbat and Palpa. Many were ruled by Thakuri and Khas families claiming Rajput origin. Gorkha conquered them between 1782 and 1806; Palpa was the last to fall.",
+      "periods": [
+        {
+          "name": "Rise of the petty kingdoms",
+          "start": 1380,
+          "end": 1550
+        },
+        {
+          "name": "Jumla, Palpa and Lamjung at their height",
+          "start": 1550,
+          "end": 1782
+        },
+        {
+          "name": "Gorkha conquest",
+          "start": 1782,
+          "end": 1806
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Baise Rajya",
+          "url": "https://en.wikipedia.org/wiki/Baise_Rajya"
+        },
+        {
+          "title": "Wikipedia — Chaubisi Rajya",
+          "url": "https://en.wikipedia.org/wiki/Chaubisi_Rajya"
+        },
+        {
+          "title": "Wikipedia — Kingdom of Jumla",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Jumla"
+        },
+        {
+          "title": "Wikipedia — Doti Kingdom",
+          "url": "https://en.wikipedia.org/wiki/Doti_Kingdom"
+        },
+        {
+          "title": "Wikipedia — Palpa",
+          "url": "https://en.wikipedia.org/wiki/Palpa"
+        }
+      ]
+    },
+    {
+      "id": "np-three-kingdoms",
+      "name": "Kathmandu, Patan and Bhaktapur",
+      "start": 1482,
+      "end": 1769,
+      "region": "malla",
+      "icon": "🏛️",
+      "description": "After Yaksha Malla the valley split into the rival Malla kingdoms of Kathmandu (Kantipur), Patan (Lalitpur) and Bhaktapur, each with its royal palace square, now World Heritage Sites. Pratap Malla of Kathmandu, Siddhi Narasimha Malla of Patan and Bhupatindra Malla of Bhaktapur built temples and palaces, and Newar art, drama and trade with Lhasa flourished. Their quarrels opened the way to Gorkha, which took the valley in 1768–1769.",
+      "periods": [
+        {
+          "name": "Three kingdoms",
+          "start": 1482,
+          "end": 1641
+        },
+        {
+          "name": "Pratap Malla and Siddhi Narasimha",
+          "start": 1641,
+          "end": 1700
+        },
+        {
+          "name": "The last Malla kings",
+          "start": 1700,
+          "end": 1769
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Kathmandu Durbar Square",
+          "url": "https://en.wikipedia.org/wiki/Kathmandu_Durbar_Square"
+        },
+        {
+          "title": "Wikipedia — Patan Durbar Square",
+          "url": "https://en.wikipedia.org/wiki/Patan_Durbar_Square"
+        },
+        {
+          "title": "Wikipedia — Bhaktapur Durbar Square",
+          "url": "https://en.wikipedia.org/wiki/Bhaktapur_Durbar_Square"
+        },
+        {
+          "title": "Wikipedia — Pratap Malla",
+          "url": "https://en.wikipedia.org/wiki/Pratap_Malla"
+        },
+        {
+          "title": "Wikipedia — Bhupatindra Malla",
+          "url": "https://en.wikipedia.org/wiki/Bhupatindra_Malla"
+        }
+      ]
+    },
+    {
+      "id": "np-sen",
+      "name": "The Sen kings of Palpa, Makwanpur and Vijayapur",
+      "start": 1518,
+      "end": 1774,
+      "region": "petty",
+      "icon": "🗡️",
+      "description": "Mukunda Sen of Palpa (early 16th century) briefly raided the Kathmandu valley, and his descendants divided his lands: Sen kings ruled Palpa and Butwal in the west, and Makwanpur, the Terai of Mithila and Vijayapur (Morang) in the east, allied with the Limbu chiefs of Limbuwan. Prithvi Narayan Shah took Makwanpur in 1762 and Vijayapur in 1774.",
+      "periods": [
+        {
+          "name": "Mukunda Sen of Palpa",
+          "start": 1518,
+          "end": 1553
+        },
+        {
+          "name": "Makwanpur and Vijayapur",
+          "start": 1553,
+          "end": 1774
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Mukunda Sen",
+          "url": "https://en.wikipedia.org/wiki/Mukunda_Sen"
+        },
+        {
+          "title": "Wikipedia — Makwanpur Gadhi",
+          "url": "https://en.wikipedia.org/wiki/Makwanpur_Gadhi"
+        },
+        {
+          "title": "Wikipedia — Senas of Makwanpur",
+          "url": "https://en.wikipedia.org/wiki/Senas_of_Makwanpur"
+        },
+        {
+          "title": "Wikipedia — Limbuwan",
+          "url": "https://en.wikipedia.org/wiki/Limbuwan"
+        },
+        {
+          "title": "Wikipedia — Vijayapur",
+          "url": "https://en.wikipedia.org/wiki/Vijayapur"
+        }
+      ]
+    },
+    {
+      "id": "np-gorkha",
+      "name": "The Kingdom of Gorkha",
+      "start": 1559,
+      "end": 1743,
+      "region": "gorkha",
+      "icon": "🏯",
+      "description": "Drabya Shah, a younger son of the king of Lamjung, seized Gorkha in 1559. His successors, notably Ram Shah (1606–1636), known for his laws and justice, built a small but well-organised hill state on the ridge west of the Trishuli, rivals of Lamjung and trading partners of the valley.",
+      "periods": [
+        {
+          "name": "Drabya Shah",
+          "start": 1559,
+          "end": 1570
+        },
+        {
+          "name": "Ram Shah",
+          "start": 1606,
+          "end": 1636
+        },
+        {
+          "name": "The later kings",
+          "start": 1636,
+          "end": 1743
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Gorkha Kingdom",
+          "url": "https://en.wikipedia.org/wiki/Gorkha_Kingdom"
+        },
+        {
+          "title": "Wikipedia — Drabya Shah",
+          "url": "https://en.wikipedia.org/wiki/Drabya_Shah"
+        },
+        {
+          "title": "Wikipedia — Ram Shah",
+          "url": "https://en.wikipedia.org/wiki/Ram_Shah"
+        },
+        {
+          "title": "Wikipedia — Gorkha Durbar",
+          "url": "https://en.wikipedia.org/wiki/Gorkha_Durbar"
+        },
+        {
+          "title": "Wikipedia — Lamjung District",
+          "url": "https://en.wikipedia.org/wiki/Lamjung_District"
+        }
+      ]
+    },
+    {
+      "id": "np-unification",
+      "name": "Prithvi Narayan Shah and the unification of Nepal",
+      "start": 1743,
+      "end": 1775,
+      "region": "gorkha",
+      "icon": "⚔️",
+      "description": "Prithvi Narayan Shah became king of Gorkha in 1743, took Nuwakot (1744), blockaded the Kathmandu valley, beat a British East India Company expedition under Captain Kinloch (1767) and conquered Makwanpur (1762), Kirtipur (1767), Kathmandu (1768) and Patan and Bhaktapur (1769), making Kathmandu his capital. He then took the eastern hills and Vijayapur (1772–1774). His Divya Upadesh called Nepal \"a yam between two boulders\", China and British India.",
+      "periods": [
+        {
+          "name": "Nuwakot and the blockade",
+          "start": 1743,
+          "end": 1762
+        },
+        {
+          "name": "Makwanpur to Bhaktapur",
+          "start": 1762,
+          "end": 1769
+        },
+        {
+          "name": "The eastern conquests",
+          "start": 1769,
+          "end": 1775
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Prithvi Narayan Shah",
+          "url": "https://en.wikipedia.org/wiki/Prithvi_Narayan_Shah"
+        },
+        {
+          "title": "Wikipedia — Unification of Nepal",
+          "url": "https://en.wikipedia.org/wiki/Unification_of_Nepal"
+        },
+        {
+          "title": "Wikipedia — Battle of Kirtipur",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Kirtipur"
+        },
+        {
+          "title": "Wikipedia — Divya Upadesh",
+          "url": "https://en.wikipedia.org/wiki/Divya_Upadesh"
+        }
+      ]
+    },
+    {
+      "id": "np-expansion",
+      "name": "Expansion to Kumaon, Garhwal and Sikkim",
+      "start": 1775,
+      "end": 1814,
+      "region": "gorkha",
+      "icon": "🗺️",
+      "description": "Under the regent Bahadur Shah and Bhimsen Thapa, the Gorkhali armies took the Chaubisi and Baise kingdoms (Lamjung, Kaski, Parbat, Jumla by 1790), Kumaon (1790), Garhwal (1804) and the hill states to the Sutlej, occupied western Sikkim, and besieged Kangra (1806–1809) until driven back by Ranjit Singh. At its height (c. 1810) the kingdom stretched from the Teesta to the Sutlej. Palpa was annexed in 1806.",
+      "periods": [
+        {
+          "name": "Chaubisi and Baise",
+          "start": 1775,
+          "end": 1790
+        },
+        {
+          "name": "Kumaon and Garhwal",
+          "start": 1790,
+          "end": 1806
+        },
+        {
+          "name": "To the Sutlej",
+          "start": 1806,
+          "end": 1814
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Nepal–Sikh war",
+          "url": "https://en.wikipedia.org/wiki/Nepal%E2%80%93Sikh_war"
+        },
+        {
+          "title": "Wikipedia — Bahadur Shah of Nepal",
+          "url": "https://en.wikipedia.org/wiki/Bahadur_Shah_of_Nepal"
+        },
+        {
+          "title": "Wikipedia — Bhimsen Thapa",
+          "url": "https://en.wikipedia.org/wiki/Bhimsen_Thapa"
+        },
+        {
+          "title": "Wikipedia — Kangra State",
+          "url": "https://en.wikipedia.org/wiki/Kangra_State"
+        },
+        {
+          "title": "Wikipedia — Garhwal Kingdom",
+          "url": "https://en.wikipedia.org/wiki/Garhwal_Kingdom"
+        }
+      ]
+    },
+    {
+      "id": "np-tibet-war",
+      "name": "The wars with Tibet and China",
+      "start": 1788,
+      "end": 1792,
+      "region": "gorkha",
+      "icon": "🐉",
+      "description": "A quarrel over debased Nepali coins used in Tibet and the Shamarpa lama led Nepal to invade Tibet in 1788 and again in 1791, sacking Tashilhunpo at Shigatse. The Qianlong Emperor sent a Qing army under Fuk’anggan that crossed the Himalaya and advanced to Nuwakot, near Kathmandu (1792). By the peace treaty of Betrawati Nepal sent tribute missions to Beijing every five years until 1908.",
+      "periods": [
+        {
+          "name": "First war",
+          "start": 1788,
+          "end": 1789
+        },
+        {
+          "name": "Second war and the Qing invasion",
+          "start": 1791,
+          "end": 1792
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Sino-Nepalese War",
+          "url": "https://en.wikipedia.org/wiki/Sino-Nepalese_War"
+        },
+        {
+          "title": "Wikipedia — Nepalese–Tibetan War",
+          "url": "https://en.wikipedia.org/wiki/Nepalese%E2%80%93Tibetan_War"
+        },
+        {
+          "title": "Wikipedia — Fuk'anggan",
+          "url": "https://en.wikipedia.org/wiki/Fuk%27anggan"
+        },
+        {
+          "title": "Wikipedia — Tashi Lhunpo Monastery",
+          "url": "https://en.wikipedia.org/wiki/Tashi_Lhunpo_Monastery"
+        }
+      ]
+    },
+    {
+      "id": "np-anglo-nepal-war",
+      "name": "The Anglo-Nepalese War",
+      "start": 1814,
+      "end": 1816,
+      "region": "gorkha",
+      "icon": "🎖️",
+      "description": "Disputes over the Terai led the East India Company to declare war in 1814. Nepali forts such as Nalapani held out bravely, but Ochterlony defeated Amar Singh Thapa at Malaun (1815), and by the Treaty of Sugauli (1816) Nepal gave up Kumaon, Garhwal, the land to the Sutlej, Sikkim and much of the Terai, and accepted a British resident at Kathmandu. The British began recruiting Gurkha soldiers, as they still do.",
+      "periods": [
+        {
+          "name": "The war",
+          "start": 1814,
+          "end": 1816
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Anglo-Nepalese War",
+          "url": "https://en.wikipedia.org/wiki/Anglo-Nepalese_War"
+        },
+        {
+          "title": "Wikipedia — Treaty of Sugauli",
+          "url": "https://en.wikipedia.org/wiki/Treaty_of_Sugauli"
+        },
+        {
+          "title": "Wikipedia — Battle of Nalapani",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Nalapani"
+        },
+        {
+          "title": "Wikipedia — Amar Singh Thapa",
+          "url": "https://en.wikipedia.org/wiki/Amar_Singh_Thapa"
+        },
+        {
+          "title": "Wikipedia — Gurkha",
+          "url": "https://en.wikipedia.org/wiki/Gurkha"
+        }
+      ]
+    },
+    {
+      "id": "np-kingdom",
+      "name": "The kingdom after Sugauli",
+      "start": 1816,
+      "end": 1846,
+      "region": "modern",
+      "icon": "👑",
+      "description": "Bhimsen Thapa ruled as mukhtiyar for a child king until his fall in 1837; factions of the Thapa, Pande and Basnyat families struggled at court. The East India Company returned some of the Terai in 1816, and the border with India was fixed along the hills and the Mahakali.",
+      "periods": [
+        {
+          "name": "Bhimsen Thapa",
+          "start": 1816,
+          "end": 1837
+        },
+        {
+          "name": "Court struggles",
+          "start": 1837,
+          "end": 1846
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Bhimsen Thapa",
+          "url": "https://en.wikipedia.org/wiki/Bhimsen_Thapa"
+        },
+        {
+          "title": "Wikipedia — Kingdom of Nepal",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Nepal"
+        },
+        {
+          "title": "Wikipedia — Mahakali River",
+          "url": "https://en.wikipedia.org/wiki/Mahakali_River"
+        },
+        {
+          "title": "Wikipedia — Rajendra Bikram Shah",
+          "url": "https://en.wikipedia.org/wiki/Rajendra_Bikram_Shah"
+        }
+      ]
+    },
+    {
+      "id": "np-rana",
+      "name": "The Rana regime",
+      "start": 1846,
+      "end": 1951,
+      "region": "modern",
+      "icon": "🏰",
+      "description": "Jung Bahadur Kunwar seized power in the Kot massacre of 1846 and made the office of prime minister hereditary in his family, the Ranas, leaving the Shah kings as figureheads. He visited Britain (1850), issued the Muluki Ain code (1854), helped the British in 1857 and recovered the western Terai (the Naya Muluk, 1860). The Ranas kept Nepal closed, built the Singha Durbar palace, and abolished slavery (1924); Britain recognised Nepal’s independence by the treaty of 1923.",
+      "periods": [
+        {
+          "name": "Jung Bahadur",
+          "start": 1846,
+          "end": 1877
+        },
+        {
+          "name": "The later Ranas",
+          "start": 1877,
+          "end": 1951
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Rana dynasty",
+          "url": "https://en.wikipedia.org/wiki/Rana_dynasty"
+        },
+        {
+          "title": "Wikipedia — Jung Bahadur Rana",
+          "url": "https://en.wikipedia.org/wiki/Jung_Bahadur_Rana"
+        },
+        {
+          "title": "Wikipedia — Kot massacre",
+          "url": "https://en.wikipedia.org/wiki/Kot_massacre"
+        },
+        {
+          "title": "Wikipedia — Nepal–Britain Treaty of 1923",
+          "url": "https://en.wikipedia.org/wiki/Nepal%E2%80%93Britain_Treaty_of_1923"
+        },
+        {
+          "title": "Wikipedia — Naya Muluk",
+          "url": "https://en.wikipedia.org/wiki/Naya_Muluk"
+        }
+      ]
+    },
+    {
+      "id": "np-everest",
+      "name": "Everest and the mountains",
+      "start": 1949,
+      "end": 2026,
+      "region": "modern",
+      "icon": "🧗",
+      "description": "Nepal opened its mountains to foreign climbers from 1949. Annapurna I became the first 8,000-metre peak climbed (1950), and Tenzing Norgay and Edmund Hillary reached the summit of Everest (Sagarmatha) on 29 May 1953. Sagarmatha National Park became a World Heritage Site in 1979, and mountaineering and trekking, with Sherpa guides, are now a mainstay of the economy.",
+      "periods": [
+        {
+          "name": "First ascents",
+          "start": 1949,
+          "end": 1953
+        },
+        {
+          "name": "Trekking and climbing",
+          "start": 1953,
+          "end": 2026
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Mount Everest",
+          "url": "https://en.wikipedia.org/wiki/Mount_Everest"
+        },
+        {
+          "title": "Wikipedia — 1953 British Mount Everest expedition",
+          "url": "https://en.wikipedia.org/wiki/1953_British_Mount_Everest_expedition"
+        },
+        {
+          "title": "Wikipedia — Tenzing Norgay",
+          "url": "https://en.wikipedia.org/wiki/Tenzing_Norgay"
+        },
+        {
+          "title": "Wikipedia — Sagarmatha National Park",
+          "url": "https://en.wikipedia.org/wiki/Sagarmatha_National_Park"
+        },
+        {
+          "title": "Wikipedia — Sherpa people",
+          "url": "https://en.wikipedia.org/wiki/Sherpa_people"
+        }
+      ]
+    },
+    {
+      "id": "np-democracy",
+      "name": "Revolution, democracy and the Panchayat",
+      "start": 1951,
+      "end": 1990,
+      "region": "modern",
+      "icon": "🗳️",
+      "description": "The 1951 revolution of the Nepali Congress, backed by King Tribhuvan and India, ended Rana rule. Nepal opened to the world: Tenzing Norgay and Edmund Hillary climbed Everest in 1953, and Nepal joined the United Nations in 1955. B. P. Koirala won the first general election (1959), but King Mahendra dismissed him in 1960 and imposed the partyless Panchayat system, which lasted until the people’s movement (Jana Andolan) of 1990 restored multiparty democracy.",
+      "periods": [
+        {
+          "name": "After the revolution",
+          "start": 1951,
+          "end": 1960
+        },
+        {
+          "name": "The Panchayat",
+          "start": 1960,
+          "end": 1990
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — 1950–1951 Nepalese revolution",
+          "url": "https://en.wikipedia.org/wiki/1950%E2%80%931951_Nepalese_revolution"
+        },
+        {
+          "title": "Wikipedia — Tribhuvan of Nepal",
+          "url": "https://en.wikipedia.org/wiki/Tribhuvan_of_Nepal"
+        },
+        {
+          "title": "Wikipedia — B. P. Koirala",
+          "url": "https://en.wikipedia.org/wiki/B._P._Koirala"
+        },
+        {
+          "title": "Wikipedia — Panchayat (Nepal)",
+          "url": "https://en.wikipedia.org/wiki/Panchayat_(Nepal)"
+        },
+        {
+          "title": "Wikipedia — 1990 Nepalese revolution",
+          "url": "https://en.wikipedia.org/wiki/1990_Nepalese_revolution"
+        }
+      ]
+    },
+    {
+      "id": "np-civil-war",
+      "name": "The Maoist insurgency and the royal massacre",
+      "start": 1996,
+      "end": 2006,
+      "region": "modern",
+      "icon": "✊",
+      "description": "The Communist Party of Nepal (Maoist) launched a \"people’s war\" in 1996 from the mid-western hills; the conflict cost about 17,000 lives. In 2001 Crown Prince Dipendra killed King Birendra and much of the royal family; King Gyanendra took direct power in 2005, and the second people’s movement of April 2006 forced him to restore parliament and led to a peace agreement with the Maoists.",
+      "periods": [
+        {
+          "name": "The people’s war",
+          "start": 1996,
+          "end": 2001
+        },
+        {
+          "name": "Royal massacre and royal rule",
+          "start": 2001,
+          "end": 2006
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Nepalese Civil War",
+          "url": "https://en.wikipedia.org/wiki/Nepalese_Civil_War"
+        },
+        {
+          "title": "Wikipedia — Nepalese royal massacre",
+          "url": "https://en.wikipedia.org/wiki/Nepalese_royal_massacre"
+        },
+        {
+          "title": "Wikipedia — Gyanendra of Nepal",
+          "url": "https://en.wikipedia.org/wiki/Gyanendra_of_Nepal"
+        },
+        {
+          "title": "Wikipedia — 2006 Nepalese revolution",
+          "url": "https://en.wikipedia.org/wiki/2006_Nepalese_revolution"
+        },
+        {
+          "title": "Wikipedia — Comprehensive Peace Accord",
+          "url": "https://en.wikipedia.org/wiki/Comprehensive_Peace_Accord"
+        }
+      ]
+    },
+    {
+      "id": "np-republic",
+      "name": "The Federal Democratic Republic",
+      "start": 2008,
+      "end": 2025,
+      "region": "modern",
+      "icon": "🇳🇵",
+      "description": "The Constituent Assembly abolished the 240-year-old Shah monarchy on 28 May 2008. The Gorkha earthquake of April 2015 killed nearly 9,000 people and destroyed many temples in the valley; the constitution of September 2015 made Nepal a federal republic of seven provinces. Governments have changed often, and youth-led Gen Z protests in September 2025 toppled the government.",
+      "periods": [
+        {
+          "name": "The end of the monarchy",
+          "start": 2008,
+          "end": 2015
+        },
+        {
+          "name": "Earthquake and the constitution",
+          "start": 2015,
+          "end": 2018
+        },
+        {
+          "name": "Federal Nepal",
+          "start": 2018,
+          "end": 2025
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Federal Democratic Republic of Nepal",
+          "url": "https://en.wikipedia.org/wiki/Federal_Democratic_Republic_of_Nepal"
+        },
+        {
+          "title": "Wikipedia — 2008 Nepalese Constituent Assembly election",
+          "url": "https://en.wikipedia.org/wiki/2008_Nepalese_Constituent_Assembly_election"
+        },
+        {
+          "title": "Wikipedia — April 2015 Nepal earthquake",
+          "url": "https://en.wikipedia.org/wiki/April_2015_Nepal_earthquake"
+        },
+        {
+          "title": "Wikipedia — Constitution of Nepal",
+          "url": "https://en.wikipedia.org/wiki/Constitution_of_Nepal"
+        },
+        {
+          "title": "Wikipedia — 2025 Nepalese Gen Z protests",
+          "url": "https://en.wikipedia.org/wiki/2025_Nepalese_Gen_Z_protests"
+        }
+      ]
+    }
+  ]
+}
