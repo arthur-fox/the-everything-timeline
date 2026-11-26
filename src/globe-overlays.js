@@ -64,6 +64,7 @@ import { bangladeshPolities, applyBangladeshShapeFixes } from './globe-pack-bang
 import { sriLankaPolities, applySriLankaShapeFixes } from './globe-pack-sri-lanka.js';
 import { nepalPolities, applyNepalShapeFixes } from './globe-pack-nepal.js';
 import { indiaPolities, applyIndiaShapeFixes } from './globe-pack-india.js';
+import { chinaPolities, applyChinaShapeFixes } from './globe-pack-china.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6594,6 +6595,16 @@ for (const ent of indiaPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 98 — Phase 5 item 7, China globe refinement (globe-pack-china.js): the states of the divided eras,
+// from the Warring States to the Three Kingdoms, the Sixteen Kingdoms, the Northern and Southern
+// dynasties, the Five Dynasties and Ten Kingdoms, the Liao, Xia, Jin and Dali, the fall of the Yuan and
+// the Ming–Qing transition (475 BCE–1683).
+for (const ent of chinaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6702,6 +6713,9 @@ applyNepalShapeFixes(spatialEntities);
 // Day 97 — the Chola, Delhi, Mughal, Maratha, Portuguese and Mongol rings trimmed off the India pack's
 // regional kingdoms; Chola and Mughal shapes held (905, 1685); see globe-pack-india.js.
 applyIndiaShapeFixes(spatialEntities);
+// Day 98 — the Zhou, Han, Tang, Song, Mongol, Ming and Qing rings held, redrawn from the China pack's
+// pieces or trimmed off its states; see globe-pack-china.js.
+applyChinaShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
