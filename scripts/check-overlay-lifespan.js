@@ -34,6 +34,7 @@ import { bangladeshPolities } from '../src/globe-pack-bangladesh.js';
 import { sriLankaPolities } from '../src/globe-pack-sri-lanka.js';
 import { nepalPolities } from '../src/globe-pack-nepal.js';
 import { indiaPolities } from '../src/globe-pack-india.js';
+import { chinaPolities } from '../src/globe-pack-china.js';
 import {
   lerpRings,
   MORPH_RING_SAMPLES,
@@ -512,6 +513,23 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
     assert(over('vijayanagara-empire', 1550, [76.46, 15.33]) && !over('mughal-empire', 1600, [76.46, 15.33]) && over('bijapur-sultanate', 1600, [76.46, 15.33]), 'Hampi Vijayanagara, then Bijapur, not Mughal before 1686');
     assert(over('golconda-sultanate', 1650, [78.4, 17.38]) && !over('mughal-empire', 1650, [78.4, 17.38]) && over('mughal-empire', 1700, [78.4, 17.38]), 'Golconda Qutb Shahi until 1687, Mughal after');
     assert(over('jaunpur-sultanate', 1420, [82.69, 25.75]) && !over('delhi-sultanate', 1400, [82.69, 25.75]), 'Jaunpur Sharqi, not Delhi, after 1394');
+  }
+  // Day 98: China — the states of the divided eras from the Warring States to the Tungning kingdom, all gone by 1815;
+  // the Song, Mongol and Qing rings redrawn from the pack's pieces, the Han and Tang held to meet them.
+  assert(gIn('qin-state', -476, -222) && gIn('cao-wei', 219, 265) && gIn('eastern-wu', 221, 280), 'Qin state to 221 BCE, Cao Wei 220–266, Wu 222–280');
+  assert(gIn('northern-wei', 385, 533) && gIn('sui-dynasty', 581, 617), 'Northern Wei 386–534, Sui 581–618');
+  assert(gIn('five-dynasties', 907, 959) && gIn('liao-dynasty', 916, 1124) && gIn('jin-dynasty-jurchen', 1115, 1233), 'Five Dynasties 907–960, Liao 916–1125, Jin 1115–1234');
+  assert(gIn('western-xia', 1037, 1227) && gIn('dali-kingdom', 936, 1253), 'Western Xia 1038–1227, Dali 937–1253');
+  assert(gIn('yuan-dynasty', 1321, 1367) && gIn('southern-ming', 1644, 1659) && gIn('kingdom-of-tungning', 1661, 1683), 'late Yuan to 1368, Southern Ming to 1659, Tungning 1662–1683');
+  assert(chinaPolities.every((e) => !idsAt(1815).has(e.id)), 'China pack polities off at the 1815 nations hand-off');
+  assert(idsAt(1910).has('qing-china') && idsAt(1278).has('song-china') && idsAt(1315).has('mongol-empire'), 'Qing to 1911, Song to 1278, the Mongol ring to 1320');
+  {
+    const over = (id, y, pt) => getOverlayPolygonFeatures(y).some((f) => f.entityId === id && geoContains(f, pt));
+    assert(over('song-china', 1100, [114.31, 34.8]) && !over('song-china', 1150, [114.31, 34.8]) && over('jin-dynasty-jurchen', 1150, [114.31, 34.8]), 'Kaifeng Song until 1127, Jin after');
+    assert(over('liao-dynasty', 1000, [116.4, 39.9]) && !over('song-china', 1000, [116.4, 39.9]), 'Yanjing Liao, not Song');
+    assert(over('dali-kingdom', 1000, [100.23, 25.59]) && !over('song-china', 1000, [100.23, 25.59]) && over('mongol-empire', 1260, [100.23, 25.59]), 'Dali its own kingdom until the Mongols (1253)');
+    assert(over('southern-ming', 1657, [102.71, 25.04]) && over('wu-sangui-zhou', 1675, [102.71, 25.04]) && !over('qing-china', 1675, [102.71, 25.04]) && over('qing-china', 1690, [102.71, 25.04]), 'Kunming Southern Ming, Wu Sangui, then Qing');
+    assert(over('han-china', 190, [112.45, 34.62]) && over('cao-wei', 230, [112.45, 34.62]) && !over('han-china', 225, [112.45, 34.62]), 'Luoyang Han, then Cao Wei');
   }
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
