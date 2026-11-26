@@ -1175,6 +1175,25 @@ export const CITIES = [
   C('rajmahal', 25.05, 87.84, 4, 1592, null, 'Akbarnagar', 1640, 'Rajmahal'),
   C('murshidabad', 24.18, 88.27, 3, 1704, null, 'Murshidabad', { ranks: [[1704, 3], [1790, 4]] }),
   C('agartala', 23.83, 91.28, 4, 1760, null, 'Agartala'),
+  // Day 95 — Sri Lanka (globe-pack-sri-lanka.js): Mihintale, Ruhuna's Mahagama, the port of Mantai, Sigiriya,
+  // Polonnaruwa, the south-western capitals (Dambadeniya, Yapahuwa, Kurunegala, Gampola, Kotte, Sitawaka), Jaffna
+  // and the colonial ports (Anuradhapura, Kandy and Colombo already exist).
+  C('mihintale', 8.35, 80.50, 4, -250, null, 'Mihintale'),
+  C('tissamaharama', 6.28, 81.29, 4, -200, null, 'Mahagama', 1500, 'Tissamaharama'),
+  C('mantai', 8.94, 79.95, 4, -200, 1100, 'Mantai'),
+  C('trincomalee', 8.57, 81.23, 4, 300, null, 'Gokanna', 1600, 'Trincomalee'),
+  C('sigiriya', 7.96, 80.76, 4, 477, null, 'Sigiriya'),
+  C('polonnaruwa', 7.94, 81.00, 3, 993, 1300, 'Jananathamangalam', 1070, 'Polonnaruwa'),
+  C('dambadeniya', 7.37, 80.15, 4, 1220, 1272, 'Dambadeniya'),
+  C('yapahuwa', 7.82, 80.31, 4, 1272, 1284, 'Yapahuwa'),
+  C('jaffna', 9.66, 80.02, 3, 1279, null, 'Nallur', 1620, 'Jaffna'),
+  C('kurunegala', 7.49, 80.36, 4, 1293, null, 'Kurunegala'),
+  C('galle', 6.03, 80.22, 4, 1340, null, 'Galle'),
+  C('gampola', 7.16, 80.58, 4, 1341, null, 'Gampola'),
+  C('matara', 5.95, 80.54, 4, 1340, null, 'Matara'),
+  C('kotte', 6.89, 79.90, 3, 1371, 1565, 'Kotte'),
+  C('sitawaka', 6.95, 80.21, 4, 1521, 1594, 'Sitawaka'),
+  C('batticaloa', 7.71, 81.70, 4, 1628, null, 'Batticaloa'),
 ];
 
 

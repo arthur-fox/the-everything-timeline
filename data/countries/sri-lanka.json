@@ -1,0 +1,1113 @@
+{
+  "id": "sri-lanka",
+  "name": "Sri Lanka",
+  "flag": "🇱🇰",
+  "minYear": -40000,
+  "maxYear": 2026,
+  "categories": [
+    {
+      "id": "ancient",
+      "name": "Prehistory and Tambapanni",
+      "color": "#B45309"
+    },
+    {
+      "id": "anuradhapura",
+      "name": "Anuradhapura",
+      "color": "#7C3AED"
+    },
+    {
+      "id": "polonnaruwa",
+      "name": "Polonnaruwa and the invasions",
+      "color": "#047857"
+    },
+    {
+      "id": "medieval",
+      "name": "Dambadeniya to Kotte, and Jaffna",
+      "color": "#9A3412"
+    },
+    {
+      "id": "kandyan",
+      "name": "Kingdom of Kandy",
+      "color": "#B91C1C"
+    },
+    {
+      "id": "colonial",
+      "name": "Portuguese, Dutch and British",
+      "color": "#64748B"
+    },
+    {
+      "id": "modern",
+      "name": "Ceylon and Sri Lanka",
+      "color": "#2563EB"
+    }
+  ],
+  "items": [
+    {
+      "id": "lk-prehistory",
+      "name": "Balangoda Man and prehistoric Lanka",
+      "start": -38000,
+      "end": -900,
+      "region": "ancient",
+      "icon": "🪨",
+      "description": "Anatomically modern humans lived in Sri Lanka by about 38,000 years ago: the cave sites of Fa-Hien Lena, Batadombalena and Belilena have yielded human remains, microliths and some of the earliest bone tools in South Asia, made by the people archaeologists call Balangoda Man. The Vedda people are thought to descend from these hunter-gatherers. Iron, rice farming, horses and megalithic burials appear in the first millennium BCE, at Ibbankatuwa and the earliest levels of Anuradhapura (c. 900 BCE).",
+      "periods": [
+        {
+          "name": "Balangoda Man",
+          "start": -38000,
+          "end": -3000
+        },
+        {
+          "name": "Iron Age and megaliths",
+          "start": -1000,
+          "end": -900
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Balangoda Man",
+          "url": "https://en.wikipedia.org/wiki/Balangoda_Man"
+        },
+        {
+          "title": "Wikipedia — Fa Hien Cave",
+          "url": "https://en.wikipedia.org/wiki/Fa_Hien_Cave"
+        },
+        {
+          "title": "Wikipedia — Batadombalena",
+          "url": "https://en.wikipedia.org/wiki/Batadombalena"
+        },
+        {
+          "title": "Wikipedia — Vedda",
+          "url": "https://en.wikipedia.org/wiki/Vedda"
+        },
+        {
+          "title": "Wikipedia — Prehistory of Sri Lanka",
+          "url": "https://en.wikipedia.org/wiki/Prehistory_of_Sri_Lanka"
+        }
+      ]
+    },
+    {
+      "id": "lk-vijaya-tambapanni",
+      "name": "Vijaya and Tambapanni",
+      "start": -543,
+      "end": -377,
+      "region": "ancient",
+      "icon": "⛵",
+      "description": "The Pali chronicles, the Dipavamsa and Mahavamsa, tell of Prince Vijaya, exiled from north India, who landed at Tambapanni on the day of the Buddha’s death (traditionally 543 BCE) and founded the Sinhala kingdom, marrying the yakkha princess Kuveni and then a Pandyan princess. The story is legend, but excavations at Anuradhapura show a growing town with Brahmi-inscribed potsherds by the 5th–4th century BCE, among the earliest Brahmi writing anywhere.",
+      "periods": [
+        {
+          "name": "Vijaya (legend)",
+          "start": -543,
+          "end": -505
+        },
+        {
+          "name": "Panduvasdeva",
+          "start": -505,
+          "end": -377
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Prince Vijaya",
+          "url": "https://en.wikipedia.org/wiki/Prince_Vijaya"
+        },
+        {
+          "title": "Wikipedia — Kingdom of Tambapanni",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Tambapanni"
+        },
+        {
+          "title": "Wikipedia — Kuveni",
+          "url": "https://en.wikipedia.org/wiki/Kuveni"
+        },
+        {
+          "title": "Wikipedia — Mahavamsa",
+          "url": "https://en.wikipedia.org/wiki/Mahavamsa"
+        },
+        {
+          "title": "Wikipedia — Panduvasdeva",
+          "url": "https://en.wikipedia.org/wiki/Panduvasdeva"
+        }
+      ]
+    },
+    {
+      "id": "lk-anuradhapura",
+      "name": "The Anuradhapura Kingdom",
+      "start": -377,
+      "end": 1017,
+      "region": "anuradhapura",
+      "icon": "🏯",
+      "description": "Pandukabhaya made Anuradhapura his capital about 377 BCE, and for some 1,400 years it was the seat of Sinhala kings, one of the great cities of the ancient world, fed by vast reservoirs (wewas) such as Basawakkulama, Tissa Wewa and the Kalawewa. Kings fought Tamil invaders from South India and each other; Dutugamunu defeated the Chola prince Elara and united the island (c. 161 BCE). Sena I’s capital was sacked by the Pandyas (c. 846), and Rajaraja Chola’s armies destroyed the city in 993.",
+      "periods": [
+        {
+          "name": "Pandukabhaya and the early kings",
+          "start": -377,
+          "end": -250
+        },
+        {
+          "name": "Devanampiya Tissa to Elara",
+          "start": -250,
+          "end": -161
+        },
+        {
+          "name": "Dutugamunu and the later kings",
+          "start": -161,
+          "end": 846
+        },
+        {
+          "name": "Pandya and Chola wars",
+          "start": 846,
+          "end": 1017
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Anuradhapura Kingdom",
+          "url": "https://en.wikipedia.org/wiki/Anuradhapura_Kingdom"
+        },
+        {
+          "title": "Wikipedia — Pandukabhaya of Anuradhapura",
+          "url": "https://en.wikipedia.org/wiki/Pandukabhaya_of_Anuradhapura"
+        },
+        {
+          "title": "Wikipedia — Dutugamunu",
+          "url": "https://en.wikipedia.org/wiki/Dutugamunu"
+        },
+        {
+          "title": "Wikipedia — Ellalan",
+          "url": "https://en.wikipedia.org/wiki/Ellalan"
+        },
+        {
+          "title": "Wikipedia — Kala Wewa",
+          "url": "https://en.wikipedia.org/wiki/Kala_Wewa"
+        }
+      ]
+    },
+    {
+      "id": "lk-buddhism",
+      "name": "Mahinda and the coming of Buddhism",
+      "start": -250,
+      "end": 500,
+      "region": "anuradhapura",
+      "icon": "☸️",
+      "description": "According to the chronicles, Mahinda, son of the Mauryan emperor Ashoka, met King Devanampiya Tissa at Mihintale about 247 BCE and converted him to Buddhism; his sister Sanghamitta brought a cutting of the Bodhi tree, planted at Anuradhapura, where the Jaya Sri Maha Bodhi is still venerated. The Mahavihara became the centre of Theravada Buddhism; the Pali Canon was written down at Aluvihare about 29 BCE, and Buddhaghosa compiled his commentaries there in the 5th century.",
+      "periods": [
+        {
+          "name": "Mahinda and the Bodhi tree",
+          "start": -250,
+          "end": -29
+        },
+        {
+          "name": "The Pali Canon written down",
+          "start": -29,
+          "end": 500
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Mahinda (Buddhist monk)",
+          "url": "https://en.wikipedia.org/wiki/Mahinda_(Buddhist_monk)"
+        },
+        {
+          "title": "Wikipedia — Devanampiya Tissa",
+          "url": "https://en.wikipedia.org/wiki/Devanampiya_Tissa"
+        },
+        {
+          "title": "Wikipedia — Jaya Sri Maha Bodhi",
+          "url": "https://en.wikipedia.org/wiki/Jaya_Sri_Maha_Bodhi"
+        },
+        {
+          "title": "Wikipedia — Mahavihara",
+          "url": "https://en.wikipedia.org/wiki/Mahavihara"
+        },
+        {
+          "title": "Wikipedia — Buddhaghosa",
+          "url": "https://en.wikipedia.org/wiki/Buddhaghosa"
+        }
+      ]
+    },
+    {
+      "id": "lk-dutugamunu",
+      "name": "Dutugamunu and the great stupas",
+      "start": -205,
+      "end": -77,
+      "region": "anuradhapura",
+      "icon": "🛕",
+      "description": "Dutugamunu (Duttha Gamani) of Ruhuna defeated Elara, the Chola king who had ruled Anuradhapura for over forty years, about 161 BCE, and united the island; the Mahavamsa makes him its hero. He built the Ruwanwelisaya stupa and the Lovamahapaya, the brazen palace. His successors raised the Abhayagiri (Vattagamani Abhaya, c. 89 BCE) and later the Jetavanaramaya (Mahasena, 3rd century CE), among the tallest buildings of the ancient world.",
+      "periods": [
+        {
+          "name": "Elara at Anuradhapura",
+          "start": -205,
+          "end": -161
+        },
+        {
+          "name": "Dutugamunu",
+          "start": -161,
+          "end": -137
+        },
+        {
+          "name": "Vattagamani Abhaya",
+          "start": -103,
+          "end": -77
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Dutugamunu",
+          "url": "https://en.wikipedia.org/wiki/Dutugamunu"
+        },
+        {
+          "title": "Wikipedia — Ruwanwelisaya",
+          "url": "https://en.wikipedia.org/wiki/Ruwanwelisaya"
+        },
+        {
+          "title": "Wikipedia — Abhayagiri vihāra",
+          "url": "https://en.wikipedia.org/wiki/Abhayagiri_vih%C4%81ra"
+        },
+        {
+          "title": "Wikipedia — Jetavanaramaya",
+          "url": "https://en.wikipedia.org/wiki/Jetavanaramaya"
+        },
+        {
+          "title": "Wikipedia — Lovamahapaya",
+          "url": "https://en.wikipedia.org/wiki/Lovamahapaya"
+        }
+      ]
+    },
+    {
+      "id": "lk-hydraulic",
+      "name": "Tanks, canals and trade",
+      "start": 1,
+      "end": 900,
+      "region": "anuradhapura",
+      "icon": "💧",
+      "description": "The Anuradhapura kings built one of the world’s great pre-modern irrigation systems: King Vasabha (1st century), Mahasena (3rd century, Minneriya) and Dhatusena (5th century, Kalawewa and the 87 km Jaya Ganga canal) raised reservoirs and channels that fed the dry zone’s rice fields. Mantai near Mannar was a great port linking Rome, Persia, India and China, and Lanka was famous for gems, pearls and cinnamon; Cosmas Indicopleustes described it as the hub of Indian Ocean trade in the 6th century.",
+      "periods": [
+        {
+          "name": "Vasabha and Mahasena",
+          "start": 1,
+          "end": 400
+        },
+        {
+          "name": "Dhatusena and the Jaya Ganga",
+          "start": 455,
+          "end": 900
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Sri Lankan irrigation network",
+          "url": "https://en.wikipedia.org/wiki/Sri_Lankan_irrigation_network"
+        },
+        {
+          "title": "Wikipedia — Minneriya Tank",
+          "url": "https://en.wikipedia.org/wiki/Minneriya_Tank"
+        },
+        {
+          "title": "Wikipedia — Dhatusena of Anuradhapura",
+          "url": "https://en.wikipedia.org/wiki/Dhatusena_of_Anuradhapura"
+        },
+        {
+          "title": "Wikipedia — Mantai",
+          "url": "https://en.wikipedia.org/wiki/Mantai"
+        },
+        {
+          "title": "Wikipedia — Cosmas Indicopleustes",
+          "url": "https://en.wikipedia.org/wiki/Cosmas_Indicopleustes"
+        }
+      ]
+    },
+    {
+      "id": "lk-sigiriya",
+      "name": "Sigiriya and Kashyapa",
+      "start": 477,
+      "end": 495,
+      "region": "anuradhapura",
+      "icon": "🦁",
+      "description": "Kashyapa I, who seized the throne by killing his father Dhatusena, moved the capital to Sigiriya, a granite rock 180 m high, where he built a palace on the summit with a lion gateway, water gardens and the famous painted maidens and mirror wall. His brother Moggallana defeated him in 495 and returned the capital to Anuradhapura; Sigiriya became a monastery and is now a World Heritage Site.",
+      "periods": [
+        {
+          "name": "Kashyapa’s rock fortress",
+          "start": 477,
+          "end": 495
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Sigiriya",
+          "url": "https://en.wikipedia.org/wiki/Sigiriya"
+        },
+        {
+          "title": "Wikipedia — Kashyapa I of Anuradhapura",
+          "url": "https://en.wikipedia.org/wiki/Kashyapa_I_of_Anuradhapura"
+        },
+        {
+          "title": "Wikipedia — Moggallana I of Anuradhapura",
+          "url": "https://en.wikipedia.org/wiki/Moggallana_I_of_Anuradhapura"
+        }
+      ]
+    },
+    {
+      "id": "lk-chola",
+      "name": "The Chola conquest",
+      "start": 993,
+      "end": 1070,
+      "region": "polonnaruwa",
+      "icon": "⚔️",
+      "description": "Rajaraja Chola I’s armies took northern Sri Lanka in 993 and sacked Anuradhapura; the Cholas ruled Rajarata as a province, Mummudi-sola-mandalam, from Polonnaruwa, renamed Jananathamangalam. Rajendra Chola captured King Mahinda V in 1017 and carried him to India. The Sinhala resistance held on in Ruhuna until Vijayabahu I drove the Cholas out in 1070.",
+      "periods": [
+        {
+          "name": "Rajaraja takes Rajarata",
+          "start": 993,
+          "end": 1017
+        },
+        {
+          "name": "Mahinda V captured; Ruhuna resists",
+          "start": 1017,
+          "end": 1070
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Chola conquest of Anuradhapura",
+          "url": "https://en.wikipedia.org/wiki/Chola_conquest_of_Anuradhapura"
+        },
+        {
+          "title": "Wikipedia — Rajaraja I",
+          "url": "https://en.wikipedia.org/wiki/Rajaraja_I"
+        },
+        {
+          "title": "Wikipedia — Rajendra I",
+          "url": "https://en.wikipedia.org/wiki/Rajendra_I"
+        },
+        {
+          "title": "Wikipedia — Mahinda V",
+          "url": "https://en.wikipedia.org/wiki/Mahinda_V"
+        },
+        {
+          "title": "Wikipedia — Polonnaruwa",
+          "url": "https://en.wikipedia.org/wiki/Polonnaruwa"
+        }
+      ]
+    },
+    {
+      "id": "lk-polonnaruwa",
+      "name": "The Polonnaruwa Kingdom",
+      "start": 1055,
+      "end": 1215,
+      "region": "polonnaruwa",
+      "icon": "🏛️",
+      "description": "Vijayabahu I (1055–1110) freed Lanka from the Cholas and ruled from Polonnaruwa. Parakramabahu I (1153–1186) reunited the island, built the Parakrama Samudra reservoir, reformed the Buddhist order and sent expeditions to Burma and South India; Nissanka Malla (1187–1196) left inscriptions across the island and built the Vatadage and Gal Vihara’s neighbours. Weak successors and Indian invasions ended the kingdom when Kalinga Magha took Polonnaruwa in 1215.",
+      "periods": [
+        {
+          "name": "Vijayabahu I",
+          "start": 1055,
+          "end": 1110
+        },
+        {
+          "name": "Parakramabahu the Great",
+          "start": 1153,
+          "end": 1186
+        },
+        {
+          "name": "Nissanka Malla and the decline",
+          "start": 1187,
+          "end": 1215
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Polonnaruwa Kingdom",
+          "url": "https://en.wikipedia.org/wiki/Polonnaruwa_Kingdom"
+        },
+        {
+          "title": "Wikipedia — Vijayabahu I",
+          "url": "https://en.wikipedia.org/wiki/Vijayabahu_I"
+        },
+        {
+          "title": "Wikipedia — Parakramabahu I",
+          "url": "https://en.wikipedia.org/wiki/Parakramabahu_I"
+        },
+        {
+          "title": "Wikipedia — Nissanka Malla",
+          "url": "https://en.wikipedia.org/wiki/Nissanka_Malla"
+        },
+        {
+          "title": "Wikipedia — Parakrama Samudra",
+          "url": "https://en.wikipedia.org/wiki/Parakrama_Samudra"
+        },
+        {
+          "title": "Wikipedia — Gal Vihara",
+          "url": "https://en.wikipedia.org/wiki/Gal_Vihara"
+        }
+      ]
+    },
+    {
+      "id": "lk-magha",
+      "name": "Kalinga Magha and the drift to the southwest",
+      "start": 1215,
+      "end": 1255,
+      "region": "polonnaruwa",
+      "icon": "🔥",
+      "description": "Kalinga Magha, an invader from India, seized Polonnaruwa in 1215 with an army of Tamils and Keralans, and the chronicles describe a reign of terror. The Sinhala kings withdrew south-west to Dambadeniya, and over the next two centuries the dry-zone irrigation works decayed while population, rule and Buddhism shifted to the wet south-west. Magha may have founded the Jaffna kingdom, and the Tambralinga king Chandrabhanu invaded twice in the mid-13th century.",
+      "periods": [
+        {
+          "name": "Magha at Polonnaruwa",
+          "start": 1215,
+          "end": 1255
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Kalinga Magha",
+          "url": "https://en.wikipedia.org/wiki/Kalinga_Magha"
+        },
+        {
+          "title": "Wikipedia — Chandrabhanu",
+          "url": "https://en.wikipedia.org/wiki/Chandrabhanu"
+        },
+        {
+          "title": "Wikipedia — Dambadeniya",
+          "url": "https://en.wikipedia.org/wiki/Dambadeniya"
+        }
+      ]
+    },
+    {
+      "id": "lk-dambadeniya-gampola",
+      "name": "Dambadeniya, Yapahuwa, Kurunegala and Gampola",
+      "start": 1220,
+      "end": 1412,
+      "region": "medieval",
+      "icon": "🏰",
+      "description": "After Polonnaruwa the Sinhala capital moved repeatedly: Vijayabahu III and Parakramabahu II ruled from the rock fortress of Dambadeniya (1220–1272), where the Sacred Tooth Relic was kept; Bhuvanaikabahu I from Yapahuwa (1272–1284), sacked by the Pandyas who carried off the Tooth; then Kurunegala (1293–1341) and Gampola (1341–1408), whose minister Alakeshvara built a fort at Kotte against the kings of Jaffna. The admiral Zheng He fought and captured King Vira Alakeshvara in 1411.",
+      "periods": [
+        {
+          "name": "Dambadeniya",
+          "start": 1220,
+          "end": 1272
+        },
+        {
+          "name": "Yapahuwa",
+          "start": 1272,
+          "end": 1284
+        },
+        {
+          "name": "Kurunegala",
+          "start": 1293,
+          "end": 1341
+        },
+        {
+          "name": "Gampola",
+          "start": 1341,
+          "end": 1412
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Kingdom of Dambadeniya",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Dambadeniya"
+        },
+        {
+          "title": "Wikipedia — Parakramabahu II",
+          "url": "https://en.wikipedia.org/wiki/Parakramabahu_II"
+        },
+        {
+          "title": "Wikipedia — Yapahuwa",
+          "url": "https://en.wikipedia.org/wiki/Yapahuwa"
+        },
+        {
+          "title": "Wikipedia — Kurunegala",
+          "url": "https://en.wikipedia.org/wiki/Kurunegala"
+        },
+        {
+          "title": "Wikipedia — Kingdom of Gampola",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Gampola"
+        },
+        {
+          "title": "Wikipedia — Ming–Kotte War",
+          "url": "https://en.wikipedia.org/wiki/Ming%E2%80%93Kotte_War"
+        }
+      ]
+    },
+    {
+      "id": "lk-jaffna",
+      "name": "The Jaffna kingdom",
+      "start": 1279,
+      "end": 1619,
+      "region": "medieval",
+      "icon": "🛕",
+      "description": "The Aryacakravarti kings, possibly vassals of the Pandyas at first, ruled the Jaffna peninsula and the Vanni from Nallur from about 1279, controlling the pearl fisheries of the Gulf of Mannar and at their height taking tribute from the Sinhala kings. Kotte’s Prince Sapumal held Jaffna from 1450 to 1467. The Portuguese attacked from 1560, made Jaffna a client and annexed it in 1619, executing King Cankili II.",
+      "periods": [
+        {
+          "name": "The Aryacakravartis",
+          "start": 1279,
+          "end": 1450
+        },
+        {
+          "name": "Kotte rule",
+          "start": 1450,
+          "end": 1467
+        },
+        {
+          "name": "The last kings",
+          "start": 1467,
+          "end": 1619
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Jaffna kingdom",
+          "url": "https://en.wikipedia.org/wiki/Jaffna_kingdom"
+        },
+        {
+          "title": "Wikipedia — Aryacakravarti dynasty",
+          "url": "https://en.wikipedia.org/wiki/Aryacakravarti_dynasty"
+        },
+        {
+          "title": "Wikipedia — Nallur, Jaffna",
+          "url": "https://en.wikipedia.org/wiki/Nallur,_Jaffna"
+        },
+        {
+          "title": "Wikipedia — Cankili II",
+          "url": "https://en.wikipedia.org/wiki/Cankili_II"
+        },
+        {
+          "title": "Wikipedia — Portuguese conquest of the Jaffna kingdom",
+          "url": "https://en.wikipedia.org/wiki/Portuguese_conquest_of_the_Jaffna_kingdom"
+        }
+      ]
+    },
+    {
+      "id": "lk-kotte",
+      "name": "The Kingdom of Kotte",
+      "start": 1412,
+      "end": 1597,
+      "region": "medieval",
+      "icon": "👑",
+      "description": "Parakramabahu VI (1412–1467) made Kotte, near Colombo, the capital of the last king to rule the whole island: his adopted son Sapumal Kumaraya conquered Jaffna (1450), and the age is remembered for its Sinhala poetry. After him the hill country broke away as the Kingdom of Kandy (c. 1469), and in 1521 three brothers divided Kotte itself into Kotte, Sitawaka and Raigama (the Vijayabā Kollaya). The last king, Dharmapala, became a Catholic and left his kingdom to the King of Portugal in 1580; on his death in 1597 the Portuguese took over.",
+      "periods": [
+        {
+          "name": "Parakramabahu VI",
+          "start": 1412,
+          "end": 1467
+        },
+        {
+          "name": "Decline and the partition of 1521",
+          "start": 1467,
+          "end": 1551
+        },
+        {
+          "name": "Dharmapala, a Portuguese client",
+          "start": 1551,
+          "end": 1597
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Kingdom of Kotte",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Kotte"
+        },
+        {
+          "title": "Wikipedia — Parakramabahu VI",
+          "url": "https://en.wikipedia.org/wiki/Parakramabahu_VI"
+        },
+        {
+          "title": "Wikipedia — Sapumal Kumaraya",
+          "url": "https://en.wikipedia.org/wiki/Sapumal_Kumaraya"
+        },
+        {
+          "title": "Wikipedia — Vijayabā Kollaya",
+          "url": "https://en.wikipedia.org/wiki/Vijayab%C4%81_Kollaya"
+        },
+        {
+          "title": "Wikipedia — Dharmapala of Kotte",
+          "url": "https://en.wikipedia.org/wiki/Dharmapala_of_Kotte"
+        }
+      ]
+    },
+    {
+      "id": "lk-kandy",
+      "name": "The Kingdom of Kandy",
+      "start": 1469,
+      "end": 1815,
+      "region": "kandyan",
+      "icon": "🐘",
+      "description": "The hill kingdom of Kandy (Senkadagala) broke away from Kotte about 1469 and, protected by its mountains and forests, outlasted all the island’s other kingdoms. Vimaladharmasuriya I beat the Portuguese at Danture (1594) and brought the Tooth Relic to Kandy, where the Temple of the Tooth still keeps it. Rajasinghe II allied with the Dutch against the Portuguese (1638) only to find them a new coastal power. From 1739 the Nayak kings of Madurai origin ruled; the last, Sri Vikrama Rajasinha, was deposed by the British in 1815.",
+      "periods": [
+        {
+          "name": "Senasammata Vikramabahu",
+          "start": 1469,
+          "end": 1592
+        },
+        {
+          "name": "Vimaladharmasuriya and Rajasinghe II",
+          "start": 1592,
+          "end": 1687
+        },
+        {
+          "name": "The Nayak kings",
+          "start": 1739,
+          "end": 1815
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Kingdom of Kandy",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Kandy"
+        },
+        {
+          "title": "Wikipedia — Vimaladharmasuriya I",
+          "url": "https://en.wikipedia.org/wiki/Vimaladharmasuriya_I"
+        },
+        {
+          "title": "Wikipedia — Temple of the Tooth",
+          "url": "https://en.wikipedia.org/wiki/Temple_of_the_Tooth"
+        },
+        {
+          "title": "Wikipedia — Rajasinghe II",
+          "url": "https://en.wikipedia.org/wiki/Rajasinghe_II"
+        },
+        {
+          "title": "Wikipedia — Kandyan Convention",
+          "url": "https://en.wikipedia.org/wiki/Kandyan_Convention"
+        }
+      ]
+    },
+    {
+      "id": "lk-portuguese",
+      "name": "Portuguese Ceylon",
+      "start": 1505,
+      "end": 1658,
+      "region": "colonial",
+      "icon": "⛪",
+      "description": "Lourenço de Almeida reached Ceylon in 1505, and the Portuguese built a fort at Colombo in 1517–1518 to control the cinnamon trade. Exploiting the wars between Kotte, Sitawaka and Kandy, they made Kotte a client, took over its lands on Dharmapala’s death (1597) and annexed Jaffna (1619). Catholic missions converted many coastal people. Portuguese armies were destroyed by Kandy at Danture (1594) and Randeniwela (1630), and the Dutch took their forts between 1638 and 1658.",
+      "periods": [
+        {
+          "name": "Traders and protectors",
+          "start": 1505,
+          "end": 1597
+        },
+        {
+          "name": "Portuguese Ceylon",
+          "start": 1597,
+          "end": 1658
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Portuguese Ceylon",
+          "url": "https://en.wikipedia.org/wiki/Portuguese_Ceylon"
+        },
+        {
+          "title": "Wikipedia — Lourenço de Almeida",
+          "url": "https://en.wikipedia.org/wiki/Louren%C3%A7o_de_Almeida"
+        },
+        {
+          "title": "Wikipedia — Campaign of Danture",
+          "url": "https://en.wikipedia.org/wiki/Campaign_of_Danture"
+        },
+        {
+          "title": "Wikipedia — Battle of Randeniwela",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Randeniwela"
+        },
+        {
+          "title": "Wikipedia — Constantino de Sá de Noronha",
+          "url": "https://en.wikipedia.org/wiki/Constantino_de_S%C3%A1_de_Noronha"
+        }
+      ]
+    },
+    {
+      "id": "lk-sitawaka",
+      "name": "The Kingdom of Sitawaka",
+      "start": 1521,
+      "end": 1594,
+      "region": "medieval",
+      "icon": "🗡️",
+      "description": "Mayadunne took Sitawaka at the partition of 1521 and spent his long reign fighting his brother at Kotte and the Portuguese; he absorbed Raigama in 1538. His son Rajasinghe I took Kandy (1582) and besieged Portuguese Colombo for two years (1587–1588), the strongest native challenge to the Portuguese. On his death in 1593 the kingdom collapsed and its lands fell to the Portuguese and Kandy.",
+      "periods": [
+        {
+          "name": "Mayadunne",
+          "start": 1521,
+          "end": 1581
+        },
+        {
+          "name": "Rajasinghe I",
+          "start": 1581,
+          "end": 1594
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Kingdom of Sitawaka",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Sitawaka"
+        },
+        {
+          "title": "Wikipedia — Mayadunne of Sitawaka",
+          "url": "https://en.wikipedia.org/wiki/Mayadunne_of_Sitawaka"
+        },
+        {
+          "title": "Wikipedia — Rajasinha I of Sitawaka",
+          "url": "https://en.wikipedia.org/wiki/Rajasinha_I_of_Sitawaka"
+        },
+        {
+          "title": "Wikipedia — Siege of Colombo (1587–1588)",
+          "url": "https://en.wikipedia.org/wiki/Siege_of_Colombo_(1587%E2%80%931588)"
+        }
+      ]
+    },
+    {
+      "id": "lk-dutch",
+      "name": "Dutch Ceylon",
+      "start": 1638,
+      "end": 1796,
+      "region": "colonial",
+      "icon": "🏰",
+      "description": "Rajasinghe II of Kandy allied with the Dutch East India Company (VOC) in 1638 to drive out the Portuguese; the Dutch took Batticaloa, Trincomalee, Galle (1640), Colombo (1656) and Jaffna (1658), but kept the coast for themselves. They ran the cinnamon monopoly, built the forts of Galle, Matara and Jaffna, codified Roman-Dutch law, which still applies, and brought the Burgher community. A war with Kandy (1762–1766) ended with the treaty that gave the VOC the whole coastline.",
+      "periods": [
+        {
+          "name": "Alliance with Kandy and conquest",
+          "start": 1638,
+          "end": 1658
+        },
+        {
+          "name": "The VOC’s Ceylon",
+          "start": 1658,
+          "end": 1762
+        },
+        {
+          "name": "The Kandyan war and treaty of 1766",
+          "start": 1762,
+          "end": 1796
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Dutch Ceylon",
+          "url": "https://en.wikipedia.org/wiki/Dutch_Ceylon"
+        },
+        {
+          "title": "Wikipedia — Galle Fort",
+          "url": "https://en.wikipedia.org/wiki/Galle_Fort"
+        },
+        {
+          "title": "Wikipedia — Gerard Pietersz Hulft",
+          "url": "https://en.wikipedia.org/wiki/Gerard_Pietersz_Hulft"
+        },
+        {
+          "title": "Wikipedia — Burgher people",
+          "url": "https://en.wikipedia.org/wiki/Burgher_people"
+        },
+        {
+          "title": "Wikipedia — Roman-Dutch law",
+          "url": "https://en.wikipedia.org/wiki/Roman-Dutch_law"
+        }
+      ]
+    },
+    {
+      "id": "lk-british-takeover",
+      "name": "The British conquest and the Kandyan Convention",
+      "start": 1795,
+      "end": 1818,
+      "region": "colonial",
+      "icon": "🇬🇧",
+      "description": "During the French Revolutionary Wars the British took Trincomalee (1795) and Colombo (1796) from the Dutch; Ceylon became a Crown colony in 1802 by the Treaty of Amiens. A first war with Kandy (1803) ended in disaster for the British, but in 1815, with the help of Kandyan nobles, they deposed Sri Vikrama Rajasinha and signed the Kandyan Convention, bringing the whole island under one rule. A great rebellion in Uva (1817–1818) was crushed.",
+      "periods": [
+        {
+          "name": "Trincomalee and Colombo",
+          "start": 1795,
+          "end": 1802
+        },
+        {
+          "name": "Crown colony and the Kandyan wars",
+          "start": 1802,
+          "end": 1815
+        },
+        {
+          "name": "The Uva rebellion",
+          "start": 1817,
+          "end": 1818
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — British Ceylon",
+          "url": "https://en.wikipedia.org/wiki/British_Ceylon"
+        },
+        {
+          "title": "Wikipedia — Treaty of Amiens",
+          "url": "https://en.wikipedia.org/wiki/Treaty_of_Amiens"
+        },
+        {
+          "title": "Wikipedia — First Kandyan War",
+          "url": "https://en.wikipedia.org/wiki/First_Kandyan_War"
+        },
+        {
+          "title": "Wikipedia — Kandyan Convention",
+          "url": "https://en.wikipedia.org/wiki/Kandyan_Convention"
+        },
+        {
+          "title": "Wikipedia — Uva Rebellion",
+          "url": "https://en.wikipedia.org/wiki/Uva_Rebellion"
+        }
+      ]
+    },
+    {
+      "id": "lk-british-ceylon",
+      "name": "British Ceylon: coffee, tea and reform",
+      "start": 1818,
+      "end": 1931,
+      "region": "colonial",
+      "icon": "🍵",
+      "description": "The Colebrooke–Cameron reforms (1833) unified the island’s administration. Coffee plantations spread over the hill country until leaf rust destroyed them in the 1870s, and tea replaced them, worked by Tamil labourers brought from South India. A Buddhist revival led by Anagarika Dharmapala and Henry Olcott, the temperance movement and the riots of 1915 fed nationalism; the Ceylon National Congress was founded in 1919.",
+      "periods": [
+        {
+          "name": "Colebrooke–Cameron reforms",
+          "start": 1818,
+          "end": 1870
+        },
+        {
+          "name": "Tea and revival",
+          "start": 1870,
+          "end": 1931
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — British Ceylon",
+          "url": "https://en.wikipedia.org/wiki/British_Ceylon"
+        },
+        {
+          "title": "Wikipedia — Colebrooke–Cameron Commission",
+          "url": "https://en.wikipedia.org/wiki/Colebrooke%E2%80%93Cameron_Commission"
+        },
+        {
+          "title": "Wikipedia — Tea production in Sri Lanka",
+          "url": "https://en.wikipedia.org/wiki/Tea_production_in_Sri_Lanka"
+        },
+        {
+          "title": "Wikipedia — Anagarika Dharmapala",
+          "url": "https://en.wikipedia.org/wiki/Anagarika_Dharmapala"
+        },
+        {
+          "title": "Wikipedia — 1915 Sinhalese-Muslim riots",
+          "url": "https://en.wikipedia.org/wiki/1915_Sinhalese-Muslim_riots"
+        }
+      ]
+    },
+    {
+      "id": "lk-independence",
+      "name": "Universal suffrage and independence",
+      "start": 1931,
+      "end": 1956,
+      "region": "modern",
+      "icon": "🗳️",
+      "description": "The Donoughmore Constitution of 1931 gave Ceylon universal adult suffrage, among the first in Asia, and a State Council. Ceylon became independent as a dominion on 4 February 1948 under D. S. Senanayake’s United National Party, without a liberation struggle. The Citizenship Act of 1948 disenfranchised most of the plantation Tamils.",
+      "periods": [
+        {
+          "name": "Donoughmore Constitution",
+          "start": 1931,
+          "end": 1948
+        },
+        {
+          "name": "Dominion of Ceylon",
+          "start": 1948,
+          "end": 1956
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Donoughmore Constitution",
+          "url": "https://en.wikipedia.org/wiki/Donoughmore_Constitution"
+        },
+        {
+          "title": "Wikipedia — Dominion of Ceylon",
+          "url": "https://en.wikipedia.org/wiki/Dominion_of_Ceylon"
+        },
+        {
+          "title": "Wikipedia — D. S. Senanayake",
+          "url": "https://en.wikipedia.org/wiki/D._S._Senanayake"
+        },
+        {
+          "title": "Wikipedia — Ceylon Citizenship Act",
+          "url": "https://en.wikipedia.org/wiki/Ceylon_Citizenship_Act"
+        }
+      ]
+    },
+    {
+      "id": "lk-sinhala-only",
+      "name": "Sinhala Only and the first woman prime minister",
+      "start": 1956,
+      "end": 1972,
+      "region": "modern",
+      "icon": "📜",
+      "description": "S. W. R. D. Bandaranaike won the 1956 election on a Sinhala nationalist platform and passed the Sinhala Only Act, making Sinhala the sole official language, which alienated the Tamil minority and led to riots in 1958. After his assassination (1959) his widow Sirimavo Bandaranaike became the world’s first woman prime minister (1960). The 1972 constitution made Ceylon the Republic of Sri Lanka and gave Buddhism the foremost place.",
+      "periods": [
+        {
+          "name": "Sinhala Only",
+          "start": 1956,
+          "end": 1960
+        },
+        {
+          "name": "Sirimavo Bandaranaike",
+          "start": 1960,
+          "end": 1972
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Sinhala Only Act",
+          "url": "https://en.wikipedia.org/wiki/Sinhala_Only_Act"
+        },
+        {
+          "title": "Wikipedia — S. W. R. D. Bandaranaike",
+          "url": "https://en.wikipedia.org/wiki/S._W._R._D._Bandaranaike"
+        },
+        {
+          "title": "Wikipedia — Sirimavo Bandaranaike",
+          "url": "https://en.wikipedia.org/wiki/Sirimavo_Bandaranaike"
+        },
+        {
+          "title": "Wikipedia — 1958 anti-Tamil pogrom",
+          "url": "https://en.wikipedia.org/wiki/1958_anti-Tamil_pogrom"
+        },
+        {
+          "title": "Wikipedia — Sri Lankan Constitution of 1972",
+          "url": "https://en.wikipedia.org/wiki/Sri_Lankan_Constitution_of_1972"
+        }
+      ]
+    },
+    {
+      "id": "lk-jvp",
+      "name": "The JVP insurrections",
+      "start": 1971,
+      "end": 1990,
+      "region": "modern",
+      "icon": "✊",
+      "description": "The Marxist Janatha Vimukthi Peramuna (JVP), led by Rohana Wijeweera, rose in April 1971 and was crushed with thousands killed. A second, far bloodier insurrection in 1987–1989, against the Indo-Sri Lanka Accord, was put down by death squads; Wijeweera was killed in 1989 and tens of thousands died.",
+      "periods": [
+        {
+          "name": "1971 insurrection",
+          "start": 1971,
+          "end": 1971
+        },
+        {
+          "name": "1987–1989 insurrection",
+          "start": 1987,
+          "end": 1990
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — 1971 JVP insurrection",
+          "url": "https://en.wikipedia.org/wiki/1971_JVP_insurrection"
+        },
+        {
+          "title": "Wikipedia — 1987–1989 JVP insurrection",
+          "url": "https://en.wikipedia.org/wiki/1987%E2%80%931989_JVP_insurrection"
+        },
+        {
+          "title": "Wikipedia — Rohana Wijeweera",
+          "url": "https://en.wikipedia.org/wiki/Rohana_Wijeweera"
+        },
+        {
+          "title": "Wikipedia — Janatha Vimukthi Peramuna",
+          "url": "https://en.wikipedia.org/wiki/Janatha_Vimukthi_Peramuna"
+        }
+      ]
+    },
+    {
+      "id": "lk-civil-war",
+      "name": "The civil war",
+      "start": 1983,
+      "end": 2009,
+      "region": "modern",
+      "icon": "💥",
+      "description": "Tamil grievances turned to armed separatism; after the Black July pogrom of 1983 the Liberation Tigers of Tamil Eelam (LTTE) under Velupillai Prabhakaran fought for an independent Tamil Eelam in the north and east. Indian peacekeepers (1987–1990), ceasefires and Norwegian-brokered talks failed; the 2004 tsunami killed over 30,000 people on the island. The army destroyed the LTTE in May 2009, with tens of thousands of civilians killed in the final months.",
+      "periods": [
+        {
+          "name": "Black July and Eelam War I",
+          "start": 1983,
+          "end": 1987
+        },
+        {
+          "name": "The IPKF and Eelam War II–III",
+          "start": 1987,
+          "end": 2002
+        },
+        {
+          "name": "Ceasefire, tsunami and the final war",
+          "start": 2002,
+          "end": 2009
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Sri Lankan civil war",
+          "url": "https://en.wikipedia.org/wiki/Sri_Lankan_civil_war"
+        },
+        {
+          "title": "Wikipedia — Black July",
+          "url": "https://en.wikipedia.org/wiki/Black_July"
+        },
+        {
+          "title": "Wikipedia — Liberation Tigers of Tamil Eelam",
+          "url": "https://en.wikipedia.org/wiki/Liberation_Tigers_of_Tamil_Eelam"
+        },
+        {
+          "title": "Wikipedia — Indian Peace Keeping Force",
+          "url": "https://en.wikipedia.org/wiki/Indian_Peace_Keeping_Force"
+        },
+        {
+          "title": "Wikipedia — 2004 Indian Ocean earthquake and tsunami",
+          "url": "https://en.wikipedia.org/wiki/2004_Indian_Ocean_earthquake_and_tsunami"
+        }
+      ]
+    },
+    {
+      "id": "lk-modern",
+      "name": "Post-war Sri Lanka and the Aragalaya",
+      "start": 2009,
+      "end": 2025,
+      "region": "modern",
+      "icon": "🇱🇰",
+      "description": "After the war Mahinda Rajapaksa’s government borrowed heavily for infrastructure such as Hambantota port, leased to a Chinese company in 2017. The Easter Sunday bombings of 2019 killed 269 people. In 2022 the country defaulted on its foreign debt; shortages of fuel, food and medicine brought months of mass protest, the Aragalaya, which forced President Gotabaya Rajapaksa to flee in July. Anura Kumara Dissanayake of the JVP-led National People’s Power won the presidency in 2024.",
+      "periods": [
+        {
+          "name": "Rajapaksa years",
+          "start": 2009,
+          "end": 2019
+        },
+        {
+          "name": "Easter bombings and the crisis",
+          "start": 2019,
+          "end": 2022
+        },
+        {
+          "name": "The Aragalaya and after",
+          "start": 2022,
+          "end": 2025
+        }
+      ],
+      "sources": [
+        {
+          "title": "Wikipedia — Mahinda Rajapaksa",
+          "url": "https://en.wikipedia.org/wiki/Mahinda_Rajapaksa"
+        },
+        {
+          "title": "Wikipedia — Hambantota International Port",
+          "url": "https://en.wikipedia.org/wiki/Hambantota_International_Port"
+        },
+        {
+          "title": "Wikipedia — 2019 Sri Lanka Easter bombings",
+          "url": "https://en.wikipedia.org/wiki/2019_Sri_Lanka_Easter_bombings"
+        },
+        {
+          "title": "Wikipedia — 2022 Sri Lankan protests",
+          "url": "https://en.wikipedia.org/wiki/2022_Sri_Lankan_protests"
+        },
+        {
+          "title": "Wikipedia — Anura Kumara Dissanayake",
+          "url": "https://en.wikipedia.org/wiki/Anura_Kumara_Dissanayake"
+        }
+      ]
+    }
+  ]
+}

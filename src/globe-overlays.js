@@ -61,6 +61,7 @@ import { albaniaPolities, applyAlbaniaShapeFixes } from './globe-pack-albania.js
 import { greecePolities, applyGreeceShapeFixes } from './globe-pack-greece.js';
 import { pakistanPolities, applyPakistanShapeFixes } from './globe-pack-pakistan.js';
 import { bangladeshPolities, applyBangladeshShapeFixes } from './globe-pack-bangladesh.js';
+import { sriLankaPolities, applySriLankaShapeFixes } from './globe-pack-sri-lanka.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6564,6 +6565,15 @@ for (const ent of bangladeshPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 95 — Phase 5 country pack 6, Sri Lanka (globe-pack-sri-lanka.js): Anuradhapura, Chola Lanka,
+// Polonnaruwa, Kalinga Magha, Dambadeniya, Gampola, Kotte, Jaffna, Sitawaka, Kandy, and Portuguese,
+// Dutch and British Ceylon (377 BCE–1813).
+for (const ent of sriLankaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6665,6 +6675,8 @@ applyPakistanShapeFixes(spatialEntities);
 // Day 94 — the Delhi and Mughal 'india-north' rings trimmed off Bengal, British India and Konbaung
 // Arakan held back to Plassey/the diwani and 1784; see globe-pack-bangladesh.js.
 applyBangladeshShapeFixes(spatialEntities);
+// Day 95 — the Chola Empire's sri-lanka-north box dropped and its Tamil rings trimmed off the island.
+applySriLankaShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
