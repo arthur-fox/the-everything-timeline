@@ -63,6 +63,7 @@ import { pakistanPolities, applyPakistanShapeFixes } from './globe-pack-pakistan
 import { bangladeshPolities, applyBangladeshShapeFixes } from './globe-pack-bangladesh.js';
 import { sriLankaPolities, applySriLankaShapeFixes } from './globe-pack-sri-lanka.js';
 import { nepalPolities, applyNepalShapeFixes } from './globe-pack-nepal.js';
+import { indiaPolities, applyIndiaShapeFixes } from './globe-pack-india.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6584,6 +6585,15 @@ for (const ent of nepalPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 97 — Phase 5 country pack 6, India refinement (globe-pack-india.js): the regional kingdoms from the
+// Satavahanas, Pallavas and Chalukyas to Vijayanagara, the Deccan sultanates, Kashmir and the Ahoms
+// (c. 100 BCE–1813).
+for (const ent of indiaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6689,6 +6699,9 @@ applyBangladeshShapeFixes(spatialEntities);
 applySriLankaShapeFixes(spatialEntities);
 // Day 96 — the Maurya, Kushan, Gupta, Tibetan, Delhi, Mughal, Maratha and British rings notched off Nepal.
 applyNepalShapeFixes(spatialEntities);
+// Day 97 — the Chola, Delhi, Mughal, Maratha, Portuguese and Mongol rings trimmed off the India pack's
+// regional kingdoms; Chola and Mughal shapes held (905, 1685); see globe-pack-india.js.
+applyIndiaShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

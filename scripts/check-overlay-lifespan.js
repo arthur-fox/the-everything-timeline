@@ -33,6 +33,7 @@ import { pakistanPolities } from '../src/globe-pack-pakistan.js';
 import { bangladeshPolities } from '../src/globe-pack-bangladesh.js';
 import { sriLankaPolities } from '../src/globe-pack-sri-lanka.js';
 import { nepalPolities } from '../src/globe-pack-nepal.js';
+import { indiaPolities } from '../src/globe-pack-india.js';
 import {
   lerpRings,
   MORPH_RING_SAMPLES,
@@ -498,6 +499,19 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
     assert(over('maurya-empire', -250, [83.28, 27.48]) && !over('maurya-empire', -250, [85.32, 27.7]), 'Lumbini Mauryan, the valley not');
     assert(over('gorkha-kingdom', 1800, [79.66, 29.6]) && !over('british-empire', 1810, [79.66, 29.6]), 'Kumaon Gorkha’s 1791–1815');
     assert(over('malla-nepal', 1760, [85.32, 27.7]) && over('gorkha-kingdom', 1775, [85.32, 27.7]), 'Kathmandu Malla until 1768, Gorkha after');
+  }
+  // Day 97: India — the regional kingdoms from the Satavahanas to the Ahoms, all gone by 1815.
+  assert(gIn('satavahana-dynasty', -100, 218) && gIn('pallava-dynasty', 275, 893) && gIn('pandya-dynasty', 590, 903), 'Satavahanas, Pallavas and Pandyas');
+  assert(gIn('chalukya-badami', 543, 750) && gIn('rashtrakuta-dynasty', 753, 970) && gIn('chalukya-kalyani', 973, 1187), 'Badami Chalukyas 543–753, Rashtrakutas 753–973, Kalyani Chalukyas 973–1189');
+  assert(gIn('vijayanagara-empire', 1336, 1644) && gIn('bahmani-sultanate', 1347, 1487), 'Vijayanagara 1336–1646, Bahmanis 1347–1490');
+  assert(gIn('bijapur-sultanate', 1490, 1683) && gIn('golconda-sultanate', 1518, 1683) && gIn('ahom-kingdom', 1228, 1813), 'Bijapur and Golconda to the Mughal conquest, the Ahoms to 1813');
+  assert(indiaPolities.every((e) => !idsAt(1815).has(e.id)), 'India pack polities off at the 1815 nations hand-off');
+  {
+    const over = (id, y, pt) => getOverlayPolygonFeatures(y).some((f) => f.entityId === id && geoContains(f, pt));
+    assert(over('pallava-dynasty', 700, [79.7, 12.83]) && !over('chola-empire', 700, [79.7, 12.83]) && over('chola-empire', 1000, [79.7, 12.83]), 'Kanchipuram Pallava until c. 897, Chola after');
+    assert(over('vijayanagara-empire', 1550, [76.46, 15.33]) && !over('mughal-empire', 1600, [76.46, 15.33]) && over('bijapur-sultanate', 1600, [76.46, 15.33]), 'Hampi Vijayanagara, then Bijapur, not Mughal before 1686');
+    assert(over('golconda-sultanate', 1650, [78.4, 17.38]) && !over('mughal-empire', 1650, [78.4, 17.38]) && over('mughal-empire', 1700, [78.4, 17.38]), 'Golconda Qutb Shahi until 1687, Mughal after');
+    assert(over('jaunpur-sultanate', 1420, [82.69, 25.75]) && !over('delhi-sultanate', 1400, [82.69, 25.75]), 'Jaunpur Sharqi, not Delhi, after 1394');
   }
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
