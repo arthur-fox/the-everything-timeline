@@ -59,6 +59,7 @@ import { romaniaPolities, applyRomaniaShapeFixes } from './globe-pack-romania.js
 import { croatiaPolities, applyCroatiaShapeFixes } from './globe-pack-croatia.js';
 import { albaniaPolities, applyAlbaniaShapeFixes } from './globe-pack-albania.js';
 import { greecePolities, applyGreeceShapeFixes } from './globe-pack-greece.js';
+import { pakistanPolities, applyPakistanShapeFixes } from './globe-pack-pakistan.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6541,6 +6542,17 @@ for (const ent of greecePolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 93 — Phase 5 country pack 6, Pakistan (globe-pack-pakistan.js): the Indus Valley Civilisation,
+// the Rai and Brahman kings of Sindh, caliphal Sind, the emirates of Mansura and Multan, the Soomras,
+// Qabacha, the Delhi Sultanate's Indus provinces, the Sammas, Langahs, Arghuns and Tarkhans, Mughal
+// and Sur Lahore and Multan, the Kalhoras and Talpurs, the Sikh misls and the Khanate of Kalat
+// (2600 BCE–1813).
+for (const ent of pakistanPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6637,6 +6649,8 @@ applyAlbaniaShapeFixes(spatialEntities);
 // Day 92 — Venice's schematic Crete and Ionian boxes dropped; the Ottoman ring 1453–1813 rebuilt as
 // held steps cut back from the Greece pack's Latin, Venetian and Hospitaller lands.
 applyGreeceShapeFixes(spatialEntities);
+// Day 93 — the Kabul Shahis' Punjab (1001–1020) redrawn off Multan; other trims per globe-pack-pakistan.js.
+applyPakistanShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 
