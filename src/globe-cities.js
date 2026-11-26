@@ -1194,6 +1194,26 @@ export const CITIES = [
   C('kotte', 6.89, 79.90, 3, 1371, 1565, 'Kotte'),
   C('sitawaka', 6.95, 80.21, 4, 1521, 1594, 'Sitawaka'),
   C('batticaloa', 7.71, 81.70, 4, 1628, null, 'Batticaloa'),
+  // Day 96 — Nepal (globe-pack-nepal.js): Lumbini and Kapilavastu, the valley towns, Simraungadh, the Khasa
+  // and Baise seats, the Chaubisi and Sen capitals, Gorkha, and Kumaon and Garhwal (Kathmandu already exists).
+  C('kapilavastu', 27.57, 83.05, 4, -600, 300, 'Kapilavastu'),
+  C('lumbini', 27.48, 83.28, 4, -563, null, 'Lumbini'),
+  C('patan-nepal', 27.67, 85.32, 4, 400, null, 'Lalitpur (Patan)'),
+  C('bhaktapur', 27.67, 85.43, 4, 880, null, 'Bhaktapur'),
+  C('simraungadh', 26.89, 85.10, 4, 1097, 1324, 'Simraungadh'),
+  C('sinja', 29.38, 82.03, 4, 1140, 1400, 'Sinja'),
+  C('dullu', 28.85, 81.62, 4, 1140, null, 'Dullu'),
+  C('jumla', 29.27, 82.18, 4, 1400, null, 'Jumla'),
+  C('doti', 29.26, 80.94, 4, 1400, null, 'Doti'),
+  C('kaskikot', 28.25, 83.88, 4, 1400, null, 'Kaskikot'),
+  C('janakpur', 26.73, 85.92, 4, 1500, null, 'Janakpur'),
+  C('tansen', 27.87, 83.55, 4, 1500, null, 'Tansen (Palpa)'),
+  C('nuwakot', 27.91, 85.16, 4, 1500, null, 'Nuwakot'),
+  C('makwanpur', 27.42, 85.15, 4, 1553, null, 'Makwanpur'),
+  C('gorkha', 28.00, 84.63, 4, 1559, null, 'Gorkha'),
+  C('vijayapur', 26.81, 87.28, 4, 1580, 1774, 'Vijayapur'),
+  C('almora', 29.60, 79.66, 4, 1563, null, 'Almora'),
+  C('srinagar-garhwal', 30.22, 78.78, 4, 1517, null, 'Srinagar (Garhwal)'),
 ];
 
 
