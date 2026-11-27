@@ -631,9 +631,9 @@ export const CITIES = [
   C('taipei', 25.03, 121.57, 3, 1709, null, 'Taipei', 1895, 'Taihoku', 1945, 'Taipei', { ranks: [[1709, 4], [1949, 2]] }),
   // ---- Korea, Japan -----------------------------------------------------------------------
   C('gyeongju', 35.84, 129.21, 2, -57, null, 'Seorabeol', 940, 'Gyeongju', { ranks: [[935, 4]] }),
-  C('kaesong', 37.97, 126.55, 3, 919, null, 'Kaesong'),
+  C('kaesong', 37.97, 126.55, 3, 896, null, 'Songak', 919, 'Kaegyeong', 1394, 'Kaesong'),
   C('seoul', 37.57, 126.98, 2, 1394, null, 'Hanyang', 1910, 'Keijō', 1945, 'Seoul', { ranks: [[1950, 1]] }),
-  C('pyongyang', 39.02, 125.75, 3, -108, null, 'Pyongyang'),
+  C('pyongyang', 39.02, 125.75, 3, -400, null, 'Wanggeom', -108, 'Lelang', 313, 'Pyongyang', 918, 'Seogyeong', 1392, 'Pyongyang'),
   C('busan', 35.10, 129.04, 3, 1400, null, 'Busan', { ne: 'Busan' }),
   C('nara', 34.69, 135.80, 2, 710, null, 'Heijō-kyō', 784, 'Nara', { ranks: [[784, 4]] }),
   C('kyoto', 35.01, 135.77, 1, 794, null, 'Heian-kyō', 1185, 'Kyoto', { ranks: [[1868, 3]] }),
@@ -1269,6 +1269,22 @@ export const CITIES = [
   C('guilin', 25.27, 110.29, 4, -214, null, 'Guilin'),
   C('hengyang', 26.89, 112.57, 4, 200, null, 'Hengzhou', 1913, 'Hengyang'),
   C('tainan', 22.99, 120.20, 3, 1624, null, 'Zeelandia', 1662, 'Tungning', 1684, 'Taiwan-fu', 1887, 'Tainan'),
+  // Day 99 — South Korea globe refinement (globe-pack-south-korea.js): the capitals of the Three Kingdoms,
+  // Gaya, Balhae and the Later Three Kingdoms (Gyeongju, Kaesong, Seoul and Pyongyang already exist).
+  C('gungnae', 41.12, 126.19, 3, 3, null, 'Gungnae', 1902, 'Ji’an', { ranks: [[668, 4]] }),
+  C('wiryeseong', 37.52, 127.12, 3, -18, 475, 'Wiryeseong'),
+  C('ungjin', 36.46, 127.12, 4, 475, null, 'Ungjin', 940, 'Gongju', { ranks: [[475, 3], [538, 4]] }),
+  C('sabi', 36.28, 126.91, 4, 538, null, 'Sabi', 757, 'Buyeo', { ranks: [[538, 3], [660, 4]] }),
+  C('gimhae', 35.23, 128.88, 4, 42, null, 'Geumgwan', 532, 'Gimhae'),
+  C('goryeong', 35.73, 128.26, 4, 42, null, 'Daegaya', 562, 'Goryeong'),
+  C('dongmo', 43.37, 128.23, 4, 698, null, 'Dongmo', 1909, 'Dunhua'),
+  C('sanggyeong', 44.13, 129.07, 3, 756, 926, 'Sanggyeong'),
+  C('jeonju', 35.82, 127.15, 4, 685, null, 'Wansanju', 940, 'Jeonju', { ranks: [[900, 3], [936, 4]] }),
+  C('gwangju-kr', 35.16, 126.85, 4, 757, null, 'Mujinju', 940, 'Gwangju'),
+  C('cheorwon', 38.24, 127.21, 4, 905, null, 'Cheorwon'),
+  C('hamhung', 39.92, 127.54, 4, 1356, null, 'Hamhung'),
+  C('uiju', 40.20, 124.53, 4, 994, null, 'Uiju'),
+  C('suwon', 37.29, 127.01, 4, 1796, null, 'Hwaseong (Suwon)', 1949, 'Suwon'),
 ];
 
 

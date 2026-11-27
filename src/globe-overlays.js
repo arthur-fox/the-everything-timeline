@@ -65,6 +65,7 @@ import { sriLankaPolities, applySriLankaShapeFixes } from './globe-pack-sri-lank
 import { nepalPolities, applyNepalShapeFixes } from './globe-pack-nepal.js';
 import { indiaPolities, applyIndiaShapeFixes } from './globe-pack-india.js';
 import { chinaPolities, applyChinaShapeFixes } from './globe-pack-china.js';
+import { koreaPolities, applyKoreaShapeFixes } from './globe-pack-south-korea.js';
 
 export { resolveRegionHoles, SEA_HOLE_RINGS };
 
@@ -6605,6 +6606,15 @@ for (const ent of chinaPolities) {
   else spatialEntities.push(ent);
 }
 
+// Day 99 — Phase 5 item 7, South Korea globe refinement (globe-pack-south-korea.js): Gojoseon, the Han
+// commanderies, Goguryeo, Baekje, Silla, Gaya, Balhae, the Later Three Kingdoms, and Silla, Goryeo and
+// Joseon redrawn from the same pieces (they replace the schematic rings of the same ids; c. 400 BCE–1813).
+for (const ent of koreaPolities) {
+  const i = spatialEntities.findIndex((e) => e.id === ent.id);
+  if (i >= 0) spatialEntities[i] = ent;
+  else spatialEntities.push(ent);
+}
+
 /**
  * Day 56 — the name an entity went by in `year` (e.g. "Archaic Greece" before 480 BCE, "Athens and
  * the Delian League" from 478). Entities without `nameAt` always use `name`.
@@ -6716,6 +6726,8 @@ applyIndiaShapeFixes(spatialEntities);
 // Day 98 — the Zhou, Han, Tang, Song, Mongol, Ming and Qing rings held, redrawn from the China pack's
 // pieces or trimmed off its states; see globe-pack-china.js.
 applyChinaShapeFixes(spatialEntities);
+// Day 99 — rings over Korea and Manchuria trimmed off the South Korea pack; see globe-pack-south-korea.js.
+applyKoreaShapeFixes(spatialEntities);
 
 export { peopleEntities, PEOPLE_PACK_IDS, presenceEntities, PRESENCE_PACK_IDS };
 

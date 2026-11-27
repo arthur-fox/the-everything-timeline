@@ -999,9 +999,9 @@ Proposed order:
 2. **Central Asia:** Kazakhstan, Uzbekistan, Turkmenistan, Kyrgyzstan, Tajikistan, Afghanistan (Sogdia, Bactria, Khwarazm, Timurids, khanates). **Uzbekistan ✅ (Day 72, merged #86); Kazakhstan ✅ (Day 73, merged #87); Turkmenistan ✅ (Day 74, merged #88); Kyrgyzstan ✅ (Day 75, merged #89); Tajikistan ✅ (Day 76, merged #90); Afghanistan ✅ (Day 77, merged #91). Pack 2 complete.**
 3. **Caribbean and Central America:** Cuba, Haiti/Dominican Republic, Jamaica, Guatemala, Mexico refinement (Maya city-states, Taíno, colonial splits). **Cuba ✅ (Day 78, merged #92). Haiti/Dominican Republic ✅ (Day 79, merged #93). Jamaica ✅ (Day 80, merged #94). Guatemala ✅ (Day 81, done-in-PR #95: new timeline + globe). Mexico refinement ✅ (Day 82, done-in-PR #97: timeline 7 → 33 items + globe). Pack 3 complete once #95 and #97 merge; next item 4, Central Africa (DR Congo first).**
 4. **Central Africa:** DR Congo, Angola, Cameroon, Chad (Kongo, Luba, Lunda, Kanem-Bornu). **DR Congo ✅ (Day 83, merged #98: new timeline + globe). Angola ✅ (Day 84, merged #99: new timeline + globe). Cameroon ✅ (Day 85, merged #100: new timeline + globe). Chad ✅ (Day 86, merged #101: new timeline + globe). Pack 4 complete; next item 5, Southeast Europe (Serbia first).**
-5. **Southeast Europe:** Serbia, Bulgaria, Romania, Croatia, Albania, Greece refinement (Byzantine/Ottoman/medieval kingdoms). **Serbia ✅ (Day 87, merged #102: new timeline + globe). Bulgaria ✅ (Day 88, merged #104: new timeline + globe). Romania ✅ (Day 89, merged #105: new timeline + globe). Croatia ✅ (Day 90, merged #106: new timeline + globe). Albania ✅ (Day 91, merged #107: new timeline + globe). Greece refinement ✅ (Day 92, done-in-PR #108: timeline deepened + globe). Pack 5 complete. Next South Asia pack 6 (Pakistan first).**
-6. **South Asia:** Pakistan, Bangladesh, Sri Lanka, Nepal, India refinement (Mauryan → Mughal regional kingdoms). **Pakistan ✅ (Day 93, done-in-PR #110: timeline deepened + globe). Bangladesh ✅ (Day 94, done-in-PR #111: new timeline + globe). Sri Lanka ✅ (Day 95, done-in-PR #112: new timeline + globe). Nepal ✅ (Day 96, done-in-PR #113: new timeline + globe). India refinement ✅ (Day 97, done-in-PR #114: timeline 9 → 29 items + globe). Pack 6 complete; next item 7, globe refinement of the existing 38 countries.**
-7. **Globe refinement of the existing 38 countries**, one or a few per day, biggest gaps first. These packs are mostly globe work, as their timelines already exist. **China ✅ (Day 98, done-in-PR: timeline 12 → 26 items + globe). Next South Korea (the Korean peninsula: Gojoseon, the Three Kingdoms, Gaya, Balhae, the Later Three Kingdoms).**
+5. **Southeast Europe:** Serbia, Bulgaria, Romania, Croatia, Albania, Greece refinement (Byzantine/Ottoman/medieval kingdoms). **Serbia ✅ (Day 87, merged #102: new timeline + globe). Bulgaria ✅ (Day 88, merged #104: new timeline + globe). Romania ✅ (Day 89, merged #105: new timeline + globe). Croatia ✅ (Day 90, merged #106: new timeline + globe). Albania ✅ (Day 91, merged #107: new timeline + globe). Greece refinement ✅ (Day 92, merged #108: timeline deepened + globe). Pack 5 complete. Next South Asia pack 6 (Pakistan first).**
+6. **South Asia:** Pakistan, Bangladesh, Sri Lanka, Nepal, India refinement (Mauryan → Mughal regional kingdoms). **Pakistan ✅ (Day 93, merged #110: timeline deepened + globe). Bangladesh ✅ (Day 94, merged #111: new timeline + globe). Sri Lanka ✅ (Day 95, merged #112: new timeline + globe). Nepal ✅ (Day 96, merged #113: new timeline + globe). India refinement ✅ (Day 97, merged #114: timeline 9 → 29 items + globe). Pack 6 complete; next item 7, globe refinement of the existing 38 countries.**
+7. **Globe refinement of the existing 38 countries**, one or a few per day, biggest gaps first. These packs are mostly globe work, as their timelines already exist. **China ✅ (Day 98, merged #115: timeline 12 → 26 items + globe). South Korea ✅ (Day 99, done-in-PR: timeline 7 → 24 items + globe). Next Japan (Yayoi and Kofun Yamato, Asuka and Nara, the Sengoku daimyo, the Ryukyu Kingdom and Ezo).**
 
 #### Day 65 — Pack 1 globe backfill: Peru — done (merged, PR #79)
 
@@ -1484,7 +1484,7 @@ Albania had no country timeline. On the globe before 1815 the Albanian lands wer
 - **Preview:** https://theeverythingtimeline.com/pr-preview/pr-107/
 - **Next:** Greece refinement (pack 5, Southeast Europe: Timeline + Globe) — shipped Day 92.
 
-#### Day 92 — Pack 5 Southeast Europe: Greece refinement (Timeline + Globe) — done-in-PR #108
+#### Day 92 — Pack 5 Southeast Europe: Greece refinement (Timeline + Globe) — merged #108
 
 Greece had a 7-item timeline (Day 1) and, since Day 56 (#62), the ancient Greek world on the globe (Minoan Crete to the Roman conquest). Between the Byzantine schematic’s last keyframe (1025) and the nations layer (`greece`, from 1832) almost nothing was drawn: no Latin states after the Fourth Crusade, no Despotate of Epirus or Byzantine Morea, no Venetian Crete or Ionian Islands, no Knights of Rhodes. Instead Venice’s schematic `crete-foothold` and `ionian-fringe` boxes stood in for its colonies, and the Ottoman `anatolia-balkans` ring painted Crete before 1669, Corfu, Rhodes before 1522 and the Venetian Morea as Ottoman land. This pack uses ids that don’t clash with `greece` and stops by 1813. Greece is the sixth and last country of pack 5 (Southeast Europe).
 
@@ -1498,7 +1498,7 @@ Greece had a 7-item timeline (Day 1) and, since Day 56 (#62), the ancient Greek 
 - **Preview:** https://theeverythingtimeline.com/pr-preview/pr-108/
 - **Next:** South Asia pack 6 — Pakistan (Timeline + Globe) — shipped Day 93.
 
-#### Day 93 — Pack 6 South Asia: Pakistan (Timeline + Globe) — done-in-PR (#110)
+#### Day 93 — Pack 6 South Asia: Pakistan (Timeline + Globe) — merged #110
 
 Pakistan had a 7-item Day 1 timeline without sources. On the globe before 1815 the Indus lands were drawn only where empires based elsewhere reached them: the Achaemenid, Macedonian, Indo-Greek and Kushan rings, the Kabul Shahis, Ghaznavids and Ghurids in the Punjab (the Afghanistan pack), the Mongol steppe ring, the Timurids, Mughal Kabul, the Durrani Empire and the edges of the schematic Maurya, Gupta, Delhi and Mughal `india-north` rings. Nothing showed the Indus Valley Civilisation, the kingdoms and emirates of Sindh and Multan, the Sindhi dynasties, the Mughal subahs of Lahore, Multan and Thatta, the Sikh misls or the Khanate of Kalat, and the Kabul Shahis’ 1001–1020 Punjab covered Ismaili Multan. The nations layer draws `pakistan`, Talpur `sindh` (1815–1843) and `kalat` (from 1815), so this pack uses other ids and stops by 1813. Pakistan is the first country of pack 6 (South Asia), stacked on Greece (#108).
 
@@ -1512,7 +1512,7 @@ Pakistan had a 7-item Day 1 timeline without sources. On the globe before 1815 t
 - **Preview:** https://theeverythingtimeline.com/pr-preview/pr-110/
 - **Next:** South Asia pack 6 — Bangladesh (Timeline + Globe) — shipped Day 94.
 
-#### Day 94 — Pack 6 South Asia: Bangladesh (Timeline + Globe) — done-in-PR (#111)
+#### Day 94 — Pack 6 South Asia: Bangladesh (Timeline + Globe) — merged #111
 
 Bangladesh had no country timeline. On the globe before 1815 Bengal was drawn only where empires based elsewhere reached it: the edges of the schematic Maurya, Gupta, Delhi and Mughal `india-north` and `india-central` rings, the Tibetan Empire’s ring over the Darjeeling hills and Bihar, Ava, Toungoo and Konbaung rings over Arakan, and British `india-north`, which grew over Bengal from 1700. Nothing showed Shashanka’s Gauda, Samatata, the Palas, Chandras, Varmans, Senas and Devas, Lakhnauti, the Bengal Sultanate, the Karranis, the Baro-Bhuiyans, Mughal Bengal, the Nawabs, Mrauk U Arakan, the Koch kingdom or Tripura. The nations layer draws `bangladesh` (from 1971), so this pack uses other ids and stops by 1813. Bangladesh is the second country of pack 6 (South Asia), stacked on Pakistan (#110). India’s Mauryan → Mughal refinement is left for its own pack.
 
@@ -1526,7 +1526,7 @@ Bangladesh had no country timeline. On the globe before 1815 Bengal was drawn on
 - **Preview:** https://theeverythingtimeline.com/pr-preview/pr-111/
 - **Next:** South Asia pack 6 — Sri Lanka (Timeline + Globe) — shipped Day 95.
 
-#### Day 95 — Pack 6 South Asia: Sri Lanka (Timeline + Globe) — done-in-PR (#112)
+#### Day 95 — Pack 6 South Asia: Sri Lanka (Timeline + Globe) — merged #112
 
 Sri Lanka had no country timeline. On the globe before 1815 the island was drawn only by the Chola Empire: its schematic `tamil-core` ring covered the north of the island from 350 and a `sri-lanka-north` box (355–1195) covered Rajarata. Nothing showed Anuradhapura, Polonnaruwa, the south-western kingdoms, Jaffna, Kandy, or Portuguese, Dutch and British Ceylon (the Portuguese, Dutch and British empire rings never reached the island). The nations layer draws `sri-lanka` (from 1914), so this pack uses other ids and stops by 1813. Sri Lanka is the third country of pack 6 (South Asia), stacked on Bangladesh (#111).
 
@@ -1540,7 +1540,7 @@ Sri Lanka had no country timeline. On the globe before 1815 the island was drawn
 - **Preview:** https://theeverythingtimeline.com/pr-preview/pr-112/
 - **Next:** South Asia pack 6 — Nepal (Timeline + Globe) — shipped Day 96.
 
-#### Day 96 — Pack 6 South Asia: Nepal (Timeline + Globe) — done-in-PR (#113)
+#### Day 96 — Pack 6 South Asia: Nepal (Timeline + Globe) — merged #113
 
 Nepal had no country timeline. On the globe before 1815 Nepal was drawn only by empires based elsewhere: the schematic `india-north` rings of the Maurya, Kushan, Gupta, Delhi, Mughal and British empires and the Maratha fringe reached over the hills to the Tibetan border, and the Tibetan Empire’s ring reached down over the hills to the Terai (630–840); British India covered all of Nepal from 1775. Nothing showed the Licchavis, the Thakuris, the Malla valley, Simraungadh, the Khasa kingdom, the Baise and Chaubisi, the Sens or Gorkha. The nations layer draws `nepal` (from 1914), so this pack uses other ids and stops by 1813. Nepal is the fourth country of pack 6 (South Asia), stacked on Sri Lanka (#112).
 
@@ -1554,7 +1554,7 @@ Nepal had no country timeline. On the globe before 1815 Nepal was drawn only by 
 - **Preview:** https://theeverythingtimeline.com/pr-preview/pr-113/
 - **Next:** South Asia pack 6 — India refinement (Mauryan → Mughal regional kingdoms) — shipped Day 97.
 
-#### Day 97 — Pack 6 South Asia: India refinement (Timeline + Globe) — done-in-PR (#114)
+#### Day 97 — Pack 6 South Asia: India refinement (Timeline + Globe) — merged #114
 
 India had a 9-item Day 1 timeline without sources. On the globe before 1815 it was drawn only by the schematic rings of the great empires — the Maurya, Kushan, Gupta, Delhi, Mughal, Maratha and British `india-*` rings, the Chola `tamil-core` and `coromandel` rings and the Portuguese `goa-fringe` — so the Deccan, the south, Odisha, Kashmir and Assam were empty for centuries, or wrongly covered: the Gupta and Delhi rings reached over the whole Deccan, the Mughal ring over the far south from 1565 and the Chola ring over the Pallava and Pandya countries from 350. The nations layer draws `india` (from 1815/1914), so this pack uses other ids and stops by 1813. India is the fifth and last country of pack 6 (South Asia), stacked on Nepal (#113).
 
@@ -1568,7 +1568,7 @@ India had a 9-item Day 1 timeline without sources. On the globe before 1815 it w
 - **Preview:** https://theeverythingtimeline.com/pr-preview/pr-114/
 - **Next:** Phase 5 item 7 — globe refinement of the existing 38 countries, biggest gaps first — China shipped Day 98.
 
-#### Day 98 — Phase 5 item 7: China globe refinement (Timeline + Globe) — done-in-PR
+#### Day 98 — Phase 5 item 7: China globe refinement (Timeline + Globe) — merged #115
 
 China had a 12-item timeline. On the globe before 1815 it was drawn by the schematic rings of the unified dynasties — `zhou-china`, `qin-china`, `han-china`, `tang-china`, `song-china`, `mongol-empire`, `ming-china` and `qing-china` — so the divided eras were either empty (220–580, 907–960 outside the Tang hold, the Sixteen Kingdoms) or wrongly covered: the Zhou ring drew one realm over all the Warring States, the Song ring covered the Liao’s Yanjing, Dali and, after 1127, the Jin’s Kaifeng, and the Mongol ring took all of north China from 1206. The nations layer draws `china` (from 1815/1914), so this pack uses other ids and stops by 1813. China is the first country of item 7, stacked on India (#114).
 
@@ -1579,8 +1579,22 @@ China had a 12-item timeline. On the globe before 1815 it was drawn by the schem
 - **Cities / pins:** 24 cities (Houma, Linzi, Handan, Xinzheng, Taiyuan, Ye, Jiangling, Shouchun, Shaoxing, Datong, Chaoyang, Dingzhou, Xiangyang, Wuchang, Changsha, Fuzhou, Shangjing, Yinchuan, Acheng, Hetu Ala, Liaoyang, Guilin, Hengyang, Tainan); 52 pins on the new timeline items.
 - **Validate:** China is a thirty-third row in `scripts/check-country-packs.js` (rings, land, sources, 77 capitals and sites inside, who is on / gone at sample years, region changes by date, the trimmed entities off Linzi, Luoyang, Kaifeng, Guangzhou, Yanjing, Dali, Lin’an, Kunming, Tainan, the Yellow River bend and the Yalu, and no overlap with 31 neighbouring empires and states every 5 years from 480 BCE to 1690, with no exceptions). Day 98 assertions in `check-overlay-lifespan.js`.
 - **Honesty:** pieces are modern provinces grouped and cut along straight lines, not historical borders. Not drawn: the Spring and Autumn states and small Warring States (Song, Lu, Wey, Zhongshan); the Former and Later Liang, Western Qin, Southern Liang, Northern Liang, Xia (Helian), Southern Yan, Western Liang and Dai of the Sixteen Kingdoms; the Southern dynasties are one entity and the Five Dynasties one entity; the Tuyuhun, Rouran, Khitan before 916, Kara-Khitai, Tibetan Guge and Ming Yuzhen’s Xia in Sichuan (1362–1371); Nanzhao (still drawn by the older `nanzhao` ring); the Red Turban Song; the Northern Yuan after 1368 (the older Ming ring is kept as it was). Tibet, Xinjiang and Mongolia stay with the older rings.
-- **Preview:** _this PR._
+- **Preview:** https://theeverythingtimeline.com/pr-preview/pr-115/
 - **Next:** Phase 5 item 7 — South Korea (Gojoseon, the Three Kingdoms, Gaya, Balhae and the Later Three Kingdoms are not drawn at all; only Silla, Goryeo and Joseon rings exist).
+
+#### Day 99 — Phase 5 item 7: South Korea globe refinement (Timeline + Globe) — done-in-PR
+
+South Korea had a 7-item timeline. Before 1815 the peninsula had only three rings: `silla` (from the Day 25 early-medieval set, drawn from 57 CE because the civilisation entry said 57, not 57 BCE), `goryeo` and `joseon` (Day 25/40 rings, trimmed off Liaodong and Jilin by the China pack). Gojoseon, the Han commanderies, Goguryeo, Baekje, Gaya, Balhae and the Later Three Kingdoms weren't drawn at all, and the Tang, Mongol and Qing rings ran over Balhae, Goryeo and Joseon’s northern frontier. The nations layer draws `korea` from 1815 (linked to Joseon), so this pack stops by 1813.
+
+- **Timeline:** 7 → 24 sourced items. The 7 old items get sources, and 17 new items add Gojoseon and Wiman Joseon, the Han commanderies, Goguryeo, Baekje, Silla, the Gaya confederacy, the wars of unification, Balhae, the Later Three Kingdoms, Goryeo’s Khitan and Jurchen wars, the military regime and Mongol domination, Sejong the Great, the Imjin War, the Manchu invasions, late Joseon’s revival, the Park Chung-hee era and democratisation. One new category (Goguryeo, Balhae & the North). Every Wikipedia source checked (HTTP 200), lazy-loaded from `data/countries/south-korea.json`.
+- **Globe (to 1815):** 11 polities, 148 keyframes. New: `gojoseon` (c. 400–108 BCE, Wiman Joseon from 194 BCE, conjectural), `lelang-commandery` (108 BCE–313, with Daifang), `goguryeo` (37 BCE–668, Liaodong from 405), `baekje` (18 BCE–660), `gaya-confederacy` (42–562, conjectural), `balhae` (698–926), `later-baekje` (892–936) and `taebong` (901–918, as Later Goguryeo and Majin). Replaced with the same ids so links and older checks hold: `silla` (57 BCE–935, Unified Silla from 668, to the Taedong by 735, shrinking to Gyeongju by 933), `goryeo` (918–1392: the lands east of the lower Yalu from 994, the north-west lost to the Mongols 1270–1290 and the north-east to Ssangseong until 1356) and `joseon` (1392–1813: the Four Commanderies and Six Garrisons from 1434–1443, held to the 1815 hand-off). All approximate unless marked.
+- **Pieces: 25 new** Natural Earth 1:10m pieces: Korean provinces (Gyeongsang cut at 36.6°N and 128.45–128.5°E), Primorsky Krai south of 46.3°N, and copies of the China pack’s Manchurian pieces (eastern Liaoning, Jilin cut at 42.3°N, Heilongjiang), polygonized together so shared edges match. Jeju isn’t on the globe’s land, so Tamna isn’t drawn.
+- **Holds / trims:** `tang-china` `tang-north` 750 off Balhae; the Mongol `eurasian-steppe` ring 1272–1319 off the peninsula; the Qing Manchuria ring held at its 1682 shape to 1814 so it never covers the Tumen and upper Yalu garrisons. The China pack’s Goryeo/Joseon trims are gone (those shapes are now this pack’s) and its Later Yan, Northern Yan and Eastern Wei/Northern Wei no longer take eastern Liaoning from Goguryeo. China’s checks still pass.
+- **Cities / pins:** 14 new cities (Gungnae, Wiryeseong, Ungjin, Sabi, Gimhae, Goryeong, Dongmo, Sanggyeong, Jeonju/Wansanju, Gwangju/Mujinju, Cheorwon, Hamhung, Uiju, Suwon); Pyongyang now runs from c. 400 BCE (Wanggeom, Lelang, Seogyeong) and Kaesong from 896 (Songak, Kaegyeong); 70 pins on all 24 timeline items.
+- **Validate:** South Korea is a thirty-fourth row in `scripts/check-country-packs.js` (rings, land, sources, 18 capitals inside, who is on / gone at sample years, the trimmed Tang, Mongol and Qing rings off Sanggyeong, Dongmo, Kaegyeong, the Hamhung plain, the Tumen and Kanggye, and no overlap with 30 neighbouring empires and states every 5 years from 400 BCE to 1813, with no exceptions; a year-by-year scan finds none). Day 99 assertions in `check-overlay-lifespan.js`. The `silla` civilisation now starts in 57 BCE.
+- **Honesty:** pieces are modern provinces grouped and cut along straight lines, not historical borders. Not drawn: Dangun’s Gojoseon before c. 400 BCE; Buyeo, Okjeo and Dongye; the Samhan (Mahan, Jinhan, Byeonhan) outside Baekje, Silla and Gaya; Usan and Tamna; the Tang protectorates (668–676) and the Jurchen tribes north of Goryeo before Joseon’s frontier; Ssangseong as its own shape (Goryeo’s north-east is simply left out 1270–1356); the Japanese occupation in the Imjin War.
+- **Preview:** _this PR._
+- **Next:** Phase 5 item 7 — Japan (only the Heian, Kamakura–Muromachi and Tokugawa rings exist).
 
 
 ### 13. Fill the globe, region by region (after the packs above)
@@ -1732,10 +1746,10 @@ A sensible near-term sequence:
 58. Pack 1 globe backfill — Philippines (Day 71) ✅ (merged #85). Pack 1 globe backfill complete.
 59. Phase 5 pack 2 — Central Asia: Uzbekistan (Day 72) ✅ (merged #86), Kazakhstan (Day 73) ✅ (merged #87), Turkmenistan (Day 74) ✅ (merged #88), Kyrgyzstan (Day 75) ✅ (merged #89), Tajikistan (Day 76) ✅ (merged #90), Afghanistan (Day 77) ✅ (merged #91), Timeline + Globe. Pack 2 complete.
 60. Phase 5 item 3 — Caribbean and Central America: Cuba (Day 78) ✅ (merged #92), Haiti/Dominican Republic (Day 79) ✅ (merged #93), Jamaica (Day 80) ✅ (merged #94), Guatemala (Day 81) ✅ (done-in-PR #95), Mexico refinement (Day 82) ✅ (done-in-PR #97), Timeline + Globe. Pack 3 complete. Phase 5 item 4 — Central Africa: DR Congo (Day 83) ✅ (merged #98), Angola (Day 84) ✅ (merged #99), Cameroon (Day 85) ✅ (merged #100), Chad (Day 86) ✅ (merged #101). Pack 4 complete.
-61. Phase 5 item 5 — Southeast Europe: Serbia (Day 87) ✅ (merged #102), Bulgaria (Day 88) ✅ (merged #104), Romania (Day 89) ✅ (merged #105), Croatia (Day 90) ✅ (merged #106), Albania (Day 91) ✅ (merged #107), Greece refinement (Day 92) ✅ (done-in-PR #108), Timeline + Globe. Pack 5 complete.
-62. Phase 5 item 6 — South Asia: Pakistan (Day 93) ✅ (done-in-PR #110), Bangladesh (Day 94) ✅ (done-in-PR #111), Sri Lanka (Day 95) ✅ (done-in-PR #112), Nepal (Day 96) ✅ (done-in-PR #113), India refinement (Day 97) ✅ (done-in-PR #114), Timeline + Globe. Pack 6 complete.
-63. Phase 5 item 7 — globe refinement of the existing countries: China (Day 98) ✅ (done-in-PR), Timeline + Globe.
-64. **Now: Phase 5 item 7 — globe refinement of the existing 38 countries (27 still Globe `partial` in docs/COVERAGE.md), biggest gaps first: next South Korea (the Korean peninsula before Silla’s unification and Balhae are empty). Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes (item 13).**
+61. Phase 5 item 5 — Southeast Europe: Serbia (Day 87) ✅ (merged #102), Bulgaria (Day 88) ✅ (merged #104), Romania (Day 89) ✅ (merged #105), Croatia (Day 90) ✅ (merged #106), Albania (Day 91) ✅ (merged #107), Greece refinement (Day 92) ✅ (merged #108, Timeline + Globe. Pack 5 complete.
+62. Phase 5 item 6 — South Asia: Pakistan (Day 93) ✅ (merged #110, Bangladesh (Day 94) ✅ (merged #111, Sri Lanka (Day 95) ✅ (merged #112, Nepal (Day 96) ✅ (merged #113, India refinement (Day 97) ✅ (merged #114, Timeline + Globe. Pack 6 complete.
+63. Phase 5 item 7 — globe refinement of the existing countries: China (Day 98) ✅ (merged #115), South Korea (Day 99) ✅ (done-in-PR), Timeline + Globe.
+64. **Now: Phase 5 item 7 — globe refinement of the existing 38 countries (26 still Globe `partial` in docs/COVERAGE.md), biggest gaps first: next Japan (only the Heian, Kamakura–Muromachi and Tokugawa rings exist: Yayoi and Kofun Yamato, Asuka and Nara, the Sengoku daimyo, the Ryukyu Kingdom and Ezo are not drawn). Country packs stay the ongoing default for the daily routine, followed by region-by-region fill-the-globe passes (item 13).**
 
 The globe is the exciting flagship, but search, deep links, validation, and sources make it much easier to build without turning the project into a beautiful historical junk drawer.
 
