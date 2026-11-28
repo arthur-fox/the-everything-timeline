@@ -10,7 +10,7 @@
  * Haiti/Dominican Republic (Day 79, src/globe-pack-haiti-dr.js), Jamaica (Day 80,
  * src/globe-pack-jamaica.js), Guatemala (Day 81, src/globe-pack-guatemala.js), the Mexico refinement (Day 82,
  * src/globe-pack-mexico.js), DR Congo (Day 83, src/globe-pack-dr-congo.js) Angola (Day 84,
- * src/globe-pack-angola.js), Cameroon (Day 85, src/globe-pack-cameroon.js), Chad (Day 86, src/globe-pack-chad.js), Serbia (Day 87, src/globe-pack-serbia.js), Bulgaria (Day 88, src/globe-pack-bulgaria.js), Romania (Day 89, src/globe-pack-romania.js), Croatia (Day 90, src/globe-pack-croatia.js), Albania (Day 91, src/globe-pack-albania.js), the Greece refinement (Day 92, src/globe-pack-greece.js), Pakistan (Day 93, src/globe-pack-pakistan.js), Bangladesh (Day 94, src/globe-pack-bangladesh.js), Sri Lanka (Day 95, src/globe-pack-sri-lanka.js), Nepal (Day 96, src/globe-pack-nepal.js), India (Day 97, src/globe-pack-india.js) and the China globe refinement (Day 98, src/globe-pack-china.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
+ * src/globe-pack-angola.js), Cameroon (Day 85, src/globe-pack-cameroon.js), Chad (Day 86, src/globe-pack-chad.js), Serbia (Day 87, src/globe-pack-serbia.js), Bulgaria (Day 88, src/globe-pack-bulgaria.js), Romania (Day 89, src/globe-pack-romania.js), Croatia (Day 90, src/globe-pack-croatia.js), Albania (Day 91, src/globe-pack-albania.js), the Greece refinement (Day 92, src/globe-pack-greece.js), Pakistan (Day 93, src/globe-pack-pakistan.js), Bangladesh (Day 94, src/globe-pack-bangladesh.js), Sri Lanka (Day 95, src/globe-pack-sri-lanka.js), Nepal (Day 96, src/globe-pack-nepal.js), India (Day 97, src/globe-pack-india.js), the China globe refinement (Day 98, src/globe-pack-china.js) and the South Korea globe refinement (Day 99, src/globe-pack-south-korea.js). Add a pack to PACKS to cover it. `PACK=<country>` checks one
  * pack.
  *  - every ring is closed and does not cross itself;
  *  - shapes stay on land: every vertex is on land or the coast, and ≥97% of an interior grid is
@@ -63,6 +63,7 @@ import { sriLankaPolities, sriLankaShapeFixes } from '../src/globe-pack-sri-lank
 import { nepalPolities, nepalShapeFixes } from '../src/globe-pack-nepal.js';
 import { indiaPolities, indiaShapeFixes } from '../src/globe-pack-india.js';
 import { chinaPolities, chinaShapeFixes } from '../src/globe-pack-china.js';
+import { koreaPolities, koreaShapeFixes } from '../src/globe-pack-south-korea.js';
 import { MERGE_STATS } from '../src/globe-med-pieces.js';
 import { getActiveOverlaysAtYear, getOverlayPolygonFeatures, spatialEntities, resolveRegionRing } from '../src/globe-overlays.js';
 import { civilisations } from '../src/civilisations.js';
@@ -3209,7 +3210,7 @@ const PACKS = [
     polities: chinaPolities,
     fixes: chinaShapeFixes,
     redrawn: {},
-    trimmed: ['zhou-china', 'han-china', 'tang-china', 'song-china', 'mongol-empire', 'qing-china', 'gokturk-khaganate', 'goryeo', 'joseon', 'dai-viet', 'lan-xang', 'toungoo-dynasty'],
+    trimmed: ['zhou-china', 'han-china', 'tang-china', 'song-china', 'mongol-empire', 'qing-china', 'gokturk-khaganate', 'dai-viet', 'lan-xang', 'toungoo-dynasty'],
     capitals: [
       ['jin-state-zhou', -475, 111.37, 35.62, 'Xintian (Houma)'],
       ['zhao-state', -453, 112.55, 37.87, 'Jinyang'],
@@ -3389,6 +3390,83 @@ const PACKS = [
       planar: true,
       with: ['zhou-china', 'qin-china', 'han-china', 'tang-china', 'song-china', 'mongol-empire', 'ming-china', 'qing-china', 'tibetan-empire', 'nanzhao', 'gokturk-khaganate', 'uyghur-khaganate',
         'silla', 'goryeo', 'joseon', 'heian-japan', 'kamakura-muromachi', 'tokugawa', 'dai-viet', 'champa', 'lan-na', 'lan-xang', 'sukhothai', 'ayutthaya', 'pagan-kingdom', 'ava-kingdom', 'toungoo-dynasty', 'ahom-kingdom', 'khmer-empire', 'chenla', 'spanish-philippines'],
+      remnants: [],
+    },
+  },
+  {
+    // Day 99 — South Korea: Gojoseon to Joseon on the peninsula and southern Manchuria. Silla, Goryeo and Joseon are
+    // replaced wholesale (same ids); the Tang, Mongol and Qing shapes are trimmed back off Balhae and the peninsula.
+    country: 'south-korea',
+    polities: koreaPolities,
+    fixes: koreaShapeFixes,
+    redrawn: {},
+    trimmed: ['tang-china', 'mongol-empire', 'qing-china'],
+    capitals: [
+      ['gojoseon', -302, 125.75, 39.02, 'Wanggeom (Pyongyang)'],
+      ['lelang-commandery', -82, 125.76, 38.99, 'Lelang (Tosong-ri)'],
+      ['goguryeo', 3, 126.19, 41.12, 'Gungnae (Ji’an)'],
+      ['goguryeo', 427, 125.75, 39.02, 'Pyongyang'],
+      ['baekje', -18, 127.12, 37.52, 'Wiryeseong'],
+      ['baekje', 475, 127.12, 36.46, 'Ungjin (Gongju)'],
+      ['baekje', 538, 126.91, 36.28, 'Sabi (Buyeo)'],
+      ['silla', -57, 129.21, 35.84, 'Seorabeol (Gyeongju)'],
+      ['silla', 735, 129.21, 35.84, 'Gyeongju'],
+      ['gaya-confederacy', 42, 128.88, 35.23, 'Geumgwan (Gimhae)'],
+      ['gaya-confederacy', 400, 128.26, 35.73, 'Daegaya (Goryeong)'],
+      ['balhae', 698, 128.23, 43.37, 'Dongmo (Dunhua)'],
+      ['balhae', 818, 129.07, 44.13, 'Sanggyeong'],
+      ['later-baekje', 901, 127.15, 35.82, 'Wansanju (Jeonju)'],
+      ['taebong', 905, 127.21, 38.24, 'Cheorwon'],
+      ['goryeo', 918, 126.55, 37.97, 'Kaegyeong (Kaesong)'],
+      ['goryeo', 1232, 126.49, 37.70, 'Ganghwa'],
+      ['joseon', 1392, 126.98, 37.57, 'Hanyang (Seoul)'],
+    ],
+    on: {
+      [-300]: ['gojoseon'],
+      [-50]: ['lelang-commandery'],
+      100: ['goguryeo', 'baekje', 'silla', 'gaya-confederacy', 'lelang-commandery'],
+      500: ['goguryeo', 'baekje', 'silla', 'gaya-confederacy'],
+      600: ['goguryeo', 'baekje', 'silla'],
+      750: ['silla', 'balhae'],
+      910: ['silla', 'later-baekje', 'taebong', 'balhae'],
+      1000: ['goryeo'],
+      1300: ['goryeo'],
+      1500: ['joseon'],
+      1800: ['joseon'],
+    },
+    gone: {
+      [-90]: ['gojoseon'],
+      320: ['lelang-commandery'],
+      565: ['gaya-confederacy'],
+      662: ['baekje'],
+      670: ['goguryeo'],
+      920: ['taebong'],
+      930: ['balhae'],
+      937: ['later-baekje', 'silla'],
+      1395: ['goryeo'],
+      1815: koreaPolities.map((e) => e.id),
+    },
+    absent: [],
+    present: [
+      ['mongol-empire', 1250, 'eurasian-steppe'],
+      ['qing-china', 1780, 'manchuria'],
+    ],
+    notOver: [
+      ['tang-china', 750, 129.07, 44.13, 'Sanggyeong (Balhae)'],
+      ['tang-china', 750, 128.23, 43.37, 'Dongmo (Balhae)'],
+      ['mongol-empire', 1280, 126.55, 37.97, 'Kaegyeong (Goryeo)'],
+      ['mongol-empire', 1300, 127.54, 39.92, 'the Hamhung plain (Goryeo’s north-east, under Ssangseong)'],
+      ['qing-china', 1780, 129.98, 42.45, 'the Tumen’s south bank (Joseon’s Six Garrisons)'],
+      ['qing-china', 1780, 126.60, 40.97, 'Kanggye (Joseon, south of the upper Yalu)'],
+    ],
+    noOverlap: {
+      from: -400,
+      to: 1813,
+      box: [118, 32, 140, 50],
+      planar: true,
+      with: ['zhou-china', 'yan-state', 'qi-state', 'han-china', 'cao-wei', 'western-jin', 'later-zhao', 'former-yan', 'former-qin', 'later-yan', 'northern-yan', 'northern-wei', 'eastern-jin', 'eastern-wei-northern-qi',
+        'southern-dynasties', 'sui-dynasty', 'tang-china', 'five-dynasties', 'liao-dynasty', 'song-china', 'jin-dynasty-jurchen', 'mongol-empire', 'yuan-dynasty', 'ming-china', 'later-jin-manchu', 'qing-china',
+        'gokturk-khaganate', 'heian-japan', 'kamakura-muromachi', 'tokugawa'],
       remnants: [],
     },
   },

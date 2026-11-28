@@ -912,13 +912,13 @@ export const civilisations = [
   {
     id: 'silla',
     name: 'Silla (Korea)',
-    start: 57,
+    start: -57,
     end: 935,
     region: 'east-asia',
     icon: '🇰🇷',
     description: 'One of Korea\'s Three Kingdoms; with Tang help it unified the peninsula (668) as Unified Silla, ruling from Gyeongju until Goryeo replaced it in the 10th century.',
     periods: [
-      { name: 'Three Kingdoms Silla', start: 57, end: 668 },
+      { name: 'Three Kingdoms Silla', start: -57, end: 668 },
       { name: 'Unified Silla', start: 668, end: 935 },
     ],
   },

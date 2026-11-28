@@ -35,6 +35,7 @@ import { sriLankaPolities } from '../src/globe-pack-sri-lanka.js';
 import { nepalPolities } from '../src/globe-pack-nepal.js';
 import { indiaPolities } from '../src/globe-pack-india.js';
 import { chinaPolities } from '../src/globe-pack-china.js';
+import { koreaPolities } from '../src/globe-pack-south-korea.js';
 import {
   lerpRings,
   MORPH_RING_SAMPLES,
@@ -530,6 +531,23 @@ assert(idsAt(-500).size >= 3, `−500 still has ≥3 overlays (got ${idsAt(-500)
     assert(over('dali-kingdom', 1000, [100.23, 25.59]) && !over('song-china', 1000, [100.23, 25.59]) && over('mongol-empire', 1260, [100.23, 25.59]), 'Dali its own kingdom until the Mongols (1253)');
     assert(over('southern-ming', 1657, [102.71, 25.04]) && over('wu-sangui-zhou', 1675, [102.71, 25.04]) && !over('qing-china', 1675, [102.71, 25.04]) && over('qing-china', 1690, [102.71, 25.04]), 'Kunming Southern Ming, Wu Sangui, then Qing');
     assert(over('han-china', 190, [112.45, 34.62]) && over('cao-wei', 230, [112.45, 34.62]) && !over('han-china', 225, [112.45, 34.62]), 'Luoyang Han, then Cao Wei');
+  }
+  // Day 99: South Korea — Gojoseon, Lelang, the Three Kingdoms, Gaya, Balhae and the Later Three Kingdoms, with Silla,
+  // Goryeo and Joseon redrawn from the pack's pieces; all off by the 1815 nations hand-off.
+  assert(gIn('gojoseon', -400, -110) && gIn('lelang-commandery', -107, 311), 'Gojoseon to 108 BCE, Lelang to 313');
+  assert(gIn('goguryeo', -37, 667) && gIn('baekje', -18, 659) && gIn('gaya-confederacy', 42, 560), 'Goguryeo to 668, Baekje to 660, Gaya to 562');
+  assert(gIn('balhae', 698, 925) && gIn('later-baekje', 893, 934) && gIn('taebong', 902, 915), 'Balhae 698–926, Later Baekje 892–936, Taebong 901–918');
+  assert(idsAt(0).has('silla') && idsAt(933).has('silla') && !idsAt(940).has('silla'), 'Silla from 57 BCE to 935');
+  assert(idsAt(1000).has('goryeo') && !idsAt(1395).has('goryeo') && idsAt(1500).has('joseon') && idsAt(1813).has('joseon'), 'Goryeo to 1392, Joseon to the 1815 hand-off');
+  assert(koreaPolities.every((e) => !idsAt(1815).has(e.id)), 'South Korea pack polities off at the 1815 nations hand-off');
+  {
+    const over = (id, y, pt) => getOverlayPolygonFeatures(y).some((f) => f.entityId === id && geoContains(f, pt));
+    assert(over('goguryeo', 500, [125.75, 39.02]) && over('silla', 700, [125.75, 39.02]) === false && over('goryeo', 1000, [125.75, 39.02]), 'Pyongyang Goguryeo, outside Unified Silla, Goryeo by 1000');
+    assert(over('baekje', 500, [126.91, 36.28]) && over('silla', 700, [126.91, 36.28]), 'Sabi Baekje, then Unified Silla');
+    assert(over('gaya-confederacy', 500, [128.26, 35.73]) && over('silla', 600, [128.26, 35.73]), 'Goryeong Daegaya until 562, then Silla');
+    assert(over('balhae', 800, [129.07, 44.13]) && !over('tang-china', 750, [129.07, 44.13]), 'Sanggyeong Balhae, not Tang');
+    assert(over('goryeo', 1280, [126.55, 37.97]) && !over('mongol-empire', 1280, [126.55, 37.97]), 'Kaegyeong Goryeo, not the Mongol ring');
+    assert(over('joseon', 1780, [129.98, 42.45]) && !over('qing-china', 1780, [129.98, 42.45]), 'the Six Garrisons Joseon, not Qing');
   }
   assertNoOceanSpan('spanish-empire', 1550, 55);
   assertNoOceanSpan('spanish-empire', 1700, 55);
